@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GIJSZ"></a><a id="JEETT00085"></a>
+
+    <h1 class="chapter"><span class="secnum">32</span> Enterprise Beans</h1>
+
+    <p><a id="sthref1642"></a>Enterprise beans are Java EE components that implement Enterprise JavaBeans (EJB) technology. Enterprise beans run in the EJB container, a runtime environment within GlassFish Server (see <a href="../Text/overview.xhtml#BNABQ">Container Types</a>). Although transparent to the application developer, the EJB container provides system-level services, such as transactions and security, to its enterprise beans. These services enable you to quickly build and deploy enterprise beans, which form the core of transactional Java EE applications.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/ejb-intro.xhtml#GIPMB">What Is an Enterprise Bean?</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-intro.xhtml#GIPJG">What Is a Session Bean?</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-intro.xhtml#GIPKO">What Is a Message-Driven Bean?</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-intro.xhtml#GIPJF">Accessing Enterprise Beans</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-intro.xhtml#GIPIO">The Contents of an Enterprise Bean</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-intro.xhtml#GIPKS">Naming Conventions for Enterprise Beans</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-intro.xhtml#GIPLJ">The Lifecycles of Enterprise Beans</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-intro.xhtml#GIPLG">Further Information about Enterprise Beans</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GIPMB"></a><a id="JEETT00438"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">32.1</span> What Is an Enterprise Bean?</h1>
+
+      <p><a id="sthref1643"></a>Written in the Java programming language, an enterprise bean is a server-side component that encapsulates the business logic of an application. The <span class="glossaryterm">business logic</span> is the code that fulfills the purpose of the application. In an inventory control application, for example, the enterprise beans might implement the business logic in methods called <code>checkInventoryLevel</code> and <code>orderProduct</code>. By invoking these methods, clients can access the inventory services provided by the application.</p><a id="GIPLK"></a><a id="JEETT01072"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.1.1</span> Benefits of Enterprise Beans</h2>
+
+        <p><a id="sthref1644"></a>For several reasons, enterprise beans simplify the development of large, distributed applications. First, because the EJB container provides system-level services to enterprise beans, the bean developer can concentrate on solving business problems. The EJB container, rather than the bean developer, is responsible for system-level services, such as transaction management and security authorization.</p>
+
+        <p><a id="sthref1645"></a><a id="sthref1646"></a>Second, because the beans rather than the clients contain the application's business logic, the client developer can focus on the presentation of the client. The client developer does not have to code the routines that implement business rules or access databases. As a result, the clients are thinner, a benefit that is particularly important for clients that run on small devices.</p>
+
+        <p>Third, because enterprise beans are portable components, the application assembler can build new applications from existing beans. Provided that they use the standard APIs, these applications can run on any compliant Java EE server.</p>
+      </div><a id="GIPKN"></a><a id="JEETT01073"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.1.2</span> When to Use Enterprise Beans</h2>
+
+        <p>You should consider using enterprise beans if your application has any of the following requirements.</p>
+
+        <ul>
+          <li>
+            <p>The application must be scalable. To accommodate a growing number of users, you may need to distribute an application's components across multiple machines. Not only can the enterprise beans of an application run on different machines, but also their location will remain transparent to the clients.</p>
+          </li>
+
+          <li>
+            <p>Transactions must ensure data integrity. Enterprise beans support transactions, the mechanisms that manage the concurrent access of shared objects.</p>
+          </li>
+
+          <li>
+            <p>The application will have a variety of clients. With only a few lines of code, remote clients can easily locate enterprise beans. These clients can be thin, various, and numerous.</p>
+          </li>
+        </ul>
+      </div><a id="GIPNM"></a><a id="JEETT01074"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.1.3</span> Types of Enterprise Beans</h2>
+
+        <p><a id="sthref1647"></a><a href="../Text/ejb-intro.xhtml#GIPLZ">Table 32-1</a> summarizes the two types of enterprise beans. The following sections discuss each type in more detail.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref1648"></a><a id="GIPLZ"></a>
+
+          <p class="titleintable">Table 32-1 Enterprise Bean Types</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the types of enterprise beans." title="Enterprise Bean Types" width="100%">
+            <col width="30%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t2" valign="bottom">Enterprise Bean Type</th>
+
+                <th align="left" id="r1c2-t2" valign="bottom">Purpose</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                  <p>Session</p>
+                </td>
+
+                <td align="left" headers="r2c1-t2 r1c2-t2">
+                  <p><a id="sthref1649"></a>Performs a task for a client; optionally, may implement a web service</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                  <p>Message-driven</p>
+                </td>
+
+                <td align="left" headers="r3c1-t2 r1c2-t2">
+                  <p>Acts as a listener for a particular messaging type, such as the Java Message Service API</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPJG"></a><a id="JEETT00439"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">32.2</span> <a id="sthref1650"></a>What Is a Session Bean?</h1>
+
+      <p><a id="sthref1651"></a>A <span class="glossaryterm">session bean</span> encapsulates business logic that can be invoked programmatically by a client over local, remote, or web service client views. To access an application that is deployed on the server, the client invokes the session bean's methods. The session bean performs work for its client, shielding it from complexity by executing business tasks inside the server.</p>
+
+      <p>A session bean is not persistent. (That is, its data is not saved to a database.)</p>
+
+      <p>For code samples, see <a href="../Text/ejb-basic-examples.xhtml#GIJRB">Chapter 34, "Running the Enterprise Bean Examples"</a>.</p><a id="GIPKR"></a><a id="JEETT01075"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.2.1</span> Types of Session Beans</h2>
+
+        <p>Session beans are of three types: stateful, stateless, and singleton.</p><a id="GIPNL"></a><a id="JEETT00645"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">32.2.1.1</span> <a id="sthref1652"></a>Stateful Session Beans</h3>
+
+          <p><a id="sthref1653"></a>The state of an object consists of the values of its instance variables. In a <span class="glossaryterm">stateful session bean</span>, the instance variables represent the state of a unique client/bean session. Because the client interacts ("talks") with its bean, this state is often called the <span class="glossaryterm">conversational state</span>.</p>
+
+          <p>As its name suggests, a session bean is similar to an interactive session. A session bean is not shared; it can have only one client, in the same way that an interactive session can have only one user. When the client terminates, its session bean appears to terminate and is no longer associated with the client.</p>
+
+          <p>The state is retained for the duration of the client/bean session. If the client removes the bean, the session ends and the state disappears. This transient nature of the state is not a problem, however, because when the conversation between the client and the bean ends, there is no need to retain the state.</p>
+        </div><a id="GIPIN"></a><a id="JEETT00646"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">32.2.1.2</span> <a id="sthref1654"></a>Stateless Session Beans</h3>
+
+          <p>A <span class="glossaryterm">stateless session bean</span> does not maintain a conversational state with the client. When a client invokes the methods of a stateless bean, the bean's instance variables may contain a state specific to that client but only for the duration of the invocation. When the method is finished, the client-specific state should not be retained. Clients may, however, change the state of instance variables in pooled stateless beans, and this state is held over to the next invocation of the pooled stateless bean. Except during method invocation, all instances of a stateless bean are equivalent, allowing the EJB container to assign an instance to any client. That is, the state of a stateless session bean should apply across all clients.</p>
+
+          <p>Because they can support multiple clients, stateless session beans can offer better scalability for applications that require large numbers of clients. Typically, an application requires fewer stateless session beans than stateful session beans to support the same number of clients.</p>
+
+          <p>A stateless session bean can implement a web service, but a stateful session bean cannot.</p>
+        </div><a id="GIPIM"></a><a id="JEETT00647"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">32.2.1.3</span> <a id="sthref1655"></a>Singleton Session Beans</h3>
+
+          <p>A <span class="glossaryterm">singleton session bean</span> is instantiated once per application and exists for the lifecycle of the application. Singleton session beans are designed for circumstances in which a single enterprise bean instance is shared across and concurrently accessed by clients.</p>
+
+          <p>Singleton session beans offer similar functionality to stateless session beans but differ from them in that there is only one singleton session bean per application, as opposed to a pool of stateless session beans, any of which may respond to a client request. Like stateless session beans, singleton session beans can implement web service endpoints.</p>
+
+          <p>Singleton session beans maintain their state between client invocations but are not required to maintain their state across server crashes or shutdowns.</p>
+
+          <p>Applications that use a singleton session bean may specify that the singleton should be instantiated upon application startup, which allows the singleton to perform initialization tasks for the application. The singleton may perform cleanup tasks on application shutdown as well, because the singleton will operate throughout the lifecycle of the application.</p>
+        </div>
+      </div><a id="GIPMT"></a><a id="JEETT01076"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.2.2</span> When to Use Session Beans</h2>
+
+        <p><a id="sthref1656"></a>Stateful session beans are appropriate if any of the following conditions are true.</p>
+
+        <ul>
+          <li>
+            <p>The bean's state represents the interaction between the bean and a specific client.</p>
+          </li>
+
+          <li>
+            <p>The bean needs to hold information about the client across method invocations.</p>
+          </li>
+
+          <li>
+            <p>The bean mediates between the client and the other components of the application, presenting a simplified view to the client.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref1657"></a>Behind the scenes, the bean manages the work flow of several enterprise beans.</p>
+          </li>
+        </ul>
+
+        <p><a id="sthref1658"></a>To improve performance, you might choose a stateless session bean if it has any of these traits.</p>
+
+        <ul>
+          <li>
+            <p>The bean's state has no data for a specific client.</p>
+          </li>
+
+          <li>
+            <p>In a single method invocation, the bean performs a generic task for all clients. For example, you might use a stateless session bean to send an email that confirms an online order.</p>
+          </li>
+
+          <li>
+            <p>The bean implements a web service.</p>
+          </li>
+        </ul>
+
+        <p>Singleton session beans are appropriate in the following circumstances.</p>
+
+        <ul>
+          <li>
+            <p>State needs to be shared across the application.</p>
+          </li>
+
+          <li>
+            <p>A single enterprise bean needs to be accessed by multiple threads concurrently.</p>
+          </li>
+
+          <li>
+            <p>The application needs an enterprise bean to perform tasks upon application startup and shutdown.</p>
+          </li>
+
+          <li>
+            <p>The bean implements a web service.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPKO"></a><a id="JEETT00440"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">32.3</span> <a id="sthref1659"></a>What Is a Message-Driven Bean?</h1>
+
+      <p><a id="sthref1660"></a><a id="sthref1661"></a>A <span class="glossaryterm">message-driven bean</span> is an enterprise bean that allows Java EE applications to process messages asynchronously. This type of bean normally acts as a JMS message listener, which is similar to an event listener but receives JMS messages instead of events. The messages can be sent by any Java EE component (an application client, another enterprise bean, or a web component) or by a JMS application or system that does not use Java EE technology. Message-driven beans can process JMS messages or other kinds of messages.</p><a id="GIPMJ"></a><a id="JEETT01077"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.3.1</span> What Makes Message-Driven Beans Different from Session Beans?</h2>
+
+        <p><a id="sthref1662"></a>The most visible difference between message-driven beans and session beans is that clients do not access message-driven beans through interfaces. Interfaces are described in the section <a href="../Text/ejb-intro.xhtml#GIPJF">Accessing Enterprise Beans</a>. Unlike a session bean, a message-driven bean has only a bean class.</p>
+
+        <p>In several respects, a message-driven bean resembles a stateless session bean.</p>
+
+        <ul>
+          <li>
+            <p>A message-driven bean's instances retain no data or conversational state for a specific client.</p>
+          </li>
+
+          <li>
+            <p>All instances of a message-driven bean are equivalent, allowing the EJB container to assign a message to any message-driven bean instance. The container can pool these instances to allow streams of messages to be processed concurrently.</p>
+          </li>
+
+          <li>
+            <p>A single message-driven bean can process messages from multiple clients.</p>
+          </li>
+        </ul>
+
+        <p><a id="sthref1663"></a>The instance variables of the message-driven bean instance can contain some state across the handling of client messages, such as a JMS API connection, an open database connection, or an object reference to an enterprise bean object.</p>
+
+        <p>Client components do not locate message-driven beans and invoke methods directly on them. Instead, a client accesses a message-driven bean through, for example, JMS by sending messages to the message destination for which the message-driven bean class is the <code>MessageListener</code>. You assign a message-driven bean's destination during deployment by using GlassFish Server resources.</p>
+
+        <p>Message-driven beans have the following characteristics.</p>
+
+        <ul>
+          <li>
+            <p>They execute upon receipt of a single client message.</p>
+          </li>
+
+          <li>
+            <p>They are invoked asynchronously.</p>
+          </li>
+
+          <li>
+            <p>They are relatively short-lived.</p>
+          </li>
+
+          <li>
+            <p>They do not represent directly shared data in the database, but they can access and update this data.</p>
+          </li>
+
+          <li>
+            <p>They can be transaction-aware.</p>
+          </li>
+
+          <li>
+            <p>They are stateless.</p>
+          </li>
+        </ul>
+
+        <p><a id="sthref1664"></a><a id="sthref1665"></a>When a message arrives, the container calls the message-driven bean's <code>onMessage</code> method to process the message. The <code>onMessage</code> method normally casts the message to one of the five JMS message types and handles it in accordance with the application's business logic. The <code>onMessage</code> method can call helper methods or can invoke a session bean to process the information in the message or to store it in a database.</p>
+
+        <p><a id="sthref1666"></a>A message can be delivered to a message-driven bean within a transaction context, so all operations within the <code>onMessage</code> method are part of a single transaction. If message processing is rolled back, the message will be redelivered. For more information, see <a href="../Text/jms-examples.xhtml#BNBPK">Receiving Messages Asynchronously Using a Message-Driven Bean</a> and <a href="../Text/transactions.xhtml#BNCIH">Chapter 51, "Transactions"</a>.</p>
+      </div><a id="GIPJX"></a><a id="JEETT01078"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.3.2</span> When to Use Message-Driven Beans</h2>
+
+        <p>Session beans allow you to send JMS messages and to receive them synchronously but not asynchronously. To avoid tying up server resources, do not to use blocking synchronous receives in a server-side component; in general, JMS messages should not be sent or received synchronously. To receive messages asynchronously, use a message-driven bean.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPJF"></a><a id="JEETT00441"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">32.4</span> <a id="sthref1667"></a>Accessing Enterprise Beans</h1>
+
+      <div align="center">
+        <div class="inftblnote">
+          <br />
+
+          <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+            <tbody>
+              <tr>
+                <td align="left">
+                  <p class="notep1">Note:</p>
+
+                  <p>The material in this section applies only to session beans and not to message-driven beans. Because they have a different programming model, message-driven beans do not have interfaces or no-interface views that define client access.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div>
+
+      <p><a id="sthref1668"></a><a id="sthref1669"></a>Clients access enterprise beans either through a no-interface view or through a business interface. A <span class="glossaryterm">no-interface view</span> of an enterprise bean exposes the public methods of the enterprise bean implementation class to clients. Clients using the no-interface view of an enterprise bean may invoke any public methods in the enterprise bean implementation class or any superclasses of the implementation class. A <span class="glossaryterm">business interface</span> is a standard Java programming language interface that contains the business methods of the enterprise bean.</p>
+
+      <p><a id="sthref1670"></a>A client can access a session bean only through the methods defined in the bean's business interface or through the public methods of an enterprise bean that has a no-interface view. The business interface or no-interface view defines the client's view of an enterprise bean. All other aspects of the enterprise bean (method implementations and deployment settings) are hidden from the client.</p>
+
+      <p>Well-designed interfaces and no-interface views simplify the development and maintenance of Java EE applications. Not only do clean interfaces and no-interface views shield the clients from any complexities in the EJB tier, but they also allow the enterprise beans to change internally without affecting the clients. For example, if you change the implementation of a session bean business method, you won't have to alter the client code. But if you were to change the method definitions in the interfaces, you might have to modify the client code as well. Therefore, it is important that you design the interfaces and no-interface views carefully to isolate your clients from possible changes in the enterprise beans.</p>
+
+      <p>Session beans can have more than one business interface. Session beans should, but are not required to, implement their business interface or interfaces.</p><a id="GIRFL"></a><a id="JEETT01079"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.4.1</span> Using Enterprise Beans in Clients</h2>
+
+        <p><a id="sthref1671"></a><a id="sthref1672"></a><a id="sthref1673"></a>The client of an enterprise bean obtains a reference to an instance of an enterprise bean through either <span class="glossaryterm">dependency injection</span>, using Java programming language annotations, or <span class="glossaryterm">JNDI lookup</span>, using the Java Naming and Directory Interface syntax to find the enterprise bean instance.</p>
+
+        <p>Dependency injection is the simplest way of obtaining an enterprise bean reference. Clients that run within a Java EE server-managed environment, JavaServer Faces web applications, JAX-RS web services, other enterprise beans, or Java EE application clients support dependency injection using the <code>javax.ejb.EJB</code> annotation.</p>
+
+        <p>Applications that run outside a Java EE server-managed environment, such as Java SE applications, must perform an explicit lookup. JNDI supports a global syntax for identifying Java EE components to simplify this explicit lookup.</p><a id="GIRGN"></a><a id="JEETT00648"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">32.4.1.1</span> Portable JNDI Syntax</h3>
+
+          <p>Three JNDI namespaces are used for portable JNDI lookups: <code>java:global</code>, <code>java:module</code>, and <code>java:app</code>.</p>
+
+          <ul>
+            <li>
+              <p>The <code>java:global</code> JNDI namespace is the portable way of finding remote enterprise beans using JNDI lookups. JNDI addresses are of the following form:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">java:global[/<span class="variable">application name</span>]/<span class="variable">module name </span>/<span class="variable">enterprise bean name</span>[/<span class="variable">interface name </span>]</pre>
+
+              <p>Application name and module name default to the name of the application and module minus the file extension. Application names are required only if the application is packaged within an EAR. The interface name is required only if the enterprise bean implements more than one business interface.</p>
+            </li>
+
+            <li>
+              <p>The <code>java:module</code> namespace is used to look up local enterprise beans within the same module. JNDI addresses using the <code>java:module</code> namespace are of the following form:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">java:module/<span class="variable">enterprise bean name</span>/[<span class="variable">interface name</span>]</pre>
+
+              <p>The interface name is required only if the enterprise bean implements more than one business interface.</p>
+            </li>
+
+            <li>
+              <p>The <code>java:app</code> namespace is used to look up local enterprise beans packaged within the same application. That is, the enterprise bean is packaged within an EAR file containing multiple Java EE modules. JNDI addresses using the <code>java:app</code> namespace are of the following form:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">java:app[/<span class="variable">module name</span>]/<span class="variable">enterprise bean name </span>[/<span class="variable">interface name</span>]</pre>
+
+              <p>The module name is optional. The interface name is required only if the enterprise bean implements more than one business interface.</p>
+            </li>
+          </ul>
+
+          <p>For example, if an enterprise bean, <code>MyBean</code>, is packaged within the web application archive <code>myApp.war</code>, the module name is <code>myApp</code>. The portable JNDI name is <code>java:module/MyBean</code>. An equivalent JNDI name using the <code>java:global</code> namespace is <code>java:global/myApp/MyBean</code>.</p>
+        </div>
+      </div><a id="GIPIZ"></a><a id="JEETT01080"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.4.2</span> Deciding on Remote or Local Access</h2>
+
+        <p>When you design a Java EE application, one of the first decisions you make is the type of client access allowed by the enterprise beans: remote, local, or web service.</p>
+
+        <p>Whether to allow local or remote access depends on the following factors.</p>
+
+        <ul>
+          <li>
+            <p><span class="bold">Tight or loose coupling of related beans</span>: Tightly coupled beans depend on one another. For example, if a session bean that processes sales orders calls a session bean that emails a confirmation message to the customer, these beans are tightly coupled. Tightly coupled beans are good candidates for local access. Because they fit together as a logical unit, they typically call each other often and would benefit from the increased performance that is possible with local access.</p>
+          </li>
+
+          <li>
+            <p><span class="bold">Type of client</span>: If an enterprise bean is accessed by application clients, it should allow remote access. In a production environment, these clients almost always run on machines other than those on which GlassFish Server is running. If an enterprise bean's clients are web components or other enterprise beans, the type of access depends on how you want to distribute your components.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref1674"></a><span class="bold">Component distribution</span>: Java EE applications are scalable because their server-side components can be distributed across multiple machines. In a distributed application, for example, the server that the web components run on may not be the one on which the enterprise beans they access are deployed. In this distributed scenario, the enterprise beans should allow remote access.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref1675"></a><span class="bold">Performance</span>: Owing to such factors as network latency, remote calls may be slower than local calls. On the other hand, if you distribute components among different servers, you may improve the application's overall performance. Both of these statements are generalizations; performance can vary in different operational environments. Nevertheless, you should keep in mind how your application design might affect performance.</p>
+          </li>
+        </ul>
+
+        <p>If you aren't sure which type of access an enterprise bean should have, choose remote access. This decision gives you more flexibility. In the future, you can distribute your components to accommodate the growing demands on your application.</p>
+
+        <p><a id="sthref1676"></a><a id="sthref1677"></a>Although it is uncommon, it is possible for an enterprise bean to allow both remote and local access. If this is the case, either the business interface of the bean must be explicitly designated as a business interface by being decorated with the <code>@Remote</code> or <code>@Local</code> annotations, or the bean class must explicitly designate the business interfaces by using the <code>@Remote</code> and <code>@Local</code> annotations. The same business interface cannot be both a local and a remote business interface.</p>
+      </div><a id="GIPMZ"></a><a id="JEETT01081"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.4.3</span> <a id="sthref1678"></a>Local Clients</h2>
+
+        <p>A local client has these characteristics.</p>
+
+        <ul>
+          <li>
+            <p>It must run in the same application as the enterprise bean it accesses.</p>
+          </li>
+
+          <li>
+            <p>It can be a web component or another enterprise bean.</p>
+          </li>
+
+          <li>
+            <p>To the local client, the location of the enterprise bean it accesses is not transparent.</p>
+          </li>
+        </ul>
+
+        <p>The no-interface view of an enterprise bean is a local view. The public methods of the enterprise bean implementation class are exposed to local clients that access the no-interface view of the enterprise bean. Enterprise beans that use the no-interface view do not implement a business interface.</p>
+
+        <p><a id="sthref1679"></a><a id="sthref1680"></a>The <span class="glossaryterm">local business interface</span> defines the bean's business and lifecycle methods. If the bean's business interface is not decorated with <code>@Local</code> or <code>@Remote</code>, and if the bean class does not specify the interface using <code>@Local</code> or <code>@Remote</code>, the business interface is by default a local interface.</p>
+
+        <p>To build an enterprise bean that allows only local access, you may, but are not required to, do one of the following.</p>
+
+        <ul>
+          <li>
+            <p>Create an enterprise bean implementation class that does not implement a business interface, indicating that the bean exposes a no-interface view to clients. For example:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Session
+public class MyBean { ... }</pre>
+          </li>
+
+          <li>
+            <p>Annotate the business interface of the enterprise bean as a <code>@Local</code> interface. For example:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Local
+public interface InterfaceName { ... }</pre>
+          </li>
+
+          <li>
+            <p>Specify the interface by decorating the bean class with <code>@Local</code> and specify the interface name. For example:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Local(InterfaceName.class)
+public class BeanName implements InterfaceName  { ... }<br /></pre>
+          </li>
+        </ul><a id="GIPSC"></a><a id="JEETT00649"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">32.4.3.1</span> Accessing Local Enterprise Beans Using the No-Interface View</h3>
+
+          <p>Client access to an enterprise bean that exposes a local, no-interface view is accomplished through either dependency injection or JNDI lookup.</p>
+
+          <ul>
+            <li>
+              <p>To obtain a reference to the no-interface view of an enterprise bean through dependency injection, use the <code>javax.ejb.EJB</code> annotation and specify the enterprise bean's implementation class:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@EJBExampleBean exampleBean;</pre>
+            </li>
+
+            <li>
+              <p>To obtain a reference to the no-interface view of an enterprise bean through JNDI lookup, use the <code>javax.naming.InitialContext</code> interface's <code>lookup</code> method:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ExampleBean exampleBean = (ExampleBean)        InitialContext.lookup("java:module/ExampleBean");</pre>
+            </li>
+          </ul>
+
+          <p>Clients <span class="italic">do not</span> use the <code>new</code> operator to obtain a new instance of an enterprise bean that uses a no-interface view.</p>
+        </div><a id="GIPSE"></a><a id="JEETT00650"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">32.4.3.2</span> Accessing Local Enterprise Beans That Implement Business Interfaces</h3>
+
+          <p>Client access to enterprise beans that implement local business interfaces is accomplished through either dependency injection or JNDI lookup.</p>
+
+          <ul>
+            <li>
+              <p>To obtain a reference to the local business interface of an enterprise bean through dependency injection, use the <code>javax.ejb.EJB</code> annotation and specify the enterprise bean's local business interface name:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@EJB
+ExampleBean exampleBean;</pre>
+            </li>
+
+            <li>
+              <p>To obtain a reference to a local business interface of an enterprise bean through JNDI lookup, use the <code>javax.naming.InitialContext</code> interface's <code>lookup</code> method:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ExampleBean exampleBean = (ExampleBean)
+        InitialContext.lookup("java:module/ExampleBean");</pre>
+            </li>
+          </ul>
+        </div>
+      </div><a id="GIPIU"></a><a id="JEETT01082"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.4.4</span> <a id="sthref1681"></a>Remote Clients</h2>
+
+        <p>A remote client of an enterprise bean has the following traits.</p>
+
+        <ul>
+          <li>
+            <p>It can run on a different machine and a different JVM from the enterprise bean it accesses. (It is not required to run on a different JVM.)</p>
+          </li>
+
+          <li>
+            <p>It can be a web component, an application client, or another enterprise bean.</p>
+          </li>
+
+          <li>
+            <p>To a remote client, the location of the enterprise bean is transparent.</p>
+          </li>
+
+          <li>
+            <p>The enterprise bean must implement a business interface. That is, remote clients <span class="italic">may not</span> access an enterprise bean through a no-interface view.</p>
+          </li>
+        </ul>
+
+        <p>To create an enterprise bean that allows remote access, you must either</p>
+
+        <ul>
+          <li>
+            <p>Decorate the business interface of the enterprise bean with the <code>@Remote</code> annotation:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Remote
+public interface InterfaceName { ... }</pre>
+          </li>
+
+          <li>
+            <p>Or decorate the bean class with <code>@Remote</code>, specifying the business interface or interfaces:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Remote(InterfaceName.class)
+public class BeanName implements InterfaceName { ... }</pre>
+          </li>
+        </ul>
+
+        <p><a id="sthref1682"></a><a id="sthref1683"></a><a id="sthref1684"></a>The <span class="glossaryterm">remote interface</span> defines the business and lifecycle methods that are specific to the bean. For example, the remote interface of a bean named <code>BankAccountBean</code> might have business methods named <code>deposit</code> and <code>credit</code>. <a href="../Text/ejb-intro.xhtml#GIPNO">Figure 32-1</a> shows how the interface controls the client's view of an enterprise bean.</p>
+
+        <div class="figure">
+          <a id="GIPNO"></a><a id="JEETT00022"></a>
+
+          <p class="titleinfigure">Figure 32-1 Interfaces for an Enterprise Bean with Remote Access</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 32-1 follows" longdesc="img_text/jeett_dt_020.htm" src="../Images/jeett_dt_020.png" style="line-height: 1.6em;" title="Description of Figure 32-1 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 32-1 Interfaces for an Enterprise Bean with Remote Access"<br />
+          <br />
+        </div>
+
+        <p>Client access to an enterprise bean that implements a remote business interface is accomplished through either dependency injection or JNDI lookup.</p>
+
+        <ul>
+          <li>
+            <p>To obtain a reference to the remote business interface of an enterprise bean through dependency injection, use the <code>javax.ejb.EJB</code> annotation and specify the enterprise bean's remote business interface name:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@EJB
+Example example;</pre>
+          </li>
+
+          <li>
+            <p>To obtain a reference to a remote business interface of an enterprise bean through JNDI lookup, use the <code>javax.naming.InitialContext</code> interface's <code>lookup</code> method:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ExampleRemote example = (ExampleRemote)
+        InitialContext.lookup("java:global/myApp/ExampleRemote");</pre>
+          </li>
+        </ul>
+      </div><a id="GIPKD"></a><a id="JEETT01083"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.4.5</span> <a id="sthref1686"></a>Web Service Clients</h2>
+
+        <p>A web service client can access a Java EE application in two ways. First, the client can access a web service created with JAX-WS. (For more information on JAX-WS, see <a href="../Text/ejb-intro.xhtml#BNAYL">Chapter 28, "Building Web Services with JAX-WS"</a>.) Second, a web service client can invoke the business methods of a stateless session bean. Message beans cannot be accessed by web service clients.</p>
+
+        <p>Provided that it uses the correct protocols (SOAP, HTTP, WSDL), any web service client can access a stateless session bean, whether or not the client is written in the Java programming language. The client doesn't even "know" what technology implements the service: stateless session bean, JAX-WS, or some other technology. In addition, enterprise beans and web components can be clients of web services. This flexibility enables you to integrate Java EE applications with web services.</p>
+
+        <p><a id="sthref1687"></a>A web service client accesses a stateless session bean through the bean's web service endpoint implementation class. By default, all public methods in the bean class are accessible to web service clients. The <code>@WebMethod</code> annotation may be used to customize the behavior of web service methods. If the <code>@WebMethod</code> annotation is used to decorate the bean class's methods, only those methods decorated with <code>@WebMethod</code> are exposed to web service clients.</p>
+
+        <p>For a code sample, see <a href="../Text/ejb-basic-examples.xhtml#BNBOR">A Web Service Example: helloservice</a>.</p>
+      </div><a id="GIPLY"></a><a id="JEETT01084"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.4.6</span> Method Parameters and Access</h2>
+
+        <p>The type of access affects the parameters of the bean methods that are called by clients. The following sections apply not only to method parameters but also to method return values.</p><a id="GIPLX"></a><a id="JEETT00651"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">32.4.6.1</span> Isolation</h3>
+
+          <p>The parameters of remote calls are more isolated than those of local calls. With remote calls, the client and the bean operate on different copies of a parameter object. If the client changes the value of the object, the value of the copy in the bean does not change. This layer of isolation can help protect the bean if the client accidentally modifies the data.</p>
+
+          <p>In a local call, both the client and the bean can modify the same parameter object. In general, you should not rely on this side effect of local calls. Perhaps someday you will want to distribute your components, replacing the local calls with remote ones.</p>
+
+          <p>As with remote clients, web service clients operate on different copies of parameters than does the bean that implements the web service.</p>
+        </div><a id="GIPKV"></a><a id="JEETT00652"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">32.4.6.2</span> Granularity of Accessed Data</h3>
+
+          <p>Because remote calls are likely to be slower than local calls, the parameters in remote methods should be relatively coarse-grained. A coarse-grained object contains more data than a fine-grained one, so fewer access calls are required. For the same reason, the parameters of the methods called by web service clients should also be coarse-grained.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPIO"></a><a id="JEETT00442"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">32.5</span> <a id="sthref1688"></a>The Contents of an Enterprise Bean</h1>
+
+      <p>To develop an enterprise bean, you must provide the following files.</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref1689"></a><span class="bold">Enterprise bean class</span>: Implements the business methods of the enterprise bean and any lifecycle callback methods.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref1690"></a><span class="bold">Business interfaces</span>: Define the business methods implemented by the enterprise bean class. A business interface is not required if the enterprise bean exposes a local, no-interface view.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref1691"></a><a id="sthref1692"></a><span class="bold">Helper classes</span>: Other classes needed by the enterprise bean class, such as exception and utility classes.</p>
+        </li>
+      </ul>
+
+      <p><a id="sthref1693"></a><a id="sthref1694"></a><a id="sthref1695"></a>Package the programming artifacts in the preceding list either into an EJB JAR file (a stand-alone module that stores the enterprise bean) or within a web application archive (WAR) module. See <a href="../Text/packaging.xhtml#CHDFCDBG">Packaging Enterprise Beans in EJB JAR Modules</a> and <a href="../Text/packaging.xhtml#CHDJABEJ">Packaging Enterprise Beans in WAR Modules</a> for more information.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPKS"></a><a id="JEETT00443"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">32.6</span> Naming Conventions for Enterprise Beans</h1>
+
+      <p>Because enterprise beans are composed of multiple parts, it's useful to follow a naming convention for your applications. <a href="../Text/ejb-intro.xhtml#GIPLL">Table 32-2</a> summarizes the conventions for the example beans in this tutorial.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref1696"></a><a id="GIPLL"></a>
+
+        <p class="titleintable">Table 32-2 Naming Conventions for Enterprise Beans</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table shows the naming conventions for enterprise beans and provides examples." title="Naming Conventions for Enterprise Beans" width="100%">
+          <col width="*" />
+          <col width="30%" />
+          <col width="33%" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t4" valign="bottom">Item</th>
+
+              <th align="left" id="r1c2-t4" valign="bottom">Syntax</th>
+
+              <th align="left" id="r1c3-t4" valign="bottom">Example</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r2c1-t4">
+                <p>Enterprise bean name</p>
+              </td>
+
+              <td align="left" headers="r2c1-t4 r1c2-t4">
+                <p><span class="variable">name</span><code>Bean</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t4 r1c3-t4">
+                <p><code>AccountBean</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r3c1-t4">
+                <p>Enterprise bean class</p>
+              </td>
+
+              <td align="left" headers="r3c1-t4 r1c2-t4">
+                <p><span class="variable">name</span><code>Bean</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t4 r1c3-t4">
+                <p><code>AccountBean</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r4c1-t4">
+                <p>Business interface</p>
+              </td>
+
+              <td align="left" headers="r4c1-t4 r1c2-t4">
+                <p><span class="variable">name</span></p>
+              </td>
+
+              <td align="left" headers="r4c1-t4 r1c3-t4">
+                <p><code>Account</code></p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPLJ"></a><a id="JEETT00444"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">32.7</span> <a id="sthref1697"></a><a id="sthref1698"></a><a id="sthref1699"></a>The Lifecycles of Enterprise Beans</h1>
+
+      <p>An enterprise bean goes through various stages during its lifetime, or lifecycle. Each type of enterprise bean (stateful session, stateless session, singleton session, or message-driven) has a different lifecycle.</p>
+
+      <p>The descriptions that follow refer to methods that are explained along with the code examples in the next two chapters. If you are new to enterprise beans, you should skip this section and run the code examples first.</p><a id="GIPLN"></a><a id="JEETT01087"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.7.1</span> The Lifecycle of a Stateful Session Bean</h2>
+
+        <p><a href="../Text/ejb-intro.xhtml#GIPMI">Figure 32-2</a> illustrates the stages that a stateful session bean passes through during its lifetime. The client initiates the lifecycle by obtaining a reference to a stateful session bean. The container performs any dependency injection and then invokes the method annotated with <code>@PostConstruct</code>, if any. The bean is now ready to have its business methods invoked by the client.</p>
+
+        <div class="figure">
+          <a id="GIPMI"></a><a id="JEETT00024"></a>
+
+          <p class="titleinfigure">Figure 32-2 <a id="sthref1700"></a><a id="sthref1701"></a>Lifecycle of a Stateful Session Bean</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 32-2 follows" longdesc="img_text/jeett_dt_021.htm" src="../Images/jeett_dt_021.png" style="line-height: 1.6em;" title="Description of Figure 32-2 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 32-2 Lifecycle of a Stateful Session Bean"<br />
+          <br />
+        </div>
+
+        <p><a id="sthref1703"></a><a id="sthref1704"></a>While in the ready stage, the EJB container may decide to deactivate, or <span class="glossaryterm">passivate</span>, the bean by moving it from memory to secondary storage. (Typically, the EJB container uses a least-recently-used algorithm to select a bean for passivation.) The EJB container invokes the method annotated <code>@PrePassivate</code>, if any, immediately before passivating it. If a client invokes a business method on the bean while it is in the passive stage, the EJB container activates the bean, calls the method annotated <code>@PostActivate</code>, if any, and then moves it to the ready stage.</p>
+
+        <p>At the end of the lifecycle, the client invokes a method annotated <code>@Remove</code>, and the EJB container calls the method annotated <code>@PreDestroy</code>, if any. The bean's instance is then ready for garbage collection.</p>
+
+        <p>Your code controls the invocation of only one lifecycle method: the method annotated <code>@Remove</code>. All other methods in <a href="../Text/ejb-intro.xhtml#GIPMI">Figure 32-2</a> are invoked by the EJB container. See <a href="../Text/resources.xhtml#BNCJH">Chapter 52, "Resource Adapters and Contracts"</a> for more information.</p>
+      </div><a id="GIPLM"></a><a id="JEETT01088"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.7.2</span> The Lifecycle of a Stateless Session Bean</h2>
+
+        <p>Because a stateless session bean is never passivated, its lifecycle has only two stages: nonexistent and ready for the invocation of business methods. <a href="../Text/ejb-intro.xhtml#GIPNI">Figure 32-3</a> illustrates the stages of a stateless session bean.</p>
+
+        <div class="figure">
+          <a id="GIPNI"></a><a id="JEETT00025"></a>
+
+          <p class="titleinfigure">Figure 32-3 Lifecycle of a Stateless or Singleton Session Bean</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 32-3 follows" longdesc="img_text/jeett_dt_022.htm" src="../Images/jeett_dt_022.png" style="line-height: 1.6em;" title="Description of Figure 32-3 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 32-3 Lifecycle of a Stateless or Singleton Session Bean"<br />
+          <br />
+        </div>
+
+        <p>The EJB container typically creates and maintains a pool of stateless session beans, beginning the stateless session bean's lifecycle. The container performs any dependency injection and then invokes the method annotated <code>@PostConstruct</code>, if it exists. The bean is now ready to have its business methods invoked by a client.</p>
+
+        <p>At the end of the lifecycle, the EJB container calls the method annotated <code>@PreDestroy</code>, if it exists. The bean's instance is then ready for garbage collection.</p>
+      </div><a id="GIPRX"></a><a id="JEETT01089"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.7.3</span> The Lifecycle of a Singleton Session Bean</h2>
+
+        <p>Like a stateless session bean, a singleton session bean is never passivated and has only two stages, nonexistent and ready for the invocation of business methods, as shown in <a href="../Text/ejb-intro.xhtml#GIPNI">Figure 32-3</a>.</p>
+
+        <p>The EJB container initiates the singleton session bean lifecycle by creating the singleton instance. This occurs upon application deployment if the singleton is annotated with the <code>@Startup</code> annotation. The container performs any dependency injection and then invokes the method annotated <code>@PostConstruct</code>, if it exists. The singleton session bean is now ready to have its business methods invoked by the client.</p>
+
+        <p>At the end of the lifecycle, the EJB container calls the method annotated <code>@PreDestroy</code>, if it exists. The singleton session bean is now ready for garbage collection.</p>
+      </div><a id="GIPKW"></a><a id="JEETT01090"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">32.7.4</span> The Lifecycle of a Message-Driven Bean</h2>
+
+        <p><a href="../Text/ejb-intro.xhtml#GIPLR">Figure 32-4</a> illustrates the stages in the lifecycle of a message-driven bean.</p>
+
+        <div class="figure">
+          <a id="GIPLR"></a><a id="JEETT00027"></a>
+
+          <p class="titleinfigure">Figure 32-4 Lifecycle of a Message-Driven Bean</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 32-4 follows" longdesc="img_text/jeett_dt_023.htm" src="../Images/jeett_dt_023.png" style="line-height: 1.6em;" title="Description of Figure 32-4 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 32-4 Lifecycle of a Message-Driven Bean"<br />
+          <br />
+        </div>
+
+        <p>The EJB container usually creates a pool of message-driven bean instances. For each instance, the EJB container performs these tasks.</p>
+
+        <ol>
+          <li>
+            <p>If the message-driven bean uses dependency injection, the container injects these references before instantiating the instance.</p>
+          </li>
+
+          <li>
+            <p>The container calls the method annotated <code>@PostConstruct</code>, if any.</p>
+          </li>
+        </ol>
+
+        <p>Like a stateless session bean, a message-driven bean is never passivated and has only two states: nonexistent and ready to receive messages.</p>
+
+        <p><a id="sthref1707"></a><a id="sthref1708"></a>At the end of the lifecycle, the container calls the method annotated <code>@PreDestroy</code>, if any. The bean's instance is then ready for garbage collection.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPLG"></a><a id="JEETT00445"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">32.8</span> Further Information about Enterprise Beans</h1>
+
+      <p>For more information on Enterprise JavaBeans technology, see</p>
+
+      <ul>
+        <li>
+          <p>Enterprise JavaBeans 3.2 specification:</p>
+
+          <p><code><a href="../Text/ejb-intro.xhtml#http%3A//www.jcp.org/en/jsr/detail%3Fid%3D345">http://www.jcp.org/en/jsr/detail?id=345</a></code></p>
+        </li>
+
+        <li>
+          <p>Enterprise JavaBeans 3.2 specification project:</p>
+
+          <p><code><a href="../Text/ejb-intro.xhtml#https%3A//java.net/projects/ejb-spec/">https://java.net/projects/ejb-spec/</a></code></p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

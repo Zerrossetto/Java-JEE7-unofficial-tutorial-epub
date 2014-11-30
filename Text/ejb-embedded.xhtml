@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKCQZ"></a><a id="JEETT00089"></a>
+
+    <h1 class="chapter"><span class="secnum">35</span> Using the Embedded Enterprise Bean Container</h1>
+
+    <p>This chapter demonstrates how to use the embedded enterprise bean container to run enterprise bean applications in the Java SE environment, outside of a Java EE server.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/ejb-embedded.xhtml#GKFAE">Overview of the Embedded Enterprise Bean Container</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-embedded.xhtml#GKCRR">Developing Embeddable Enterprise Bean Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-embedded.xhtml#GKCPV">The standalone Example Application</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GKFAE"></a><a id="JEETT00457"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">35.1</span> <a id="sthref1796"></a>Overview of the Embedded Enterprise Bean Container</h1>
+
+      <p>The embedded enterprise bean container is used to access enterprise bean components from client code executed in a Java SE environment. The container and the client code are executed within the same virtual machine. The embedded enterprise bean container is typically used for testing enterprise beans without having to deploy them to a server.</p>
+
+      <p>Most of the services present in the enterprise bean container in a Java EE server are available in the embedded enterprise bean container, including injection, container-managed transactions, and security. Enterprise bean components execute similarly in both embedded and Java EE environments, and therefore the same enterprise bean can be easily reused in both standalone and networked applications.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKCRR"></a><a id="JEETT00458"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">35.2</span> Developing Embeddable Enterprise Bean Applications</h1>
+
+      <p><a id="sthref1797"></a>All embeddable enterprise bean containers support the features listed in <a href="../Text/ejb-embedded.xhtml#GKCQC">Table 35-1</a>.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref1798"></a><a id="GKCQC"></a>
+
+        <p class="titleintable">Table 35-1 Required Enterprise Bean Features in the Embeddable Container</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the enterprise bean features supported by the embeddable container." title="Required Enterprise Bean Features in the Embeddable Container" width="100%">
+          <col width="32%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t2" valign="bottom">Enterprise Bean Feature</th>
+
+              <th align="left" id="r1c2-t2" valign="bottom">Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                <p>Local session beans</p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c2-t2">
+                <p>Local and no-interface view stateless, stateful, and singleton session beans. All method access is synchronous. Session beans must not be web service endpoints.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                <p>Transactions</p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c2-t2">
+                <p>Container-managed and bean-managed transactions.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                <p>Security</p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c2-t2">
+                <p>Declarative and programmatic security.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                <p>Interceptors</p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c2-t2">
+                <p>Class-level and method-level interceptors for session beans.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                <p>Deployment descriptor</p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c2-t2">
+                <p>The optional <code>ejb-jar.xml</code> deployment descriptor, with the same overriding rules for the enterprise bean container in Java EE servers.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>Container providers are allowed to support the full set of features in enterprise beans, but applications that use the embedded container will not be portable if they use enterprise bean features not listed in <a href="../Text/ejb-embedded.xhtml#GKCQC">Table 35-1</a>, such as the timer service, session beans as web service endpoints, or remote business interfaces.</p><a id="GKCQI"></a><a id="JEETT01116"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">35.2.1</span> <a id="sthref1799"></a>Running Embedded Applications</h2>
+
+        <p>The embedded container, the enterprise bean components, and the client all are executed in the same virtual machine using the same classpath. As a result, developers can run an application that uses the embedded container just like a typical Java SE application, as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">java -classpath mySessionBean.jar:containerProviderRuntime.jar:myClient.jar \                                                                                            
+com.example.ejb.client.Main</pre>
+
+        <p>In the above example, <code>mySessionBean.jar</code> is an EJB JAR containing a local stateless session bean, <code>containerProviderRuntime.jar</code> is a JAR file supplied by the enterprise bean provider that contains the needed runtime classes for the embedded container, and <code>myClient.jar</code> is a JAR file containing a Java SE application that calls the business methods in the session bean through the embedded container.</p>
+
+        <p>In GlassFish Server, the runtime JAR that includes the classes for the embedded container is <code>glassfish-embedded-all.jar</code>.</p>
+      </div><a id="GKCOV"></a><a id="JEETT01117"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">35.2.2</span> <a id="sthref1800"></a>Creating the Enterprise Bean Container</h2>
+
+        <p>The <code>javax.ejb.embedded.EJBContainer</code> abstract class represents an instance of the enterprise bean container and includes factory methods for creating a container instance. The <code>EJBContainer.createEJBContainer</code> method is used to create and initialize an embedded container instance.</p>
+
+        <p>The following code snippet shows how to create an embedded container that is initialized with the container provider's default settings:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EJBContainer ec = EJBContainer.createEJBContainer();</pre>
+
+        <p>By default, the embedded container will search the virtual machine classpath for enterprise bean modules: directories containing a <code>META-INF/ejb-jar.xml</code> deployment descriptor, directories containing a class file with one of the enterprise bean component annotations (such as <code>@Stateless</code>), or JAR files containing an <code>ejb-jar.xml</code> deployment descriptor or class file with an enterprise bean annotation. Any matching entries are considered enterprise bean modules within the same application. Once all the valid enterprise bean modules have been found in the classpath, the container will begin initializing the modules. When the <code>createEJBContainer</code> method successfully returns, the client application can obtain references to the client view of any enterprise bean module found by the embedded container.</p>
+
+        <p>An alternate version of the <code>EJBContainer.createEJBContainer</code> method takes a <code>Map</code> of properties and settings for customizing the embeddable container instance:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Properties props = new Properties();
+props.setProperty(...);
+...
+EJBContainer ec = EJBContainer.createEJBContainer(props);</pre><a id="GKCRP"></a><a id="JEETT00662"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">35.2.2.1</span> <a id="sthref1801"></a>Explicitly Specifying Enterprise Bean Modules to Be Initialized</h3>
+
+          <p>Developers can specify exactly which enterprise bean modules the embedded container will initialize. To explicitly specify the enterprise bean modules initialized by the embedded container, set the <code>EJBContainer.MODULES</code> property.</p>
+
+          <p>The modules may be located either in the virtual machine classpath in which the embedded container and client code run, or alternately outside the virtual machine classpath.</p>
+
+          <p>To specify modules in the virtual machine classpath, set <code>EJBContainer.MODULES</code> to a <code>String</code> to specify a single module name, or a <code>String</code> array containing the module names. The embedded container searches the virtual machine classpath for enterprise bean modules matching the specified names:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Properties props = new Properties();
+props.setProperty(EJBContainer.MODULES, "mySessionBean");
+EJBContainer ec = EJBContainer.createEJBContainer(props);</pre>
+
+          <p>To specify enterprise bean modules outside the virtual machine classpath, set <code>EJBContainer.MODULES</code> to a <code>java.io.File</code> object or an array of <code>File</code> objects. Each <code>File</code> object refers to an EJB JAR file, or a directory containing an expanded EJB JAR file:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Properties props = new Properties();
+File ejbJarFile = new File(...);
+props.setProperty(EJBContainer.MODULES, ejbJarFile);
+EJBContainer ec = EJBContainer.createEJBContainer(props);</pre>
+        </div>
+      </div><a id="GLHUR"></a><a id="JEETT01118"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">35.2.3</span> <a id="sthref1802"></a><a id="sthref1803"></a>Looking Up Session Bean References</h2>
+
+        <p>To look up session bean references in an application using the embedded container, use an instance of <code>EJBContainer</code> to retrieve a <code>javax.naming.Context</code> object. Call the <code>EJBContainer.getContext</code> method to retrieve the <code>Context</code> object:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EJBContainer ec = EJBContainer.createEJBContainer();
+Context ctx = ec.getContext();<span class="Apple-tab-span" style="white-space:pre">     </span></pre>
+
+        <p>References to session beans can then be obtained using the portable JNDI syntax detailed in <a href="../Text/ejb-intro.xhtml#GIRGN">Portable JNDI Syntax</a>. For example, to obtain a reference to <code>MySessionBean</code>, a local session bean with a no-interface view, use the following code:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">MySessionBean msb = (MySessionBean) 
+            ctx.lookup("java:global/mySessionBean/MySessionBean");</pre>
+      </div><a id="GKCRE"></a><a id="JEETT01119"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">35.2.4</span> <a id="sthref1804"></a>Shutting Down the Enterprise Bean Container</h2>
+
+        <p>From the client, call the <code>close</code> method of the instance of <code>EJBContainer</code> to shut down the embedded container:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EJBContainer ec = EJBContainer.createEJBContainer();
+...
+ec.close();</pre>
+
+        <p>While clients are not required to shut down <code>EJBContainer</code> instances, doing so frees resources consumed by the embedded container. This is particularly important when the virtual machine under which the client application is running has a longer lifetime than the client application.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKCPV"></a><a id="JEETT00459"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">35.3</span> <a id="sthref1805"></a><a id="sthref1806"></a><a id="sthref1807"></a><a id="sthref1808"></a><a id="sthref1809"></a><a id="sthref1810"></a>The standalone Example Application</h1>
+
+      <p>The <code>standalone</code> example application demonstrates how to create an instance of the embedded enterprise bean container in a JUnit test class and call a session bean business method. Testing the business methods of an enterprise bean in a unit test allows developers to exercise the business logic of an application separately from the other application layers, such as the presentation layer, and without having to deploy the application to a Java EE server.</p>
+
+      <p>The <code>standalone</code> example has two main components: <code>StandaloneBean</code>, a stateless session bean, and <code>StandaloneBeanTest</code>, a JUnit test class that acts as a client to <code>StandaloneBean</code> using the embedded container.</p>
+
+      <p><code>StandaloneBean</code> is a simple session bean exposing a local, no-interface view with a single business method, <code>returnMessage</code>, which returns "Greetings!" as a <code>String</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Stateless
+public class StandaloneBean {
+
+    private static final String message = "Greetings!";
+
+    public String returnMessage() {
+        return message;
+    }
+    
+}</pre>
+
+      <p><code>StandaloneBeanTest</code> calls <code>StandaloneBean.returnMessage</code> and tests that the returned message is correct. First, an embedded container instance and initial context are created within the <code>setUp</code> method, which is annotated with <code>org.junit.Before</code> to indicate that the method should be executed before the test methods:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Before
+public void setUp() {
+    ec = EJBContainer.createEJBContainer();
+    ctx = ec.getContext();
+}</pre>
+
+      <p>The <code>testReturnMessage</code> method, annotated with <code>org.junit.Test</code> to indicate that the method includes a unit test, obtains a reference to <code>StandaloneBean</code> through the <code>Context</code> instance, and calls <code>StandaloneBean.returnMessage</code>. The result is compared with the expected result using a JUnit assertion, <code>assertEquals</code>. If the string returned from <code>StandaloneBean.returnMessage</code> is equal to "Greetings!" the test passes:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Test
+public void testReturnMessage() throws Exception {
+    logger.info("Testing standalone.ejb.StandaloneBean.returnMessage()");
+    StandaloneBean instance = (StandaloneBean)
+            ctx.lookup("java:global/classes/StandaloneBean");
+    String expResult = "Greetings!";
+    String result = instance.returnMessage();
+    assertEquals(expResult, result);
+}</pre>
+
+      <p>Finally, the <code>tearDown</code> method, annotated with <code>org.junit.After</code> to indicate that the method should be executed after all the unit tests have run, closes the embedded container instance:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@After
+public void tearDown() {
+    if (ec != null) {
+        ec.close();
+    }
+}</pre><a id="GKCQP"></a><a id="JEETT00209"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">35.3.1</span> To Run the standalone Example Application Using NetBeans IDE</h2>
+
+        <ol>
+          <li>
+            <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+          </li>
+
+          <li>
+            <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+          </li>
+
+          <li>
+            <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb</pre>
+          </li>
+
+          <li>
+            <p>Select the <code>standalone</code> folder and click <span class="gui-object-action">Open Project</span>.</p>
+          </li>
+
+          <li>
+            <p>In the <span class="gui-object-action">Projects</span> tab, right-click <code>standalone</code> and select <span class="gui-object-action">Test</span>.</p>
+
+            <p>This will execute the JUnit test class <code>StandaloneBeanTest</code>. The <span class="gui-object-action">Output</span> tab shows the progress of the test and the output log.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1811"></a>
+
+        <h2 class="sect2"><span class="secnum">35.3.2</span> To Run the standalone Example Application Using Maven</h2>
+
+        <ol>
+          <li>
+            <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+          </li>
+
+          <li>
+            <p>In a terminal window, go to:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb/standalone/</pre>
+          </li>
+
+          <li>
+            <p>Enter the following command:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+            <p>This command compiles and packages the application into an JAR file, and executes the JUnit test class <code>StandaloneBeanTest</code>.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,1278 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKHRE"></a><a id="JEETT00094"></a>
+
+    <h1 class="chapter"><span class="secnum">26</span> <a id="sthref1442"></a><a id="sthref1443"></a>Running the Advanced Contexts and Dependency Injection Examples</h1>
+
+    <p>This chapter describes in detail how to build and run several advanced examples that use CDI. The examples are in the <span class="variable">tut-install</span><code>/examples/cdi/</code> directory.</p>
+
+    <p>To build and run the examples, you will do the following.</p>
+
+    <ol>
+      <li>
+        <p>Use NetBeans IDE or the Maven tool to compile, package, and deploy the example.</p>
+      </li>
+
+      <li>
+        <p>Run the example in a web browser.</p>
+      </li>
+    </ol>
+
+    <p>See <a href="../Text/usingexamples.xhtml#GFIUD">Chapter 2, "Using the Tutorial Examples"</a>, for basic information on installing, building, and running the examples.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/cdi-adv-examples.xhtml#GKHPU">The encoder Example: Using Alternatives</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv-examples.xhtml#GKHPY">The producermethods Example: Using a Producer Method to Choose a Bean Implementation</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv-examples.xhtml#GKHRG">The producerfields Example: Using Producer Fields to Generate Resources</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv-examples.xhtml#GKHPA">The billpayment Example: Using Events and Interceptors</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv-examples.xhtml#GKPAX">The decorators Example: Decorating a Bean</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GKHPU"></a><a id="JEETT00483"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">26.1</span> <a id="sthref1444"></a>The encoder Example: Using Alternatives</h1>
+
+      <p>The <code>encoder</code> example shows how to use alternatives to choose between two beans at deployment time, as described in <a href="../Text/cdi-adv.xhtml#GJSDF">Using Alternatives in CDI Applications</a>. The example includes an interface and two implementations of it, a managed bean, a Facelets page, and configuration files.</p>
+
+      <p>The source files are located in the <span class="variable">tut-install</span><code>/examples/cdi/encoder/src/main/java/javaeetutorial/encoder/</code> directory.</p><a id="GKHQA"></a><a id="JEETT01134"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.1.1</span> The Coder Interface and Implementations</h2>
+
+        <p>The <code>Coder</code> interface contains just one method, <code>codeString</code>, that takes two arguments: a string, and an integer value that specifies how the letters in the string should be transposed.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public interface Coder {
+    public String codeString(String s, int tval);
+}</pre>
+
+        <p>The interface has two implementation classes, <code>CoderImpl</code> and <code>TestCoderImpl</code>. The implementation of <code>codeString</code> in <code>CoderImpl</code> shifts the string argument forward in the alphabet by the number of letters specified in the second argument; any characters that are not letters are left unchanged. (This simple shift code is known as a Caesar cipher because Julius Caesar reportedly used it to communicate with his generals.) The implementation in <code>TestCoderImpl</code> merely displays the values of the arguments. The <code>TestCoderImpl</code> implementation is annotated <code>@Alternative</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.enterprise.inject.Alternative;
+
+@Alternative
+public class TestCoderImpl implements Coder {
+
+    @Override
+    public String codeString(String s, int tval) {
+        return ("input string is " + s + ", shift value is " + tval);
+    }
+}</pre>
+
+        <p>The <code>beans.xml</code> file for the <code>encoder</code> example contains an <code>alternatives</code> element for the <code>TestCoderImpl</code> class, but by default the element is commented out:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;beans ...&gt;
+    &lt;!--&lt;alternatives&gt;
+        &lt;class&gt;javaeetutorial.encoder.TestCoderImpl&lt;/class&gt;
+    &lt;/alternatives&gt;--&gt;
+&lt;/beans&gt;</pre>
+
+        <p>This means that by default, the <code>TestCoderImpl</code> class, annotated <code>@Alternative</code>, will not be used. Instead, the <code>CoderImpl</code> class will be used.</p>
+      </div><a id="GKHPM"></a><a id="JEETT01135"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.1.2</span> The encoder Facelets Page and Managed Bean</h2>
+
+        <p>The simple Facelets page for the <code>encoder</code> example, <code>index.xhtml</code>, asks the user to enter the string and integer values and passes them to the managed bean, <code>CoderBean</code>, as <code>coderBean.inputString</code> and <code>coderBean.transVal</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"&gt;
+    &lt;h:head&gt;
+        &lt;h:outputStylesheet library="css" name="default.css"/&gt;
+        &lt;title&gt;String Encoder&lt;/title&gt;
+    &lt;/h:head&gt;
+    &lt;h:body&gt;
+        &lt;h2&gt;String Encoder&lt;/h2&gt;
+        &lt;p&gt;Type a string and an integer, then click Encode.&lt;/p&gt;
+        &lt;p&gt;Depending on which alternative is enabled, the coder bean
+            will either display the argument values or return a string that
+            shifts the letters in the original string by the value you
+            specify. The value must be between 0 and 26.&lt;/p&gt;
+        &lt;h:form id="encodeit"&gt;
+            &lt;p&gt;&lt;h:outputLabel value="Enter a string: " for="inputString"/&gt;
+                &lt;h:inputText id="inputString"
+                             value="#{coderBean.inputString}"/&gt;
+                &lt;h:outputLabel value="Enter the number of letters to shift by: "
+                               for="transVal"/&gt;
+                &lt;h:inputText id="transVal" value="#{coderBean.transVal}"/&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;h:commandButton value="Encode"
+                                action="#{coderBean.encodeString()}"/&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;h:outputLabel value="Result: " for="outputString"/&gt;
+                &lt;h:outputText id="outputString"
+                              value="#{coderBean.codedString}"
+                              style="color:blue"/&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;h:commandButton value="Reset"
+                                action="#{coderBean.reset}"/&gt;&lt;/p&gt;
+        &lt;/h:form&gt;
+        ...
+    &lt;/h:body&gt;
+&lt;/html&gt;</pre>
+
+        <p>When the user clicks the <span class="gui-object-action">Encode</span> button, the page invokes the managed bean's <code>encodeString</code> method and displays the result, <code>coderBean.codedString</code>, in blue. The page also has a <span class="gui-object-action">Reset</span> button that clears the fields.</p>
+
+        <p>The managed bean, <code>CoderBean</code>, is a <code>@RequestScoped</code> bean that declares its input and output properties. The <code>transVal</code> property has three Bean Validation constraints that enforce limits on the integer value, so that if the user enters an invalid value, a default error message appears on the Facelets page. The bean also injects an instance of the <code>Coder</code> interface:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named
+@RequestScoped
+public class CoderBean {
+
+    private String inputString;
+    private String codedString;
+    @Max(26)
+    @Min(0)
+    @NotNull
+    private int transVal;
+
+    @Inject
+    Coder coder;
+    ...</pre>
+
+        <p>In addition to simple getter and setter methods for the three properties, the bean defines the <code>encodeString</code> action method called by the Facelets page. This method sets the <code>codedString</code> property to the value returned by a call to the <code>codeString</code> method of the <code>Coder</code> implementation:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    public void encodeString() {
+        setCodedString(coder.codeString(inputString, transVal));
+    }</pre>
+
+        <p>Finally, the bean defines the <code>reset</code> method to empty the fields of the Facelets page:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    public void reset() {
+        setInputString("");
+        setTransVal(0);
+    }</pre>
+      </div><a id="GKHQQ"></a><a id="JEETT01136"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.1.3</span> Running the encoder Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>encoder</code> application.</p><a id="GKHOW"></a><a id="JEETT00219"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.1.3.1</span> To Build, Package, and Deploy the encoder Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>encoder</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>encoder</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>encoder.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKHQU"></a><a id="JEETT00220"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.1.3.2</span> To Run the encoder Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>In a web browser, enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/encoder</pre>
+            </li>
+
+            <li>
+              <p>On the <span class="gui-object-title">String Encoder</span> page, enter a string and the number of letters to shift by, and then click <span class="gui-object-action">Encode</span>.</p>
+
+              <p>The encoded string appears in blue on the <span class="gui-object-action">Result</span> line. For example, if you enter <code>Java</code> and <code>4</code>, the result is <code>Neze</code>.</p>
+            </li>
+
+            <li>
+              <p>Now, edit the <code>beans.xml</code> file to enable the alternative implementation of <code>Coder</code>.</p>
+
+              <ol>
+                <li>
+                  <p>In the <span class="gui-object-action">Projects</span> tab, under the <code>encoder</code> project, expand the <span class="gui-object-action">Web Pages</span> node, then expand the <span class="gui-object-action">WEB-INF</span> node.</p>
+                </li>
+
+                <li>
+                  <p>Double-click the <code>beans.xml</code> file to open it.</p>
+                </li>
+
+                <li>
+                  <p>Remove the comment characters that surround the <code>alternatives</code> element, so that it looks like this:</p>
+                  <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;alternatives&gt;
+    &lt;class&gt;javaeetutorial.encoder.TestCoderImpl&lt;/class&gt;
+&lt;/alternatives&gt;</pre>
+                </li>
+
+                <li>
+                  <p>Save the file.</p>
+                </li>
+              </ol>
+            </li>
+
+            <li>
+              <p>Right-click the <code>encoder</code> project and select <span class="gui-object-action">Clean and Build</span>.</p>
+            </li>
+
+            <li>
+              <p>In the web browser, reenter the URL to show the <span class="gui-object-title">String Encoder</span> page for the redeployed project:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/encoder/</pre>
+            </li>
+
+            <li>
+              <p>Enter a string and the number of letters to shift by, and then click <span class="gui-object-action">Encode</span>.</p>
+
+              <p>This time, the <span class="gui-object-action">Result</span> line displays your arguments. For example, if you enter <code>Java</code> and <code>4</code>, the result is:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Result: input string is Java, shift value is 4</pre>
+            </li>
+          </ol>
+        </div><a id="GKHQL"></a><a id="JEETT00221"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.1.3.3</span> To Build, Package, and Deploy the encoder Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/encoder/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>encoder.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKHOL"></a><a id="JEETT00222"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.1.3.4</span> To Run the encoder Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>In a web browser, enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/encoder/</pre>
+
+              <p>The <span class="gui-object-title">String Encoder</span> page opens.</p>
+            </li>
+
+            <li>
+              <p>Enter a string and the number of letters to shift by, and then click <span class="gui-object-action">Encode</span>.</p>
+
+              <p>The encoded string appears in blue on the <span class="gui-object-action">Result</span> line. For example, if you enter <code>Java</code> and <code>4</code>, the result is <code>Neze</code>.</p>
+            </li>
+
+            <li>
+              <p>Now, edit the <code>beans.xml</code> file to enable the alternative implementation of <code>Coder</code>.</p>
+
+              <ol>
+                <li>
+                  <p>In a text editor, open the following file:</p>
+                  <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/encoder/src/main/webapp/WEB-INF/beans.xml</pre>
+                </li>
+
+                <li>
+                  <p>Remove the comment characters that surround the <code>alternatives</code> element, so that it looks like this:</p>
+                  <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;alternatives&gt;
+    &lt;class&gt;javaeetutorial.encoder.TestCoderImpl&lt;/class&gt;
+&lt;/alternatives&gt;</pre>
+                </li>
+
+                <li>
+                  <p>Save and close the file.</p>
+                </li>
+              </ol>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn clean install</pre>
+            </li>
+
+            <li>
+              <p>In the web browser, reenter the URL to show the <span class="gui-object-title">String Encoder</span> page for the redeployed project:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/encoder</pre>
+            </li>
+
+            <li>
+              <p>Enter a string and the number of letters to shift by, and then click <span class="gui-object-action">Encode</span>.</p>
+
+              <p>This time, the <span class="gui-object-action">Result</span> line displays your arguments. For example, if you enter <code>Java</code> and <code>4</code>, the result is:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Result: input string is Java, shift value is 4</pre>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKHPY"></a><a id="JEETT00484"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">26.2</span> <a id="sthref1445"></a>The producermethods Example: Using a Producer Method to Choose a Bean Implementation</h1>
+
+      <p>The <code>producermethods</code> example shows how to use a producer method to choose between two beans at runtime, as described in <a href="../Text/cdi-adv.xhtml#GKGKV">Using Producer Methods, Producer Fields, and Disposer Methods in CDI Applications</a>. It is very similar to the <code>encoder</code> example described in <a href="../Text/cdi-adv-examples.xhtml#GKHPU">The encoder Example: Using Alternatives</a>. The example includes the same interface and two implementations of it, a managed bean, a Facelets page, and configuration files. It also contains a qualifier type. When you run it, you do not need to edit the <code>beans.xml</code> file and redeploy the application to change its behavior.</p><a id="GKHRO"></a><a id="JEETT01137"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.2.1</span> Components of the producermethods Example</h2>
+
+        <p>The components of <code>producermethods</code> are very much like those for <code>encoder</code>, with some significant differences.</p>
+
+        <p>Neither implementation of the <code>Coder</code> bean is annotated <code>@Alternative</code>, and there is no <code>beans.xml</code> file, because it is not needed.</p>
+
+        <p>The Facelets page and the managed bean, <code>CoderBean</code>, have an additional property, <code>coderType</code>, that allows the user to specify at runtime which implementation to use. In addition, the managed bean has a producer method that selects the implementation using a qualifier type, <code>@Chosen</code>.</p>
+
+        <p>The bean declares two constants that specify whether the coder type is the test implementation or the implementation that actually shifts letters:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    private final static int TEST = 1;
+    private final static int SHIFT = 2;
+    private int coderType = SHIFT; // default value</pre>
+
+        <p>The producer method, annotated with <code>@Produces</code> and <code>@Chosen</code> as well as <code>@RequestScoped</code> (so that it lasts only for the duration of a single request and response), returns one of the two implementations based on the <code>coderType</code> supplied by the user.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    @Produces
+    @Chosen
+    @RequestScoped
+    public Coder getCoder() {
+
+        switch (coderType) {
+            case TEST:
+                return new TestCoderImpl();
+            case SHIFT:
+                return new CoderImpl();
+            default:
+                return null;
+        }
+    }</pre>
+
+        <p>Finally, the managed bean injects the chosen implementation, specifying the same qualifier as that returned by the producer method to resolve ambiguities:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    @Inject
+    @Chosen
+    @RequestScoped
+    Coder coder;</pre>
+
+        <p>The Facelets page contains modified instructions and a pair of options whose selected value is assigned to the property <code>coderBean.coderType</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;h2&gt;String Encoder&lt;/h2&gt;
+        &lt;p&gt;Select Test or Shift, type a string and an integer, then click
+            Encode.&lt;/p&gt;
+        &lt;p&gt;If you select Test, the TestCoderImpl bean will display the
+            argument values.&lt;/p&gt;
+        &lt;p&gt;If you select Shift, the CoderImpl bean will return a string that
+            shifts the letters in the original string by the value you specify.
+            The value must be between 0 and 26.&lt;/p&gt;
+        &lt;h:form id="encodeit"&gt;
+            &lt;h:selectOneRadio id="coderType"
+                              required="true"
+                              value="#{coderBean.coderType}"&gt;
+                &lt;f:selectItem
+                    itemValue="1"
+                    itemLabel="Test"/&gt;
+                &lt;f:selectItem
+                    itemValue="2"
+                    itemLabel="Shift Letters"/&gt;
+            &lt;/h:selectOneRadio&gt;
+            ...</pre>
+      </div><a id="GKHQE"></a><a id="JEETT01138"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.2.2</span> Running the producermethods Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>producermethods</code> application.</p><a id="GKHPE"></a><a id="JEETT00223"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.2.2.1</span> To Build, Package, and Deploy the producermethods Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>producermethods</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>producermethods</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>producermethods.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKHPS"></a><a id="JEETT00224"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.2.2.2</span> To Build, Package, and Deploy the producermethods Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/producermethods/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>producermethods.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKHQG"></a><a id="JEETT00225"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.2.2.3</span> To Run the producermethods Example</h3>
+
+          <ol>
+            <li>
+              <p>In a web browser, enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/producermethods</pre>
+            </li>
+
+            <li>
+              <p>On the <span class="gui-object-title">String Encoder</span> page, select either the <span class="gui-object-action">Test</span> or <span class="gui-object-action">Shift Letters</span> option, enter a string and the number of letters to shift by, and then click <span class="gui-object-action">Encode</span>.</p>
+
+              <p>Depending on your selection, the <span class="gui-object-action">Result</span> line displays either the encoded string or the input values you specified.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKHRG"></a><a id="JEETT00485"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">26.3</span> <a id="sthref1446"></a>The producerfields Example: Using Producer Fields to Generate Resources</h1>
+
+      <p>The <code>producerfields</code> example, which allows you to create a to-do list, shows how to use a producer field to generate objects that can then be managed by the container. This example generates an <code>EntityManager</code> object, but resources such as JDBC connections and datasources can also be generated this way.</p>
+
+      <p>The <code>producerfields</code> example is the simplest possible entity example. It also contains a qualifier and a class that generates the entity manager. It also contains a single entity, a stateful session bean, a Facelets page, and a managed bean.</p>
+
+      <p>The source files are located in the <span class="variable">tut-install</span><code>/examples/cdi/producerfields/src/main/java/javaeetutorial/producerfields/</code> directory.</p><a id="GKHPP"></a><a id="JEETT01139"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.3.1</span> The Producer Field for the producerfields Example</h2>
+
+        <p>The most important component of the <code>producerfields</code> example is the smallest, the <code>db.UserDatabaseEntityManager</code> class, which isolates the generation of the <code>EntityManager</code> object so it can easily be used by other components in the application. The class uses a producer field to inject an <code>EntityManager</code> annotated with the <code>@UserDatabase</code> qualifier, also defined in the <code>db</code> package:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
+public class UserDatabaseEntityManager {
+
+    @Produces
+    @PersistenceContext
+    @UserDatabase
+    private EntityManager em;
+    ...
+}</pre>
+
+        <p>The class does not explicitly produce a persistence unit field, but the application has a <code>persistence.xml</code> file that specifies a persistence unit. The class is annotated <code>javax.inject.Singleton</code> to specify that the injector should instantiate it only once.</p>
+
+        <p>The <code>db.UserDatabaseEntityManager</code> class also contains commented-out code that uses <code>create</code> and <code>close</code> methods to generate and remove the producer field:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"> /* @PersistenceContext
+    private EntityManager em;
+
+    @Produces
+    @UserDatabase
+    public EntityManager create() {
+        return em;
+    } */
+
+    public void close(@Disposes @UserDatabase EntityManager em) {
+        em.close();
+    }</pre>
+
+        <p>You can remove the comment indicators from this code and place them around the field declaration to test how the methods work. The behavior of the application is the same with either mechanism.</p>
+
+        <p>The advantage of producing the <code>EntityManager</code> in a separate class rather than simply injecting it into an enterprise bean is that the object can easily be reused in a typesafe way. Also, a more complex application can create multiple entity managers using multiple persistence units, and this mechanism isolates this code for easy maintenance, as in the following example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
+public class JPAResourceProducer {
+    @Produces 
+    @PersistenceUnit(unitName="pu3")
+    @TestDatabase 
+    EntityManagerFactory customerDatabasePersistenceUnit;
+
+    @Produces 
+    @PersistenceContext(unitName="pu3")
+    @TestDatabase 
+    EntityManager customerDatabasePersistenceContext;
+    
+    @Produces 
+    @PersistenceUnit(unitName="pu4")
+    @Documents
+    EntityManagerFactory customerDatabasePersistenceUnit;
+
+    @Produces 
+    @PersistenceContext(unitName="pu4")
+    @Documents 
+    EntityManager docDatabaseEntityManager;
+}</pre>
+
+        <p>The <code>EntityManagerFactory</code> declarations also allow applications to use an application-managed entity manager.</p>
+      </div><a id="GKHPD"></a><a id="JEETT01140"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.3.2</span> The producerfields Entity and Session Bean</h2>
+
+        <p>The <code>producerfields</code> example contains a simple entity class, <code>entity.ToDo</code>, and a stateful session bean, <code>ejb.RequestBean</code>, that uses it.</p>
+
+        <p>The entity class contains three fields: an autogenerated <code>id</code> field, a string specifying the task, and a timestamp. The timestamp field, <code>timeCreated</code>, is annotated with <code>@Temporal</code>, which is required for persistent <code>Date</code> fields.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+public class ToDo implements Serializable {
+
+    ...
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    protected String taskText;
+    @Temporal(TIMESTAMP)
+    protected Date timeCreated;
+
+    public ToDo() {
+    }
+
+    public ToDo(Long id, String taskText, Date timeCreated) {
+        this.id = id;
+        this.taskText = taskText;
+        this.timeCreated = timeCreated;
+    }
+    ...</pre>
+
+        <p>The remainder of the <code>ToDo</code> class contains the usual getters, setters, and other entity methods.</p>
+
+        <p>The <code>RequestBean</code> class injects the <code>EntityManager</code> generated by the producer method, annotated with the <code>@UserDatabase</code> qualifier:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ConversationScoped
+@Stateful
+public class RequestBean {
+
+    @Inject
+    @UserDatabase
+    EntityManager em;</pre>
+
+        <p>It then defines two methods, one that creates and persists a single <code>ToDo</code> list item, and another that retrieves all the <code>ToDo</code> items created so far by creating a query:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    public ToDo createToDo(String inputString) {
+        ToDo toDo = null;
+        Date currentTime = Calendar.getInstance().getTime();
+
+        try {
+            toDo = new ToDo();
+            toDo.setTaskText(inputString);
+            toDo.setTimeCreated(currentTime);
+            em.persist(toDo);
+            return toDo;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
+    public List&lt;ToDo&gt; getToDos() {
+        try {
+             List&lt;ToDo&gt; toDos =
+                    (List&lt;ToDo&gt;) em.createQuery(
+                    "SELECT t FROM ToDo t ORDER BY t.timeCreated")
+                    .getResultList();
+            return toDos;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }<br /></pre>
+      </div><a id="GKHPF"></a><a id="JEETT01141"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.3.3</span> The producerfields Facelets Pages and Managed Bean</h2>
+
+        <p>The <code>producerfields</code> example has two Facelets pages, <code>index.xhtml</code> and <code>todolist.xhtml</code>. The simple form on the <code>index.xhtml</code> page asks the user only for the task. When the user clicks the <span class="gui-object-action">Submit</span> button, the <code>listBean.createTask</code> method is called. When the user clicks the <span class="gui-object-action">Show Items</span> button, the action specifies that the <code>todolist.xhtml</code> file should be displayed:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;h:body&gt;
+        &lt;h2&gt;To Do List&lt;/h2&gt;
+        &lt;p&gt;Enter a task to be completed.&lt;/p&gt;
+        &lt;h:form id="todolist"&gt;
+            &lt;p&gt;&lt;h:outputLabel value="Enter a string: " for="inputString"/&gt;
+                &lt;h:inputText id="inputString"
+                             value="#{listBean.inputString}"/&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;h:commandButton value="Submit"
+                                action="#{listBean.createTask()}"/&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;h:commandButton value="Show Items"
+                                action="todolist"/&gt;&lt;/p&gt;
+        &lt;/h:form&gt;
+        ...
+    &lt;/h:body&gt;</pre>
+
+        <p>The managed bean, <code>web.ListBean</code>, injects the <code>ejb.RequestBean</code> session bean. It declares the <code>entity.ToDo</code> entity and a list of the entity along with the input string that it passes to the session bean. The <code>inputString</code> is annotated with the <code>@NotNull</code> Bean Validation constraint, so an attempt to submit an empty string results in an error.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named
+@ConversationScoped
+public class ListBean implements Serializable {
+
+    ...
+    @EJB
+    private RequestBean request;
+    @NotNull
+    private String inputString;
+    private ToDo toDo;
+    private List&lt;ToDo&gt; toDos;</pre>
+
+        <p>The <code>createTask</code> method called by the <span class="gui-object-action">Submit</span> button calls the <code>createToDo</code> method of <code>RequestBean</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    public void createTask() {
+        this.toDo = request.createToDo(inputString);
+    }</pre>
+
+        <p>The <code>getToDos</code> method, which is called by the <code>todolist.xhtml</code> page, calls the <code>getToDos</code> method of <code>RequestBean</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    public List&lt;ToDo&gt; getToDos() {
+        return request.getToDos();
+    }</pre>
+
+        <p>To force the Facelets page to recognize an empty string as a null value and return an error, the <code>web.xml</code> file sets the context parameter <code>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</code> to <code>true</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;context-param&gt;
+  &lt;param-name&gt;javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL&lt;/param-name&gt;
+  &lt;param-value&gt;true&lt;/param-value&gt;
+&lt;/context-param&gt;</pre>
+
+        <p>The <code>todolist.xhtml</code> page is a little more complicated than the <code>index.html</code> page. It contains a <code>dataTable</code> element that displays the contents of the <code>ToDo</code> list. The body of the page looks like this:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;body&gt;
+        &lt;h2&gt;To Do List&lt;/h2&gt;
+        &lt;h:form id="showlist"&gt;
+            &lt;h:dataTable var="toDo"
+                         value="#{listBean.toDos}"
+                         rules="all"
+                         border="1"
+                         cellpadding="5"&gt;
+                &lt;h:column&gt;
+                    &lt;f:facet name="header"&gt;
+                        &lt;h:outputText value="Time Stamp" /&gt;
+                    &lt;/f:facet&gt;
+                    &lt;h:outputText value="#{toDo.timeCreated}" /&gt;
+                &lt;/h:column&gt;
+                &lt;h:column&gt;
+                    &lt;f:facet name="header"&gt;
+                        &lt;h:outputText value="Task" /&gt;
+                    &lt;/f:facet&gt;
+                    &lt;h:outputText value="#{toDo.taskText}" /&gt;
+                &lt;/h:column&gt;
+            &lt;/h:dataTable&gt;
+            &lt;p&gt;&lt;h:commandButton id="back" value="Back" action="index" /&gt;&lt;/p&gt;
+        &lt;/h:form&gt;
+    &lt;/body&gt;</pre>
+
+        <p>The value of the <code>dataTable</code> is <code>listBean.toDos</code>, the list returned by the managed bean's <code>getToDos</code> method, which in turn calls the session bean's <code>getToDos</code> method. Each row of the table displays the <code>timeCreated</code> and <code>taskText</code> fields of the individual task. Finally, a <span class="gui-object-action">Back</span> button returns the user to the <code>index.xhtml</code> page.</p>
+      </div><a id="GKHRH"></a><a id="JEETT01142"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.3.4</span> Running the producerfields Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>producerfields</code> application.</p><a id="GKHPB"></a><a id="JEETT00226"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.3.4.1</span> To Build, Package, and Deploy the producerfields Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>If the database server is not already running, start it by following the instructions in <a href="../Text/usingexamples.xhtml#BNADK">Starting and Stopping the Java DB Server</a>.</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>producerfields</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>producerfields</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>producerfields.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKHRM"></a><a id="JEETT00227"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.3.4.2</span> To Build, Package, and Deploy the producerfields Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>If the database server is not already running, start it by following the instructions in <a href="../Text/usingexamples.xhtml#BNADK">Starting and Stopping the Java DB Server</a>.</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/producerfields/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>producerfields.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKHRR"></a><a id="JEETT00228"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.3.4.3</span> To Run the producerfields Example</h3>
+
+          <ol>
+            <li>
+              <p>In a web browser, enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/producerfields</pre>
+            </li>
+
+            <li>
+              <p>On the <span class="gui-object-title">Create To Do List</span> page, enter a string in the field and click <span class="gui-object-action">Submit</span>.</p>
+
+              <p>You can enter additional strings and click <span class="gui-object-action">Submit</span> to create a task list with multiple items.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Show Items</span>.</p>
+
+              <p>The <span class="gui-object-title">To Do List</span> page opens, showing the timestamp and text for each item you created.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Back</span> to return to the <span class="gui-object-title">Create To Do List</span> page.</p>
+
+              <p>On this page, you can enter more items in the list.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKHPA"></a><a id="JEETT00486"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">26.4</span> <a id="sthref1447"></a><a id="sthref1448"></a>The billpayment Example: Using Events and Interceptors</h1>
+
+      <p>The <code>billpayment</code> example shows how to use both events and interceptors.</p>
+
+      <p>The example simulates paying an amount using a debit card or credit card. When the user chooses a payment method, the managed bean creates an appropriate event, supplies its payload, and fires it. A simple event listener handles the event using observer methods.</p>
+
+      <p>The example also defines an interceptor that is set on a class and on two methods of another class.</p>
+
+      <p>The source files are located in the <span class="variable">tut-install</span><code>/examples/cdi/billpayment/src/main/java/javaeetutorial/billpayment/</code> directory.</p><a id="GKHOK"></a><a id="JEETT01143"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.4.1</span> The PaymentEvent Event Class</h2>
+
+        <p>The event class, <code>event.PaymentEvent</code>, is a simple bean class that contains a no-argument constructor. It also has a <code>toString</code> method and getter and setter methods for the payload components: a <code>String</code> for the payment type, a <code>BigDecimal</code> for the payment amount, and a <code>Date</code> for the timestamp.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    ...
+    public String paymentType;
+    public BigDecimal value;
+    public Date datetime;
+
+    public PaymentEvent() {
+    }
+
+    @Override
+    public String toString() {
+        return this.paymentType
+                + " = $" + this.value.toString()
+                + " at " + this.datetime.toString();
+    }
+    ...</pre>
+
+        <p>The event class is a simple bean that is instantiated by the managed bean using <code>new</code> and then populated. For this reason, the CDI container cannot intercept the creation of the bean, and hence it cannot allow interception of its getter and setter methods.</p>
+      </div><a id="GKHRB"></a><a id="JEETT01144"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.4.2</span> The PaymentHandler Event Listener</h2>
+
+        <p>The event listener, <code>listener.PaymentHandler</code>, contains two observer methods, one for each of the two event types:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Logged
+@SessionScoped
+public class PaymentHandler implements Serializable {
+
+    ...
+    public void creditPayment(@Observes @Credit PaymentEvent event) {
+        logger.log(Level.INFO, "PaymentHandler - Credit Handler: {0}",
+                event.toString());
+
+        // call a specific Credit handler class...
+    }
+
+    public void debitPayment(@Observes @Debit PaymentEvent event) {
+        logger.log(Level.INFO, "PaymentHandler - Debit Handler: {0}",
+                event.toString());
+ 
+        // call a specific Debit handler class...
+    }
+}</pre>
+
+        <p>Each observer method takes as an argument the event, annotated with <code>@Observes</code> and with the qualifier for the type of payment. In a real application, the observer methods would pass the event information on to another component that would perform business logic on the payment.</p>
+
+        <p>The qualifiers are defined in the <code>payment</code> package, described in <a href="../Text/cdi-adv-examples.xhtml#GKHRJ">The billpayment Facelets Pages and Managed Bean</a>.</p>
+
+        <p>The <code>PaymentHandler</code> bean is annotated <code>@Logged</code> so that all its methods can be intercepted.</p>
+      </div><a id="GKHRJ"></a><a id="JEETT01145"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.4.3</span> The billpayment Facelets Pages and Managed Bean</h2>
+
+        <p>The <code>billpayment</code> example contains two Facelets pages, <code>index.xhtml</code> and the very simple <code>response.xhtml</code>. The body of <code>index.xhtml</code> looks like this:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;h:body&gt;
+        &lt;h3&gt;Bill Payment Options&lt;/h3&gt;
+        &lt;p&gt;Enter an amount, select Debit Card or Credit Card, 
+            then click Pay.&lt;/p&gt;
+        &lt;h:form&gt;
+            &lt;p&gt;
+            &lt;h:outputLabel value="Amount: $" for="amt"/&gt;
+            &lt;h:inputText id="amt" value="#{paymentBean.value}"
+                         required="true"
+                         requiredMessage="An amount is required."
+                         maxlength="15" /&gt;
+            &lt;/p&gt;
+            &lt;h:outputLabel value="Options:" for="opt"/&gt;
+            &lt;h:selectOneRadio id="opt" value="#{paymentBean.paymentOption}"&gt;
+                &lt;f:selectItem id="debit" itemLabel="Debit Card"
+                              itemValue="1"/&gt;
+                &lt;f:selectItem id="credit" itemLabel="Credit Card"
+                              itemValue="2" /&gt;
+            &lt;/h:selectOneRadio&gt;
+            &lt;p&gt;&lt;h:commandButton id="submit" value="Pay"
+                                action="#{paymentBean.pay}" /&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;h:commandButton value="Reset" 
+                                action="#{paymentBean.reset}" /&gt;&lt;/p&gt;
+        &lt;/h:form&gt;
+        ...
+    &lt;/h:body&gt;</pre>
+
+        <p>The input field takes a payment amount, passed to <code>paymentBean.value</code>. Two options ask the user to select a Debit Card or Credit Card payment, passing the integer value to <code>paymentBean.paymentOption</code>. Finally, the <span class="gui-object-action">Pay</span> command button's action is set to the method <code>paymentBean.pay</code>, and the <span class="gui-object-action">Reset</span> button's action is set to the <code>paymentBean.reset</code> method.</p>
+
+        <p>The <code>payment.PaymentBean</code> managed bean uses qualifiers to differentiate between the two kinds of payment event:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named
+@SessionScoped
+public class PaymentBean implements Serializable {
+
+   ...
+    @Inject
+    @Credit
+    Event&lt;PaymentEvent&gt; creditEvent;
+
+    @Inject
+    @Debit
+    Event&lt;PaymentEvent&gt; debitEvent;</pre>
+
+        <p>The qualifiers, <code>@Credit</code> and <code>@Debit</code>, are defined in the <code>payment</code> package along with <code>PaymentBean</code>.</p>
+
+        <p>Next, the <code>PaymentBean</code> defines the properties it obtains from the Facelets page and will pass on to the event:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    public static final int DEBIT = 1;
+    public static final int CREDIT = 2;
+    private int paymentOption = DEBIT;
+    
+    @Digits(integer = 10, fraction = 2, message = "Invalid value")
+    private BigDecimal value;
+
+    private Date datetime;</pre>
+
+        <p>The <code>paymentOption</code> value is an integer passed in from the option component; the default value is <code>DEBIT</code>. The <code>value</code> is a <code>BigDecimal</code> with a Bean Validation constraint that enforces a currency value with a maximum number of digits. The timestamp for the event, <code>datetime</code>, is a <code>Date</code> object initialized when the <code>pay</code> method is called.</p>
+
+        <p>The <code>pay</code> method of the bean first sets the timestamp for this payment event. It then creates and populates the event payload, using the constructor for the <code>PaymentEvent</code> and calling the event's setter methods, using the bean properties as arguments. It then fires the event.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    @Logged
+    public String pay() {
+        this.setDatetime(Calendar.getInstance().getTime());
+        switch (paymentOption) {
+            case DEBIT:
+                PaymentEvent debitPayload = new PaymentEvent();
+                debitPayload.setPaymentType("Debit");
+                debitPayload.setValue(value);
+                debitPayload.setDatetime(datetime);
+                debitEvent.fire(debitPayload);
+                break;
+            case CREDIT:
+                PaymentEvent creditPayload = new PaymentEvent();
+                creditPayload.setPaymentType("Credit");
+                creditPayload.setValue(value);
+                creditPayload.setDatetime(datetime);
+                creditEvent.fire(creditPayload);
+                break;
+            default:
+                logger.severe("Invalid payment option!");
+        }
+        return "response";
+    }</pre>
+
+        <p>The <code>pay</code> method returns the page to which the action is redirected, <code>response.xhtml</code>.</p>
+
+        <p>The <code>PaymentBean</code> class also contains a <code>reset</code> method that empties the value field on the <code>index.xhtml</code> page and sets the payment option to the default:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    @Logged
+    public void reset() {
+        setPaymentOption(DEBIT);
+        setValue(BigDecimal.ZERO);
+    }</pre>
+
+        <p>In this bean, only the <code>pay</code> and <code>reset</code> methods are intercepted.</p>
+
+        <p>The <code>response.xhtml</code> page displays the amount paid. It uses a <code>rendered</code> expression to display the payment method:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;h:body&gt;
+        &lt;h:form&gt;
+            &lt;h2&gt;Bill Payment: Result&lt;/h2&gt;
+            &lt;h3&gt;Amount Paid with
+                &lt;h:outputText id="debit" value="Debit Card: "
+                              rendered="#{paymentBean.paymentOption eq 1}" /&gt;
+                &lt;h:outputText id="credit" value="Credit Card: "
+                              rendered="#{paymentBean.paymentOption eq 2}" /&gt;
+                &lt;h:outputText id="result" value="#{paymentBean.value}"&gt;
+                    &lt;f:convertNumber type="currency"/&gt;
+                &lt;/h:outputText&gt;
+            &lt;/h3&gt;
+            &lt;p&gt;&lt;h:commandButton id="back" value="Back" action="index" /&gt;&lt;/p&gt;
+        &lt;/h:form&gt;
+    &lt;/h:body&gt;</pre>
+      </div><a id="GKHRQ"></a><a id="JEETT01146"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.4.4</span> The LoggedInterceptor Interceptor Class</h2>
+
+        <p>The interceptor class, <code>LoggedInterceptor</code>, and its interceptor binding, <code>Logged</code>, are both defined in the <code>interceptor</code> package. The <code>Logged</code> interceptor binding is defined as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inherited
+@InterceptorBinding
+@Retention(RUNTIME)
+@Target({METHOD, TYPE})
+public @interface Logged {
+}</pre>
+
+        <p>The <code>LoggedInterceptor</code> class looks like this:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Logged
+@Interceptor
+public class LoggedInterceptor implements Serializable {
+
+    ...
+
+    public LoggedInterceptor() {
+    }
+
+    @AroundInvoke
+    public Object logMethodEntry(InvocationContext invocationContext)
+            throws Exception {
+        System.out.println("Entering method: "
+                + invocationContext.getMethod().getName() + " in class "
+                + invocationContext.getMethod().getDeclaringClass().getName());
+
+        return invocationContext.proceed();
+    }
+}</pre>
+
+        <p>The class is annotated with both the <code>@Logged</code> and the <code>@Interceptor</code> annotations. The <code>@AroundInvoke</code> method, <code>logMethodEntry</code>, takes the required <code>InvocationContext</code> argument and calls the required <code>proceed</code> method. When a method is intercepted, <code>logMethodEntry</code> displays the name of the method being invoked as well as its class.</p>
+
+        <p>To enable the interceptor, the <code>beans.xml</code> file defines it as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;interceptors&gt;
+    &lt;class&gt;javaeetutorial.billpayment.interceptor.LoggedInterceptor&lt;/class&gt;
+&lt;/interceptors&gt;</pre>
+
+        <p>In this application, the <code>PaymentEvent</code> and <code>PaymentHandler</code> classes are annotated <code>@Logged</code>, so all their methods are intercepted. In <code>PaymentBean</code>, only the <code>pay</code> and <code>reset</code> methods are annotated <code>@Logged</code>, so only those methods are intercepted.</p>
+      </div><a id="GKHPK"></a><a id="JEETT01147"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.4.5</span> Running the billpayment Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>billpayment</code> application.</p><a id="GKHQS"></a><a id="JEETT00229"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.4.5.1</span> To Build, Package, and Deploy the billpayment Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>billpayment</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>billpayment</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>billpayment.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKHPX"></a><a id="JEETT00230"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.4.5.2</span> To Build, Package, and Deploy the billpayment Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/billpayment/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>billpayment.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKHPT"></a><a id="JEETT00231"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.4.5.3</span> To Run the billpayment Example</h3>
+
+          <ol>
+            <li>
+              <p>In a web browser, enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/billpayment</pre>
+            </li>
+
+            <li>
+              <p>On the <span class="gui-object-title">Bill Payment Options</span> page, enter a value in the <span class="gui-object-action">Amount</span> field.</p>
+
+              <p>The amount can contain up to 10 digits and include up to two decimal places. For example:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">9876.54</pre>
+            </li>
+
+            <li>
+              <p>Select <span class="gui-object-action">Debit Card</span> or <span class="gui-object-action">Credit Card</span> and click <span class="gui-object-action">Pay</span>.</p>
+
+              <p>The <span class="gui-object-title">Bill Payment: Result</span> page opens, displaying the amount paid and the method of payment:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Amount Paid with Credit Card: $9,876.34</pre>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Back</span> to return to the <span class="gui-object-title">Bill Payment Options</span> page.</p>
+
+              <p>You can also click <span class="gui-object-action">Reset</span> to return to the initial page values.</p>
+            </li>
+
+            <li>
+              <p>Examine the server log output.</p>
+
+              <p>In NetBeans IDE, the output is visible in the GlassFish Server <span class="gui-object-action">Output</span> tab. Otherwise, view <span class="variable">domain-dir</span><code>/logs/server.log</code>.</p>
+
+              <p>The output from each interceptor appears in the log, followed by the additional logger output defined by the constructor and methods:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">INFO: Entering method: pay in class billpayment.payment.PaymentBean
+INFO: PaymentHandler created.
+INFO: Entering method: debitPayment in class billpayment.listener.PaymentHandler
+INFO: PaymentHandler - Debit Handler: Debit = $1234.56 at Tue Dec 14 14:50:28 EST 2010</pre>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKPAX"></a><a id="JEETT00487"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">26.5</span> <a id="sthref1449"></a>The decorators Example: Decorating a Bean</h1>
+
+      <p>The <code>decorators</code> example, which is yet another variation on the <code>encoder</code> example, shows how to use a decorator to implement additional business logic for a bean. Instead of having the user choose between two alternative implementations of an interface at deployment time or runtime, a decorator adds some additional logic to a single implementation of the interface.</p>
+
+      <p>The example includes an interface, an implementation of it, a decorator, an interceptor, a managed bean, a Facelets page, and configuration files.</p>
+
+      <p>The source files are located in the <span class="variable">tut-install</span><code>/examples/cdi/decorators/src/main/java/javaeetutorial/decorators/</code> directory.</p><a id="GKPAQ"></a><a id="JEETT01148"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.5.1</span> Components of the decorators Example</h2>
+
+        <p>The <code>decorators</code> example is very similar to the <code>encoder</code> example described in <a href="../Text/cdi-adv-examples.xhtml#GKHPU">The encoder Example: Using Alternatives</a>. Instead of providing two implementations of the <code>Coder</code> interface, however, this example provides only the <code>CoderImpl</code> class. The decorator class, <code>CoderDecorator</code>, rather than simply return the coded string, displays the input and output strings' values and length.</p>
+
+        <p>The <code>CoderDecorator</code> class, like <code>CoderImpl</code>, implements the business method of the <code>Coder</code> interface, <code>codeString</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Decorator
+public abstract class CoderDecorator implements Coder {
+
+    @Inject
+    @Delegate
+    @Any
+    Coder coder;
+
+    public String codeString(String s, int tval) {
+        int len = s.length();
+
+        return "\"" + s + "\" becomes " + "\"" + coder.codeString(s, tval) 
+                + "\", " + len + " characters in length";
+    }
+}</pre>
+
+        <p>The decorator's <code>codeString</code> method calls the delegate object's <code>codeString</code> method to perform the actual encoding.</p>
+
+        <p>The <code>decorators</code> example includes the <code>Logged</code> interceptor binding and <code>LoggedInterceptor</code> class from the <code>billpayment</code> example. For this example, the interceptor is set on the <code>CoderBean.encodeString</code> method and the <code>CoderImpl.codeString</code> method. The interceptor code is unchanged; interceptors are usually reusable for different applications.</p>
+
+        <p>Except for the interceptor annotations, the <code>CoderBean</code> and <code>CoderImpl</code> classes are identical to the versions in the <code>encoder</code> example.</p>
+
+        <p>The <code>beans.xml</code> file specifies both the decorator and the interceptor:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;decorators&gt;
+        &lt;class&gt;javaeetutorial.decorators.CoderDecorator&lt;/class&gt;
+    &lt;/decorators&gt;
+    &lt;interceptors&gt;
+        &lt;class&gt;javaeetutorial.decorators.LoggedInterceptor&lt;/class&gt;
+    &lt;/interceptors&gt;</pre>
+      </div><a id="GKPBK"></a><a id="JEETT01149"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">26.5.2</span> Running the decorators Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>decorators</code> application.</p><a id="GKPAG"></a><a id="JEETT00232"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.5.2.1</span> To Build, Package, and Deploy the decorators Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>decorators</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>decorators</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>decorators.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKPAJ"></a><a id="JEETT00233"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.5.2.2</span> To Build, Package, and Deploy the decorators Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/decorators/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>decorators.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKPAN"></a><a id="JEETT00234"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">26.5.2.3</span> To Run the decorators Example</h3>
+
+          <ol>
+            <li>
+              <p>In a web browser, enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/decorators</pre>
+            </li>
+
+            <li>
+              <p>On the <span class="gui-object-title">Decorated String Encoder</span> page, enter a string and the number of letters to shift by, and then click <span class="gui-object-action">Encode</span>.</p>
+
+              <p>The output from the decorator method appears in blue on the <span class="gui-object-action">Result</span> line. For example, if you entered <code>Java</code> and <code>4</code>, you would see the following:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">"Java" becomes "Neze", 4 characters in length</pre>
+            </li>
+
+            <li>
+              <p>Examine the server log output.</p>
+
+              <p>In NetBeans IDE, the output is visible in the GlassFish Server <span class="gui-object-action">Output</span> tab. Otherwise, view <span class="variable">domain-dir</span><code>/logs/server.log</code>.</p>
+
+              <p>The output from the interceptors appears:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">INFO: Entering method: encodeString in class javaeetutorial.decorators.CoderBean
+INFO: Entering method: codeString in class javaeetutorial.decorators.CoderImpl</pre>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BNAPH"></a><a id="JEETT00067"></a>
+
+    <h1 class="chapter"><span class="secnum">7</span> <a id="sthref227"></a>JavaServer Faces Technology</h1>
+
+    <p>JavaServer Faces technology is a server-side component framework for building Java technologybased web applications.</p>
+
+    <p>JavaServer Faces technology consists of the following:</p>
+
+    <ul>
+      <li>
+        <p>An API for representing components and managing their state; handling events, server-side validation, and data conversion; defining page navigation; supporting internationalization and accessibility; and providing extensibility for all these features</p>
+      </li>
+
+      <li>
+        <p>Tag libraries for adding components to web pages and for connecting components to server-side objects</p>
+      </li>
+    </ul>
+
+    <p>JavaServer Faces technology provides a well-defined programming model and various tag libraries. The tag libraries contain tag handlers that implement the component tags. These features significantly ease the burden of building and maintaining web applications with server-side user interfaces (UIs). With minimal effort, you can complete the following tasks.</p>
+
+    <ul>
+      <li>
+        <p>Create a web page.</p>
+      </li>
+
+      <li>
+        <p>Drop components onto a web page by adding component tags.</p>
+      </li>
+
+      <li>
+        <p>Bind components on a page to server-side data.</p>
+      </li>
+
+      <li>
+        <p>Wire component-generated events to server-side application code.</p>
+      </li>
+
+      <li>
+        <p>Save and restore application state beyond the life of server requests.</p>
+      </li>
+
+      <li>
+        <p>Reuse and extend components through customization.</p>
+      </li>
+    </ul>
+
+    <p>This chapter provides an overview of JavaServer Faces technology. After explaining what a JavaServer Faces application is and reviewing some of the primary benefits of using JavaServer Faces technology, this chapter describes the process of creating a simple JavaServer Faces application. This chapter also introduces the JavaServer Faces lifecycle by describing the example JavaServer Faces application and its progression through the lifecycle stages.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/jsf-intro.xhtml#BNAPK">What Is a JavaServer Faces Application?</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-intro.xhtml#BNAPJ">JavaServer Faces Technology Benefits</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-intro.xhtml#GJAAM">A Simple JavaServer Faces Application</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-intro.xhtml#BNAQD">User Interface Component Model</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-intro.xhtml#BNAQL">Navigation Model</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-intro.xhtml#BNAQQ">The Lifecycle of a JavaServer Faces Application</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-intro.xhtml#GKNOJ">Partial Processing and Partial Rendering</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-intro.xhtml#BNAQY">Further Information about JavaServer Faces Technology</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BNAPK"></a><a id="JEETT00330"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">7.1</span> <a id="sthref228"></a>What Is a JavaServer Faces Application?</h1>
+
+      <p><a id="sthref229"></a>The functionality provided by a JavaServer Faces application is similar to that of any other Java web application. A typical JavaServer Faces application includes the following parts.</p>
+
+      <ul>
+        <li>
+          <p>A set of web pages in which components are laid out.</p>
+        </li>
+
+        <li>
+          <p>A set of tags to add components to the web page.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref230"></a>A set of <span class="glossaryterm">managed beans</span>, which are lightweight, container-managed objects (POJOs). In a JavaServer Faces application, managed beans serve as backing beans, which define properties and functions for UI components on a page.</p>
+        </li>
+
+        <li>
+          <p>A web deployment descriptor (<code>web.xml</code> file).</p>
+        </li>
+
+        <li>
+          <p>Optionally, one or more <span class="bold">application configuration resource files</span>, such as a <code>faces-config.xml</code> file, which can be used to define page navigation rules and configure beans and other custom objects, such as custom components.</p>
+        </li>
+
+        <li>
+          <p>Optionally, a set of custom objects, which can include custom components, validators, converters, or listeners, created by the application developer.</p>
+        </li>
+
+        <li>
+          <p>Optionally, a set of custom tags for representing custom objects on the page.</p>
+        </li>
+      </ul>
+
+      <p><a href="../Text/jsf-intro.xhtml#BNAPI">Figure 7-1</a> shows the interaction between client and server in a typical JavaServer Faces application. In response to a client request, a web page is rendered by the web container that implements JavaServer Faces technology.</p>
+
+      <div class="figure">
+        <a id="BNAPI"></a><a id="JEETT00013"></a>
+
+        <p class="titleinfigure">Figure 7-1 Responding to a Client Request for a JavaServer Faces Page</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 7-1 follows" longdesc="img_text/jeett_dt_014.htm" src="../Images/jeett_dt_014.png" style="line-height: 1.6em;" title="Description of Figure 7-1 follows" /></div>Description of "Figure 7-1 Responding to a Client Request for a JavaServer Faces Page"<br />
+      </div>
+
+      <p>The web page, <code>myfacelet.xhtml</code>, is built using JavaServer Faces component tags. Component tags are used to add components to the <code>view</code> (represented by <code>myView</code> in the diagram), which is the server-side representation of the page. In addition to components, the web page can also reference objects, such as the following:</p>
+
+      <ul>
+        <li>
+          <p>Any event listeners, validators, and converters that are registered on the components</p>
+        </li>
+
+        <li>
+          <p>The JavaBeans components that capture the data and process the application-specific functionality of the components</p>
+        </li>
+      </ul>
+
+      <p>On request from the client, the view is rendered as a response. Rendering is the process whereby, based on the server-side view, the web container generates output, such as HTML or XHTML, that can be read by the client, such as a browser.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAPJ"></a><a id="JEETT00331"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">7.2</span> <a id="sthref232"></a>JavaServer Faces Technology Benefits</h1>
+
+      <p>One of the greatest advantages of JavaServer Faces technology is that it offers a clean separation between behavior and presentation for web applications. A JavaServer Faces application can map HTTP requests to component-specific event handling and manage components as stateful objects on the server. JavaServer Faces technology allows you to build web applications that implement the finer-grained separation of behavior and presentation that is traditionally offered by client-side UI architectures.</p>
+
+      <p>The separation of logic from presentation also allows each member of a web application development team to focus on a single piece of the development process and provides a simple programming model to link the pieces. For example, page authors with no programming expertise can use JavaServer Faces technology tags in a web page to link to server-side objects without writing any scripts.</p>
+
+      <p>Another important goal of JavaServer Faces technology is to leverage familiar component and web-tier concepts without limiting you to a particular scripting technology or markup language. JavaServer Faces technology APIs are layered directly on top of the Servlet API, as shown in <a href="../Text/jsf-intro.xhtml#GJEPW">Figure 7-2</a>.</p>
+
+      <div class="figure">
+        <a id="GJEPW"></a><a id="JEETT00014"></a>
+
+        <p class="titleinfigure">Figure 7-2 Java Web Application Technologies</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 7-2 follows" longdesc="img_text/jeett_dt_015.htm" src="../Images/jeett_dt_015.png" style="line-height: 1.6em;" title="Description of Figure 7-2 follows" /></div>
+      </div>
+
+      <div class="figure">
+        Description of "Figure 7-2 Java Web Application Technologies"<br />
+        <br />
+      </div>
+
+      <p>This layering of APIs enables several important application use cases, such as using different presentation technologies, creating your own custom components directly from the component classes, and generating output for various client devices.</p>
+
+      <p>Facelets technology, available as part of JavaServer Faces technology, is the preferred presentation technology for building JavaServer Faces technologybased web applications. For more information on Facelets technology features, see <a href="../Text/jsf-facelets.xhtml#GIEPX">Chapter 8, "Introduction to Facelets"</a>.</p>
+
+      <p>Facelets technology offers several advantages.</p>
+
+      <ul>
+        <li>
+          <p>Code can be reused and extended for components through the templating and composite component features.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref234"></a>You can use annotations to automatically register the managed bean as a resource available for JavaServer Faces applications. In addition, implicit navigation rules allow developers to quickly configure page navigation (see <a href="../Text/jsf-intro.xhtml#BNAQL">Navigation Model</a> for details). These features reduce the manual configuration process for applications.</p>
+        </li>
+
+        <li>
+          <p>Most important, JavaServer Faces technology provides a rich architecture for managing component state, processing component data, validating user input, and handling events.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GJAAM"></a><a id="JEETT00332"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">7.3</span> <a id="sthref235"></a>A Simple JavaServer Faces Application</h1>
+
+      <p>JavaServer Faces technology provides an easy and user-friendly process for creating web applications. Developing a simple JavaServer Faces application typically requires the following tasks, which have already been described in <a href="../Text/webapp.xhtml#BNADX">A Web Module That Uses JavaServer Faces Technology: The hello1 Example</a>:</p>
+
+      <ul>
+        <li>
+          <p>Creating web pages using component tags</p>
+        </li>
+
+        <li>
+          <p>Developing managed beans</p>
+        </li>
+
+        <li>
+          <p>Mapping the <code>FacesServlet</code> instance</p>
+        </li>
+      </ul>
+
+      <p>The <code>hello1</code> example includes a managed bean and two Facelets web pages. When accessed by a client, the first web page asks the user for his or her name, and the second page responds by providing a greeting.</p>
+
+      <p>For details on Facelets technology, see <a href="../Text/jsf-facelets.xhtml#GIEPX">Chapter 8, "Introduction to Facelets"</a>. For details on using EL expressions, see <a href="../Text/jsf-el.xhtml#GJDDD">Chapter 9, "Expression Language"</a>. For details on the JavaServer Faces programming model and building web pages using JavaServer Faces technology, see <a href="../Text/jsf-page.xhtml#BNAQZ">Chapter 10, "Using JavaServer Faces Technology in Web Pages"</a>.</p>
+
+      <p>Every web application has a lifecycle. Common tasks, such as handling incoming requests, decoding parameters, modifying and saving state, and rendering web pages to the browser, are all performed during a web application lifecycle. Some web application frameworks hide the details of the lifecycle from you, whereas others require you to manage them manually.</p>
+
+      <p>By default, JavaServer Faces automatically handles most of the lifecycle actions for you. However, it also exposes the various stages of the request lifecycle so that you can modify or perform different actions if your application requirements warrant it.</p>
+
+      <p>The lifecycle of a JavaServer Faces application starts and ends with the following activity: The client makes a request for the web page, and the server responds with the page. The lifecycle consists of two main phases: Execute and Render.</p>
+
+      <p>During the <span class="glossaryterm">Execute</span> phase, several actions can take place.</p>
+
+      <ul>
+        <li>
+          <p>The application view is built or restored.</p>
+        </li>
+
+        <li>
+          <p>The request parameter values are applied.</p>
+        </li>
+
+        <li>
+          <p>Conversions and validations are performed for component values.</p>
+        </li>
+
+        <li>
+          <p>Managed beans are updated with component values.</p>
+        </li>
+
+        <li>
+          <p>Application logic is invoked.</p>
+        </li>
+      </ul>
+
+      <p>For a first (initial) request, only the view is built. For subsequent (postback) requests, some or all of the other actions can take place.</p>
+
+      <p>In the <span class="glossaryterm">Render</span> phase, the requested view is rendered as a response to the client. Rendering is typically the process of generating output, such as HTML or XHTML, that can be read by the client, usually a browser.</p>
+
+      <p>The following short description of the example JavaServer Faces application passing through its lifecycle summarizes the activity that takes place behind the scenes.</p>
+
+      <p>The <code>hello1</code> example application goes through the following stages when it is deployed on GlassFish Server.</p>
+
+      <ol>
+        <li>
+          <p>When the <code>hello1</code> application is built and deployed on GlassFish Server, the application is in an uninitiated state.</p>
+        </li>
+
+        <li>
+          <p>When a client makes an initial request for the <code>index.xhtml</code> web page, the <code>hello1</code> Facelets application is compiled.</p>
+        </li>
+
+        <li>
+          <p>The compiled Facelets application is executed, and a new component tree is constructed for the <code>hello1</code> application and placed in a <code>FacesContext</code>.</p>
+        </li>
+
+        <li>
+          <p>The component tree is populated with the component and the managed bean property associated with it, represented by the EL expression <code>hello.name</code>.</p>
+        </li>
+
+        <li>
+          <p>A new view is built, based on the component tree.</p>
+        </li>
+
+        <li>
+          <p>The view is rendered to the requesting client as a response.</p>
+        </li>
+
+        <li>
+          <p>The component tree is destroyed automatically.</p>
+        </li>
+
+        <li>
+          <p>On subsequent (postback) requests, the component tree is rebuilt, and the saved state is applied.</p>
+        </li>
+      </ol>
+
+      <p>For full details on the lifecycle, see <a href="../Text/jsf-intro.xhtml#BNAQQ">The Lifecycle of a JavaServer Faces Application</a>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAQD"></a><a id="JEETT00361"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">7.4</span> User Interface Component Model</h1>
+
+      <p>In addition to the lifecycle description, an overview of JavaServer Faces architecture provides better understanding of the technology.</p>
+
+      <p>JavaServer Faces components are the building blocks of a JavaServer Faces view. A component can be a user interface (UI) component or a non-UI component.</p>
+
+      <p>JavaServer Faces UI components are configurable, reusable elements that compose the user interfaces of JavaServer Faces applications. A component can be simple, such as a button, or can be compound, such as a table composed of multiple components.</p>
+
+      <p>JavaServer Faces technology provides a rich, flexible component architecture that includes the following:</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref236"></a>A set of <code>javax.faces.component.UIComponent</code> classes for specifying the state and behavior of UI components</p>
+        </li>
+
+        <li>
+          <p><a id="sthref237"></a>A rendering model that defines how to render the components in various ways</p>
+        </li>
+
+        <li>
+          <p><a id="sthref238"></a><a id="sthref239"></a>A conversion model that defines how to register data converters onto a component</p>
+        </li>
+
+        <li>
+          <p><a id="sthref240"></a>An event and listener model that defines how to handle component events</p>
+        </li>
+
+        <li>
+          <p><a id="sthref241"></a><a id="sthref242"></a>A validation model that defines how to register validators onto a component</p>
+        </li>
+      </ul>
+
+      <p>This section briefly describes each of these pieces of the component architecture.</p><a id="BNAQE"></a><a id="JEETT00959"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.4.1</span> User Interface Component Classes</h2>
+
+        <p><a id="sthref243"></a><a id="sthref244"></a>JavaServer Faces technology provides a set of UI component classes and associated behavioral interfaces that specify all the UI component functionality, such as holding component state, maintaining a reference to objects, and driving event handling and rendering for a set of standard components.</p>
+
+        <p>The component classes are completely extensible, allowing component writers to create their own custom components. See <a href="../Text/jsf-custom.xhtml#BNAVG">Chapter 15, "Creating Custom UI Components and Other Custom Objects"</a> for more information.</p>
+
+        <p><a id="sthref245"></a>The abstract base class for all components is <code>javax.faces.component.UIComponent</code>. JavaServer Faces UI component classes extend the <code>UIComponentBase</code> class (a subclass of <code>UIComponent</code>), which defines the default state and behavior of a component. The following set of component classes is included with JavaServer Faces technology.</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref246"></a><code>UIColumn</code>: Represents a single column of data in a <code>UIData</code> component.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref247"></a><code>UICommand</code>: Represents a control that fires actions when activated.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref248"></a><code>UIData</code>: Represents a data binding to a collection of data represented by a <code>javax.faces.model.DataModel</code> instance.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref249"></a><code>UIForm</code>: Represents an input form to be presented to the user. Its child components represent (among other things) the input fields to be included when the form is submitted. This component is analogous to the <code>form</code> tag in HTML.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref250"></a><code>UIGraphic</code>: Displays an image.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref251"></a><code>UIInput</code>: Takes data input from a user. This class is a subclass of <code>UIOutput</code>.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref252"></a><code>UIMessage</code>: Displays a localized error message.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref253"></a><code>UIMessages</code>: Displays a set of localized error messages.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref254"></a><code>UIOutcomeTarget</code>: Displays a link in the form of a link or a button.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref255"></a><code>UIOutput</code>: Displays data output on a page.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref256"></a><code>UIPanel</code>: Manages the layout of its child components.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref257"></a><code>UIParameter</code>: Represents substitution parameters.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref258"></a><code>UISelectBoolean</code>: Allows a user to set a <code>boolean</code> value on a control by selecting or deselecting it. This class is a subclass of the <code>UIInput</code> class.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref259"></a><code>UISelectItem</code>: Represents a single item in a set of items.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref260"></a><code>UISelectItems</code>: Represents an entire set of items.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref261"></a><code>UISelectMany</code>: Allows a user to select multiple items from a group of items. This class is a subclass of the <code>UIInput</code> class.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref262"></a><code>UISelectOne</code>: Allows a user to select one item from a group of items. This class is a subclass of the <code>UIInput</code> class.</p>
+          </li>
+
+          <li>
+            <p><code>UIViewParameter</code>: Represents the query parameters in a request. This class is a subclass of the <code>UIInput</code> class.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref263"></a><code>UIViewRoot</code>: Represents the root of the component tree.</p>
+          </li>
+        </ul>
+
+        <p><a id="sthref264"></a>In addition to extending <code>UIComponentBase</code>, the component classes also implement one or more <span class="glossaryterm">behavioral interfaces</span>, each of which defines certain behavior for a set of components whose classes implement the interface.</p>
+
+        <p>These behavioral interfaces, all defined in the <code>javax.faces.component</code> package unless otherwise stated, are as follows.</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref265"></a><code>ActionSource</code>: Indicates that the component can fire an action event. This interface is intended for use with components based on JavaServer Faces technology 1.1_01 and earlier versions. This interface is deprecated in JavaServer Faces 2.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref266"></a><code>ActionSource2</code>: Extends <code>ActionSource</code> and therefore provides the same functionality. However, it allows components to use the Expression Language (EL) when they are referencing methods that handle action events.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref267"></a><code>EditableValueHolder</code>: Extends <code>ValueHolder</code> and specifies additional features for editable components, such as validation and emitting value-change events.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref268"></a><a id="sthref269"></a><code>NamingContainer</code>: Mandates that each component rooted at this component have a unique ID.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref270"></a><code>StateHolder</code>: Denotes that a component has state that must be saved between requests.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref271"></a><code>ValueHolder</code>: Indicates that the component maintains a local value as well as the option of accessing data in the model tier.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref272"></a><code>javax.faces.event.SystemEventListenerHolder</code>: Maintains a list of <code>javax.faces.event.SystemEventListener</code> instances for each type of <code>javax.faces.event.SystemEvent</code> defined by that class.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref273"></a><code>javax.faces.component.behavior.ClientBehaviorHolder</code>: Adds the ability to attach <code>javax.faces.component.behavior.ClientBehavior</code> instances, such as a reusable script.</p>
+          </li>
+        </ul>
+
+        <p><code>UICommand</code> implements <code>ActionSource2</code> and <code>StateHolder</code>. <code>UIOutput</code> and component classes that extend <code>UIOutput</code> implement <code>StateHolder</code> and <code>ValueHolder</code>. <code>UIInput</code> and component classes that extend <code>UIInput</code> implement <code>EditableValueHolder</code>, <code>StateHolder</code>, and <code>ValueHolder</code>. <code>UIComponentBase</code> implements <code>StateHolder</code>.</p>
+
+        <p>Only component writers will need to use the component classes and behavioral interfaces directly. Page authors and application developers will use a standard component by including a tag that represents it on a page. Most of the components can be rendered in different ways on a page. For example, a <code>UICommand</code> component can be rendered as a button or a link.</p>
+
+        <p>The next section explains how the rendering model works and how page authors can choose to render the components by selecting the appropriate tags.</p>
+      </div><a id="BNAQF"></a><a id="JEETT00960"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.4.2</span> Component Rendering Model</h2>
+
+        <p><a id="sthref274"></a><a id="sthref275"></a>The JavaServer Faces component architecture is designed such that the functionality of the components is defined by the component classes, whereas the component rendering can be defined by a separate renderer class. This design has several benefits, including the following.</p>
+
+        <ul>
+          <li>
+            <p>Component writers can define the behavior of a component once but create multiple renderers, each of which defines a different way to render the component to the same client or to different clients.</p>
+          </li>
+
+          <li>
+            <p>Page authors and application developers can change the appearance of a component on the page by selecting the tag that represents the appropriate combination of component and renderer.</p>
+          </li>
+        </ul>
+
+        <p><a id="sthref276"></a>A <span class="glossaryterm">render kit</span> defines how component classes map to component tags that are appropriate for a particular client. The JavaServer Faces implementation includes a standard HTML render kit for rendering to an HTML client.</p>
+
+        <p><a id="sthref277"></a><a id="sthref278"></a>The render kit defines a set of <code>javax.faces.render.Renderer</code> classes for each component that it supports. Each <code>Renderer</code> class defines a different way to render the particular component to the output defined by the render kit. For example, a <code>UISelectOne</code> component has three different renderers. One of them renders the component as a group of options. Another renders the component as a combo box. The third one renders the component as a list box. Similarly, a <code>UICommand</code> component can be rendered as a button or a link, using the <code>h:commandButton</code> or <code>h:commandLink</code> tag. The <code>command</code> part of each tag corresponds to the <code>UICommand</code> class, specifying the functionality, which is to fire an action. The <code>Button</code> or <code>Link</code> part of each tag corresponds to a separate <code>Renderer</code> class that defines how the component appears on the page.</p>
+
+        <p><a id="sthref279"></a><a id="sthref280"></a><a id="sthref281"></a>Each custom tag defined in the standard HTML render kit is composed of the component functionality (defined in the <code>UIComponent</code> class) and the rendering attributes (defined by the <code>Renderer</code> class).</p>
+
+        <p><a id="sthref282"></a><a id="sthref283"></a>The section <a href="../Text/jsf-page.xhtml#BNARF">Adding Components to a Page Using HTML Tag Library Tags</a> lists all supported component tags and illustrates how to use the tags in an example.</p>
+
+        <p>The JavaServer Faces implementation provides a custom tag library for rendering components in HTML.</p>
+      </div><a id="BNAQI"></a><a id="JEETT00961"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.4.3</span> <a id="sthref284"></a>Conversion Model</h2>
+
+        <p><a id="sthref285"></a>A JavaServer Faces application can optionally associate a component with server-side object data. This object is a JavaBeans component, such as a managed bean. An application gets and sets the object data for a component by calling the appropriate object properties for that component.</p>
+
+        <p><a id="sthref286"></a>When a component is bound to an object, the application has two views of the component's data.</p>
+
+        <ul>
+          <li>
+            <p>The model view, in which data is represented as data types, such as <code>int</code> or <code>long</code>.</p>
+          </li>
+
+          <li>
+            <p>The presentation view, in which data is represented in a manner that can be read or modified by the user. For example, a <code>java.util.Date</code> might be represented as a text string in the format <code>mm/dd/yy</code> or as a set of three text strings.</p>
+          </li>
+        </ul>
+
+        <p>The JavaServer Faces implementation automatically converts component data between these two views when the bean property associated with the component is of one of the types supported by the component's data. For example, if a <code>UISelectBoolean</code> component is associated with a bean property of type <code>java.lang.Boolean</code>, the JavaServer Faces implementation will automatically convert the component's data from <code>String</code> to <code>Boolean</code>. In addition, some component data must be bound to properties of a particular type. For example, a <code>UISelectBoolean</code> component must be bound to a property of type <code>boolean</code> or <code>java.lang.Boolean</code>.</p>
+
+        <p><a id="sthref287"></a><a id="sthref288"></a>Sometimes you might want to convert a component's data to a type other than a standard type, or you might want to convert the format of the data. To facilitate this, JavaServer Faces technology allows you to register a <code>javax.faces.convert.Converter</code> implementation on <code>UIOutput</code> components and components whose classes subclass <code>UIOutput</code>. If you register the <code>Converter</code> implementation on a component, the <code>Converter</code> implementation converts the component's data between the two views.</p>
+
+        <p><a id="sthref289"></a><a id="sthref290"></a>You can either use the standard converters supplied with the JavaServer Faces implementation or create your own custom converter. Custom converter creation is covered in <a href="../Text/jsf-custom.xhtml#BNAVG">Chapter 15, "Creating Custom UI Components and Other Custom Objects"</a>.</p>
+      </div><a id="GIREH"></a><a id="JEETT00962"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.4.4</span> <a id="sthref291"></a><a id="sthref292"></a>Event and Listener Model</h2>
+
+        <p>The JavaServer Faces event and listener model is similar to the JavaBeans event model in that it has strongly typed event classes and listener interfaces that an application can use to handle events generated by components.</p>
+
+        <p>The JavaServer Faces specification defines three types of events: application events, system events, and data-model events.</p>
+
+        <p><span class="glossaryterm">Application events</span> are tied to a particular application and are generated by a <code>UIComponent</code>. They represent the standard events available in previous versions of JavaServer Faces technology.</p>
+
+        <p><a id="sthref293"></a><a id="sthref294"></a>An event object identifies the component that generated the event and stores information about the event. To be notified of an event, an application must provide an implementation of the listener class and must register it on the component that generates the event. When the user activates a component, such as by clicking a button, an event is fired. This causes the JavaServer Faces implementation to invoke the listener method that processes the event.</p>
+
+        <p>JavaServer Faces supports two kinds of application events: action events and value-change events.</p>
+
+        <p><a id="sthref295"></a>An <span class="glossaryterm">action event</span> (class <code>javax.faces.event.ActionEvent</code>) occurs when the user activates a component that implements <code>ActionSource</code>. These components include buttons and links.</p>
+
+        <p><a id="sthref296"></a><a id="sthref297"></a>A <span class="glossaryterm">value-change event</span> (class <code>javax.faces.event.ValueChangeEvent</code>) occurs when the user changes the value of a component represented by <code>UIInput</code> or one of its subclasses. An example is selecting a check box, an action that results in the component's value changing to <code>true</code>. The component types that can generate these types of events are the <code>UIInput</code>, <code>UISelectOne</code>, <code>UISelectMany</code>, and <code>UISelectBoolean</code> components. Value-change events are fired only if no validation errors are detected.</p>
+
+        <p><a id="sthref298"></a><a id="sthref299"></a>Depending on the value of the <code>immediate</code> property (see <a href="../Text/jsf-page.xhtml#BNARI">The immediate Attribute</a>) of the component emitting the event, action events can be processed during the Invoke Application phase or the Apply Request Values phase, and value-change events can be processed during the Process Validations phase or the Apply Request Values phase.</p>
+
+        <p><span class="glossaryterm">System events</span> are generated by an <code>Object</code> rather than a <code>UIComponent</code>. They are generated during the execution of an application at predefined times. They are applicable to the entire application rather than to a specific component.</p>
+
+        <p>A <span class="glossaryterm">data-model event</span> occurs when a new row of a <code>UIData</code> component is selected.</p>
+
+        <p>There are two ways to cause your application to react to action events or value-change events that are emitted by a standard component:</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref300"></a>Implement an event listener class to handle the event, and register the listener on the component by nesting either an <code>f:valueChangeListener</code> tag or an <code>f:actionListener</code> tag inside the component tag.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref301"></a><a id="sthref302"></a>Implement a method of a managed bean to handle the event, and refer to the method with a method expression from the appropriate attribute of the component's tag.</p>
+          </li>
+        </ul>
+
+        <p>See <a href="../Text/jsf-custom.xhtml#BNAUT">Implementing an Event Listener</a> for information on how to implement an event listener. See <a href="../Text/jsf-page-core.xhtml#BNASZ">Registering Listeners on Components</a> for information on how to register the listener on a component.</p>
+
+        <p>See <a href="../Text/jsf-develop.xhtml#BNAVD">Writing a Method to Handle an Action Event</a> and <a href="../Text/jsf-page-core.xhtml#BNAVF">Writing a Method to Handle a Value-Change Event</a> for information on how to implement managed bean methods that handle these events.</p>
+
+        <p>See <a href="../Text/jsf-page-core.xhtml#BNATN">Referencing a Managed Bean Method</a> for information on how to refer to the managed bean method from the component tag.</p>
+
+        <p>When emitting events from custom components, you must implement the appropriate event class and manually queue the event on the component in addition to implementing an event listener class or a managed bean method that handles the event. <a href="../Text/jsf-custom.xhtml#BNAWD">Handling Events for Custom Components</a> explains how to do this.</p>
+      </div><a id="BNAQK"></a><a id="JEETT00963"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.4.5</span> <a id="sthref303"></a>Validation Model</h2>
+
+        <p><a id="sthref304"></a><a id="sthref305"></a>JavaServer Faces technology supports a mechanism for validating the local data of editable components (such as text fields). This validation occurs before the corresponding model data is updated to match the local value.</p>
+
+        <p><a id="sthref306"></a><a id="sthref307"></a><a id="sthref308"></a>Like the conversion model, the validation model defines a set of standard classes for performing common data validation checks. The JavaServer Faces core tag library also defines a set of tags that correspond to the standard <code>javax.faces.validator.Validator</code> implementations. See <a href="../Text/jsf-page-core.xhtml#BNATC">Using the Standard Validators</a> for a list of all the standard validation classes and corresponding tags.</p>
+
+        <p>Most of the tags have a set of attributes for configuring the validator's properties, such as the minimum and maximum allowable values for the component's data. The page author registers the validator on a component by nesting the validator's tag within the component's tag.</p>
+
+        <p>In addition to validators that are registered on the component, you can declare a default validator that is registered on all <code>UIInput</code> components in the application. For more information on default validators, see <a href="../Text/jsf-configure.xhtml#GIREB">Using Default Validators</a>.</p>
+
+        <p>The validation model also allows you to create your own custom validator and corresponding tag to perform custom validation. The validation model provides two ways to implement custom validation.</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref309"></a>Implement a <code>Validator</code> interface that performs the validation.</p>
+          </li>
+
+          <li>
+            <p>Implement a managed bean method that performs the validation.</p>
+          </li>
+        </ul>
+
+        <p>If you are implementing a <code>Validator</code> interface, you must also do the following.</p>
+
+        <ul>
+          <li>
+            <p>Register the <code>Validator</code> implementation with the application.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref310"></a><a id="sthref311"></a><a id="sthref312"></a>Create a custom tag or use an <code>f:validator</code> tag to register the validator on the component.</p>
+          </li>
+        </ul>
+
+        <p>In the previously described standard validation model, the validator is defined for each input component on a page. The Bean Validation model allows the validator to be applied to all fields in a page. See <a href="../Text/bean-validation.xhtml#CHDGJIIA">Chapter 21, "Introduction to Bean Validation"</a> and <a href="../Text/bean-validation-advanced.xhtml#GKAHP">Chapter 22, "Bean Validation: Advanced Topics"</a> for more information on Bean Validation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAQL"></a><a id="JEETT00964"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">7.5</span> <a id="sthref313"></a><a id="sthref314"></a>Navigation Model</h1>
+
+      <p>The JavaServer Faces navigation model makes it easy to define page navigation and to handle any additional processing that is needed to choose the sequence in which pages are loaded.</p>
+
+      <p><a id="sthref315"></a>In JavaServer Faces technology, <span class="glossaryterm">navigation</span> is a set of rules for choosing the next page or view to be displayed after an application action, such as when a button or link is clicked.</p>
+
+      <p><a id="sthref316"></a><a id="sthref317"></a>Navigation can be implicit or user-defined. <span class="glossaryterm">Implicit navigation</span> comes into play when user-defined navigation rules are not configured in the application configuration resource files.</p>
+
+      <p>When you add a component such as a <code>commandButton</code> to a Facelets page, and assign another page as the value for its <code>action</code> property, the default navigation handler will try to match a suitable page within the application implicitly. In the following example, the default navigation handler will try to locate a page named <code>response.xhtml</code> within the application and navigate to it:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandButton value="submit" action="response"&gt;</pre>
+
+      <p>User-defined navigation rules are declared in zero or more application configuration resource files, such as <code>faces-config.xml</code>, by using a set of XML elements. The default structure of a navigation rule is as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;navigation-rule&gt;
+    &lt;description&gt;&lt;/description
+    &lt;from-view-id&gt;&lt;/from-view-id&gt;
+    &lt;navigation-case&gt;
+        &lt;from-action&gt;&lt;/from-action&gt;
+        &lt;from-outcome&gt;&lt;/from-outcome&gt;
+        &lt;if&gt;&lt;/if&gt;
+        &lt;to-view-id&gt;&lt;/to-view-id&gt;
+    &lt;/navigation-case&gt;
+&lt;/navigation-rule&gt;</pre>
+
+      <p>User-defined navigation is handled as follows.</p>
+
+      <ul>
+        <li>
+          <p>Define the rules in the application configuration resource file.</p>
+        </li>
+
+        <li>
+          <p>Refer to an outcome <code>String</code> from the button or link component's <code>action</code> attribute. This outcome <code>String</code> is used by the JavaServer Faces implementation to select the navigation rule.</p>
+        </li>
+      </ul>
+
+      <p>Here is an example navigation rule:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;navigation-rule&gt;
+    &lt;from-view-id&gt;/greeting.xhtml&lt;/from-view-id&gt;
+    &lt;navigation-case&gt;
+        &lt;from-outcome&gt;success&lt;/from-outcome&gt;
+        &lt;to-view-id&gt;/response.xhtml&lt;/to-view-id&gt;
+    &lt;/navigation-case&gt;
+&lt;/navigation-rule&gt;<span class="Apple-tab-span" style="white-space:pre">   </span></pre>
+
+      <p>This rule states that when a command component (such as an <code>h:commandButton</code> or an <code>h:commandLink</code>) on <code>greeting.xhtml</code> is activated, the application will navigate from the <code>greeting.xhtml</code> page to the <code>response.xhtml</code> page if the outcome referenced by the button component's tag is <code>success</code>. Here is an <code>h:commandButton</code> tag from <code>greeting.xhtml</code> that would specify a logical outcome of <code>success</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandButton id="submit" value="Submit" action="success"/&gt;</pre>
+
+      <p>As the example demonstrates, each <code>navigation-rule</code> element defines how to get from one page (specified in the <code>from-view-id</code> element) to the other pages of the application. The <code>navigation-rule</code> elements can contain any number of <code>navigation-case</code> elements, each of which defines the page to open next (defined by <code>to-view-id</code>) based on a logical outcome (defined by <code>from-outcome</code>).</p>
+
+      <p><a id="sthref318"></a><a id="sthref319"></a><a id="sthref320"></a>In more complicated applications, the logical outcome can also come from the return value of an <span class="glossaryterm">action method</span> in a managed bean. This method performs some processing to determine the outcome. For example, the method can check whether the password the user entered on the page matches the one on file. If it does, the method might return <code>success</code>; otherwise, it might return <code>failure</code>. An outcome of <code>failure</code> might result in the logon page being reloaded. An outcome of <code>success</code> might cause the page displaying the user's credit card activity to open. If you want the outcome to be returned by a method on a bean, you must refer to the method using a method expression with the <code>action</code> attribute, as shown by this example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandButton id="submit" value="Submit" 
+                 action="#{cashierBean.submit}" /&gt;</pre>
+
+      <p><a id="sthref321"></a>When the user clicks the button represented by this tag, the corresponding component generates an action event. This event is handled by the default <code>javax.faces.event.ActionListener</code> instance, which calls the action method referenced by the component that triggered the event. The action method returns a logical outcome to the action listener.</p>
+
+      <p><a id="sthref322"></a>The listener passes the logical outcome and a reference to the action method that produced the outcome to the default <code>javax.faces.application.NavigationHandler</code>. The <code>NavigationHandler</code> selects the page to display next by matching the outcome or the action method reference against the navigation rules in the application configuration resource file by the following process.</p>
+
+      <ol>
+        <li>
+          <p>The <code>NavigationHandler</code> selects the navigation rule that matches the page currently displayed.</p>
+        </li>
+
+        <li>
+          <p>It matches the outcome or the action method reference that it received from the default <code>javax.faces.event.ActionListener</code> with those defined by the navigation cases.</p>
+        </li>
+
+        <li>
+          <p>It tries to match both the method reference and the outcome against the same navigation case.</p>
+        </li>
+
+        <li>
+          <p>If the previous step fails, the navigation handler attempts to match the outcome.</p>
+        </li>
+
+        <li>
+          <p>Finally, the navigation handler attempts to match the action method reference if the previous two attempts failed.</p>
+        </li>
+
+        <li>
+          <p>If no navigation case is matched, it displays the same view again.</p>
+        </li>
+      </ol>
+
+      <p>When the <code>NavigationHandler</code> achieves a match, the Render Response phase begins. During this phase, the page selected by the <code>NavigationHandler</code> will be rendered.</p>
+
+      <p>The Duke's Tutoring case study example application uses navigation rules in the business methods that handle creating, editing, and deleting the users of the application. For example, the form for creating a student has the following <code>h:commandButton</code> tag:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandButton id="submit"
+        action="#{adminBean.createStudent(studentManager.newStudent)}"
+        value="#{bundle['action.submit']}"/&gt;</pre>
+
+      <p>The action event calls the <code>dukestutoring.ejb.AdminBean.createStudent</code> method:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public String createStudent(Student student) {    em.persist(student);    return "createdStudent";}</pre>
+
+      <p>The return value of <code>createdStudent</code> has a corresponding navigation case in the <code>faces-config.xml</code> configuration file:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public String createStudent(Student student) {
+    em.persist(student);
+    return "createdStudent";
+}</pre>
+
+      <p>After the student is created, the user is returned to the Administration index page.</p>
+
+      <p>For more information on how to define navigation rules, see <a href="../Text/jsf-configure.xhtml#BNAXF">Configuring Navigation Rules</a>.</p>
+
+      <p>For more information on how to implement action methods to handle navigation, see <a href="../Text/jsf-develop.xhtml#BNAVD">Writing a Method to Handle an Action Event</a>.</p>
+
+      <p>For more information on how to reference outcomes or action methods from component tags, see <a href="../Text/jsf-page-core.xhtml#BNATP">Referencing a Method That Performs Navigation</a>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAQQ"></a><a id="JEETT00358"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">7.6</span> <a id="sthref323"></a>The Lifecycle of a JavaServer Faces Application</h1>
+
+      <p>The lifecycle of an application refers to the various stages of processing of that application, from its initiation to its conclusion. All applications have lifecycles. During a web application lifecycle, common tasks are performed, including the following.</p>
+
+      <ul>
+        <li>
+          <p>Handling incoming requests</p>
+        </li>
+
+        <li>
+          <p>Decoding parameters</p>
+        </li>
+
+        <li>
+          <p>Modifying and saving state</p>
+        </li>
+
+        <li>
+          <p>Rendering web pages to the browser</p>
+        </li>
+      </ul>
+
+      <p>The JavaServer Faces web application framework manages lifecycle phases automatically for simple applications or allows you to manage them manually for more complex applications as required.</p>
+
+      <p>JavaServer Faces applications that use advanced features may require interaction with the lifecycle at certain phases. For example, Ajax applications use partial processing features of the lifecycle (see <a href="../Text/jsf-intro.xhtml#GKNOJ">Partial Processing and Partial Rendering</a>). A clearer understanding of the lifecycle phases is key to creating well-designed components.</p>
+
+      <p>A simplified view of the JavaServer faces lifecycle, consisting of the two main phases of a JavaServer Faces web application, is introduced in <a href="../Text/jsf-intro.xhtml#GJAAM">A Simple JavaServer Faces Application</a>. This section examines the JavaServer Faces lifecycle in more detail.</p><a id="GLPRC"></a><a id="JEETT00952"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.6.1</span> Overview of the JavaServer Faces Lifecycle</h2>
+
+        <p>The lifecycle of a JavaServer Faces application begins when the client makes an HTTP request for a page and ends when the server responds with the page, translated to HTML.</p>
+
+        <p>The lifecycle can be divided into two main phases: <span class="glossaryterm">Execute</span> and <span class="glossaryterm">Render</span>. The Execute phase is further divided into subphases to support the sophisticated component tree. This structure requires that component data be converted and validated, component events be handled, and component data be propagated to beans in an orderly fashion.</p>
+
+        <p>A JavaServer Faces page is represented by a tree of components, called a <span class="glossaryterm">view</span>. During the lifecycle, the JavaServer Faces implementation must build the view while considering the state saved from a previous submission of the page. When the client requests a page, the JavaServer Faces implementation performs several tasks, such as validating the data input of components in the view and converting input data to types specified on the server side.</p>
+
+        <p>The JavaServer Faces implementation performs all these tasks as a series of steps in the JavaServer Faces request-response lifecycle. <a href="../Text/jsf-intro.xhtml#BNAQR">Figure 7-3</a> illustrates these steps.</p>
+
+        <div class="figure">
+          <a id="BNAQR"></a><a id="JEETT00019"></a>
+
+          <p class="titleinfigure">Figure 7-3 JavaServer Faces Standard Request-Response Lifecycle</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 7-3 follows" longdesc="img_text/jeett_dt_016.htm" src="../Images/jeett_dt_016.png" style="line-height: 1.6em;" title="Description of Figure 7-3 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 7-3 JavaServer Faces Standard Request-Response Lifecycle"<br />
+          <br />
+        </div>
+
+        <p>The request-response lifecycle handles two kinds of requests: initial requests and postbacks. An <span class="glossaryterm">initial request</span> occurs when a user makes a request for a page for the first time. A <span class="glossaryterm">postback request</span> occurs when a user submits the form contained on a page that was previously loaded into the browser as a result of executing an initial request.</p>
+
+        <p>When the lifecycle handles an initial request, it executes only the Restore View and Render Response phases, because there is no user input or action to process. Conversely, when the lifecycle handles a postback, it executes all of the phases.</p>
+
+        <p><a id="sthref325"></a><a id="sthref326"></a>Usually, the first request for a JavaServer Faces page comes in from a client, as a result of clicking a link or button component on a JavaServer Faces page. To render a response that is another JavaServer Faces page, the application creates a new view and stores it in the <code>javax.faces.context.FacesContext</code> instance, which represents all of the information associated with processing an incoming request and creating a response. The application then acquires object references needed by the view and calls the <code>FacesContext.renderResponse</code> method, which forces immediate rendering of the view by skipping to the <a href="../Text/jsf-intro.xhtml#BNAQX">Render Response Phase</a> of the lifecycle, as is shown by the arrows labelled Render Response in .</p>
+
+        <p><a id="sthref327"></a>Sometimes, an application might need to redirect to a different web application resource, such as a web service, or generate a response that does not contain JavaServer Faces components. In these situations, the developer must skip the Render Response phase by calling the <code>FacesContext.responseComplete</code> method. This situation is also shown in , with the arrows labelled Response Complete.</p>
+
+        <p>The most common situation is that a JavaServer Faces component submits a request for another JavaServer Faces page. In this case, the JavaServer Faces implementation handles the request and automatically goes through the phases in the lifecycle to perform any necessary conversions, validations, and model updates and to generate the response.</p>
+
+        <p>There is one exception to the lifecycle described in this section. When a component's <code>immediate</code> attribute is set to <code>true</code>, the validation, conversion, and events associated with these components are processed during the <a href="../Text/jsf-intro.xhtml#BNAQT">Apply Request Values Phase</a> rather than in a later phase.</p>
+
+        <p>The details of the lifecycle explained in the following sections are primarily intended for developers who need to know information such as when validations, conversions, and events are usually handled and ways to change how and when they are handled. For more information on each of the lifecycle phases, download the latest JavaServer Faces Specification documentation from <code><a href="../Text/jsf-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D344">http://jcp.org/en/jsr/detail?id=344</a></code>.</p>
+
+        <p>The JavaServer Faces application lifecycle Execute phase contains the following subphases:</p>
+
+        <ul>
+          <li>
+            <p><a href="../Text/jsf-intro.xhtml#BNAQS">Restore View Phase</a></p>
+          </li>
+
+          <li>
+            <p><a href="../Text/jsf-intro.xhtml#BNAQT">Apply Request Values Phase</a></p>
+          </li>
+
+          <li>
+            <p><a href="../Text/jsf-intro.xhtml#GJSBP">Process Validations Phase</a></p>
+          </li>
+
+          <li>
+            <p><a href="../Text/jsf-intro.xhtml#BNAQV">Update Model Values Phase</a></p>
+          </li>
+
+          <li>
+            <p><a href="../Text/jsf-intro.xhtml#BNAQW">Invoke Application Phase</a></p>
+          </li>
+
+          <li>
+            <p><a href="../Text/jsf-intro.xhtml#BNAQX">Render Response Phase</a></p>
+          </li>
+        </ul>
+      </div><a id="BNAQS"></a><a id="JEETT00953"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.6.2</span> Restore View Phase</h2>
+
+        <p><a id="sthref328"></a>When a request for a JavaServer Faces page is made, usually by an action, such as when a link or a button component is clicked, the JavaServer Faces implementation begins the Restore View phase.</p>
+
+        <p><a id="sthref329"></a><a id="sthref330"></a><a id="sthref331"></a><a id="sthref332"></a><a id="sthref333"></a>During this phase, the JavaServer Faces implementation builds the view of the page, wires event handlers and validators to components in the view, and saves the view in the <code>FacesContext</code> instance, which contains all the information needed to process a single request. All the application's components, event handlers, converters, and validators have access to the <code>FacesContext</code> instance.</p>
+
+        <p>If the request for the page is an initial request, the JavaServer Faces implementation creates an empty view during this phase and the lifecycle advances to the Render Response phase, during which the empty view is populated with the components referenced by the tags in the page.</p>
+
+        <p>If the request for the page is a postback, a view corresponding to this page already exists in the <code>FacesContext</code> instance. During this phase, the JavaServer Faces implementation restores the view by using the state information saved on the client or the server.</p>
+      </div><a id="BNAQT"></a><a id="JEETT00954"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.6.3</span> Apply Request Values Phase</h2>
+
+        <p><a id="sthref334"></a><a id="sthref335"></a><a id="sthref336"></a>After the component tree is restored during a postback request, each component in the tree extracts its new value from the request parameters by using its <code>decode</code> (<code>processDecodes()</code>) method. The value is then stored locally on each component.</p>
+
+        <p><a id="sthref337"></a><a id="sthref338"></a>If any <code>decode</code> methods or event listeners have called the <code>renderResponse</code> method on the current <code>FacesContext</code> instance, the JavaServer Faces implementation skips to the Render Response phase.</p>
+
+        <p>If any events have been queued during this phase, the JavaServer Faces implementation broadcasts the events to interested listeners.</p>
+
+        <p>If some components on the page have their <code>immediate</code> attributes (see <a href="../Text/jsf-page.xhtml#BNARI">The immediate Attribute</a>) set to <code>true</code>, then the validations, conversions, and events associated with these components will be processed during this phase. If any conversion fails, an error message associated with the component is generated and queued on <code>FacesContext</code>. This message will be displayed during the Render Response phase, along with any validation errors resulting from the Process Validations phase.</p>
+
+        <p>At this point, if the application needs to redirect to a different web application resource or generate a response that does not contain any JavaServer Faces components, it can call the <code>FacesContext.responseComplete</code> method.</p>
+
+        <p>At the end of this phase, the components are set to their new values, and messages and events have been queued.</p>
+
+        <p>If the current request is identified as a partial request, the partial context is retrieved from the <code>FacesContext</code>, and the partial processing method is applied.</p>
+      </div><a id="GJSBP"></a><a id="JEETT00955"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.6.4</span> Process Validations Phase</h2>
+
+        <p><a id="sthref339"></a><a id="sthref340"></a>During this phase, the JavaServer Faces implementation processes all validators registered on the components in the tree by using its <code>validate</code> (<code>processValidators</code>) method. It examines the component attributes that specify the rules for the validation and compares these rules to the local value stored for the component. The JavaServer Faces implementation also completes conversions for input components that do not have the <code>immediate</code> attribute set to true.</p>
+
+        <p>If the local value is invalid, or if any conversion fails, the JavaServer Faces implementation adds an error message to the <code>FacesContext</code> instance, and the lifecycle advances directly to the Render Response phase so that the page is rendered again with the error messages displayed. If there were conversion errors from the Apply Request Values phase, the messages for these errors are also displayed.</p>
+
+        <p><a id="sthref341"></a><a id="sthref342"></a>If any <code>validate</code> methods or event listeners have called the <code>renderResponse</code> method on the current <code>FacesContext</code>, the JavaServer Faces implementation skips to the Render Response phase.</p>
+
+        <p><a id="sthref343"></a>At this point, if the application needs to redirect to a different web application resource or generate a response that does not contain any JavaServer Faces components, it can call the <code>FacesContext.responseComplete</code> method.</p>
+
+        <p>If events have been queued during this phase, the JavaServer Faces implementation broadcasts them to interested listeners.</p>
+
+        <p>If the current request is identified as a partial request, the partial context is retrieved from the <code>FacesContext</code>, and the partial processing method is applied.</p>
+      </div><a id="BNAQV"></a><a id="JEETT00956"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.6.5</span> <a id="sthref344"></a>Update Model Values Phase</h2>
+
+        <p>After the JavaServer Faces implementation determines that the data is valid, it traverses the component tree and sets the corresponding server-side object properties to the components' local values. The JavaServer Faces implementation updates only the bean properties pointed at by an input component's <code>value</code> attribute. If the local data cannot be converted to the types specified by the bean properties, the lifecycle advances directly to the Render Response phase so that the page is re-rendered with errors displayed. This is similar to what happens with validation errors.</p>
+
+        <p><a id="sthref345"></a><a id="sthref346"></a><a id="sthref347"></a><a id="sthref348"></a>If any <code>updateModels</code> methods or any listeners have called the <code>renderResponse</code> method on the current <code>FacesContext</code> instance, the JavaServer Faces implementation skips to the Render Response phase.</p>
+
+        <p><a id="sthref349"></a>At this point, if the application needs to redirect to a different web application resource or generate a response that does not contain any JavaServer Faces components, it can call the <code>FacesContext.responseComplete</code> method.</p>
+
+        <p>If any events have been queued during this phase, the JavaServer Faces implementation broadcasts them to interested listeners.</p>
+
+        <p>If the current request is identified as a partial request, the partial context is retrieved from the <code>FacesContext</code>, and the partial processing method is applied.</p>
+      </div><a id="BNAQW"></a><a id="JEETT00957"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.6.6</span> Invoke Application Phase</h2>
+
+        <p><a id="sthref350"></a>During this phase, the JavaServer Faces implementation handles any application-level events, such as submitting a form or linking to another page.</p>
+
+        <p>At this point, if the application needs to redirect to a different web application resource or generate a response that does not contain any JavaServer Faces components, it can call the <code>FacesContext.responseComplete</code> method.</p>
+
+        <p>If the view being processed was reconstructed from state information from a previous request and if a component has fired an event, these events are broadcast to interested listeners.</p>
+
+        <p>Finally, the JavaServer Faces implementation transfers control to the Render Response phase.</p>
+      </div><a id="BNAQX"></a><a id="JEETT00958"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">7.6.7</span> <a id="sthref351"></a>Render Response Phase</h2>
+
+        <p>During this phase, JavaServer Faces builds the view and delegates authority to the appropriate resource for rendering the pages.</p>
+
+        <p>If this is an initial request, the components that are represented on the page will be added to the component tree. If this is not an initial request, the components are already added to the tree and need not be added again.</p>
+
+        <p>If the request is a postback and errors were encountered during the Apply Request Values phase, Process Validations phase, or Update Model Values phase, the original page is rendered again during this phase. If the pages contain <code>h:message</code> or <code>h:messages</code> tags, any queued error messages are displayed on the page.</p>
+
+        <p>After the content of the view is rendered, the state of the response is saved so that subsequent requests can access it. The saved state is available to the Restore View phase.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKNOJ"></a><a id="JEETT00359"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">7.7</span> <a id="sthref352"></a><a id="sthref353"></a>Partial Processing and Partial Rendering</h1>
+
+      <p>The JavaServer Faces lifecycle spans all of the execute and render processes of an application. It is also possible to process and render only parts of an application, such as a single component. For example, the JavaServer Faces Ajax framework can generate requests containing information on which particular component may be processed and which particular component may be rendered back to the client.</p>
+
+      <p>Once such a partial request enters the JavaServer Faces lifecycle, the information is identified and processed by a <code>javax.faces.context.PartialViewContext</code> object. The JavaServer Faces lifecycle is still aware of such Ajax requests and modifies the component tree accordingly.</p>
+
+      <p>The <code>execute</code> and <code>render</code> attributes of the <code>f:ajax</code> tag are used to identify which components may be executed and rendered. For more information on these attributes, see <a href="../Text/jsf-ajax.xhtml#GKIOW">Chapter 13, "Using Ajax with JavaServer Faces Technology"</a>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAQY"></a><a id="JEETT00333"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">7.8</span> Further Information about JavaServer Faces Technology</h1>
+
+      <p>For more information on JavaServer Faces technology, see</p>
+
+      <ul>
+        <li>
+          <p>JavaServer Faces 2.2 specification:</p>
+
+          <p><code><a href="../Text/jsf-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D344">http://jcp.org/en/jsr/detail?id=344</a></code></p>
+        </li>
+
+        <li>
+          <p>JavaServer Faces project website:</p>
+
+          <p><code><a href="../Text/jsf-intro.xhtml#https%3A//javaserverfaces.java.net/">https://javaserverfaces.java.net/</a></code></p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

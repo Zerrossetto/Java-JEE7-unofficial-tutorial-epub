@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKJIA"></a><a id="JEETT00101"></a>
+
+    <h1 class="chapter"><span class="secnum">44</span> <a id="sthref2190"></a>Using a Second-Level Cache with Java Persistence API Applications</h1>
+
+    <p>This chapter explains how to modify the second-level cache mode settings to improve the performance of applications that use the Java Persistence API.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/persistence-cache.xhtml#GKJIO">Overview of the Second-Level Cache</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/persistence-cache.xhtml#GKJJJ">Specifying the Cache Mode Settings to Improve Performance</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GKJIO"></a><a id="JEETT00507"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">44.1</span> Overview of the Second-Level Cache</h1>
+
+      <p>A <span class="glossaryterm">second-level cache</span> is a local store of entity data managed by the persistence provider to improve application performance. A second-level cache helps improve performance by avoiding expensive database calls, keeping the entity data local to the application. A second-level cache is typically transparent to the application, as it is managed by the persistence provider and underlies the persistence context of an application. That is, the application reads and commits data through the normal entity manager operations without knowing about the cache.</p>
+
+      <div align="center">
+        <div class="inftblnote">
+          <br />
+
+          <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+            <tbody>
+              <tr>
+                <td align="left">
+                  <p class="notep1">Note:</p>
+
+                  <p>Persistence providers are not required to support a second-level cache. Portable applications should not rely on support by persistence providers for a second-level cache.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div>
+
+      <p>The second-level cache for a persistence unit may be configured to one of several second-level cache modes. The following cache mode settings are defined by the Java Persistence API.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref2191"></a><a id="GKJDG"></a>
+
+        <p class="titleintable">Table 44-1 Cache Mode Settings for the Second-Level Cache</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the cache mode settings for the second-level cache for a persistence unit." title="Cache Mode Settings for the Second-Level Cache" width="100%">
+          <col width="29%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t3" valign="bottom">Cache Mode Setting</th>
+
+              <th align="left" id="r1c2-t3" valign="bottom">Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r2c1-t3">
+                <p><code>ALL</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t3 r1c2-t3">
+                <p>All entity data is stored in the second-level cache for this persistence unit.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r3c1-t3">
+                <p><code>NONE</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t3 r1c2-t3">
+                <p>No data is cached in the persistence unit. The persistence provider must not cache any data.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r4c1-t3">
+                <p><code>ENABLE_SELECTIVE</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t3 r1c2-t3">
+                <p>Enable caching for entities that have been explicitly set with the <code>@Cacheable</code> annotation.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r5c1-t3">
+                <p><code>DISABLE_SELECTIVE</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t3 r1c2-t3">
+                <p>Enable caching for all entities except those that have been explicitly set with the <code>@Cacheable(false)</code> annotation.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r6c1-t3">
+                <p><code>UNSPECIFIED</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t3 r1c2-t3">
+                <p>The caching behavior for the persistence unit is undefined. The persistence provider's default caching behavior will be used.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>One consequence of using a second-level cache in an application is that the underlying data may have changed in the database tables, while the value in the cache has not, a circumstance called a <span class="glossaryterm">stale read</span>. To avoid stale reads, use any of these strategies:</p>
+
+      <ul>
+        <li>
+          <p>Change the second-level cache to one of the cache mode settings</p>
+        </li>
+
+        <li>
+          <p>Control which entities may be cached (see <a href="../Text/persistence-cache.xhtml#GKJIW">Controlling whether Entities May Be Cached</a>)</p>
+        </li>
+
+        <li>
+          <p>Change the cache's retrieval or store modes (see <a href="../Text/persistence-cache.xhtml#GKJDK">Setting the Cache Retrieval and Store Modes</a>)</p>
+        </li>
+      </ul>
+
+      <p>Which of these strategies works best to avoid stale reads depends upon the application.</p><a id="GKJIW"></a><a id="JEETT01209"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">44.1.1</span> <a id="sthref2192"></a>Controlling whether Entities May Be Cached</h2>
+
+        <p>The <code>javax.persistence.Cacheable</code> annotation is used to specify that an entity class, and any subclasses, may be cached when using the <code>ENABLE_SELECTIVE</code> or <code>DISABLE_SELECTIVE</code> cache modes. Subclasses may override the <code>@Cacheable</code> setting by adding a <code>@Cacheable</code> annotation and changing the value.</p>
+
+        <p>To specify that an entity may be cached, add a <code>@Cacheable</code> annotation at the class level:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Cacheable
+@Entity
+public class Person { ... }</pre>
+
+        <p>By default, the <code>@Cacheable</code> annotation is <code>true</code>. The following example is equivalent:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Cacheable(true)
+@Entity
+public class Person{ ... }</pre>
+
+        <p>To specify that an entity must not be cached, add a <code>@Cacheable</code> annotation and set it to <code>false</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Cacheable(false)
+@Entity
+public class OrderStatus { ... }</pre>
+
+        <p>When the <code>ENABLE_SELECTIVE</code> cache mode is set, the persistence provider will cache any entities that have the <code>@Cacheable(true)</code> annotation and any subclasses of that entity that have not been overridden. The persistence provider will not cache entities that have <code>@Cacheable(false)</code> or have no <code>@Cacheable</code> annotation. That is, the <code>ENABLE_SELECTIVE</code> mode will cache only entities that have been explicitly marked for the cache using the <code>@Cacheable</code> annotation.</p>
+
+        <p>When the <code>DISABLE_SELECTIVE</code> cache mode is set, the persistence provider will cache any entities that <span class="italic">do not</span> have the <code>@Cacheable(false)</code> annotation. Entities that do not have <code>@Cacheable</code> annotations, and entities with the <code>@Cacheable(true)</code> annotation, will be cached. That is, the <code>DISABLE_SELECTIVE</code> mode will cache all entities that have not been explicitly prevented from being cached.</p>
+
+        <p>If the cache mode is set to <code>UNDEFINED</code>, or is left unset, the behavior of entities annotated with <code>@Cacheable</code> is undefined. If the cache mode is set to <code>ALL</code> or <code>NONE</code>, the value of the <code>@Cacheable</code> annotation is ignored by the persistence provider.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKJJJ"></a><a id="JEETT00508"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">44.2</span> Specifying the Cache Mode Settings to Improve Performance</h1>
+
+      <p>To adjust the cache mode settings for a persistence unit, specify one of the cache modes as the value of the <code>shared-cache-mode</code> element in the <code>persistence.xml</code> deployment descriptor (shown in <span class="bold">bold</span>):</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;persistence-unit name="examplePU" transaction-type="JTA"&gt;
+    &lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt;
+    &lt;jta-data-source&gt;java:comp/DefaultDataSource&lt;/jta-data-source&gt;
+    <b>&lt;shared-cache-mode&gt;DISABLE_SELECTIVE&lt;/shared-cache-mode&gt;</b>
+&lt;/persistence-unit&gt;<br /></pre>
+
+      <div align="center">
+        <div class="inftblnote">
+          <br />
+
+          <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+            <tbody>
+              <tr>
+                <td align="left">
+                  <p class="notep1">Note:</p>
+
+                  <p>Because support for a second-level cache is not required by the Java Persistence API specification, setting the second-level cache mode in <code>persistence.xml</code> will have no effect when you use a persistence provider that does not implement a second-level cache.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div>
+
+      <p>Alternatively, you can specify the shared cache mode by setting the <code>javax.persistence.sharedCache.mode</code> property to one of the shared cache mode settings:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManagerFactory emf = 
+    Persistence.createEntityManagerFactory(
+        "myExamplePU", new Properties().add(
+            "javax.persistence.sharedCache.mode", "ENABLE_SELECTIVE"));</pre><a id="GKJDK"></a><a id="JEETT01210"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">44.2.1</span> Setting the Cache Retrieval and Store Modes</h2>
+
+        <p>If you have enabled the second-level cache for a persistence unit by setting the shared cache mode, you can further modify the behavior of the second-level cache by setting the <code>javax.persistence.cache.retrieveMode</code> and <code>javax.persistence.cache.storeMode</code> properties. You can set these properties at the persistence context level by passing the property name and value to the <code>EntityManager.setProperty</code> method, or you can set them on a per-<code>EntityManager</code> operation (<code>EntityManager.find</code> or <code>EntityManager.refresh</code>) or on a per-query level.</p><a id="GKJDR"></a><a id="JEETT00754"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">44.2.1.1</span> Cache Retrieval Mode</h3>
+
+          <p>The cache retrieval mode, set by the <code>javax.persistence.retrieveMode</code> property, controls how data is read from the cache for calls to the <code>EntityManager.find</code> method and from queries.</p>
+
+          <p>You can set the <code>retrieveMode</code> property to one of the constants defined by the <code>javax.persistence.CacheRetrieveMode</code> enumerated type, either <code>USE</code> (the default) or <code>BYPASS</code>.</p>
+
+          <p>When the property is set to <code>USE</code>, data is retrieved from the second-level cache, if available. If the data is not in the cache, the persistence provider will read it from the database.</p>
+
+          <p>When the property is set to <code>BYPASS</code>, the second-level cache is bypassed and a call to the database is made to retrieve the data.</p>
+        </div><a id="GKJDD"></a><a id="JEETT00755"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">44.2.1.2</span> Cache Store Mode</h3>
+
+          <p>The cache store mode, set by the <code>javax.persistence.storeMode</code> property, controls how data is stored in the cache.</p>
+
+          <p>The <code>storeMode</code> property can be set to one of the constants defined by the <code>javax.persistence.CacheStoreMode</code> enumerated type: either <code>USE</code> (the default), <code>BYPASS</code>, or <code>REFRESH</code>.</p>
+
+          <p>When the property is set to <code>USE</code>, the cache data is created or updated when data is read from or committed to the database. If data is already in the cache, setting the store mode to <code>USE</code> will not force a refresh when data is read from the database.</p>
+
+          <p>When the property is set to <code>BYPASS</code>, data read from or committed to the database is <span class="italic">not</span> inserted or updated in the cache. That is, the cache is unchanged.</p>
+
+          <p>When the property is set to <code>REFRESH</code>, the cache data is created or updated when data is read from or committed to the database, and a refresh is forced on data in the cache upon database reads.</p>
+        </div><a id="GKJDS"></a><a id="JEETT00756"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">44.2.1.3</span> Setting the Cache Retrieval or Store Mode</h3>
+
+          <p>To set the cache retrieval or store mode for the persistence context, call the <code>EntityManager.setProperty</code> method with the property name and value pair:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+em.setProperty("javax.persistence.cache.storeMode", "BYPASS");</pre>
+
+          <p>To set the cache retrieval or store mode when calling the <code>EntityManager.find</code> or <code>EntityManager.refresh</code> methods, first create a <code>MapString, Object</code> instance and add a name/value pair as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+Map&lt;String, Object&gt; props = new HashMap&lt;String, Object&gt;();
+props.put("javax.persistence.cache.retrieveMode", "BYPASS");
+String personPK = ...;
+Person person = em.find(Person.class, personPK, props);</pre>
+
+          <div align="center">
+            <div class="inftblnote">
+              <br />
+
+              <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+                <tbody>
+                  <tr>
+                    <td align="left">
+                      <p class="notep1">Note:</p>
+
+                      <p>The cache retrieval mode is ignored when calling the <code>EntityManager.refresh</code> method, as calls to <code>refresh</code> always result in data being read from the database, not the cache.</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table><br />
+            </div>
+          </div>
+
+          <p>To set the retrieval or store mode when using queries, call the <code>Query.setHint</code> or <code>TypedQuery.setHint</code> methods, depending on the type of query:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+CriteriaQuery&lt;Person&gt; cq = ...;
+TypedQuery&lt;Person&gt; q = em.createQuery(cq);
+q.setHint("javax.persistence.cache.storeMode", "REFRESH");
+...</pre>
+
+          <p>Setting the store or retrieve mode in a query or when calling the <code>EntityManager.find</code> or <code>EntityManager.refresh</code> method overrides the setting of the entity manager.</p>
+        </div>
+      </div><a id="GKJEB"></a><a id="JEETT01211"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">44.2.2</span> Controlling the Second-Level Cache Programmatically</h2>
+
+        <p>The <code>javax.persistence.Cache</code> interface defines methods for interacting with the second-level cache programmatically. The <code>Cache</code> interface defines methods to do the following:</p>
+
+        <ul>
+          <li>
+            <p>Check whether a particular entity has cached data</p>
+          </li>
+
+          <li>
+            <p>Remove a particular entity from the cache</p>
+          </li>
+
+          <li>
+            <p>Remove all instances (and instances of subclasses) of an entity class from the cache</p>
+          </li>
+
+          <li>
+            <p>Clear the cache of all entity data</p>
+          </li>
+        </ul>
+
+        <div align="center">
+          <div class="inftblnote">
+            <br />
+
+            <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+              <tbody>
+                <tr>
+                  <td align="left">
+                    <p class="notep1">Note:</p>
+
+                    <p>If the second-level cache has been disabled, calls to the <code>Cache</code> interface's methods have no effect, except for <code>contains</code>, which will always return <code>false</code>.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+        </div><a id="GKJDZ"></a><a id="JEETT00757"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">44.2.2.1</span> Checking whether an Entity's Data Is Cached</h3>
+
+          <p>Call the <code>Cache.contains</code> method to find out whether a given entity is currently in the second-level cache. The <code>contains</code> method returns <code>true</code> if the entity's data is cached, and <code>false</code> if the data is not in the cache:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+Cache cache = em.getEntityManagerFactory().getCache();
+String personPK = ...;
+if (cache.contains(Person.class, personPK)) {
+  // the data is cached
+} else {
+  // the data is NOT cached
+}</pre>
+        </div><a id="GKJDQ"></a><a id="JEETT00758"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">44.2.2.2</span> Removing an Entity from the Cache</h3>
+
+          <p>Call one of the <code>Cache.evict</code> methods to remove a particular entity or all entities of a given type from the second-level cache. To remove a particular entity from the cache, call the <code>evict</code> method and pass in the entity class and the primary key of the entity:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+Cache cache = em.getEntityManagerFactory().getCache();
+String personPK = ...;
+cache.evict(Person.class, personPK);</pre>
+
+          <p>To remove all instances of a particular entity class, including subclasses, call the <code>evict</code> method and specify the entity class:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+Cache cache = em.getEntityManagerFactory().getCache();
+cache.evict(Person.class);</pre>
+
+          <p>All instances of the <code>Person</code> entity class will be removed from the cache. If the <code>Person</code> entity has a subclass, <code>Student</code>, calls to the above method will remove all instances of <code>Student</code> from the cache as well.</p>
+        </div><a id="GKJDA"></a><a id="JEETT00759"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">44.2.2.3</span> Removing All Data from the Cache</h3>
+
+          <p>Call the <code>Cache.evictAll</code> method to completely clear the second-level cache:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+Cache cache = em.getEntityManagerFactory().getCache();
+cache.evictAll();</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

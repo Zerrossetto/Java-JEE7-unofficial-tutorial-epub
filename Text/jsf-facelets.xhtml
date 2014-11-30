@@ -1,0 +1,2156 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GIEPX"></a><a id="JEETT00068"></a>
+
+    <h1 class="chapter"><span class="secnum">8</span> <a id="sthref354"></a>Introduction to Facelets</h1>
+
+    <p>The term <span class="glossaryterm">Facelets</span> refers to the view declaration language for JavaServer Faces technology. Facelets is a part of the JavaServer Faces specification and also the preferred presentation technology for building JavaServer Faces technologybased applications. JavaServer Pages (JSP) technology, previously used as the presentation technology for JavaServer Faces, does not support all the new features available in JavaServer Faces in the Java EE 7 platform. JSP technology is considered to be a deprecated presentation technology for JavaServer Faces.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#GIJTU">What Is Facelets?</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#GIPRR">The Lifecycle of a Facelets Application</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#GIPOB">Developing a Simple Facelets Application: The guessnumber-jsf Example Application</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#GIQXP">Using Facelets Templates</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#GIQZR">Composite Components</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#GIRGM">Web Resources</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#BABHGBJI">Relocatable Resources</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#BABHAHDF">Resource Library Contracts</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-facelets.xhtml#BABGECCJ">HTML5-Friendly Markup</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GIJTU"></a><a id="JEETT00334"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.1</span> <a id="sthref355"></a>What Is Facelets?</h1>
+
+      <p>Facelets is a powerful but lightweight page declaration language that is used to build JavaServer Faces views using HTML style templates and to build component trees. Facelets features include the following:</p>
+
+      <ul>
+        <li>
+          <p>Use of XHTML for creating web pages</p>
+        </li>
+
+        <li>
+          <p>Support for Facelets tag libraries in addition to JavaServer Faces and JSTL tag libraries</p>
+        </li>
+
+        <li>
+          <p>Support for the Expression Language (EL)</p>
+        </li>
+
+        <li>
+          <p>Templating for components and pages</p>
+        </li>
+      </ul>
+
+      <p>The advantages of Facelets for large-scale development projects include the following:</p>
+
+      <ul>
+        <li>
+          <p>Support for code reuse through templating and composite components</p>
+        </li>
+
+        <li>
+          <p>Functional extensibility of components and other server-side objects through customization</p>
+        </li>
+
+        <li>
+          <p>Faster compilation time</p>
+        </li>
+
+        <li>
+          <p>Compile-time EL validation</p>
+        </li>
+
+        <li>
+          <p>High-performance rendering</p>
+        </li>
+      </ul>
+
+      <p>In short, the use of Facelets reduces the time and effort that needs to be spent on development and deployment.</p>
+
+      <p><a id="sthref356"></a>Facelets views are usually created as XHTML pages. JavaServer Faces implementations support XHTML pages created in conformance with the XHTML Transitional Document Type Definition (DTD), as listed at <code><a href="../Text/jsf-facelets.xhtml#a_dtd_XHTML-1.0-Transitional">http://www.w3.org/TR/xhtml1/#a_dtd_XHTML-1.0-Transitional</a></code>. By convention, web pages built with XHTML have an <code>.xhtml</code> extension.</p>
+
+      <p><a id="sthref357"></a>JavaServer Faces technology supports various tag libraries to add components to a web page. To support the JavaServer Faces tag library mechanism, Facelets uses XML namespace declarations. <a href="../Text/jsf-facelets.xhtml#GJBOX">Table 8-1</a> lists the tag libraries supported by Facelets.</p>
+
+      <div class="tblhruleformalwide">
+        <a id="sthref358"></a><a id="GJBOX"></a>
+
+        <p class="titleintable">Table 8-1 Tag Libraries Supported by Facelets</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormalWide" dir="ltr" frame="hsides" rules="rows" summary="This table lists each tag library supported by Facelets, along with its URI, prefix, some examples, and the contents of each library." title="Tag Libraries Supported by Facelets" width="100%">
+          <col width="13%" />
+          <col width="*" />
+          <col width="12%" />
+          <col width="18%" />
+          <col width="17%" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t2" valign="bottom">Tag Library</th>
+
+              <th align="left" id="r1c2-t2" valign="bottom">URI</th>
+
+              <th align="left" id="r1c3-t2" valign="bottom">Prefix</th>
+
+              <th align="left" id="r1c4-t2" valign="bottom">Example</th>
+
+              <th align="left" id="r1c5-t2" valign="bottom">Contents</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                <p>JavaServer Faces Facelets Tag Library</p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c2-t2">
+                <p><code>http://xmlns.jcp.org/jsf/facelets</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c3-t2">
+                <p><code>ui:</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c4-t2">
+                <p><code>ui:component</code></p>
+
+                <p><code>ui:insert</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c5-t2">
+                <p>Tags for templating</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                <p>JavaServer Faces HTML Tag Library</p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c2-t2">
+                <p><code>http://xmlns.jcp.org/jsf/html</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c3-t2">
+                <p><code>h:</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c4-t2">
+                <p><code>h:head</code></p>
+
+                <p><code>h:body</code></p>
+
+                <p><code>h:outputText</code></p>
+
+                <p><code>h:inputText</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c5-t2">
+                <p>JavaServer Faces component tags for all <code>UIComponent</code> objects</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                <p>JavaServer Faces Core Tag Library</p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c2-t2">
+                <p><code>http://xmlns.jcp.org/jsf/core</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c3-t2">
+                <p><code>f:</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c4-t2">
+                <p><code>f:actionListener</code></p>
+
+                <p><code>f:attribute</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c5-t2">
+                <p>Tags for JavaServer Faces custom actions that are independent of any particular render kit</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                <p>Pass-through Elements Tag Library</p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c2-t2">
+                <p><code>http://xmlns.jcp.org/jsf</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c3-t2">
+                <p><code>jsf:</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c4-t2">
+                <p><code>jsf:id</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c5-t2">
+                <p>Tags to support HTML5-friendly markup</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                <p>Pass-through Attributes Tag Library</p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c2-t2">
+                <p><code>http://xmlns.jcp.org/jsf/passthrough</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c3-t2">
+                <p><code>p:</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c4-t2">
+                <p><code>p:type</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c5-t2">
+                <p>Tags to support HTML5-friendly markup</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r7c1-t2">
+                <p>Composite Component Tag Library</p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c2-t2">
+                <p><code>http://xmlns.jcp.org/jsf/composite</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c3-t2">
+                <p><code>cc:</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c4-t2">
+                <p><code>cc:interface</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c5-t2">
+                <p>Tags to support composite components</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r8c1-t2">
+                <p>JSTL Core Tag Library</p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c2-t2">
+                <p><code>http://xmlns.jcp.org/jsp/jstl/core</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c3-t2">
+                <p><code>c:</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c4-t2">
+                <p><code>c:forEach</code></p>
+
+                <p><code>c:catch</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c5-t2">
+                <p>JSTL 1.2 Core Tags</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r9c1-t2">
+                <p>JSTL Functions Tag Library</p>
+              </td>
+
+              <td align="left" headers="r9c1-t2 r1c2-t2">
+                <p><code>http://xmlns.jcp.org/jsp/jstl/functions</code></p>
+              </td>
+
+              <td align="left" headers="r9c1-t2 r1c3-t2">
+                <p><code>fn:</code></p>
+              </td>
+
+              <td align="left" headers="r9c1-t2 r1c4-t2">
+                <p><code>fn:toUpperCase</code></p>
+
+                <p><code>fn:toLowerCase</code></p>
+              </td>
+
+              <td align="left" headers="r9c1-t2 r1c5-t2">
+                <p>JSTL 1.2 Functions Tags</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>Facelets provides two namespaces to support HTML5-friendly markup. For details, see <a href="../Text/jsf-facelets.xhtml#BABGECCJ">HTML5-Friendly Markup</a>.</p>
+
+      <p>Facelets supports tags for composite components, for which you can declare custom prefixes. For more information on composite components, see <a href="../Text/jsf-facelets.xhtml#GIQZR">Composite Components</a>.</p>
+
+      <p>The namespace prefixes shown in the table are conventional, not mandatory. As is always the case when you declare an XML namespace, you can specify any prefix in your Facelets page. For example, you can declare the prefix for the composite component tag library as</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">xmlns:composite="http://java.sun.com/jsf/composite"</pre>
+
+      <p>instead of as</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">xmlns:cc="http://java.sun.com/jsf/composite"</pre>
+
+      <p>Based on the JavaServer Faces support for Expression Language (EL) syntax, Facelets uses EL expressions to reference properties and methods of managed beans. EL expressions can be used to bind component objects or values to methods or properties of managed beans that are used as backing beans. For more information on using EL expressions, see <a href="../Text/jsf-develop.xhtml#BNAQP">Using the EL to Reference Managed Beans</a>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPRR"></a><a id="JEETT00360"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.2</span> <a id="sthref359"></a>The Lifecycle of a Facelets Application</h1>
+
+      <p>The JavaServer Faces specification defines the lifecycle of a JavaServer Faces application. For more information on this lifecycle, see <a href="../Text/jsf-intro.xhtml#BNAQQ">The Lifecycle of a JavaServer Faces Application</a>. The following steps describe that process as applied to a Facelets-based application.</p>
+
+      <ol>
+        <li>
+          <p>When a client, such as a browser, makes a new request to a page that is created using Facelets, a new component tree or <code>javax.faces.component.UIViewRoot</code> is created and placed in the <code>FacesContext</code>.</p>
+        </li>
+
+        <li>
+          <a id="BABGCBAJ"></a>
+
+          <p>The <code>UIViewRoot</code> is applied to the Facelets, and the view is populated with components for rendering.</p>
+        </li>
+
+        <li>
+          <p>The newly built view is rendered back as a response to the client.</p>
+        </li>
+
+        <li>
+          <p>On rendering, the state of this view is stored for the next request. The state of input components and form data is stored.</p>
+        </li>
+
+        <li>
+          <p>The client may interact with the view and request another view or change from the JavaServer Faces application. At this time, the saved view is restored from the stored state.</p>
+        </li>
+
+        <li>
+          <p>The restored view is once again passed through the JavaServer Faces lifecycle, which eventually will either generate a new view or re-render the current view if there were no validation problems and no action was triggered.</p>
+        </li>
+
+        <li>
+          <p>If the same view is requested, the stored view is rendered once again.</p>
+        </li>
+
+        <li>
+          <p>If a new view is requested, then the process described in Step <a href="../Text/jsf-facelets.xhtml#BABGCBAJ">2</a> is continued.</p>
+        </li>
+
+        <li>
+          <p>The new view is then rendered back as a response to the client.</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPOB"></a><a id="JEETT00335"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.3</span> <a id="sthref360"></a>Developing a Simple Facelets Application: The guessnumber-jsf Example Application</h1>
+
+      <p>This section describes the general steps involved in developing a JavaServer Faces application. The following tasks are usually required:</p>
+
+      <ul>
+        <li>
+          <p>Developing the managed beans</p>
+        </li>
+
+        <li>
+          <p>Creating the pages using the component tags</p>
+        </li>
+
+        <li>
+          <p>Defining page navigation</p>
+        </li>
+
+        <li>
+          <p>Mapping the <code>FacesServlet</code> instance</p>
+        </li>
+
+        <li>
+          <p>Adding managed bean declarations</p>
+        </li>
+      </ul><a id="GIQTE"></a><a id="JEETT00909"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">8.3.1</span> Creating a Facelets Application</h2>
+
+        <p>The example used in this tutorial is the <code>guessnumber-jsf</code> application. The application presents you with a page that asks you to guess a number from 0 to 10, validates your input against a random number, and responds with another page that informs you whether you guessed the number correctly or incorrectly.</p>
+
+        <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/jsf/guessnumber-jsf/</code> directory.</p><a id="GIQQZ"></a><a id="JEETT00588"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">8.3.1.1</span> <a id="sthref361"></a><a id="sthref362"></a>Developing a Managed Bean</h3>
+
+          <p>In a typical JavaServer Faces application, each page of the application connects to a managed bean that serves as a backing bean. The backing bean defines the methods and properties that are associated with the components. In this example, both pages use the same backing bean.</p>
+
+          <p>The following managed bean class, <code>UserNumberBean.java</code>, generates a random number from 0 to 10 inclusive:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.guessnumber;
+
+import java.io.Serializable;
+import java.util.Random;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named; 
+
+@Named
+@SessionScoped
+public class UserNumberBean implements Serializable {
+
+    private static final long serialVersionUID = 5443351151396868724L;
+    Integer randomInt = null;
+    Integer userNumber = null;
+    String response = null;
+    private int maximum = 10;
+    private int minimum = 0;
+
+    public UserNumberBean() {
+        Random randomGR = new Random();
+        randomInt = new Integer(randomGR.nextInt(maximum + 1));
+        // Print number to server log
+        System.out.println("Duke's number: " + randomInt);
+    }
+
+    public void setUserNumber(Integer user_number) {
+        userNumber = user_number;
+    }
+
+    public Integer getUserNumber() {
+        return userNumber;
+    }
+
+    public String getResponse() {
+        if ((userNumber == null) || (userNumber.compareTo(randomInt) != 0)) {
+            return "Sorry, " + userNumber + " is incorrect.";
+        } else {
+            return "Yay! You got it!";
+        }
+    }
+
+    public int getMaximum() {
+        return (this.maximum);
+    }
+
+    public void setMaximum(int maximum) {
+        this.maximum = maximum;
+    }
+
+    public int getMinimum() {
+        return (this.minimum);
+    }
+
+    public void setMinimum(int minimum) {
+        this.minimum = minimum;
+    }
+}</pre>
+
+          <p>Note the use of the <code>@Named</code> annotation, which makes the managed bean accessible through the EL. The <code>@SessionScoped</code> annotation registers the bean scope as <code>session</code> to enable you to make multiple guesses as you run the application.</p>
+        </div><a id="GJZPV"></a><a id="JEETT00589"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">8.3.1.2</span> <a id="sthref363"></a>Creating Facelets Views</h3>
+
+          <p>To create a page or view, you add components to the pages, wire the components to backing bean values and properties, and register converters, validators, or listeners on the components.</p>
+
+          <p>For the example application, XHTML web pages serve as the front end. The first page of the example application is a page called <code>greeting.xhtml</code>. A closer look at various sections of this web page provides more information.</p>
+
+          <p>The first section of the web page declares the content type for the page, which is XHTML:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</pre>
+
+          <p>The next section specifies the language of the XHTML page and then declares the XML namespace for the tag libraries that are used in the web page:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"&gt;</pre>
+
+          <p>The next section uses various tags to insert components into the web page:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;h:head&gt;
+        &lt;h:outputStylesheet library="css" name="default.css"/&gt;
+        &lt;title&gt;Guess Number Facelets Application&lt;/title&gt;
+    &lt;/h:head&gt;
+    &lt;h:body&gt;
+        &lt;h:form&gt;
+            &lt;h:graphicImage value="#{resource['images:wave.med.gif']}"
+                            alt="Duke waving his hand"/&gt;
+            &lt;h2&gt;
+                Hi, my name is Duke. I am thinking of a number from
+                #{userNumberBean.minimum} to #{userNumberBean.maximum}.
+                Can you guess it?
+            &lt;/h2&gt;
+            &lt;p&gt;&lt;h:inputText id="userNo"
+                            title="Enter a number from 0 to 10:"
+                            value="#{userNumberBean.userNumber}"&gt;
+                   &lt;f:validateLongRange minimum="#{userNumberBean.minimum}"
+                                        maximum="#{userNumberBean.maximum}"/&gt;
+                &lt;/h:inputText&gt;
+                &lt;h:commandButton id="submit" value="Submit"
+                                 action="response"/&gt;
+            &lt;/p&gt;
+            &lt;h:message showSummary="true" showDetail="false"
+                       style="color: #d20005;
+                       font-family: 'New Century Schoolbook', serif;
+                       font-style: oblique;
+                       text-decoration: overline"
+                       id="errors1"
+                       for="userNo"/&gt;
+        &lt;/h:form&gt;
+    &lt;/h:body&gt;</pre>
+
+          <p>Note the use of the following tags:</p>
+
+          <ul>
+            <li>
+              <p>Facelets HTML tags (those beginning with <code>h:</code>) to add components</p>
+            </li>
+
+            <li>
+              <p>The Facelets core tag <code>f:validateLongRange</code> to validate the user input</p>
+            </li>
+          </ul>
+
+          <p>An <code>h:inputText</code> tag accepts user input and sets the value of the managed bean property <code>userNumber</code> through the EL expression <code>#{userNumberBean.userNumber}</code>. The input value is validated for value range by the JavaServer Faces standard validator tag <code>f:validateLongRange</code>.</p>
+
+          <p>The image file, <code>wave.med.gif</code>, is added to the page as a resource, as is the style sheet. For more details about the resources facility, see <a href="../Text/jsf-facelets.xhtml#GIRGM">Web Resources</a>.</p>
+
+          <p>An <code>h:commandButton</code> tag with the ID <code>submit</code> starts validation of the input data when a user clicks the button. Using implicit navigation, the tag redirects the client to another page, <code>response.xhtml</code>, which shows the response to your input. The page specifies only <code>response</code>, which by default causes the server to look for <code>response.xhtml</code>.</p>
+
+          <p>You can now create the second page, <code>response.xhtml</code>, with the following content:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+
+&lt;html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+
+    &lt;h:head&gt;
+        &lt;h:outputStylesheet library="css" name="default.css"/&gt;
+        &lt;title&gt;Guess Number Facelets Application&lt;/title&gt;
+    &lt;/h:head&gt;
+    &lt;h:body&gt;
+        &lt;h:form&gt;
+            &lt;h:graphicImage value="#{resource['images:wave.med.gif']}"
+                            alt="Duke waving his hand"/&gt;
+            &lt;h2&gt;
+                &lt;h:outputText id="result" value="#{userNumberBean.response}"/&gt;
+            &lt;/h2&gt;
+            &lt;h:commandButton id="back" value="Back" action="greeting"/&gt;
+        &lt;/h:form&gt;
+    &lt;/h:body&gt;
+&lt;/html&gt;</pre>
+
+          <p>This page also uses implicit navigation, setting the <code>action</code> attribute for the <span class="gui-object-action">Back</span> button to send the user to the <code>greeting.xhtml</code> page.</p>
+        </div>
+      </div><a id="GJJKC"></a><a id="JEETT00910"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">8.3.2</span> <a id="sthref364"></a>Configuring the Application</h2>
+
+        <p>Configuring a JavaServer Faces application involves mapping the Faces Servlet in the web deployment descriptor file, such as a <code>web.xml</code> file, and possibly adding managed bean declarations, navigation rules, and resource bundle declarations to the application configuration resource file, <code>faces-config.xml</code>.</p>
+
+        <p>If you are using NetBeans IDE, a web deployment descriptor file is automatically created for you. In such an IDE-created <code>web.xml</code> file, change the default greeting page, which is <code>index.xhtml</code>, to <code>greeting.xhtml</code>. Here is an example <code>web.xml</code> file, showing this change in <span class="bold">bold</span>.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+  http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;javax.faces.PROJECT_STAGE&lt;/param-name&gt;
+        &lt;param-value&gt;Development&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;javax.faces.webapp.FacesServlet&lt;/servlet-class&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;*.xhtml&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;
+            30
+        &lt;/session-timeout&gt;
+    &lt;/session-config&gt;
+    &lt;welcome-file-list&gt;
+        <span class="bold">&lt;welcome-file&gt;greeting.xhtml&lt;/welcome-file&gt; </span>
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</pre>
+
+        <p>Note the use of the context parameter <code>PROJECT_STAGE</code>. This parameter identifies the status of a JavaServer Faces application in the software lifecycle.</p>
+
+        <p>The stage of an application can affect the behavior of the application. For example, if the project stage is defined as <code>Development</code>, debugging information is automatically generated for the user. If not defined by the user, the default project stage is <code>Production</code>.</p>
+      </div><a id="GIRGF"></a><a id="JEETT00911"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">8.3.3</span> Running the guessnumber-jsf Facelets Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>guessnumber-jsf</code> example.</p><a id="GJQZL"></a><a id="JEETT00167"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">8.3.3.1</span> To Build, Package, and Deploy the guessnumber-jsf Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>guessnumber-jsf</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>guessnumber-jsf</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This option builds the example application and deploys it to your GlassFish Server instance.</p>
+            </li>
+          </ol>
+        </div><a id="GJQYU"></a><a id="JEETT00168"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">8.3.3.2</span> To Build, Package, and Deploy the guessnumber-jsf Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/guessnumber-jsf/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>guessnumber-jsf.war</code>, that is located in the <code>target</code> directory. It then deploys it to the server.</p>
+            </li>
+          </ol>
+        </div><a id="GJQYX"></a><a id="JEETT00169"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">8.3.3.3</span> To Run the guessnumber-jsf Example</h3>
+
+          <ol>
+            <li>
+              <p>Open a web browser.</p>
+            </li>
+
+            <li>
+              <p>Enter the following URL in your web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/guessnumber-jsf</pre>
+            </li>
+
+            <li>
+              <p>In the field, enter a number from 0 to 10 and click <span class="gui-object-action">Submit</span>.</p>
+
+              <p>Another page appears, reporting whether your guess is correct or incorrect.</p>
+            </li>
+
+            <li>
+              <p>If you guessed incorrectly, click <span class="gui-object-action">Back</span> to return to the main page.</p>
+
+              <p>You can continue to guess until you get the correct answer, or you can look in the server log, where the <code>UserNumberBean</code> constructor displays the correct answer.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIQXP"></a><a id="JEETT00336"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.4</span> <a id="sthref365"></a><a id="sthref366"></a>Using Facelets Templates</h1>
+
+      <p>JavaServer Faces technology provides the tools to implement user interfaces that are easy to extend and reuse. Templating is a useful Facelets feature that allows you to create a page that will act as the base, or <span class="glossaryterm">template</span>, for the other pages in an application. By using templates, you can reuse code and avoid recreating similarly constructed pages. Templating also helps in maintaining a standard look and feel in an application with a large number of pages.</p>
+
+      <p><a href="../Text/jsf-facelets.xhtml#GJBFP">Table 8-2</a> lists Facelets tags that are used for templating and their respective functionality.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref367"></a><a id="GJBFP"></a>
+
+        <p class="titleintable">Table 8-2 Facelets Templating Tags</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes each of the Facelets templating tags." title="Facelets Templating Tags" width="100%">
+          <col width="22%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t3" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c2-t3" valign="bottom">Function</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r2c1-t3">
+                <p><code>ui:component</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t3 r1c2-t3">
+                <p>Defines a component that is created and added to the component tree.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r3c1-t3">
+                <p><code>ui:composition</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t3 r1c2-t3">
+                <p>Defines a page composition that optionally uses a template. Content outside of this tag is ignored.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r4c1-t3">
+                <p><code>ui:debug</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t3 r1c2-t3">
+                <p>Defines a debug component that is created and added to the component tree.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r5c1-t3">
+                <p><code>ui:decorate</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t3 r1c2-t3">
+                <p>Similar to the composition tag but does not disregard content outside this tag.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r6c1-t3">
+                <p><code>ui:define</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t3 r1c2-t3">
+                <p>Defines content that is inserted into a page by a template.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r7c1-t3">
+                <p><code>ui:fragment</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t3 r1c2-t3">
+                <p>Similar to the component tag but does not disregard content outside this tag.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r8c1-t3">
+                <p><code>ui:include</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t3 r1c2-t3">
+                <p>Encapsulates and reuses content for multiple pages.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r9c1-t3">
+                <p><code>ui:insert</code></p>
+              </td>
+
+              <td align="left" headers="r9c1-t3 r1c2-t3">
+                <p>Inserts content into a template.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r10c1-t3">
+                <p><code>ui:param</code></p>
+              </td>
+
+              <td align="left" headers="r10c1-t3 r1c2-t3">
+                <p>Used to pass parameters to an included file.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r11c1-t3">
+                <p><code>ui:repeat</code></p>
+              </td>
+
+              <td align="left" headers="r11c1-t3 r1c2-t3">
+                <p>Used as an alternative for loop tags, such as <code>c:forEach</code> or <code>h:dataTable.</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t3" id="r12c1-t3">
+                <p><code>ui:remove</code></p>
+              </td>
+
+              <td align="left" headers="r12c1-t3 r1c2-t3">
+                <p>Removes content from a page.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>For more information on Facelets templating tags, see the documentation at <code><a href="../Text/jsf-facelets.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>.</p>
+
+      <p>The Facelets tag library includes the main templating tag <code>ui:insert</code>. A template page that is created with this tag allows you to define a default structure for a page. A template page is used as a template for other pages, usually referred to as client pages.</p>
+
+      <p>Here is an example of a template saved as <code>template.xhtml</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+    
+    &lt;h:head&gt;
+        &lt;meta http-equiv="Content-Type" 
+              content="text/html; charset=UTF-8" /&gt;
+        &lt;h:outputStylesheet library="css" name="default.css"/&gt;
+        &lt;h:outputStylesheet library="css" name="cssLayout.css"/&gt;
+        &lt;title&gt;Facelets Template&lt;/title&gt;
+    &lt;/h:head&gt;
+    
+    &lt;h:body&gt;
+        &lt;div id="top" class="top"&gt;
+            &lt;ui:insert name="top"&gt;Top Section&lt;/ui:insert&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+        &lt;div id="left"&gt;
+             &lt;ui:insert name="left"&gt;Left Section&lt;/ui:insert&gt;
+        &lt;/div&gt;
+        &lt;div id="content" class="left_content"&gt;
+             &lt;ui:insert name="content"&gt;Main Content&lt;/ui:insert&gt;
+        &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/h:body&gt;
+&lt;/html&gt;</pre>
+
+      <p>The example page defines an XHTML page that is divided into three sections: a top section, a left section, and a main section. The sections have style sheets associated with them. The same structure can be reused for the other pages of the application.</p>
+
+      <p>The client page invokes the template by using the <code>ui:composition</code> tag. In the following example, a client page named <code>templateclient.xhtml</code> invokes the template page named <code>template.xhtml</code> from the preceding example. A client page allows content to be inserted with the help of the <code>ui:define</code> tag.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+    
+    &lt;h:body&gt;
+        &lt;ui:composition template="./template.xhtml"&gt;
+            &lt;ui:define name="top"&gt;
+                Welcome to Template Client Page
+            &lt;/ui:define&gt;
+
+            &lt;ui:define name="left"&gt;
+                &lt;h:outputLabel value="You are in the Left Section"/&gt;
+            &lt;/ui:define&gt;
+
+            &lt;ui:define name="content"&gt;
+                &lt;h:graphicImage value="#{resource['images:wave.med.gif']}"/&gt;
+                &lt;h:outputText value="You are in the Main Content Section"/&gt;
+            &lt;/ui:define&gt;
+        &lt;/ui:composition&gt;
+    &lt;/h:body&gt;
+&lt;/html&gt;</pre>
+
+      <p>You can use NetBeans IDE to create Facelets template and client pages. For more information on creating these pages, see <code><a href="../Text/jsf-facelets.xhtml#https%3A//netbeans.org/kb/docs/web/jsf20-intro.html">https://netbeans.org/kb/docs/web/jsf20-intro.html</a></code>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIQZR"></a><a id="JEETT00337"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.5</span> <a id="sthref368"></a><a id="sthref369"></a>Composite Components</h1>
+
+      <p>JavaServer Faces technology offers the concept of composite components with Facelets. A <span class="glossaryterm">composite component</span> is a special type of template that acts as a component.</p>
+
+      <p>Any component is essentially a piece of reusable code that behaves in a particular way. For example, an input component accepts user input. A component can also have validators, converters, and listeners attached to it to perform certain defined actions.</p>
+
+      <p>A composite component consists of a collection of markup tags and other existing components. This reusable, user-created component has a customized, defined functionality and can have validators, converters, and listeners attached to it like any other component.</p>
+
+      <p>With Facelets, any XHTML page that contains markup tags and other components can be converted into a composite component. Using the resources facility, the composite component can be stored in a library that is available to the application from the defined resources location.</p>
+
+      <p><a href="../Text/jsf-facelets.xhtml#GJCWC">Table 8-3</a> lists the most commonly used composite tags and their functions.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref370"></a><a id="GJCWC"></a>
+
+        <p class="titleintable">Table 8-3 Composite Component Tags</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes each of the composite component tags." title="Composite Component Tags" width="100%">
+          <col width="39%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t4" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c2-t4" valign="bottom">Function</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r2c1-t4">
+                <p><code>composite:interface</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t4 r1c2-t4">
+                <p>Declares the usage contract for a composite component. The composite component can be used as a single component whose feature set is the union of the features declared in the usage contract.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r3c1-t4">
+                <p><code>composite:implementation</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t4 r1c2-t4">
+                <p>Defines the implementation of the composite component. If a <code>composite:interface</code> element appears, there must be a corresponding <code>composite:implementation</code>.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r4c1-t4">
+                <p><code>composite:attribute</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t4 r1c2-t4">
+                <p>Declares an attribute that may be given to an instance of the composite component in which this tag is declared.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r5c1-t4">
+                <p><code>composite:insertChildren</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t4 r1c2-t4">
+                <p>Any child components or template text within the composite component tag in the using page will be reparented into the composite component at the point indicated by this tag's placement within the <code>composite:implementation</code> section.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r6c1-t4">
+                <p><code>composite:valueHolder</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t4 r1c2-t4">
+                <p>Declares that the composite component whose contract is declared by the <code>composite:interface</code> in which this element is nested exposes an implementation of <code>ValueHolder</code> suitable for use as the target of attached objects in the using page.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r7c1-t4">
+                <p><code>composite:editableValueHolder</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t4 r1c2-t4">
+                <p>Declares that the composite component whose contract is declared by the <code>composite:interface</code> in which this element is nested exposes an implementation of <code>EditableValueHolder</code> suitable for use as the target of attached objects in the using page.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r8c1-t4">
+                <p><code>composite:actionSource</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t4 r1c2-t4">
+                <p>Declares that the composite component whose contract is declared by the <code>composite:interface</code> in which this element is nested exposes an implementation of <code>ActionSource2</code> suitable for use as the target of attached objects in the using page.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>For more information and a complete list of Facelets composite tags, see the documentation at <code><a href="../Text/jsf-facelets.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>.</p>
+
+      <p>The following example shows a composite component that accepts an email address as input:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+
+    &lt;h:head&gt;
+        &lt;title&gt;This content will not be displayed&lt;/title&gt;
+    &lt;/h:head&gt;
+    &lt;h:body&gt;
+        &lt;composite:interface&gt;
+            &lt;composite:attribute name="value" required="false"/&gt;
+        &lt;/composite:interface&gt;
+
+        &lt;composite:implementation&gt;
+            &lt;h:outputLabel value="Email id: "&gt;&lt;/h:outputLabel&gt;
+            &lt;h:inputText value="#{cc.attrs.value}"&gt;&lt;/h:inputText&gt;
+        &lt;/composite:implementation&gt;
+    &lt;/h:body&gt;
+&lt;/html&gt;</pre>
+
+      <p>Note the use of <code>cc.attrs.value</code> when defining the value of the <code>inputText</code> component. The word <code>cc</code> in JavaServer Faces is a reserved word for composite components. The <code>#{cc.attrs.</code><span class="variable">attribute-name</span><code>}</code> expression is used to access the attributes defined for the composite component's interface, which in this case happens to be <code>value</code>.</p>
+
+      <p>The preceding example content is stored as a file named <code>email.xhtml</code> in a folder named <code>resources/emcomp</code>, under the application web root directory. This directory is considered a library by JavaServer Faces, and a component can be accessed from such a library. For more information on resources, see <a href="../Text/jsf-facelets.xhtml#GIRGM">Web Resources</a>.</p>
+
+      <p><a id="sthref371"></a>The web page that uses this composite component is generally called a <span class="glossaryterm">using page</span>. The using page includes a reference to the composite component, in the <code>xml</code> namespace declarations:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"&gt;
+
+    &lt;h:head&gt;
+        &lt;title&gt;Using a sample composite component&lt;/title&gt;
+    &lt;/h:head&gt;
+
+    &lt;body&gt;
+        &lt;h:form&gt;
+            &lt;em:email value="Enter your email id" /&gt;
+        &lt;/h:form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+      <p>The local composite component library is defined in the <code>xmlns</code> namespace with the declaration <code>xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"</code>. The component itself is accessed through the <code>em:email</code> tag. The preceding example content can be stored as a web page named <code>emuserpage.xhtml</code> under the web root directory. When compiled and deployed on a server, it can be accessed with the following URL:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/<span class="variable">application-name</span>/emuserpage.xhtml</pre>
+
+      <p>See <a href="../Text/jsf-advanced-cc.xhtml#GKHXA">Chapter 14, "Composite Components: Advanced Topics and an Example,"</a> for more information and an example.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIRGM"></a><a id="JEETT00338"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.6</span> <a id="sthref372"></a><a id="sthref373"></a>Web Resources</h1>
+
+      <p>Web resources are any software artifacts that the web application requires for proper rendering, including images, script files, and any user-created component libraries. Resources must be collected in a standard location, which can be one of the following.</p>
+
+      <ul>
+        <li>
+          <p>A resource packaged in the web application root must be in a subdirectory of a <code>resources</code> directory at the web application root: <code>resources/</code><span class="variable">resource-identifier</span>.</p>
+        </li>
+
+        <li>
+          <p>A resource packaged in the web application's classpath must be in a subdirectory of the <code>META-INF/resources</code> directory within a web application: <code>META-INF/resources/</code><span class="variable">resource-identifier</span>. You can use this file structure to package resources in a JAR file bundled in the web application.</p>
+        </li>
+      </ul>
+
+      <p>The JavaServer Faces runtime will look for the resources in the preceding listed locations, in that order.</p>
+
+      <p>Resource identifiers are unique strings that conform to the following format (all on one line):</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">[<span class="variable">locale-prefix</span>/][<span class="variable">library-name</span>/][<span class="variable">library-version</span>/]<span class="variable">resource-name</span>[/<span class="variable">resource-version</span>]</pre>
+
+      <p>Elements of the resource identifier in brackets (<code>[]</code>) are optional, indicating that only a <span class="variable">resource-name</span>, which is usually a file name, is a required element. For example, the most common way to specify a style sheet, image, or script is to use the <code>library</code> and <code>name</code> attributes, as in the following tag from the <code>guessnumber-jsf</code> example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputStylesheet library="css" name="default.css"/&gt;</pre>
+
+      <p>This tag specifies that the <code>default.css</code> style sheet is in the directory <code>web/resources/css</code>.</p>
+
+      <p>You can also specify the location of an image using the following syntax, also from the <code>guessnumber-jsf</code> example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:graphicImage value="#{resource['images:wave.med.gif']}"/&gt;</pre>
+
+      <p>This tag specifies that the image named <code>wave.med.gif</code> is in the directory <code>web/resources/images</code>.</p>
+
+      <p>Resources can be considered as a library location. Any artifact, such as a composite component or a template that is stored in the <code>resources</code> directory, becomes accessible to the other application components, which can use it to create a resource instance.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABHGBJI"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.7</span> <a id="sthref374"></a><a id="sthref375"></a><a id="sthref376"></a>Relocatable Resources</h1>
+
+      <p>You can place a resource tag in one part of a page and specify that it be rendered in another part of the page. To do this, you use the <code>target</code> attribute of a tag that specifies a resource. Acceptable values for this attribute are as follows.</p>
+
+      <ul>
+        <li>
+          <p><code>"head"</code> renders the resource in the <code>head</code> element.</p>
+        </li>
+
+        <li>
+          <p><code>"body"</code> renders the resource in the <code>body</code> element.</p>
+        </li>
+
+        <li>
+          <p><code>"form"</code> renders the resource in the <code>form</code> element.</p>
+        </li>
+      </ul>
+
+      <p>For example, the following <code>h:outputScript</code> tag is placed within an <code>h:form</code> element, but it renders the JavaScript in the <code>head</code> element:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:form&gt;
+    &lt;h:outputScript name="myscript.js" library="mylibrary" target="head"/&gt;
+&lt;/h:form&gt;</pre>
+
+      <p>The <code>h:outputStylesheet</code> tag also supports resource relocation, in a similar way.</p>
+
+      <p>Relocatable resources are essential for composite components that use stylesheets and can also be useful for composite components that use JavaScript. See <a href="../Text/jsf-advanced-cc.xhtml#GKHVN">The compositecomponentexample Example Application</a> for an example.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABHAHDF"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.8</span> <a id="sthref377"></a><a id="sthref378"></a>Resource Library Contracts</h1>
+
+      <p><span class="glossaryterm">Resource library contracts</span> allow you to define a different look and feel for different parts of one or more applications, instead of either having to use the same look and feel for all or having to specify a different look on a page-by-page basis.</p>
+
+      <p>To do this, you create a <code>contracts</code> section of your web application. Within the <code>contracts</code> section, you can specify any number of named areas, each of which is called a contract. Within each contract you can specify resources such as template files, stylesheets, JavaScript files, and images.</p>
+
+      <p>For example, you could specify two contracts named <code>c1</code> and <code>c2</code>, each of which uses a template and other files:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">src/main/webapp
+    WEB-INF/
+    contracts
+        c1
+            template.xhtml
+            style.css
+            myImg.gif
+            myJS.js
+        c2
+            template.xhtml
+            style2.css
+            img2.gif
+            JS2.js
+    index.xhtml
+    ...</pre>
+
+      <p>One part of the application can use <code>c1</code>, while another can use <code>c2</code>.</p>
+
+      <p>Another way to use contracts is to specify a single contract that contains multiple templates:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">src/main/webapp
+    contracts
+        myContract
+            template1.xhtml
+            template2.xhtml
+            style.css
+            img.png
+            img2.png</pre>
+
+      <p>You can package a resource library contract in a JAR file for reuse in different applications. If you do so, the contracts must be located under <code>META-INF/contracts</code>. You can then place the JAR file in the <code>WEB-INF/lib</code> directory of an application. This means that the application would be organized as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">src/main/webapp/
+    WEB-INF/lib/myContract.jar
+    ...</pre>
+
+      <p>You can specify the contract usage within an application's <code>faces-config.xml</code> file, under the <code>resource-library-contracts</code> element. You need to use this element only if your application uses more than one contract, however.</p>
+
+      <div class="sect2">
+        <a id="sthref379"></a>
+
+        <h2 class="sect2"><span class="secnum">8.8.1</span> <a id="sthref380"></a><a id="sthref381"></a>The hello1-rlc Example Application</h2>
+
+        <p>The <code>hello1-rlc</code> example modifies the simple <code>hello1</code> example from <a href="../Text/webapp.xhtml#BNADX">A Web Module That Uses JavaServer Faces Technology: The hello1 Example</a> to use two resource library contracts. Each of the two pages in the application uses a different contract.</p>
+
+        <p>The managed bean for <code>hello1-rlc</code>, <code>Hello.java</code>, is identical to the one for <code>hello1</code> (except that it replaces the <code>@Named</code> and <code>@RequestScoped</code> annotations with <code>@Model</code>).</p>
+
+        <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/jsf/hello1-rlc/</code> directory.</p>
+
+        <div class="sect3">
+          <a id="sthref382"></a>
+
+          <h3 class="sect3"><span class="secnum">8.8.1.1</span> Configuring the hello1-rlc Example</h3>
+
+          <p>The <code>faces-config.xml</code> file for the <code>hello1-rlc</code> example contains the following elements:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;resource-library-contracts&gt;
+    &lt;contract-mapping&gt;
+        &lt;url-pattern&gt;/reply/*&lt;/url-pattern&gt;
+        &lt;contracts&gt;reply&lt;/contracts&gt;
+    &lt;/contract-mapping&gt;
+    &lt;contract-mapping&gt;
+        &lt;url-pattern&gt;*&lt;/url-pattern&gt;
+        &lt;contracts&gt;hello&lt;/contracts&gt;
+    &lt;/contract-mapping&gt;
+&lt;/resource-library-contracts&gt;</pre>
+
+          <p>The <code>contract-mapping</code> elements within the <code>resource-library-contracts</code> element map each contract to a different set of pages within the application. One contract, named <code>reply</code>, is used for all pages under the <code>reply</code> area of the application (<code>/reply/*</code>). The other contract, <code>hello</code>, is used for all other pages in the application (<code>*</code>).</p>
+
+          <p>The application is organized as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">hello1-rlc
+    pom.xml
+    src/main/java/javaeetutorial/hello1rlc/Hello.java
+    src/main/webapp
+        WEB-INF
+            faces-config.xml
+            web.xml
+        contracts
+            hello
+                default.css
+                duke.handsOnHips.gif
+                template.xhtml
+            reply
+                default.css
+                duke.thumbsup.gif
+                template.xhtml
+        reply
+            response.xhtml
+        greeting.xhtml</pre>
+
+          <p>The <code>web.xml</code> file specifies the <code>welcome-file</code> as <code>greeting.xhtml</code>. Because it is not located under <code>src/main/webapp/reply</code>, this Facelets page uses the <code>hello</code> contract, whereas <code>src/main/webapp/reply/response.xhtml</code> uses the <code>reply</code> contract.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref383"></a>
+
+          <h3 class="sect3"><span class="secnum">8.8.1.2</span> The Facelets Pages for the hello1-rlc Example</h3>
+
+          <p>The <code>greeting.xhtml</code> and <code>response.xhtml</code> pages have identical code calling in their templates:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ui:composition template="/template.xhtml"</pre>
+
+          <p>The <code>template.xhtml</code> files in the <code>hello</code> and <code>reply</code> contracts differ only in two respects: the placeholder text for the <code>title</code> element ("Hello Template" and "Reply Template") and the graphic that each specifies.</p>
+
+          <p>The <code>default.css</code> stylesheets in the two contracts differ in only one respect: the background color specified for the <code>body</code> element.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref384"></a>
+
+          <h3 class="sect3"><span class="secnum">8.8.1.3</span> To Build, Package, and Deploy the hello1-rlc Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>hello1-rlc</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>hello1-rlc</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This option builds the example application and deploys it to your GlassFish Server instance.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref385"></a>
+
+          <h3 class="sect3"><span class="secnum">8.8.1.4</span> To Build, Package, and Deploy the hello1-rlc Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/hello1-rlc/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>hello1-rlc.war</code>, that is located in the <code>target</code> directory. It then deploys it to your GlassFish Server instance.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref386"></a>
+
+          <h3 class="sect3"><span class="secnum">8.8.1.5</span> To Run the hello1-rlc Example</h3>
+
+          <ol>
+            <li>
+              <p>Enter the following URL in your web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/hello1-rlc</pre>
+            </li>
+
+            <li>
+              <p>The <code>greeting.xhtml</code> page looks just like the one from <code>hello1</code> except for its background color and graphic.</p>
+            </li>
+
+            <li>
+              <p>In the text field, enter your name and click <span class="gui-object-action">Submit</span>.</p>
+            </li>
+
+            <li>
+              <p>The response page also looks just like the one from <code>hello1</code> except for its background color and graphic.</p>
+
+              <p>The page displays the name you submitted. Click <span class="gui-object-action">Back</span> to return to the <code>greeting.xhtml</code> page.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABGECCJ"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">8.9</span> <a id="sthref387"></a><a id="sthref388"></a>HTML5-Friendly Markup</h1>
+
+      <p>When you want to produce user interface features for which HTML does not have its own elements, you can create a custom JavaServer Faces component and insert it in your Facelets page. This mechanism can cause a simple element to create complex web code. However, creating such a component is a significant task (see <a href="../Text/jsf-custom.xhtml#BNAVG">Chapter 15, "Creating Custom UI Components and Other Custom Objects"</a>).</p>
+
+      <p>HTML5 offers new elements and attributes that can make it unnecessary to write your own components. It also provides many new capabilities for existing components. JavaServer Faces technology supports HTML5 not by introducing new UI components that imitate HTML5 ones but by allowing you to use HTML5 markup directly. It also allows you to use JavaServer Faces attributes within HTML5 elements. JavaServer Faces technology support for HTML5 falls into two categories:</p>
+
+      <ul>
+        <li>
+          <p>Pass-through elements</p>
+        </li>
+
+        <li>
+          <p>Pass-through attributes</p>
+        </li>
+      </ul>
+
+      <p>The effect of the HTML5-friendly markup feature is to offer the Facelets page author almost complete control over the rendered page output, rather than having to pass this control off to component authors. You can mix and match JavaServer Faces and HTML5 components and elements as you see fit.</p>
+
+      <div class="sect2">
+        <a id="sthref389"></a>
+
+        <h2 class="sect2"><span class="secnum">8.9.1</span> <a id="sthref390"></a>Using Pass-Through Elements</h2>
+
+        <p>Pass-through elements allow you to use HTML5 tags and attributes but to treat them as equivalent to JavaServer Faces components associated with a server-side <code>UIComponent</code> instance.</p>
+
+        <p>To make an element that is not a JavaServer Faces element a pass-through element, specify at least one of its attributes using the <code>http://xmlns.jcp.org/jsf</code> namespace. For example, the following code declares the namespace with the short name <code>jsf</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+        <pre class="oac_no_warn" xml:space="preserve">&lt;html ... xmlns:jsf="http://xmlns.jcp.org/jsf"
+...
+    &lt;input type="email" jsf:id="email" name="email"
+           value="#{reservationBean.email}" required="required"/&gt;</pre>
+
+        <p>Here, the <code>jsf</code> prefix is placed on the <code>id</code> attribute so that the HTML5 input tag's attributes are treated as part of the Facelets page. This means that, for example, you can use EL expressions to retrieve managed bean properties.</p>
+
+        <p><a href="../Text/jsf-facelets.xhtml#BABJADGH">Table 8-4</a> shows how pass-through elements are rendered as Facelets tags. The JSF implementation uses the element name and the identifying attribute to determine the corresponding Facelets tag that will be used in the server-side processing. The browser, however, interprets the markup that the page author has written.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref391"></a><a id="BABJADGH"></a>
+
+          <p class="titleintable">Table 8-4 How Facelets Renders HTML5 Elements</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists the pass-through HTML5 elements, their identifying attributes, and how they are rendered as Facelets tags." title="How Facelets Renders HTML5 Elements" width="100%">
+            <col width="*" />
+            <col width="33%" />
+            <col width="33%" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t5" valign="bottom">HTML5 Element Name</th>
+
+                <th align="left" id="r1c2-t5" valign="bottom">Identifying Attribute</th>
+
+                <th align="left" id="r1c3-t5" valign="bottom">Facelets Tag</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r2c1-t5">
+                  <p><code>a</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t5 r1c2-t5">
+                  <p><code>jsf:action</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t5 r1c3-t5">
+                  <p><code>h:commandLink</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r3c1-t5">
+                  <p><code>a</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t5 r1c2-t5">
+                  <p><code>jsf:actionListener</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t5 r1c3-t5">
+                  <p><code>h:commandLink</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r4c1-t5">
+                  <p><code>a</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t5 r1c2-t5">
+                  <p><code>jsf:value</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t5 r1c3-t5">
+                  <p><code>h:outputLink</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r5c1-t5">
+                  <p><code>a</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t5 r1c2-t5">
+                  <p><code>jsf:outcome</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t5 r1c3-t5">
+                  <p><code>h:link</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r6c1-t5">
+                  <p><code>body</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r6c1-t5 r1c3-t5">
+                  <p><code>h:body</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r7c1-t5">
+                  <p><code>button</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r7c1-t5 r1c3-t5">
+                  <p><code>h:commandButton</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r8c1-t5">
+                  <p><code>button</code></p>
+                </td>
+
+                <td align="left" headers="r8c1-t5 r1c2-t5">
+                  <p><code>jsf:outcome</code></p>
+                </td>
+
+                <td align="left" headers="r8c1-t5 r1c3-t5">
+                  <p><code>h:button</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r9c1-t5">
+                  <p><code>form</code></p>
+                </td>
+
+                <td align="left" headers="r9c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r9c1-t5 r1c3-t5">
+                  <p><code>h:form</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r10c1-t5">
+                  <p><code>head</code></p>
+                </td>
+
+                <td align="left" headers="r10c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r10c1-t5 r1c3-t5">
+                  <p><code>h:head</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r11c1-t5">
+                  <p><code>img</code></p>
+                </td>
+
+                <td align="left" headers="r11c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r11c1-t5 r1c3-t5">
+                  <p><code>h:graphicImage</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r12c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r12c1-t5 r1c2-t5">
+                  <p><code>type="button"</code></p>
+                </td>
+
+                <td align="left" headers="r12c1-t5 r1c3-t5">
+                  <p><code>h:commandButton</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r13c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r13c1-t5 r1c2-t5">
+                  <p><code>type="checkbox"</code></p>
+                </td>
+
+                <td align="left" headers="r13c1-t5 r1c3-t5">
+                  <p><code>h:selectBooleanCheckbox</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r14c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r14c1-t5 r1c2-t5">
+                  <p><code>type="color"</code></p>
+                </td>
+
+                <td align="left" headers="r14c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r15c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r15c1-t5 r1c2-t5">
+                  <p><code>type="date"</code></p>
+                </td>
+
+                <td align="left" headers="r15c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r16c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r16c1-t5 r1c2-t5">
+                  <p><code>type="datetime"</code></p>
+                </td>
+
+                <td align="left" headers="r16c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r17c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r17c1-t5 r1c2-t5">
+                  <p><code>type="datetime-local"</code></p>
+                </td>
+
+                <td align="left" headers="r17c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r18c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r18c1-t5 r1c2-t5">
+                  <p><code>type="email"</code></p>
+                </td>
+
+                <td align="left" headers="r18c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r19c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r19c1-t5 r1c2-t5">
+                  <p><code>type="month"</code></p>
+                </td>
+
+                <td align="left" headers="r19c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r20c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r20c1-t5 r1c2-t5">
+                  <p><code>type="number"</code></p>
+                </td>
+
+                <td align="left" headers="r20c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r21c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r21c1-t5 r1c2-t5">
+                  <p><code>type="range"</code></p>
+                </td>
+
+                <td align="left" headers="r21c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r22c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r22c1-t5 r1c2-t5">
+                  <p><code>type="search"</code></p>
+                </td>
+
+                <td align="left" headers="r22c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r23c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r23c1-t5 r1c2-t5">
+                  <p><code>type="time"</code></p>
+                </td>
+
+                <td align="left" headers="r23c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r24c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r24c1-t5 r1c2-t5">
+                  <p><code>type="url"</code></p>
+                </td>
+
+                <td align="left" headers="r24c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r25c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r25c1-t5 r1c2-t5">
+                  <p><code>type="week"</code></p>
+                </td>
+
+                <td align="left" headers="r25c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r26c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r26c1-t5 r1c2-t5">
+                  <p><code>type="file"</code></p>
+                </td>
+
+                <td align="left" headers="r26c1-t5 r1c3-t5">
+                  <p><code>h:inputFile</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r27c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r27c1-t5 r1c2-t5">
+                  <p><code>type="hidden"</code></p>
+                </td>
+
+                <td align="left" headers="r27c1-t5 r1c3-t5">
+                  <p><code>h:inputHidden</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r28c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r28c1-t5 r1c2-t5">
+                  <p><code>type="password"</code></p>
+                </td>
+
+                <td align="left" headers="r28c1-t5 r1c3-t5">
+                  <p><code>h:inputSecret</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r29c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r29c1-t5 r1c2-t5">
+                  <p><code>type="reset"</code></p>
+                </td>
+
+                <td align="left" headers="r29c1-t5 r1c3-t5">
+                  <p><code>h:commandButton</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r30c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r30c1-t5 r1c2-t5">
+                  <p><code>type="submit"</code></p>
+                </td>
+
+                <td align="left" headers="r30c1-t5 r1c3-t5">
+                  <p><code>h:commandButton</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r31c1-t5">
+                  <p><code>input</code></p>
+                </td>
+
+                <td align="left" headers="r31c1-t5 r1c2-t5">
+                  <p><code>type="*"</code></p>
+                </td>
+
+                <td align="left" headers="r31c1-t5 r1c3-t5">
+                  <p><code>h:inputText</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r32c1-t5">
+                  <p><code>label</code></p>
+                </td>
+
+                <td align="left" headers="r32c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r32c1-t5 r1c3-t5">
+                  <p><code>h:outputLabel</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r33c1-t5">
+                  <p><code>link</code></p>
+                </td>
+
+                <td align="left" headers="r33c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r33c1-t5 r1c3-t5">
+                  <p><code>h:outputStylesheet</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r34c1-t5">
+                  <p><code>script</code></p>
+                </td>
+
+                <td align="left" headers="r34c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r34c1-t5 r1c3-t5">
+                  <p><code>h:outputScript</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r35c1-t5">
+                  <p><code>select</code></p>
+                </td>
+
+                <td align="left" headers="r35c1-t5 r1c2-t5">
+                  <p><code>multiple="*"</code></p>
+                </td>
+
+                <td align="left" headers="r35c1-t5 r1c3-t5">
+                  <p><code>h:selectManyListbox</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r36c1-t5">
+                  <p><code>select</code></p>
+                </td>
+
+                <td align="left" headers="r36c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r36c1-t5 r1c3-t5">
+                  <p><code>h:selectOneListbox</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r37c1-t5">
+                  <p><code>textarea</code></p>
+                </td>
+
+                <td align="left" headers="r37c1-t5 r1c2-t5"><br /></td>
+
+                <td align="left" headers="r37c1-t5 r1c3-t5">
+                  <p><code>h:inputTextArea</code></p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref392"></a>
+
+        <h2 class="sect2"><span class="secnum">8.9.2</span> <a id="sthref393"></a>Using Pass-Through Attributes</h2>
+
+        <p>Pass-through attributes are the converse of pass-through elements. They allow you to pass attributes that are not JavaServer Faces attributes through to the browser without interpretation. If you specify a pass-through attribute in a JavaServer Faces <code>UIComponent</code>, the attribute name and value are passed straight through to the browser without being interpreted by JavaServer Faces components or renderers. There are several ways to specify pass-through attributes.</p>
+
+        <ul>
+          <li>
+            <p>Use the JavaServer Faces namespace for pass-through attributes to prefix the attribute names within a JavaServer Faces component. For example, the following code declares the namespace with the short name <code>p</code>, then passes the <code>type</code>, <code>min</code>, <code>max</code>, <code>required</code>, and <code>title</code> attributes through to the HTML5 <code>input</code> component:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+            <pre class="oac_no_warn" xml:space="preserve">&lt;html ... xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+...
+    
+&lt;h:form prependId="false"&gt;
+&lt;h:inputText id="nights" p:type="number" value="#{bean.nights}" 
+             p:min="1" p:max="30" p:required="required" 
+             p:title="Enter a number between 1 and 30 inclusive."&gt;
+        ...</pre>
+
+            <p>This will cause the following markup to be rendered (assuming that <code>bean.nights</code> has a default value set to 1):</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+            <pre class="oac_no_warn" xml:space="preserve">&lt;input id="nights" type="number" value="1" min="1" max="30"
+       required="required" 
+       title="Enter a number between 1 and 30 inclusive."&gt;</pre>
+          </li>
+
+          <li>
+            <p>To pass a single attribute, nest the <code>f:passThroughAttribute</code> tag within a component tag. For example:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+            <pre class="oac_no_warn" xml:space="preserve">&lt;h:inputText value="#{user.email}"&gt;
+    &lt;f:passThroughAttribute name="type" value="email" /&gt;
+&lt;/h:inputText&gt;</pre>
+
+            <p>This code would be rendered similarly to the following:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+            <pre class="oac_no_warn" xml:space="preserve">&lt;input value="me@me.com" type="email" /&gt;</pre>
+          </li>
+
+          <li>
+            <p>To pass a group of attributes, nest the <code>f:passThroughAttributes</code> tag within a component tag, specifying an EL value that must evaluate to a <code>MapString, Object</code>. For example:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+            <pre class="oac_no_warn" xml:space="preserve">&lt;h:inputText value="#{bean.nights"&gt;
+    &lt;f:passThroughAttributes value="#{bean.nameValuePairs}" /&gt;
+&lt;/h:inputText&gt;</pre>
+
+            <p>If the bean used the following <code>Map</code> declaration and initialized the map in the constructor as follows, the markup would be similar to the output of the code that uses the pass-through attribute namespace:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+            <pre class="oac_no_warn" xml:space="preserve">private Map&lt;String, Object&gt; nameValuePairs;
+...
+public Bean() {
+    this.nameValuePairs = new HashMap&lt;&gt;();
+    this.nameValuePairs.put("type", "number");
+    this.nameValuePairs.put("min", "1");
+    this.nameValuePairs.put("max", "30");
+    this.nameValuePairs.put("required", "required");
+    this.nameValuePairs.put("title", 
+            "Enter a number between 1 and 4 inclusive.");
+}
+</pre>
+          </li>
+        </ul>
+      </div><a id="BABGGIAA"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">8.9.3</span> <a id="sthref394"></a><a id="sthref395"></a>The reservation Example Application</h2>
+
+        <p>The <code>reservation</code> example application provides a set of HTML5 <code>input</code> elements of various types to simulate purchasing tickets for a theatrical event. It consists of two Facelets pages, <code>reservation.xhtml</code> and <code>confirmation.xhtml</code>, and a backing bean, <code>ReservationBean.java</code>. The pages use both pass-through attributes and pass-through elements.</p>
+
+        <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/jsf/reservation/</code> directory.</p>
+
+        <div class="sect3">
+          <a id="sthref396"></a>
+
+          <h3 class="sect3"><span class="secnum">8.9.3.1</span> The Facelets Pages for the reservation Application</h3>
+
+          <p>The first important feature of the Facelets pages for the <code>reservation</code> application is the <code>DOCTYPE</code> header. Most Facelets pages in JavaServer Faces applications refer to the XHTML DTD. The facelets pages for this application begin simply with the following <code>DOCTYPE</code> header, which indicates an HTML5 page:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html&gt;</pre>
+
+          <p>The namespace declarations in the <code>html</code> element of the <code>reservation.xhtml</code> page specify both the <code>jsf</code> and the <code>passthrough</code> namespaces:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve">&lt;html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"&gt;</pre>
+
+          <p>Next, an empty <code>h:head</code> tag followed by an <code>h:outputStylesheet</code> tag within the <code>h:body</code> tag illustrates the use of a relocatable resource (as described in <a href="../Text/jsf-facelets.xhtml#BABHGBJI">Relocatable Resources</a>):</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve">&lt;h:head&gt;
+&lt;/h:head&gt;
+&lt;h:body&gt;
+    &lt;h:outputStylesheet name="css/stylesheet.css" target="head"/&gt;</pre>
+
+          <p>The <code>reservation.xhtml</code> page uses pass-through elements for most of the form fields on the page. This allows it to use some HTML5-specific <code>input</code> element types, such as <code>date</code> and <code>email</code>. For example, the following element renders both a date format and a calendar from which you can choose a date. The <code>jsf</code> prefix on the <code>id</code> attribute makes the element a pass-through one:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    input type="date" jsf:id="date" name="date"            value="#{reservationBean.date}" required="required"           title="Enter or choose a date."/</pre>
+
+          <p>The field for the number of tickets, however, uses the <code>h:passThroughAttributes</code> tag to pass a <code>Map</code> defined in the managed bean. It also recalculates the total in response to a change in the field:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve">    &lt;input type="date" jsf:id="date" name="date" 
+           value="#{reservationBean.date}" required="required"
+           title="Enter or choose a date."/&gt;</pre>
+
+          <p>The field for the price specifies the <code>number</code> type as a pass-through attribute of the <code>h:inputText</code> element, offering a range of four ticket prices. Here, the <code>p</code> prefix on the HTML5 attributes passes them through to the browser uninterpreted by the JavaServer Faces input component:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve">    &lt;h:inputText id="tickets" value="#{reservationBean.tickets}"&gt;
+        &lt;f:passThroughAttributes value="#{reservationBean.ticketAttrs}"/&gt;
+        &lt;f:ajax event="change" render="total" 
+                listener="#{reservationBean.calculateTotal}"/&gt;
+    &lt;/h:inputText&gt;</pre>
+
+          <p>The output of the <code>calculateTotal</code> method that is specified as the listener for the Ajax event is rendered in the output element whose <code>id</code> and <code>name</code> value is <code>total</code>. See <a href="../Text/jsf-ajax.xhtml#GKIOW">Chapter 13, "Using Ajax with JavaServer Faces Technology"</a>, for more information.</p>
+
+          <p>The second Facelets page, <code>confirmation.xhtml</code>, uses a pass-through <code>output</code> element to display the values entered by the user and provides a Facelets <code>h:commandButton</code> tag to allow the user to return to the <code>reservation.xhtml</code> page.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref397"></a>
+
+          <h3 class="sect3"><span class="secnum">8.9.3.2</span> The Managed Bean for the reservation Application</h3>
+
+          <p>The session-scoped managed bean for the reservation application, <code>ReservationBean.java</code>, contains properties for all the elements on the Facelets pages. It also contains two methods, <code>calculateTotal</code> and <code>clear</code>, that act as listeners for Ajax events on the <code>reservation.xhtml</code> page.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref398"></a>
+
+          <h3 class="sect3"><span class="secnum">8.9.3.3</span> To Build, Package, and Deploy the reservation Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>reservation</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>reservation</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This option builds the example application and deploys it to your GlassFish Server instance.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref399"></a>
+
+          <h3 class="sect3"><span class="secnum">8.9.3.4</span> To Build, Package, and Deploy the reservation Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/reservation/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>reservation.war</code>, that is located in the <code>target</code> directory. It then deploys the WAR file to your GlassFish Server instance.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref400"></a>
+
+          <h3 class="sect3"><span class="secnum">8.9.3.5</span> To Run the reservation Example</h3>
+
+          <p>At the time of the publication of this tutorial, the browser that most fully implements HTML5 is Google Chrome, and it is recommended that you use it to run this example. Other browsers are catching up, however, and may work equally well by the time you read this.</p>
+
+          <ol>
+            <li>
+              <p>Enter the following URL in your web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/reservation</pre>
+            </li>
+
+            <li>
+              <p>Enter information in the fields of the <code>reservation.xhtml</code> page.</p>
+
+              <p>The <span class="gui-object-action">Performance Date</span> field has a date field with up and down arrows that allow you to increment and decrement the month, day, and year as well as a larger down arrow that brings up a date editor in calendar form.</p>
+
+              <p>The <span class="gui-object-action">Number of Tickets</span> and <span class="gui-object-action">Ticket Price</span> fields also have up and down arrows that allow you to increment and decrement the values within the allowed range and steps. The Estimated Total changes when you change either of these two fields.</p>
+
+              <p>Email addresses and dates are checked for format, but not for validity (you can make a reservation for a past date, for instance).</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Make Reservation</span> to complete the reservation or <span class="gui-object-action">Clear</span> to restore the fields to their default values.</p>
+            </li>
+
+            <li>
+              <p>If you click <span class="gui-object-action">Make Reservation</span>, the <code>confirmation.xhtml</code> page appears, displaying the submitted values.</p>
+
+              <p>Click <span class="gui-object-action">Back</span> to return to the <code>reservation.xhtml</code> page.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

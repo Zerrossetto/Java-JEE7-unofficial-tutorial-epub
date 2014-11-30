@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BNCIH"></a><a id="JEETT00107"></a>
+
+    <h1 class="chapter"><span class="secnum">51</span> <a id="sthref2801"></a>Transactions</h1>
+
+    <p><a id="sthref2802"></a><a id="sthref2803"></a><a id="sthref2804"></a>A typical enterprise application accesses and stores information in one or more databases. Because this information is critical for business operations, it must be accurate, current, and reliable. Data integrity would be lost if multiple programs were allowed to update the same information simultaneously or if a system that failed while processing a business transaction were to leave the affected data only partially updated. By preventing both of these scenarios, software transactions ensure data integrity. Transactions control the concurrent access of data by multiple programs. In the event of a system failure, transactions make sure that after recovery, the data will be in a consistent state.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/transactions.xhtml#GIJRG">Transactions in Java EE Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/transactions.xhtml#BNCII">What Is a Transaction?</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/transactions.xhtml#BNCIJ">Container-Managed Transactions</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/transactions.xhtml#BNCIY">Bean-Managed Transactions</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/transactions.xhtml#BNCJC">Transaction Timeouts</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/transactions.xhtml#BNCJD">Updating Multiple Databases</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/transactions.xhtml#BNCJG">Transactions in Web Components</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/transactions.xhtml#GKCMI">Further Information about Transactions</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GIJRG"></a><a id="JEETT00527"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">51.1</span> <a id="sthref2805"></a>Transactions in Java EE Applications</h1>
+
+      <p>In a Java EE application, a transaction is a series of actions that must all complete successfully, or else all the changes in each action are backed out. Transactions end in either a commit or a rollback.</p>
+
+      <p>The Java Transaction API (JTA) allows applications to access transactions in a manner that is independent of specific implementations. JTA specifies standard Java interfaces between a transaction manager and the parties involved in a distributed transaction system: the transactional application, the Java EE server, and the manager that controls access to the shared resources affected by the transactions.</p>
+
+      <p>The JTA defines the <code>UserTransaction</code> interface that applications use to start, commit, or roll back transactions. Application components get a <code>UserTransaction</code> object through a JNDI lookup by using the name <code>java:comp/UserTransaction</code> or by requesting injection of a <code>UserTransaction</code> object. An application server uses a number of JTA-defined interfaces to communicate with a transaction manager; a transaction manager uses JTA-defined interfaces to interact with a resource manager.</p>
+
+      <p>The JTA 1.2 specification is available at <code><a href="../Text/transactions.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D907">http://jcp.org/en/jsr/detail?id=907</a></code>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNCII"></a><a id="JEETT00530"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">51.2</span> What Is a Transaction?</h1>
+
+      <p>To emulate a business transaction, a program may need to perform several steps. A financial program, for example, might transfer funds from a checking account to a savings account by using the steps listed in the following pseudocode:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">begin transaction
+    debit checking account
+    credit savings account
+    update history log
+commit transaction</pre>
+
+      <p><a id="sthref2806"></a><a id="sthref2807"></a>Either all or none of the three steps must complete. Otherwise, data integrity is lost. Because the steps within a transaction are a unified whole, a <span class="glossaryterm">transaction</span> is often defined as an indivisible unit of work.</p>
+
+      <p><a id="sthref2808"></a><a id="sthref2809"></a>A transaction can end in two ways: with a commit or with a rollback. When a transaction commits, the data modifications made by its statements are saved. If a statement within a transaction fails, the transaction rolls back, undoing the effects of all statements in the transaction. In the pseudocode, for example, if a disk drive were to crash during the <code>credit</code> step, the transaction would roll back and undo the data modifications made by the <code>debit</code> statement. Although the transaction fails, data integrity would be intact because the accounts still balance.</p>
+
+      <p><a id="sthref2810"></a>In the preceding pseudocode, the <code>begin</code> and <code>commit</code> statements mark the boundaries of the transaction. When designing an enterprise bean, you determine how the boundaries are set by specifying either container-managed or bean-managed transactions.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNCIJ"></a><a id="JEETT00531"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">51.3</span> <a id="sthref2811"></a>Container-Managed Transactions</h1>
+
+      <p><a id="sthref2812"></a><a id="sthref2813"></a><a id="sthref2814"></a><a id="sthref2815"></a>In an enterprise bean with <span class="glossaryterm">container-managed transaction demarcation</span>, the EJB container sets the boundaries of the transactions. You can use container-managed transactions with any type of enterprise bean: session or message-driven. Container-managed transactions simplify development because the enterprise bean code does not explicitly mark the transaction's boundaries. The code does not include statements that begin and end the transaction. By default, if no transaction demarcation is specified, enterprise beans use container-managed transaction demarcation.</p>
+
+      <p><a id="sthref2816"></a>Typically, the container begins a transaction immediately before an enterprise bean method starts and commits the transaction just before the method exits. Each method can be associated with a single transaction. Nested or multiple transactions are not allowed within a method.</p>
+
+      <p>Container-managed transactions do not require all methods to be associated with transactions. When developing a bean, you can set the transaction attributes to specify which of the bean's methods are associated with transactions.</p>
+
+      <p>Enterprise beans that use container-managed transaction demarcation must not use any transaction-management methods that interfere with the container's transaction demarcation boundaries. Examples of such methods are the <code>commit</code>, <code>setAutoCommit</code>, and <code>rollback</code> methods of <code>java.sql.Connection</code> or the <code>commit</code> and <code>rollback</code> methods of <code>javax.jms.Session</code>. If you require control over the transaction demarcation, you must use application-managed transaction demarcation.</p>
+
+      <p>Enterprise beans that use container-managed transaction demarcation also must not use the <code>javax.transaction.UserTransaction</code> interface.</p><a id="BNCIK"></a><a id="JEETT01256"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">51.3.1</span> <a id="sthref2817"></a>Transaction Attributes</h2>
+
+        <p><a id="sthref2818"></a>A <span class="glossaryterm">transaction attribute</span> controls the scope of a transaction. <a href="../Text/transactions.xhtml#BNCIL">Figure 51-1</a> illustrates why controlling the scope is important. In the diagram, <code>method-A</code> begins a transaction and then invokes <code>method-B</code> of <code>Bean-2</code>. When <code>method-B</code> executes, does it run within the scope of the transaction started by <code>method-A</code>, or does it execute with a new transaction? The answer depends on the transaction attribute of <code>method-B</code>.</p>
+
+        <div class="figure">
+          <a id="BNCIL"></a><a id="JEETT00042"></a>
+
+          <p class="titleinfigure">Figure 51-1 Transaction Scope</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 51-1 follows" longdesc="img_text/jeett_dt_050.htm" src="../Images/jeett_dt_050.png" style="line-height: 1.6em;" title="Description of Figure 51-1 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 51-1 Transaction Scope"<br />
+          <br />
+        </div>
+
+        <p>A transaction attribute can have one of the following values:</p>
+
+        <ul>
+          <li>
+            <p><code>Required</code></p>
+          </li>
+
+          <li>
+            <p><code>RequiresNew</code></p>
+          </li>
+
+          <li>
+            <p><code>Mandatory</code></p>
+          </li>
+
+          <li>
+            <p><code>NotSupported</code></p>
+          </li>
+
+          <li>
+            <p><code>Supports</code></p>
+          </li>
+
+          <li>
+            <p><code>Never</code></p>
+          </li>
+        </ul><a id="BNCIM"></a><a id="JEETT00793"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">51.3.1.1</span> Required Attribute</h3>
+
+          <p>If the client is running within a transaction and invokes the enterprise bean's method, the method executes within the client's transaction. If the client is not associated with a transaction, the container starts a new transaction before running the method.</p>
+
+          <p>The <code>Required</code> attribute is the implicit transaction attribute for all enterprise bean methods running with container-managed transaction demarcation. You typically do not set the <code>Required</code> attribute unless you need to override another transaction attribute. Because transaction attributes are declarative, you can easily change them later.</p>
+        </div><a id="BNCIN"></a><a id="JEETT00794"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">51.3.1.2</span> RequiresNew Attribute</h3>
+
+          <p>If the client is running within a transaction and invokes the enterprise bean's method, the container takes the following steps:</p>
+
+          <ol>
+            <li>
+              <p>Suspends the client's transaction</p>
+            </li>
+
+            <li>
+              <p>Starts a new transaction</p>
+            </li>
+
+            <li>
+              <p>Delegates the call to the method</p>
+            </li>
+
+            <li>
+              <p>Resumes the client's transaction after the method completes</p>
+            </li>
+          </ol>
+
+          <p>If the client is not associated with a transaction, the container starts a new transaction before running the method.</p>
+
+          <p>You should use the <code>RequiresNew</code> attribute when you want to ensure that the method always runs within a new transaction.</p>
+        </div><a id="BNCIO"></a><a id="JEETT00795"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">51.3.1.3</span> Mandatory Attribute</h3>
+
+          <p><a id="sthref2820"></a>If the client is running within a transaction and invokes the enterprise bean's method, the method executes within the client's transaction. If the client is not associated with a transaction, the container throws a <code>TransactionRequiredException</code>.</p>
+
+          <p>Use the <code>Mandatory</code> attribute if the enterprise bean's method must use the transaction of the client.</p>
+        </div><a id="BNCIP"></a><a id="JEETT00796"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">51.3.1.4</span> NotSupported Attribute</h3>
+
+          <p>If the client is running within a transaction and invokes the enterprise bean's method, the container suspends the client's transaction before invoking the method. After the method has completed, the container resumes the client's transaction.</p>
+
+          <p>If the client is not associated with a transaction, the container does not start a new transaction before running the method.</p>
+
+          <p>Use the <code>NotSupported</code> attribute for methods that don't need transactions. Because transactions involve overhead, this attribute may improve performance.</p>
+        </div><a id="BNCIQ"></a><a id="JEETT00797"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">51.3.1.5</span> Supports Attribute</h3>
+
+          <p>If the client is running within a transaction and invokes the enterprise bean's method, the method executes within the client's transaction. If the client is not associated with a transaction, the container does not start a new transaction before running the method.</p>
+
+          <p>Because the transactional behavior of the method may vary, you should use the <code>Supports</code> attribute with caution.</p>
+        </div><a id="BNCIR"></a><a id="JEETT00798"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">51.3.1.6</span> Never Attribute</h3>
+
+          <p><a id="sthref2821"></a>If the client is running within a transaction and invokes the enterprise bean's method, the container throws a <code>RemoteException</code>. If the client is not associated with a transaction, the container does not start a new transaction before running the method.</p>
+        </div><a id="BNCIS"></a><a id="JEETT00799"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">51.3.1.7</span> Summary of Transaction Attributes</h3>
+
+          <p><a href="../Text/transactions.xhtml#BNCIT">Table 51-1</a> summarizes the effects of the transaction attributes. Both the <code>T1</code> and the <code>T2</code> transactions are controlled by the container. A <code>T1</code> transaction is associated with the client that calls a method in the enterprise bean. In most cases, the client is another enterprise bean. A <code>T2</code> transaction is started by the container just before the method executes.</p>
+
+          <p><a id="sthref2822"></a><a id="sthref2823"></a>In the last column of <a href="../Text/transactions.xhtml#BNCIT">Table 51-1</a>, the word "None" means that the business method does not execute within a transaction controlled by the container. However, the database calls in such a business method might be controlled by the transaction manager of the database management system.</p>
+
+          <div class="tblhruleformal">
+            <a id="sthref2824"></a><a id="BNCIT"></a>
+
+            <p class="titleintable">Table 51-1 Transaction Attributes and Scope</p>
+
+            <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists the transaction attributes and the scopes of the client and business method for each." title="Transaction Attributes and Scope" width="100%">
+              <col width="29%" />
+              <col width="29%" />
+              <col width="*" />
+
+              <thead>
+                <tr align="left" valign="top">
+                  <th align="left" id="r1c1-t2" valign="bottom">Transaction Attribute</th>
+
+                  <th align="left" id="r1c2-t2" valign="bottom">Client's Transaction</th>
+
+                  <th align="left" id="r1c3-t2" valign="bottom">Business Method's Transaction</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                    <p><code>Required</code></p>
+                  </td>
+
+                  <td align="left" headers="r2c1-t2 r1c2-t2">
+                    <p>None</p>
+                  </td>
+
+                  <td align="left" headers="r2c1-t2 r1c3-t2">
+                    <p>T2</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                    <p><code>Required</code></p>
+                  </td>
+
+                  <td align="left" headers="r3c1-t2 r1c2-t2">
+                    <p>T1</p>
+                  </td>
+
+                  <td align="left" headers="r3c1-t2 r1c3-t2">
+                    <p>T1</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                    <p><code>RequiresNew</code></p>
+                  </td>
+
+                  <td align="left" headers="r4c1-t2 r1c2-t2">
+                    <p>None</p>
+                  </td>
+
+                  <td align="left" headers="r4c1-t2 r1c3-t2">
+                    <p>T2</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                    <p><code>RequiresNew</code></p>
+                  </td>
+
+                  <td align="left" headers="r5c1-t2 r1c2-t2">
+                    <p>T1</p>
+                  </td>
+
+                  <td align="left" headers="r5c1-t2 r1c3-t2">
+                    <p>T2</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                    <p><code>Mandatory</code></p>
+                  </td>
+
+                  <td align="left" headers="r6c1-t2 r1c2-t2">
+                    <p>None</p>
+                  </td>
+
+                  <td align="left" headers="r6c1-t2 r1c3-t2">
+                    <p>Error</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r7c1-t2">
+                    <p><code>Mandatory</code></p>
+                  </td>
+
+                  <td align="left" headers="r7c1-t2 r1c2-t2">
+                    <p>T1</p>
+                  </td>
+
+                  <td align="left" headers="r7c1-t2 r1c3-t2">
+                    <p>T1</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r8c1-t2">
+                    <p><code>NotSupported</code></p>
+                  </td>
+
+                  <td align="left" headers="r8c1-t2 r1c2-t2">
+                    <p>None</p>
+                  </td>
+
+                  <td align="left" headers="r8c1-t2 r1c3-t2">
+                    <p>None</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r9c1-t2">
+                    <p><code>NotSupported</code></p>
+                  </td>
+
+                  <td align="left" headers="r9c1-t2 r1c2-t2">
+                    <p>T1</p>
+                  </td>
+
+                  <td align="left" headers="r9c1-t2 r1c3-t2">
+                    <p>None</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r10c1-t2">
+                    <p><code>Supports</code></p>
+                  </td>
+
+                  <td align="left" headers="r10c1-t2 r1c2-t2">
+                    <p>None</p>
+                  </td>
+
+                  <td align="left" headers="r10c1-t2 r1c3-t2">
+                    <p>None</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r11c1-t2">
+                    <p><code>Supports</code></p>
+                  </td>
+
+                  <td align="left" headers="r11c1-t2 r1c2-t2">
+                    <p>T1</p>
+                  </td>
+
+                  <td align="left" headers="r11c1-t2 r1c3-t2">
+                    <p>T1</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r12c1-t2">
+                    <p><code>Never</code></p>
+                  </td>
+
+                  <td align="left" headers="r12c1-t2 r1c2-t2">
+                    <p>None</p>
+                  </td>
+
+                  <td align="left" headers="r12c1-t2 r1c3-t2">
+                    <p>None</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t2" id="r13c1-t2">
+                    <p><code>Never</code></p>
+                  </td>
+
+                  <td align="left" headers="r13c1-t2 r1c2-t2">
+                    <p>T1</p>
+                  </td>
+
+                  <td align="left" headers="r13c1-t2 r1c3-t2">
+                    <p>Error</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+        </div><a id="BNCIU"></a><a id="JEETT00800"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">51.3.1.8</span> <a id="sthref2825"></a>Setting Transaction Attributes</h3>
+
+          <p>Transaction attributes are specified by decorating the enterprise bean class or method with a <code>javax.ejb.TransactionAttribute</code> annotation and setting it to one of the <code>javax.ejb.TransactionAttributeType</code> constants.</p>
+
+          <p>If you decorate the enterprise bean class with <code>@TransactionAttribute</code>, the specified <code>TransactionAttributeType</code> is applied to all the business methods in the class. Decorating a business method with <code>@TransactionAttribute</code> applies the <code>TransactionAttributeType</code> only to that method. If a <code>@TransactionAttribute</code> annotation decorates both the class and the method, the method <code>TransactionAttributeType</code> overrides the class <code>TransactionAttributeType</code>.</p>
+
+          <p>The <code>TransactionAttributeType</code> constants shown in <a href="../Text/transactions.xhtml#GKCFD">Table 51-2</a> encapsulate the transaction attributes described earlier in this section.</p>
+
+          <div class="tblhruleformal">
+            <a id="sthref2826"></a><a id="GKCFD"></a>
+
+            <p class="titleintable">Table 51-2 TransactionAttributeType Constants</p>
+
+            <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists the TransactionAttributeType constant for each transaction attribute." title="TransactionAttributeType Constants" width="100%">
+              <col width="34%" />
+              <col width="*" />
+
+              <thead>
+                <tr align="left" valign="top">
+                  <th align="left" id="r1c1-t3" valign="bottom">Transaction Attribute</th>
+
+                  <th align="left" id="r1c2-t3" valign="bottom">TransactionAttributeType Constant</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r2c1-t3">
+                    <p><code>Required</code></p>
+                  </td>
+
+                  <td align="left" headers="r2c1-t3 r1c2-t3">
+                    <p><code>TransactionAttributeType.REQUIRED</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r3c1-t3">
+                    <p><code>RequiresNew</code></p>
+                  </td>
+
+                  <td align="left" headers="r3c1-t3 r1c2-t3">
+                    <p><code>TransactionAttributeType.REQUIRES_NEW</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r4c1-t3">
+                    <p><code>Mandatory</code></p>
+                  </td>
+
+                  <td align="left" headers="r4c1-t3 r1c2-t3">
+                    <p><code>TransactionAttributeType.MANDATORY</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r5c1-t3">
+                    <p><code>NotSupported</code></p>
+                  </td>
+
+                  <td align="left" headers="r5c1-t3 r1c2-t3">
+                    <p><code>TransactionAttributeType.NOT_SUPPORTED</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r6c1-t3">
+                    <p><code>Supports</code></p>
+                  </td>
+
+                  <td align="left" headers="r6c1-t3 r1c2-t3">
+                    <p><code>TransactionAttributeType.SUPPORTS</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r7c1-t3">
+                    <p><code>Never</code></p>
+                  </td>
+
+                  <td align="left" headers="r7c1-t3 r1c2-t3">
+                    <p><code>TransactionAttributeType.NEVER</code></p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+
+          <p>The following code snippet demonstrates how to use the <code>@TransactionAttribute</code> annotation:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@TransactionAttribute(NOT_SUPPORTED)
+@Stateful
+public class TransactionBean implements Transaction {
+...
+    @TransactionAttribute(REQUIRES_NEW)
+    public void firstMethod() {...}
+
+    @TransactionAttribute(REQUIRED)
+    public void secondMethod() {...}
+
+    public void thirdMethod() {...}
+
+    public void fourthMethod() {...}
+}</pre>
+
+          <p>In this example, the <code>TransactionBean</code> class's transaction attribute has been set to <code>NotSupported</code>, <code>firstMethod</code> has been set to <code>RequiresNew</code>, and <code>secondMethod</code> has been set to <code>Required</code>. Because a <code>@TransactionAttribute</code> set on a method overrides the class <code>@TransactionAttribute</code>, calls to <code>firstMethod</code> will create a new transaction, and calls to <code>secondMethod</code> will either run in the current transaction or start a new transaction. Calls to <code>thirdMethod</code> or <code>fourthMethod</code> do not take place within a transaction.</p>
+        </div>
+      </div><a id="BNCIV"></a><a id="JEETT01257"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">51.3.2</span> <a id="sthref2827"></a>Rolling Back a Container-Managed Transaction</h2>
+
+        <p><a id="sthref2828"></a><a id="sthref2829"></a><a id="sthref2830"></a>There are two ways to roll back a container-managed transaction. First, if a system exception is thrown, the container will automatically roll back the transaction. Second, by invoking the <code>setRollbackOnly</code> method of the <code>EJBContext</code> interface, the bean method instructs the container to roll back the transaction. If the bean throws an application exception, the rollback is not automatic but can be initiated by a call to <code>setRollbackOnly</code>.</p>
+      </div><a id="BNCIW"></a><a id="JEETT01258"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">51.3.3</span> <a id="sthref2831"></a><a id="sthref2832"></a><a id="sthref2833"></a>Synchronizing a Session Bean's Instance Variables</h2>
+
+        <p>The <code>SessionSynchronization</code> interface, which is optional, allows stateful session bean instances to receive transaction synchronization notifications. For example, you could synchronize the instance variables of an enterprise bean with their corresponding values in the database. The container invokes the <code>SessionSynchronization</code> methods (<code>afterBegin</code>, <code>beforeCompletion</code>, and <code>afterCompletion</code>) at each of the main stages of a transaction.</p>
+
+        <p><a id="sthref2834"></a><a id="sthref2835"></a>The <code>afterBegin</code> method informs the instance that a new transaction has begun. The container invokes <code>afterBegin</code> immediately before it invokes the business method.</p>
+
+        <p><a id="sthref2836"></a><a id="sthref2837"></a><a id="sthref2838"></a><a id="sthref2839"></a>The container invokes the <code>beforeCompletion</code> method after the business method has finished but just before the transaction commits. The <code>beforeCompletion</code> method is the last opportunity for the session bean to roll back the transaction (by calling <code>setRollbackOnly</code>).</p>
+
+        <p><a id="sthref2840"></a>The <code>afterCompletion</code> method indicates that the transaction has completed. This method has a single <code>boolean</code> parameter whose value is <code>true</code> if the transaction was committed and <code>false</code> if it was rolled back.</p>
+      </div><a id="BNCIX"></a><a id="JEETT01259"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">51.3.4</span> Methods Not Allowed in Container-Managed Transactions</h2>
+
+        <p><a id="sthref2841"></a>You should not invoke any method that might interfere with the transaction boundaries set by the container. The following methods are prohibited:</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref2842"></a><a id="sthref2843"></a><a id="sthref2844"></a>The <code>commit</code>, <code>setAutoCommit</code>, and <code>rollback</code> methods of <code>java.sql.Connection</code></p>
+          </li>
+
+          <li>
+            <p><a id="sthref2845"></a>The <code>getUserTransaction</code> method of <code>javax.ejb.EJBContext</code></p>
+          </li>
+
+          <li>
+            <p><a id="sthref2846"></a>Any method of <code>javax.transaction.UserTransaction</code></p>
+          </li>
+        </ul>
+
+        <p>You can, however, use these methods to set boundaries in application-managed transactions.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNCIY"></a><a id="JEETT00532"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">51.4</span> <a id="sthref2847"></a>Bean-Managed Transactions</h1>
+
+      <p><a id="sthref2848"></a><a id="sthref2849"></a>In <span class="glossaryterm">bean-managed transaction demarcation</span>, the code in the session or message-driven bean explicitly marks the boundaries of the transaction. Although beans with container-managed transactions require less coding, they have one limitation: When a method is executing, it can be associated with either a single transaction or no transaction at all. If this limitation will make coding your bean difficult, you should consider using bean-managed transactions.</p>
+
+      <p>The following pseudocode illustrates the kind of fine-grained control you can obtain with application-managed transactions. By checking various conditions, the pseudocode decides whether to start or stop certain transactions within the business method:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">begin transaction
+...
+    update table-a
+...
+    if (condition-x)
+   commit transaction
+    else if (condition-y)
+   update table-b
+   commit transaction
+    else
+   rollback transaction
+   begin transaction
+   update table-c
+   commit transaction</pre>
+
+      <p><a id="sthref2850"></a><a id="sthref2851"></a><a id="sthref2852"></a>When coding an application-managed transaction for session or message-driven beans, you must decide whether to use Java Database Connectivity or JTA transactions. The sections that follow discuss both types of transactions.</p><a id="BNCIZ"></a><a id="JEETT01260"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">51.4.1</span> <a id="sthref2853"></a><a id="sthref2854"></a><a id="sthref2855"></a>JTA Transactions</h2>
+
+        <p><a id="sthref2856"></a><a id="sthref2857"></a>JTA, or the Java Transaction API, allows you to demarcate transactions in a manner that is independent of the transaction manager implementation. GlassFish Server implements the transaction manager with the Java Transaction Service (JTS). However, your code doesn't call the JTS methods directly but instead invokes the JTA methods, which then call the lower-level JTS routines.</p>
+
+        <p><a id="sthref2858"></a><a id="sthref2859"></a>A <span class="glossaryterm">JTA transaction</span> is controlled by the Java EE transaction manager. You may want to use a JTA transaction because it can span updates to multiple databases from different vendors. A particular DBMS's transaction manager may not work with heterogeneous databases. However, the Java EE transaction manager does have one limitation: It does not support nested transactions. In other words, it cannot start a transaction for an instance until the preceding transaction has ended.</p>
+
+        <p><a id="sthref2860"></a><a id="sthref2861"></a><a id="sthref2862"></a>To demarcate a JTA transaction, you invoke the <code>begin</code>, <code>commit</code>, and <code>rollback</code> methods of the <code>javax.transaction.UserTransaction</code> interface.</p>
+      </div><a id="BNCJA"></a><a id="JEETT01261"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">51.4.2</span> Returning without Committing</h2>
+
+        <p><a id="sthref2863"></a>In a stateless session bean with bean-managed transactions, a business method must commit or roll back a transaction before returning. However, a stateful session bean does not have this restriction.</p>
+
+        <p><a id="sthref2864"></a>In a stateful session bean with a JTA transaction, the association between the bean instance and the transaction is retained across multiple client calls. Even if each business method called by the client opens and closes the database connection, the association is retained until the instance completes the transaction.</p>
+
+        <p>In a stateful session bean with a JDBC transaction, the JDBC connection retains the association between the bean instance and the transaction across multiple calls. If the connection is closed, the association is not retained.</p>
+      </div><a id="BNCJB"></a><a id="JEETT01262"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">51.4.3</span> Methods Not Allowed in Bean-Managed Transactions</h2>
+
+        <p><a id="sthref2865"></a><a id="sthref2866"></a><a id="sthref2867"></a><a id="sthref2868"></a><a id="sthref2869"></a><a id="sthref2870"></a><a id="sthref2871"></a>Do not invoke the <code>getRollbackOnly</code> and <code>setRollbackOnly</code> methods of the <code>EJBContext</code> interface in bean-managed transactions. These methods should be used only in container-managed transactions. For bean-managed transactions, invoke the <code>getStatus</code> and <code>rollback</code> methods of the <code>UserTransaction</code> interface.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNCJC"></a><a id="JEETT00533"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">51.5</span> <a id="sthref2872"></a>Transaction Timeouts</h1>
+
+      <p>For container-managed transactions, you can use the Administration Console to configure the transaction timeout interval. See <a href="../Text/usingexamples.xhtml#BNADJ">Starting the Administration Console</a>.</p>
+
+      <p>For enterprise beans with bean-managed JTA transactions, you invoke the <code>setTransactionTimeout</code> method of the <code>UserTransaction</code> interface.</p>
+
+      <div class="sect2">
+        <a id="sthref2873"></a>
+
+        <h2 class="sect2"><span class="secnum">51.5.1</span> To Set a Transaction Timeout</h2>
+
+        <ol>
+          <li>
+            <p>In the Administration Console, expand the <span class="gui-object-action">Configurations</span> node, then expand the <span class="gui-object-action">server-config</span> node and select <span class="gui-object-action">Transaction Service</span>.</p>
+          </li>
+
+          <li>
+            <p>On the <span class="gui-object-title">Transaction Service</span> page, set the value of the <span class="gui-object-action">Transaction Timeout</span> field to the value of your choice (for example, 5).</p>
+
+            <p>With this setting, if the transaction has not completed within 5 seconds, the EJB container rolls it back.</p>
+
+            <p>The default value is 0, meaning that the transaction will not time out.</p>
+          </li>
+
+          <li>
+            <p>Click <span class="gui-object-action">Save</span>.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNCJD"></a><a id="JEETT00534"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">51.6</span> <a id="sthref2874"></a><a id="sthref2875"></a>Updating Multiple Databases</h1>
+
+      <p><a id="sthref2876"></a>The Java EE transaction manager controls all enterprise bean transactions except for bean-managed JDBC transactions. The Java EE transaction manager allows an enterprise bean to update multiple databases within a transaction. <a href="../Text/transactions.xhtml#BNCJE">Figure 51-2</a> and <a href="../Text/transactions.xhtml#BNCJF">Figure 51-3</a> show two scenarios for updating multiple databases in a single transaction.</p>
+
+      <p><a id="sthref2877"></a>In <a href="../Text/transactions.xhtml#BNCJE">Figure 51-2</a>, the client invokes a business method in <code>Bean-A</code>. The business method begins a transaction, updates Database X, updates Database Y, and invokes a business method in <code>Bean-B</code>. The second business method updates Database Z and returns control to the business method in <code>Bean-A</code>, which commits the transaction. All three database updates occur in the same transaction.</p>
+
+      <p>In <a href="../Text/transactions.xhtml#BNCJF">Figure 51-3</a>, the client calls a business method in <code>Bean-A</code>, which begins a transaction and updates Database X. Then <code>Bean-A</code> invokes a method in <code>Bean-B</code>, which resides in a remote Java EE server. The method in <code>Bean-B</code> updates Database Y. The transaction managers of the Java EE servers ensure that both databases are updated in the same transaction.</p>
+
+      <div class="figure">
+        <a id="BNCJE"></a><a id="JEETT00043"></a>
+
+        <p class="titleinfigure">Figure 51-2 Updating Multiple Databases</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 51-2 follows" longdesc="img_text/jeett_dt_051.htm" src="../Images/jeett_dt_051.png" style="line-height: 1.6em;" title="Description of Figure 51-2 follows" /></div>
+      </div>
+
+      <div class="figure">
+        Description of "Figure 51-2 Updating Multiple Databases"<br />
+        <br />
+      </div>
+
+      <div class="figure">
+        <a id="BNCJF"></a><a id="JEETT00044"></a>
+
+        <p class="titleinfigure">Figure 51-3 Updating Multiple Databases Across Java EE Servers</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 51-3 follows" longdesc="img_text/jeett_dt_052.htm" src="../Images/jeett_dt_052.png" style="line-height: 1.6em;" title="Description of Figure 51-3 follows" /></div>
+      </div>
+
+      <div class="figure">
+        Description of "Figure 51-3 Updating Multiple Databases Across Java EE Servers"<br />
+        <br />
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNCJG"></a><a id="JEETT00535"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">51.7</span> <a id="sthref2880"></a><a id="sthref2881"></a>Transactions in Web Components</h1>
+
+      <p><a id="sthref2882"></a><a id="sthref2883"></a>You can demarcate a transaction in a web component by using either the <code>java.sql.Connection</code> or the <code>javax.transaction.UserTransaction</code> interface. These are the same interfaces that a session bean with bean-managed transactions can use. Transactions demarcated with the <code>UserTransaction</code> interface are discussed in <a href="../Text/transactions.xhtml#BNCIZ">JTA Transactions</a>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKCMI"></a><a id="JEETT00536"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">51.8</span> Further Information about Transactions</h1>
+
+      <p>For more information about transactions, see the Java Transaction API 1.2 specification at <code><a href="../Text/transactions.xhtml#https%3A//www.jcp.org/en/jsr/detail%3Fid%3D907">https://www.jcp.org/en/jsr/detail?id=907</a></code>.</p>
+    </div>
+  </div>
+</body>
+</html>

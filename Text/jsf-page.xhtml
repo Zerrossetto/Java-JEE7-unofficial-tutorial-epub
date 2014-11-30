@@ -1,0 +1,2686 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BNAQZ"></a><a id="JEETT00070"></a>
+
+    <h1 class="chapter"><span class="secnum">10</span> <a id="sthref419"></a>Using JavaServer Faces Technology in Web Pages</h1>
+
+    <p>Web pages (Facelets pages, in most cases) represent the presentation layer for web applications. The process of creating web pages for a JavaServer Faces application includes using component tags to add components to the page and wire them to backing beans, validators, listeners, converters, and other server-side objects that are associated with the page.</p>
+
+    <p>This chapter explains how to create web pages using various types of component and core tags. In the next chapter, you will learn about adding converters, validators, and listeners to component tags to provide additional functionality to components.</p>
+
+    <p>Many of the examples in this chapter are taken from <a href="../Text/dukes-bookstore.xhtml#GLNVI">Chapter 57, "Duke's Books tore Case Study Example."</a></p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/jsf-page.xhtml#BNARB">Setting Up a Page</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-page.xhtml#BNARF">Adding Components to a Page Using HTML Tag Library Tags</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-page.xhtml#BNARC">Using Core Tags</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BNARB"></a><a id="JEETT00347"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">10.1</span> Setting Up a Page</h1>
+
+      <p>A typical JavaServer Faces web page includes the following elements:</p>
+
+      <ul>
+        <li>
+          <p>A set of namespace declarations that declare the JavaServer Faces tag libraries</p>
+        </li>
+
+        <li>
+          <p>Optionally, the HTML head (<code>h:head</code>) and body (<code>h:body</code>) tags</p>
+        </li>
+
+        <li>
+          <p>A form tag (<code>h:form</code>) that represents the user input components</p>
+        </li>
+      </ul>
+
+      <p><a id="sthref420"></a><a id="sthref421"></a><a id="sthref422"></a>To add the JavaServer Faces components to your web page, you need to provide the page access to the two standard tag libraries: the JavaServer Faces HTML render kit tag library and the JavaServer Faces core tag library. The JavaServer Faces standard HTML tag library defines tags that represent common HTML user interface components. This library is linked to the HTML render kit at <code><a href="../Text/jsf-page.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/renderkitdocs/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/renderkitdocs/</a></code>. The JavaServer Faces core tag library defines tags that perform core actions and are independent of a particular render kit.</p>
+
+      <p>For a complete list of JavaServer Faces Facelets tags and their attributes, refer to the documentation at <code><a href="../Text/jsf-page.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>.</p>
+
+      <p><a id="sthref423"></a>To use any of the JavaServer Faces tags, you need to include appropriate directives at the top of each page specifying the tag libraries.</p>
+
+      <p>For Facelets applications, the XML namespace directives uniquely identify the tag library URI and the tag prefix.</p>
+
+      <p>For example, when you create a Facelets XHTML page, include namespace directives as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">html xmlns="http://www.w3.org/1999/xhtml"      xmlns:h="http://xmlns.jcp.org/jsf/html"      xmlns:f="http://xmlns.jcp.org/jsf/core"</pre>
+
+      <p>The XML namespace URI identifies the tag library location, and the prefix value is used to distinguish the tags belonging to that specific tag library. You can also use other prefixes instead of the standard <code>h</code> or <code>f</code>. However, when including the tag in the page you must use the prefix that you have chosen for the tag library. For example, in the following web page the <code>form</code> tag must be referenced using the <code>h</code> prefix because the preceding tag library directive uses the <code>h</code> prefix to distinguish the tags defined in the HTML tag library:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">h:form ...</pre>
+
+      <p>The sections <a href="../Text/jsf-page.xhtml#BNARF">Adding Components to a Page Using HTML Tag Library Tags</a> and <a href="../Text/jsf-page.xhtml#BNARC">Using Core Tags</a> describe how to use the component tags from the JavaServer Faces standard HTML tag library and the core tags from the JavaServer Faces core tag library.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNARF"></a><a id="JEETT00348"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">10.2</span> <a id="sthref424"></a>Adding Components to a Page Using HTML Tag Library Tags</h1>
+
+      <p>The tags defined by the JavaServer Faces standard HTML tag library represent HTML form components and other basic HTML elements. These components display data or accept data from the user. This data is collected as part of a form and is submitted to the server, usually when the user clicks a button. This section explains how to use each of the component tags shown in <a href="../Text/jsf-page.xhtml#BNAQH">Table 10-1</a>.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref425"></a><a id="BNAQH"></a>
+
+        <p class="titleintable">Table 10-1 The Component Tags</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the HTML component tags, explains how they are rendered, and describes their appearance." title="The Component Tags" width="100%">
+          <col width="26%" />
+          <col width="*" />
+          <col width="25%" />
+          <col width="21%" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t2" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c2-t2" valign="bottom">Functions</th>
+
+              <th align="left" id="r1c3-t2" valign="bottom">Rendered As</th>
+
+              <th align="left" id="r1c4-t2" valign="bottom">Appearance</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                <p><a id="sthref426"></a><code>h:column</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c2-t2">
+                <p>Represents a column of data in a data component</p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c3-t2">
+                <p>A column of data in an HTML table</p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c4-t2">
+                <p><a id="sthref427"></a>A column in a table</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                <p><a id="sthref428"></a><code>h:commandButton</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c2-t2">
+                <p>Submits a form to the application</p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c3-t2">
+                <p>An HTML <code>input type=</code><span class="variable">value</span> element for which the <code>type</code> value can be <code>"submit"</code>, <code>"reset"</code>, or <code>"image"</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c4-t2">
+                <p><a id="sthref429"></a>A button</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                <p><a id="sthref430"></a><code>h:commandLink</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c2-t2">
+                <p>Links to another page or location on a page</p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c3-t2">
+                <p>An HTML <code>a href</code> element</p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c4-t2">
+                <p><a id="sthref431"></a>A link</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                <p><a id="sthref432"></a><code>h:dataTable</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c2-t2">
+                <p>Represents a data wrapper</p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c3-t2">
+                <p>An HTML <code>table</code> element</p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c4-t2">
+                <p><a id="sthref433"></a>A table that can be updated dynamically</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                <p><a id="sthref434"></a><code>h:form</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c2-t2">
+                <p>Represents an input form (inner tags of the form receive the data that will be submitted with the form)</p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c3-t2">
+                <p>An HTML <code>form</code> element</p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c4-t2">
+                <p>No appearance</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r7c1-t2">
+                <p><a id="sthref435"></a><code>h:graphicImage</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c2-t2">
+                <p>Displays an image</p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c3-t2">
+                <p>An HTML <code>img</code> element</p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c4-t2">
+                <p>An image</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r8c1-t2">
+                <p><code>h:inputFile</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c2-t2">
+                <p>Allows a user to upload a file</p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c3-t2">
+                <p>An HTML <code>input type="file"</code> element</p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c4-t2">
+                <p>A field with a <span class="gui-object-action">Browse...</span> button</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r9c1-t2">
+                <p><a id="sthref436"></a><code>h:inputHidden</code></p>
+              </td>
+
+              <td align="left" headers="r9c1-t2 r1c2-t2">
+                <p>Allows a page author to include a hidden variable in a page</p>
+              </td>
+
+              <td align="left" headers="r9c1-t2 r1c3-t2">
+                <p>An HTML <code>input type="hidden"</code> element</p>
+              </td>
+
+              <td align="left" headers="r9c1-t2 r1c4-t2">
+                <p><a id="sthref437"></a>No appearance</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r10c1-t2">
+                <p><a id="sthref438"></a><code>h:inputSecret</code></p>
+              </td>
+
+              <td align="left" headers="r10c1-t2 r1c2-t2">
+                <p>Allows a user to input a string without the actual string appearing in the field</p>
+              </td>
+
+              <td align="left" headers="r10c1-t2 r1c3-t2">
+                <p>An HTML <code>input type="password"</code> element</p>
+              </td>
+
+              <td align="left" headers="r10c1-t2 r1c4-t2">
+                <p><a id="sthref439"></a>A field that displays a row of characters instead of the actual string entered</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r11c1-t2">
+                <p><a id="sthref440"></a><code>h:inputText</code></p>
+              </td>
+
+              <td align="left" headers="r11c1-t2 r1c2-t2">
+                <p>Allows a user to input a string</p>
+              </td>
+
+              <td align="left" headers="r11c1-t2 r1c3-t2">
+                <p>An HTML <code>input type="text"</code> element</p>
+              </td>
+
+              <td align="left" headers="r11c1-t2 r1c4-t2">
+                <p><a id="sthref441"></a>A field</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r12c1-t2">
+                <p><a id="sthref442"></a><code>h:inputTextarea</code></p>
+              </td>
+
+              <td align="left" headers="r12c1-t2 r1c2-t2">
+                <p>Allows a user to enter a multiline string</p>
+              </td>
+
+              <td align="left" headers="r12c1-t2 r1c3-t2">
+                <p>An HTML <code>textarea</code> element</p>
+              </td>
+
+              <td align="left" headers="r12c1-t2 r1c4-t2">
+                <p><a id="sthref443"></a>A multirow field</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r13c1-t2">
+                <p><a id="sthref444"></a><code>h:message</code></p>
+              </td>
+
+              <td align="left" headers="r13c1-t2 r1c2-t2">
+                <p>Displays a localized message</p>
+              </td>
+
+              <td align="left" headers="r13c1-t2 r1c3-t2">
+                <p>An HTML <code>span</code> tag if styles are used</p>
+              </td>
+
+              <td align="left" headers="r13c1-t2 r1c4-t2">
+                <p>A text string</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r14c1-t2">
+                <p><a id="sthref445"></a><code>h:messages</code></p>
+              </td>
+
+              <td align="left" headers="r14c1-t2 r1c2-t2">
+                <p>Displays localized messages</p>
+              </td>
+
+              <td align="left" headers="r14c1-t2 r1c3-t2">
+                <p>A set of HTML <code>span</code> tags if styles are used</p>
+              </td>
+
+              <td align="left" headers="r14c1-t2 r1c4-t2">
+                <p>A text string</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r15c1-t2">
+                <p><a id="sthref446"></a><code>h:outputFormat</code></p>
+              </td>
+
+              <td align="left" headers="r15c1-t2 r1c2-t2">
+                <p>Displays a formatted message</p>
+              </td>
+
+              <td align="left" headers="r15c1-t2 r1c3-t2">
+                <p>Plain text</p>
+              </td>
+
+              <td align="left" headers="r15c1-t2 r1c4-t2">
+                <p>Plain text</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r16c1-t2">
+                <p><a id="sthref447"></a><code>h:outputLabel</code></p>
+              </td>
+
+              <td align="left" headers="r16c1-t2 r1c2-t2">
+                <p>Displays a nested component as a label for a specified input field</p>
+              </td>
+
+              <td align="left" headers="r16c1-t2 r1c3-t2">
+                <p>An HTML <code>label</code> element</p>
+              </td>
+
+              <td align="left" headers="r16c1-t2 r1c4-t2">
+                <p><a id="sthref448"></a>Plain text</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r17c1-t2">
+                <p><a id="sthref449"></a><code>h:outputLink</code></p>
+              </td>
+
+              <td align="left" headers="r17c1-t2 r1c2-t2">
+                <p>Links to another page or location on a page without generating an action event</p>
+              </td>
+
+              <td align="left" headers="r17c1-t2 r1c3-t2">
+                <p>An HTML <code>a</code> element</p>
+              </td>
+
+              <td align="left" headers="r17c1-t2 r1c4-t2">
+                <p>A link</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r18c1-t2">
+                <p><a id="sthref450"></a><code>h:outputText</code></p>
+              </td>
+
+              <td align="left" headers="r18c1-t2 r1c2-t2">
+                <p>Displays a line of text</p>
+              </td>
+
+              <td align="left" headers="r18c1-t2 r1c3-t2">
+                <p>Plain text</p>
+              </td>
+
+              <td align="left" headers="r18c1-t2 r1c4-t2">
+                <p><a id="sthref451"></a>Plain text</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r19c1-t2">
+                <p><a id="sthref452"></a><code>h:panelGrid</code></p>
+              </td>
+
+              <td align="left" headers="r19c1-t2 r1c2-t2">
+                <p>Displays a table</p>
+              </td>
+
+              <td align="left" headers="r19c1-t2 r1c3-t2">
+                <p>An HTML <code>table</code> element with <code>tr</code> and <code>td</code> elements</p>
+              </td>
+
+              <td align="left" headers="r19c1-t2 r1c4-t2">
+                <p><a id="sthref453"></a>A table</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r20c1-t2">
+                <p><a id="sthref454"></a><code>h:panelGroup</code></p>
+              </td>
+
+              <td align="left" headers="r20c1-t2 r1c2-t2">
+                <p>Groups a set of components under one parent</p>
+              </td>
+
+              <td align="left" headers="r20c1-t2 r1c3-t2">
+                <p>A HTML <code>div</code> or <code>span</code> element</p>
+              </td>
+
+              <td align="left" headers="r20c1-t2 r1c4-t2">
+                <p>A row in a table</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r21c1-t2">
+                <p><a id="sthref455"></a><code>h:selectBooleanCheckbox</code></p>
+              </td>
+
+              <td align="left" headers="r21c1-t2 r1c2-t2">
+                <p>Allows a user to change the value of a Boolean choice</p>
+              </td>
+
+              <td align="left" headers="r21c1-t2 r1c3-t2">
+                <p>An HTML <code>input type="checkbox"</code> element</p>
+              </td>
+
+              <td align="left" headers="r21c1-t2 r1c4-t2">
+                <p><a id="sthref456"></a>A check box</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r22c1-t2">
+                <p><a id="sthref457"></a><code>h:selectManyCheckbox</code></p>
+              </td>
+
+              <td align="left" headers="r22c1-t2 r1c2-t2">
+                <p>Displays a set of check boxes from which the user can select multiple values</p>
+              </td>
+
+              <td align="left" headers="r22c1-t2 r1c3-t2">
+                <p>A set of HTML <code>input</code> elements of type <code>checkbox</code></p>
+              </td>
+
+              <td align="left" headers="r22c1-t2 r1c4-t2">
+                <p><a id="sthref458"></a>A group of check boxes</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r23c1-t2">
+                <p><a id="sthref459"></a><code>h:selectManyListbox</code></p>
+              </td>
+
+              <td align="left" headers="r23c1-t2 r1c2-t2">
+                <p>Allows a user to select multiple items from a set of items all displayed at once</p>
+              </td>
+
+              <td align="left" headers="r23c1-t2 r1c3-t2">
+                <p>An HTML <code>select</code> element</p>
+              </td>
+
+              <td align="left" headers="r23c1-t2 r1c4-t2">
+                <p><a id="sthref460"></a>A box</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r24c1-t2">
+                <p><a id="sthref461"></a><code>h:selectManyMenu</code></p>
+              </td>
+
+              <td align="left" headers="r24c1-t2 r1c2-t2">
+                <p>Allows a user to select multiple items from a set of items</p>
+              </td>
+
+              <td align="left" headers="r24c1-t2 r1c3-t2">
+                <p>An HTML <code>select</code> element</p>
+              </td>
+
+              <td align="left" headers="r24c1-t2 r1c4-t2">
+                <p><a id="sthref462"></a>A menu</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r25c1-t2">
+                <p><a id="sthref463"></a><code>h:selectOneListbox</code></p>
+              </td>
+
+              <td align="left" headers="r25c1-t2 r1c2-t2">
+                <p>Allows a user to select one item from a set of items all displayed at once</p>
+              </td>
+
+              <td align="left" headers="r25c1-t2 r1c3-t2">
+                <p>An HTML <code>select</code> element</p>
+              </td>
+
+              <td align="left" headers="r25c1-t2 r1c4-t2">
+                <p><a id="sthref464"></a>A box</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r26c1-t2">
+                <p><a id="sthref465"></a><code>h:selectOneMenu</code></p>
+              </td>
+
+              <td align="left" headers="r26c1-t2 r1c2-t2">
+                <p>Allows a user to select one item from a set of items</p>
+              </td>
+
+              <td align="left" headers="r26c1-t2 r1c3-t2">
+                <p>An HTML <code>select</code> element</p>
+              </td>
+
+              <td align="left" headers="r26c1-t2 r1c4-t2">
+                <p><a id="sthref466"></a>A menu</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r27c1-t2">
+                <p><a id="sthref467"></a><code>h:selectOneRadio</code></p>
+              </td>
+
+              <td align="left" headers="r27c1-t2 r1c2-t2">
+                <p>Allows a user to select one item from a set of items</p>
+              </td>
+
+              <td align="left" headers="r27c1-t2 r1c3-t2">
+                <p>An HTML <code>input type="radio"</code> element</p>
+              </td>
+
+              <td align="left" headers="r27c1-t2 r1c4-t2">
+                <p><a id="sthref468"></a><a id="sthref469"></a>A group of options</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>The tags correspond to components in the <code>javax.faces.component</code> package. The components are discussed in more detail in <a href="../Text/jsf-develop.xhtml#BNATX">Chapter 12, "Developing with JavaServer Faces Technology."</a></p>
+
+      <p>The next section explains the important attributes that are common to most component tags. For each of the components discussed in the following sections, <a href="../Text/jsf-develop.xhtml#BNATY">Writing Bean Properties</a> explains how to write a bean property bound to that particular component or its value.</p>
+
+      <p>For reference information about the tags and their attributes, see the API documentation for the Facelets tag library at <code><a href="../Text/jsf-page.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>.</p><a id="BNARG"></a><a id="JEETT00916"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.1</span> Common Component Tag Attributes</h2>
+
+        <p>Most of the component tags support the attributes shown in <a href="../Text/jsf-page.xhtml#GKCKS">Table 10-2</a>.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref470"></a><a id="GKCKS"></a>
+
+          <p class="titleintable">Table 10-2 Common Component Tag Attributes</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes common attributes of component tags." title="Common Component Tag Attributes" width="100%">
+            <col width="18%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t3" valign="bottom">Attribute</th>
+
+                <th align="left" id="r1c2-t3" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r2c1-t3">
+                  <p><a id="sthref471"></a><code>binding</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t3 r1c2-t3">
+                  <p>Identifies a bean property and binds the component instance to it.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r3c1-t3">
+                  <p><a id="sthref472"></a><code>id</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t3 r1c2-t3">
+                  <p>Uniquely identifies the component.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r4c1-t3">
+                  <p><a id="sthref473"></a><code>immediate</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t3 r1c2-t3">
+                  <p>If set to <code>true</code>, indicates that any events, validation, and conversion associated with the component should happen when request parameter values are applied.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r5c1-t3">
+                  <p><a id="sthref474"></a><code>rendered</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t3 r1c2-t3">
+                  <p>Specifies a condition under which the component should be rendered. If the condition is not satisfied, the component is not rendered.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r6c1-t3">
+                  <p><a id="sthref475"></a><code>style</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t3 r1c2-t3">
+                  <p>Specifies a Cascading Style Sheet (CSS) style for the tag.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r7c1-t3">
+                  <p><a id="sthref476"></a><code>styleClass</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t3 r1c2-t3">
+                  <p>Specifies a CSS class that contains definitions of the styles.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r8c1-t3">
+                  <p><a id="sthref477"></a><code>value</code></p>
+                </td>
+
+                <td align="left" headers="r8c1-t3 r1c2-t3">
+                  <p>Specifies the value of the component in the form of a value expression.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>All the tag attributes except <code>id</code> can accept expressions, as defined by the EL, described in <a href="../Text/jsf-el.xhtml#GJDDD">Expression Language</a>.</p>
+
+        <p>An attribute such as <code>rendered</code> or <code>value</code> can be set on the page and then modified in the backing bean for the page.</p><a id="BNARH"></a><a id="JEETT00594"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.1.1</span> The id Attribute</h3>
+
+          <p><a id="sthref478"></a>The <code>id</code> attribute is not usually required for a component tag but is used when another component or a server-side class must refer to the component. If you don't include an <code>id</code> attribute, the JavaServer Faces implementation automatically generates a component ID. Unlike most other JavaServer Faces tag attributes, the <code>id</code> attribute takes expressions using only the evaluation syntax described in <a href="../Text/jsf-el.xhtml#BNAHS">Immediate Evaluation</a>, which uses the <code>${}</code> delimiters. For more information on expression syntax, see <a href="../Text/jsf-el.xhtml#BNAHV">Value Expressions</a>.</p>
+        </div><a id="BNARI"></a><a id="JEETT00595"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.1.2</span> <a id="sthref479"></a>The immediate Attribute</h3>
+
+          <p>Input components and command components (those that implement the <code>ActionSource</code> interface, such as buttons and links) can set the <code>immediate</code> attribute to <code>true</code> to force events, validations, and conversions to be processed when request parameter values are applied.</p>
+
+          <p>You need to carefully consider how the combination of an input component's <code>immediate</code> value and a command component's <code>immediate</code> value determines what happens when the command component is activated.</p>
+
+          <p>Suppose that you have a page with a button and a field for entering the quantity of a book in a shopping cart. If the <code>immediate</code> attributes of both the button and the field are set to <code>true</code>, the new value entered in the field will be available for any processing associated with the event that is generated when the button is clicked. The event associated with the button as well as the events, validation, and conversion associated with the field are all handled when request parameter values are applied.</p>
+
+          <p>If the button's <code>immediate</code> attribute is set to <code>true</code> but the field's <code>immediate</code> attribute is set to <code>false</code>, the event associated with the button is processed without updating the field's local value to the model layer. The reason is that any events, conversion, and validation associated with the field occur <span class="italic">after</span> request parameter values are applied.</p>
+
+          <p>The <code>bookshowcart.xhtml</code> page of the Duke's Bookstore case study has examples of components using the <code>immediate</code> attribute to control which component's data is updated when certain buttons are clicked. The <code>quantity</code> field for each book does not set the <code>immediate</code> attribute, so the value is <code>false</code> (the default).</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="quantity"
+             size="4"
+             value="#{item.quantity}"
+             title="#{bundle.ItemQuantity}"&gt;
+    &lt;f:validateLongRange minimum="0"/&gt;
+    ...
+&lt;/h:inputText&gt;</pre>
+
+          <p>The <code>immediate</code> attribute of the <span class="gui-object-action">Continue Shopping</span> hyperlink is set to <code>true</code>, while the <code>immediate</code> attribute of the <span class="gui-object-action">Update Quantities</span> hyperlink is set to <code>false</code>:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandLink id="continue"
+               action="bookcatalog"
+               immediate="true"&gt;
+    &lt;h:outputText value="#{bundle.ContinueShopping}"/&gt;
+&lt;/h:commandLink&gt;
+...
+&lt;h:commandLink id="update"
+               action="#{showcart.update}"
+               immediate="false"&gt;
+    &lt;h:outputText value="#{bundle.UpdateQuantities}"/&gt;
+&lt;/h:commandLink&gt;</pre>
+
+          <p>If you click the <span class="gui-object-action">Continue Shopping</span> hyperlink, none of the changes entered into the <code>quantity</code> input fields will be processed. If you click the <span class="gui-object-action">Update Quantities</span> hyperlink, the values in the <code>quantity</code> fields will be updated in the shopping cart.</p>
+        </div><a id="BNARJ"></a><a id="JEETT00596"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.1.3</span> <a id="sthref480"></a>The rendered Attribute</h3>
+
+          <p>A component tag uses a Boolean EL expression along with the <code>rendered</code> attribute to determine whether the component will be rendered. For example, the <code>commandLink</code> component in the following section of a page is not rendered if the cart contains no items:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandLink id="check"
+    ...
+    rendered="#{cart.numberOfItems &gt; 0}"&gt;
+    &lt;h:outputText
+        value="#{bundle.CartCheck}"/&gt;
+&lt;/h:commandLink&gt;</pre>
+
+          <p>Unlike nearly every other JavaServer Faces tag attribute, the <code>rendered</code> attribute is restricted to using rvalue expressions. As explained in <a href="../Text/jsf-el.xhtml#BNAHU">Value and Method Expressions</a>, these rvalue expressions can only read data; they cannot write the data back to the data source. Therefore, expressions used with <code>rendered</code> attributes can use the arithmetic operators and literals that rvalue expressions can use but lvalue expressions cannot use. For example, the expression in the preceding example uses the operator.</p>
+
+          <div align="center">
+            <div class="inftblnote">
+              <br />
+
+              <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+                <tbody>
+                  <tr>
+                    <td align="left">
+                      <p class="notep1">Note:</p>
+
+                      <p>In this example and others, <code>bundle</code> refers to a <code>java.util.ResourceBundle</code> file that contains locale-specific strings to be displayed. Resource bundles are discussed in <a href="../Text/webi18n.xhtml#BNAXU">Chapter 20, "Internationalizing and Localizing Web Applications"</a>.</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table><br />
+            </div>
+          </div>
+        </div><a id="BNARK"></a><a id="JEETT00597"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.1.4</span> <a id="sthref481"></a><a id="sthref482"></a>The style and styleClass Attributes</h3>
+
+          <p>The <code>style</code> and <code>styleClass</code> attributes allow you to specify CSS styles for the rendered output of your tags. <a href="../Text/jsf-page.xhtml#BNASO">Displaying Error Messages with the h:message and h:messages Tags</a> describes an example of using the <code>style</code> attribute to specify styles directly in the attribute. A component tag can instead refer to a CSS class.</p>
+
+          <p>The following example shows the use of a <code>dataTable</code> tag that references the style class <code>list-background</code>:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">h:dataTable id="items"             ...             styleClass="list-background"             value="#{cart.items}"             var="book"</pre>
+
+          <p>The style sheet that defines this class is <code>stylesheet.css</code>, which will be included in the application. For more information on defining styles, see the Cascading Style Sheets specifications and drafts at <code><a href="../Text/jsf-page.xhtml#http%3A//www.w3.org/Style/CSS/">http://www.w3.org/Style/CSS/</a></code>.</p>
+        </div><a id="BNARL"></a><a id="JEETT00598"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.1.5</span> <a id="sthref483"></a><a id="sthref484"></a>The value and binding Attributes</h3>
+
+          <p>A tag representing an output component uses the <code>value</code> and <code>binding</code> attributes to bind its component's value or instance, respectively, to a data object. The <code>value</code> attribute is used more commonly than the <code>binding</code> attribute, and examples appear throughout this chapter. For more information on these attributes, see <a href="../Text/jsf-page.xhtml#BNAQN">Creating a Managed Bean</a>, <a href="../Text/jsf-page.xhtml#BNATZ">Writing Properties Bound to Component Values</a>, and <a href="../Text/jsf-page.xhtml#BNAUK">Writing Properties Bound to Component Instances</a>.</p>
+        </div>
+      </div><a id="GJDGQ"></a><a id="JEETT00917"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.2</span> <a id="sthref485"></a><a id="sthref486"></a>Adding HTML Head and Body Tags</h2>
+
+        <p>The HTML head (<code>h:head</code>) and body (<code>h:body</code>) tags add HTML page structure to JavaServer Faces web pages.</p>
+
+        <ul>
+          <li>
+            <p>The <code>h:head</code> tag represents the head element of an HTML page.</p>
+          </li>
+
+          <li>
+            <p>The <code>h:body</code> tag represents the body element of an HTML page.</p>
+          </li>
+        </ul>
+
+        <p>The following is an example of an XHTML page using the usual head and body markup tags:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Add a title&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        Add Content
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+        <p>The following is an example of an XHTML page using <code>h:head</code> and <code>h:body</code> tags:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+    &lt;h:head&gt;
+        Add a title 
+    &lt;/h:head&gt;
+    &lt;h:body&gt;
+        Add Content
+    &lt;/h:body&gt;
+&lt;/html&gt;</pre>
+
+        <p>Both of the preceding example code segments render the same HTML elements. The head and body tags are useful mainly for resource relocation. For more information on resource relocation, see <a href="../Text/jsf-page.xhtml#GJGEP">Resource Relocation Using h:outputScript and h:outputStylesheet Tags</a>.</p>
+      </div><a id="BNARM"></a><a id="JEETT00918"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.3</span> <a id="sthref487"></a>Adding a Form Component</h2>
+
+        <p>An <code>h:form</code> tag represents an input form, which includes child components that can contain data that is either presented to the user or submitted with the form.</p>
+
+        <p><a href="../Text/jsf-page.xhtml#BNARN">Figure 10-1</a> shows a typical login form in which a user enters a user name and password, then submits the form by clicking the <span class="gui-object-action">Login</span> button.</p>
+
+        <div class="figure">
+          <a id="BNARN"></a><a id="JEETT00015"></a>
+
+          <p class="titleinfigure">Figure 10-1 A Typical Form</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 10-1 follows" longdesc="img_text/jeett_dt_065_frmcmpnt.htm" src="../Images/jeett_dt_065_frmcmpnt.png" style="line-height: 1.6em;" title="Description of Figure 10-1 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 10-1 A Typical Form"<br />
+          <br />
+        </div>
+
+        <p>The <code>h:form</code> tag represents the form on the page and encloses all the components that display or collect data from the user, as shown here:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:form&gt;
+... other JavaServer Faces tags and other content...
+&lt;/h:form&gt;</pre>
+
+        <p>The <code>h:form</code> tag can also include HTML markup to lay out the components on the page. Note that the <code>h:form</code> tag itself does not perform any layout; its purpose is to collect data and to declare attributes that can be used by other components in the form.</p>
+
+        <p>A page can include multiple <code>h:form</code> tags, but only the values from the form submitted by the user will be included in the postback request.</p>
+      </div><a id="BNARO"></a><a id="JEETT00919"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.4</span> Using Text Components</h2>
+
+        <p>Text components allow users to view and edit text in web applications. The basic types of text components are as follows:</p>
+
+        <ul>
+          <li>
+            <p>Label, which displays read-only text</p>
+          </li>
+
+          <li>
+            <p>Field, which allows users to enter text (on one or more lines), often to be submitted as part of a form</p>
+          </li>
+
+          <li>
+            <p>Password field, which is a type of field that displays a set of characters, such as asterisks, instead of the password text that the user enters</p>
+          </li>
+        </ul>
+
+        <p><a href="../Text/jsf-page.xhtml#BNARP">Figure 10-2</a> shows examples of these text components.</p>
+
+        <div class="figure">
+          <a id="BNARP"></a><a id="JEETT00016"></a>
+
+          <p class="titleinfigure">Figure 10-2 Example Text Components</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 10-2 follows" longdesc="img_text/jeett_dt_068_txtcmpnts.htm" src="../Images/jeett_dt_068_txtcmpnts.png" style="line-height: 1.6em;" title="Description of Figure 10-2 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 10-2 Example Text Components"<br />
+          <br />
+        </div>
+
+        <p>Text components can be categorized as either input or output. A JavaServer Faces output component, such as a label, is rendered as read-only text. A JavaServer Faces input component, such as a field, is rendered as editable text.</p>
+
+        <p>The input and output components can each be rendered in various ways to display more specialized text.</p>
+
+        <p><a href="../Text/jsf-page.xhtml#BNARQ">Table 10-3</a> lists the tags that represent the input components.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref490"></a><a id="BNARQ"></a>
+
+          <p class="titleintable">Table 10-3 Input Tags</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the input component tags." title="Input Tags" width="100%">
+            <col width="24%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t5" valign="bottom">Tag</th>
+
+                <th align="left" id="r1c2-t5" valign="bottom">Function</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r2c1-t5">
+                  <p><a id="sthref491"></a><code>h:inputHidden</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t5 r1c2-t5">
+                  <p>Allows a page author to include a hidden variable in a page</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r3c1-t5">
+                  <p><a id="sthref492"></a><code>h:inputSecret</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t5 r1c2-t5">
+                  <p>The standard password field: accepts one line of text with no spaces and displays it as a set of asterisks as it is entered</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r4c1-t5">
+                  <p><a id="sthref493"></a><code>h:inputText</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t5 r1c2-t5">
+                  <p>The standard field: accepts a one-line text string</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r5c1-t5">
+                  <p><a id="sthref494"></a><code>h:inputTextarea</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t5 r1c2-t5">
+                  <p>The standard multiline field: accepts multiple lines of text</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>The input tags support the tag attributes shown in <a href="../Text/jsf-page.xhtml#GKCNH">Table 10-4</a> in addition to those described in <a href="../Text/jsf-page.xhtml#BNARG">Common Component Tag Attributes</a>. Note that this table does not include all the attributes supported by the input tags but just those that are used most often. For the complete list of attributes, refer to the documentation at <code><a href="../Text/jsf-page.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref495"></a><a id="GKCNH"></a>
+
+          <p class="titleintable">Table 10-4 Input Tag Attributes</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the attributes of the input component tags." title="Input Tag Attributes" width="100%">
+            <col width="25%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t6" valign="bottom">Attribute</th>
+
+                <th align="left" id="r1c2-t6" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r2c1-t6">
+                  <p><a id="sthref496"></a><a id="sthref497"></a><code>converter</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t6 r1c2-t6">
+                  <p>Identifies a converter that will be used to convert the component's local data. See <a href="../Text/jsf-page-core.xhtml#BNAST">Using the Standard Converters</a> for more information on how to use this attribute.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r3c1-t6">
+                  <p><code>converterMessage</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t6 r1c2-t6">
+                  <p>Specifies an error message to display when the converter registered on the component fails.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r4c1-t6">
+                  <p><code>dir</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t6 r1c2-t6">
+                  <p>Specifies the direction of the text displayed by this component. Acceptable values are <code>ltr</code>, meaning left to right, and <code>rtl</code>, meaning right to left.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r5c1-t6">
+                  <p><code>label</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t6 r1c2-t6">
+                  <p>Specifies a name that can be used to identify this component in error messages.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r6c1-t6">
+                  <p><code>lang</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t6 r1c2-t6">
+                  <p>Specifies the code for the language used in the rendered markup, such as <code>en</code> or <code>pt-BR</code>.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r7c1-t6">
+                  <p><code>required</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t6 r1c2-t6">
+                  <p>Takes a <code>boolean</code> value that indicates whether the user must enter a value in this component.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r8c1-t6">
+                  <p><code>requiredMessage</code></p>
+                </td>
+
+                <td align="left" headers="r8c1-t6 r1c2-t6">
+                  <p>Specifies an error message to display when the user does not enter a value into the component.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r9c1-t6">
+                  <p><a id="sthref498"></a><a id="sthref499"></a><code>validator</code></p>
+                </td>
+
+                <td align="left" headers="r9c1-t6 r1c2-t6">
+                  <p>Identifies a method expression pointing to a managed bean method that performs validation on the component's data. See <a href="../Text/jsf-page-core.xhtml#BNATR">Referencing a Method That Performs Validation</a> for an example of using the <code>f:validator</code> tag.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r10c1-t6">
+                  <p><code>validatorMessage</code></p>
+                </td>
+
+                <td align="left" headers="r10c1-t6 r1c2-t6">
+                  <p>Specifies an error message to display when the validator registered on the component fails to validate the component's local value.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r11c1-t6">
+                  <p><a id="sthref500"></a><a id="sthref501"></a><a id="sthref502"></a><code>valueChangeListener</code></p>
+                </td>
+
+                <td align="left" headers="r11c1-t6 r1c2-t6">
+                  <p>Identifies a method expression that points to a managed bean method that handles the event of entering a value in this component. See <a href="../Text/jsf-page-core.xhtml#BNATS">Referencing a Method That Handles a Value-Change Event</a> for an example of using <code>valueChangeListener</code>.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p><a href="../Text/jsf-page.xhtml#GJFWE">Table 10-5</a> lists the tags that represent the output components.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref503"></a><a id="GJFWE"></a>
+
+          <p class="titleintable">Table 10-5 Output Tags</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the output component tags." title="Output Tags" width="100%">
+            <col width="24%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t7" valign="bottom">Tag</th>
+
+                <th align="left" id="r1c2-t7" valign="bottom">Function</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r2c1-t7">
+                  <p><a id="sthref504"></a><code>h:outputFormat</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t7 r1c2-t7">
+                  <p>Displays a formatted message</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r3c1-t7">
+                  <p><a id="sthref505"></a><code>h:outputLabel</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t7 r1c2-t7">
+                  <p>The standard read-only label: displays a component as a label for a specified input field</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r4c1-t7">
+                  <p><a id="sthref506"></a><code>h:outputLink</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t7 r1c2-t7">
+                  <p>Displays an <code>a href</code> tag that links to another page without generating an action event</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r5c1-t7">
+                  <p><a id="sthref507"></a><code>h:outputText</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t7 r1c2-t7">
+                  <p>Displays a one-line text string</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>The output tags support the <code>converter</code> tag attribute in addition to those listed in <a href="../Text/jsf-page.xhtml#BNARG">Common Component Tag Attributes</a>.</p>
+
+        <p>The rest of this section explains how to use some of the tags listed in <a href="../Text/jsf-page.xhtml#BNARQ">Table 10-3</a> and <a href="../Text/jsf-page.xhtml#GJFWE">Output Tags</a>. The other tags are written in a similar way.</p><a id="BNARR"></a><a id="JEETT00599"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.4.1</span> <a id="sthref508"></a><a id="sthref509"></a>Rendering a Field with the h:inputText Tag</h3>
+
+          <p>The <code>h:inputText</code> tag is used to display a field. A similar tag, the <code>h:outputText</code> tag, displays a read-only, single-line string. This section shows you how to use the <code>h:inputText</code> tag. The <code>h:outputText</code> tag is written in a similar way.</p>
+
+          <p>Here is an example of an <code>h:inputText</code> tag:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="name" 
+             label="Customer Name" 
+             size="30"
+             value="#{cashierBean.name}"
+             required="true"
+             requiredMessage="#{bundle.ReqCustomerName}"&gt;
+    &lt;f:valueChangeListener
+        type="javaeetutorial.dukesbookstore.listeners.NameChanged" /&gt;
+ &lt;/h:inputText&gt;</pre>
+
+          <p>The <code>label</code> attribute specifies a user-friendly name that will be used in the substitution parameters of error messages displayed for this component.</p>
+
+          <p>The <code>value</code> attribute refers to the <code>name</code> property of a managed bean named <code>CashierBean</code>. This property holds the data for the <code>name</code> component. After the user submits the form, the value of the <code>name</code> property in <code>CashierBean</code> will be set to the text entered in the field corresponding to this tag.</p>
+
+          <p>The <code>required</code> attribute causes the page to reload, displaying errors, if the user does not enter a value in the <code>name</code> field. The JavaServer Faces implementation checks whether the value of the component is null or is an empty string.</p>
+
+          <p>If your component must have a non-null value or a <code>String</code> value at least one character in length, you should add a <code>required</code> attribute to your tag and set its value to <code>true</code>. If your tag has a <code>required</code> attribute that is set to <code>true</code> and the value is null or a zero-length string, no other validators that are registered on the tag are called. If your tag does not have a <code>required</code> attribute set to <code>true</code>, other validators that are registered on the tag are called, but those validators must handle the possibility of a null or zero-length string. See <a href="../Text/jsf-page.xhtml#GKCRG">Validating Null and Empty Strings</a> for more information.</p>
+        </div><a id="BNARV"></a><a id="JEETT00600"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.4.2</span> Rendering a Password Field with the h:inputSecret Tag</h3>
+
+          <p><a id="sthref510"></a>The <code>h:inputSecret</code> tag renders an <code>input type="password"</code> HTML tag. When the user types a string into this field, a row of asterisks is displayed instead of the text entered by the user. Here is an example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputSecret redisplay="false"
+               value="#{loginBean.password}" /&gt;</pre>
+
+          <p><a id="sthref511"></a>In this example, the <code>redisplay</code> attribute is set to <code>false</code>. This will prevent the password from being displayed in a query string or in the source file of the resulting HTML page.</p>
+        </div><a id="BNARS"></a><a id="JEETT00601"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.4.3</span> <a id="sthref512"></a>Rendering a Label with the h:outputLabel Tag</h3>
+
+          <p>The <code>h:outputLabel</code> tag is used to attach a label to a specified input field for the purpose of making it accessible. The following page uses an <code>h:outputLabel</code> tag to render the label of a check box:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectBooleanCheckbox id="fanClub"
+                         rendered="false"
+                         binding="#{cashierBean.specialOffer}" /&gt;
+&lt;h:outputLabel for="fanClub"
+               rendered="false
+               binding="#{cashierBean.specialOfferText}"&gt;
+    &lt;h:outputText id="fanClubLabel"
+                  value="#{bundle.DukeFanClub}" /&gt;
+&lt;/h:outputLabel&gt;
+...</pre>
+
+          <p><a id="sthref513"></a>The <code>h:selectBooleanCheckbox</code> tag and the <code>h:outputLabel</code> tag have <code>rendered</code> attributes that are set to <code>false</code> on the page but are set to true in the <code>CashierBean</code> under certain circumstances. The <code>for</code> attribute of the <code>h:outputLabel</code> tag maps to the <code>id</code> of the input field to which the label is attached. The <code>h:outputText</code> tag nested inside the <code>h:outputLabel</code> tag represents the label component. The <code>value</code> attribute on the <code>h:outputText</code> tag indicates the text that is displayed next to the input field.</p>
+
+          <p>Instead of using an <code>h:outputText</code> tag for the text displayed as a label, you can simply use the <code>h:outputLabel</code> tag's <code>value</code> attribute. The following code snippet shows what the previous code snippet would look like if it used the <code>value</code> attribute of the <code>h:outputLabel</code> tag to specify the text of the label:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectBooleanCheckbox id="fanClub"
+                         rendered="false"
+                         binding="#{cashierBean.specialOffer}" /&gt;
+&lt;h:outputLabel for="fanClub"
+               rendered="false"
+               binding="#{cashierBean.specialOfferText}"
+               value="#{bundle.DukeFanClub}" /&gt;
+&lt;/h:outputLabel&gt;
+...</pre>
+        </div><a id="BNART"></a><a id="JEETT00602"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.4.4</span> <a id="sthref514"></a>Rendering a Link with the h:outputLink Tag</h3>
+
+          <p>The <code>h:outputLink</code> tag is used to render a link that, when clicked, loads another page but does not generate an action event. You should use this tag instead of the <code>h:commandLink</code> tag if you always want the URL specified by the <code>h:outputLink</code> tag's <code>value</code> attribute to open and do not want any processing to be performed when the user clicks the link. Here is an example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputLink value="javadocs"&gt;
+    Documentation for this demo
+&lt;/h:outputLink&gt;</pre>
+
+          <p>The text in the body of the <code>h:outputLink</code> tag identifies the text that the user clicks to get to the next page.</p>
+        </div><a id="BNARU"></a><a id="JEETT00603"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.4.5</span> Displaying a Formatted Message with the h:outputFormat Tag</h3>
+
+          <p><a id="sthref515"></a><a id="sthref516"></a><a id="sthref517"></a>The <code>h:outputFormat</code> tag allows display of concatenated messages as a <code>MessageFormat</code> pattern, as described in the API documentation for <code>java.text.MessageFormat</code>. Here is an example of an <code>h:outputFormat</code> tag:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputFormat value="Hello, {0}!"&gt;
+    &lt;f:param value="#{hello.name}"/&gt;
+&lt;/h:outputFormat&gt;</pre>
+
+          <p><a id="sthref518"></a><a id="sthref519"></a>The <code>value</code> attribute specifies the <code>MessageFormat</code> pattern. The <code>f:param</code> tag specifies the substitution parameters for the message. The value of the parameter replaces the <code>{0}</code> in the sentence. If the value of <code>"#{hello.name}"</code> is "Bill", the message displayed in the page is as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hello, Bill!</pre>
+
+          <p>An <code>h:outputFormat</code> tag can include more than one <code>f:param</code> tag for those messages that have more than one parameter that must be concatenated into the message. If you have more than one parameter for one message, make sure that you put the <code>f:param</code> tags in the proper order so that the data is inserted in the correct place in the message. Here is the preceding example modified with an additional parameter:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputFormat value="Hello, {0}! You are visitor number {1} to the page."&gt;
+    &lt;f:param value="#{hello.name}" /&gt;
+    &lt;f:param value="#{bean.numVisitor}"/&gt;
+&lt;/h:outputFormat&gt;</pre>
+
+          <p>The value of <code>{1}</code> is replaced by the second parameter. The parameter is an EL expression, <code>bean.numVisitor</code>, in which the property <code>numVisitor</code> of the managed bean <code>bean</code> keeps track of visitors to the page. This is an example of a value-expression-enabled tag attribute accepting an EL expression. The message displayed in the page is now as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hello, Bill! You are visitor number 10 to the page.</pre>
+        </div>
+      </div><a id="BNARW"></a><a id="JEETT00920"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.5</span> Using Command Component Tags for Performing Actions and Navigation</h2>
+
+        <p>In JavaServer Faces applications, the button and link component tags are used to perform actions, such as submitting a form, and for navigating to another page. These tags are called command component tags because they perform an action when activated.</p>
+
+        <p>The <code>h:commandButton</code> tag is rendered as a button. The <code>h:commandLink</code> tag is rendered as a link.</p>
+
+        <p>In addition to the tag attributes listed in <a href="../Text/jsf-page.xhtml#BNARG">Common Component Tag Attributes</a>, the <code>h:commandButton</code> and <code>h:commandLink</code> tags can use the following attributes.</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref520"></a><a id="sthref521"></a><code>action</code>, which is either a logical outcome <code>String</code> or a method expression pointing to a bean method that returns a logical outcome <code>String</code>. In either case, the logical outcome <code>String</code> is used to determine what page to access when the command component tag is activated.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref522"></a><a id="sthref523"></a><code>actionListener</code>, which is a method expression pointing to a bean method that processes an action event fired by the command component tag.</p>
+          </li>
+        </ul>
+
+        <p>See <a href="../Text/jsf-page-core.xhtml#BNATP">Referencing a Method That Performs Navigation</a> for more information on using the <code>action</code> attribute. See <a href="../Text/jsf-page-core.xhtml#BNATQ">Referencing a Method That Handles an Action Event</a> for details on using the <code>actionListener</code> attribute.</p><a id="BNARX"></a><a id="JEETT00604"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.5.1</span> <a id="sthref524"></a><a id="sthref525"></a>Rendering a Button with the h:commandButton Tag</h3>
+
+          <p>If you are using an <code>h:commandButton</code> component tag, the data from the current page is processed when a user clicks the button, and the next page is opened. Here is an example of the <code>h:commandButton</code> tag:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandButton value="Submit"
+                 action="#{cashierBean.submit}"/&gt;</pre>
+
+          <p>Clicking the button will cause the <code>submit</code> method of <code>CashierBean</code> to be invoked because the <code>action</code> attribute references this method. The <code>submit</code> method performs some processing and returns a logical outcome.</p>
+
+          <p>The <code>value</code> attribute of the example <code>h:commandButton</code> tag references the button's label. For information on how to use the <code>action</code> attribute, see <a href="../Text/jsf-page-core.xhtml#BNATP">Referencing a Method That Performs Navigation</a>.</p>
+        </div><a id="GKBUJ"></a><a id="JEETT00605"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.5.2</span> <a id="sthref526"></a><a id="sthref527"></a><a id="sthref528"></a>Rendering a Link with the h:commandLink Tag</h3>
+
+          <p>The <code>h:commandLink</code> tag represents an HTML link and is rendered as an HTML <code>a</code> element.</p>
+
+          <p><a id="sthref529"></a>An <code>h:commandLink</code> tag must include a nested <code>h:outputText</code> tag, which represents the text that the user clicks to generate the event. Here is an example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandLink id="Duke" action="bookstore"&gt;
+    &lt;f:actionListener 
+        type="javaeetutorial.dukesbookstore.listeners.LinkBookChangeListener" /&gt;
+    &lt;h:outputText value="#{bundle.Book201}"/&gt;
+/h:commandLink&gt;</pre>
+
+          <p>This tag will render HTML that looks something like the following:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;a id="_idt16:Duke" href="#"
+     onclick="mojarra.jsfcljs(document.getElementById('j_idt16'),
+     {'j_idt16:Duke':'j_idt16:Duke'},'');
+     return false;"&gt;My Early Years: Growing Up on Star7, by Duke&lt;/a&gt;</pre>
+
+          <div align="center">
+            <div class="inftblnote">
+              <br />
+
+              <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+                <tbody>
+                  <tr>
+                    <td align="left">
+                      <p class="notep1">Note:</p>
+
+                      <p>The <code>h:commandLink</code> tag will render JavaScript scripting language. If you use this tag, make sure that your browser is enabled for JavaScript technology.</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table><br />
+            </div>
+          </div>
+        </div>
+      </div><a id="BNASB"></a><a id="JEETT00921"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.6</span> <a id="sthref530"></a><a id="sthref531"></a>Adding Graphics and Images with the h:graphicImage Tag</h2>
+
+        <p>In a JavaServer Faces application, use the <code>h:graphicImage</code> tag to render an image on a page:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:graphicImage id="mapImage" url="/resources/images/book_all.jpg"/&gt;</pre>
+
+        <p>In this example, the <code>url</code> attribute specifies the path to the image. The URL of the example tag begins with a slash (<code>/</code>), which adds the relative context path of the web application to the beginning of the path to the image.</p>
+
+        <p>Alternatively, you can use the facility described in <a href="../Text/jsf-facelets.xhtml#GIRGM">Web Resources</a> to point to the image location. Here are two examples:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:graphicImage id="mapImage" 
+                name="book_all.jpg"
+                library="images"
+                alt="#{bundle.ChooseBook}"
+                usemap="#bookMap" /&gt;
+
+&lt;h:graphicImage value="#{resource['images:wave.med.gif']}"/&gt;</pre>
+
+        <p>You can use similar syntax to refer to an image in a style sheet. The following syntax in a style sheet specifies that the image is to be found at <code>resources/img/top-background.jpg</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">header {
+    position: relative;
+    height: 150px;
+    background: #fff url(#{resource['img:top-background.jpg']}) repeat-x;
+    ...</pre>
+      </div><a id="BNASC"></a><a id="JEETT00922"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.7</span> <a id="sthref532"></a><a id="sthref533"></a><a id="sthref534"></a>Laying Out Components with the h:panelGrid and h:panelGroup Tags</h2>
+
+        <p>In a JavaServer Faces application, you use a panel as a layout container for a set of other components. A panel is rendered as an HTML table. <a href="../Text/jsf-page.xhtml#BNASD">Table 10-6</a> lists the tags used to create panels.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref535"></a><a id="BNASD"></a>
+
+          <p class="titleintable">Table 10-6 Panel Component Tags</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the panel component tags and their attributes." title="Panel Component Tags" width="100%">
+            <col width="17%" />
+            <col width="*" />
+            <col width="37%" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t9" valign="bottom">Tag</th>
+
+                <th align="left" id="r1c2-t9" valign="bottom">Attributes</th>
+
+                <th align="left" id="r1c3-t9" valign="bottom">Function</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t9" id="r2c1-t9">
+                  <p><code>h:panelGrid</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t9 r1c2-t9">
+                  <p><code>columns</code>, <code>columnClasses</code>, <code>footerClass</code>, <code>headerClass</code>, <code>panelClass</code>, <code>rowClasses</code>, <code>role</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t9 r1c3-t9">
+                  <p>Displays a table</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t9" id="r3c1-t9">
+                  <p><code>h:panelGroup</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t9 r1c2-t9">
+                  <p><code>layout</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t9 r1c3-t9">
+                  <p>Groups a set of components under one parent</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>The <code>h:panelGrid</code> tag is used to represent an entire table. The <code>h:panelGroup</code> tag is used to represent rows in a table. Other tags are used to represent individual cells in the rows.</p>
+
+        <p>The <code>columns</code> attribute defines how to group the data in the table and therefore is required if you want your table to have more than one column. The <code>h:panelGrid</code> tag also has a set of optional attributes that specify CSS classes: <code>columnClasses</code>, <code>footerClass</code>, <code>headerClass</code>, <code>panelClass</code>, and <code>rowClasses</code>. The <code>role</code> attribute can have the value <code>"presentation"</code> to indicate that the purpose of the table is to format the display rather than to show data.</p>
+
+        <p>If the <code>headerClass</code> attribute value is specified, the <code>h:panelGrid</code> tag must have a header as its first child. Similarly, if a <code>footerClass</code> attribute value is specified, the <code>h:panelGrid</code> tag must have a footer as its last child.</p>
+
+        <p>Here is an example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:panelGrid columns="2" 
+             headerClass="list-header"
+             styleClass="list-background"
+             rowClasses="list-row-even, list-row-odd"
+             summary="#{bundle.CustomerInfo}"
+             title="#{bundle.Checkout}"
+             role="presentation"&gt;
+    &lt;f:facet name="header"&gt;
+        &lt;h:outputText value="#{bundle.Checkout}"/&gt;
+    &lt;/f:facet&gt;
+
+    &lt;h:outputLabel for="name" value="#{bundle.Name}" /&gt;
+    &lt;h:inputText id="name" size="30"
+                 value="#{cashierBean.name}"
+                 required="true"
+                 requiredMessage="#{bundle.ReqCustomerName}"&gt;
+         &lt;f:valueChangeListener
+             type="javaeetutorial.dukesbookstore.listeners.NameChanged" /&gt;
+    &lt;/h:inputText&gt;
+    &lt;h:message styleClass="error-message" for="name"/&gt;
+   
+    &lt;h:outputLabel for="ccno" value="#{bundle.CCNumber}"/&gt;
+    &lt;h:inputText id="ccno" 
+                 size="19"
+                 converterMessage="#{bundle.CreditMessage}"
+                 required="true"
+                 requiredMessage="#{bundle.ReqCreditCard}"&gt;
+    &lt;f:converter converterId="ccno"/&gt;
+    &lt;f:validateRegex 
+        pattern="\d{16}|\d{4} \d{4} \d{4} \d{4}|\d{4}-\d{4}-\d{4}-\d{4}" /&gt;
+    &lt;/h:inputText&gt;
+    &lt;h:message styleClass="error-message"  for="ccno"/&gt;
+    ...
+&lt;/h:panelGrid&gt;</pre>
+
+        <p>The preceding <code>h:panelGrid</code> tag is rendered as a table that contains components in which a customer inputs personal information. This <code>h:panelGrid</code> tag uses style sheet classes to format the table. The following code shows the <code>list-header</code> definition:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">.list-header {
+    background-color: #ffffff;
+    color: #000000;
+    text-align: center;
+}</pre>
+
+        <p>Because the <code>h:panelGrid</code> tag specifies a <code>headerClass</code>, the <code>h:panelGrid</code> tag must contain a header. The example <code>h:panelGrid</code> tag uses an <code>f:facet</code> tag for the header. Facets can have only one child, so an <code>h:panelGroup</code> tag is needed if you want to group more than one component within an <code>f:facet</code>. The example <code>h:panelGrid</code> tag has only one cell of data, so an <code>h:panelGroup</code> tag is not needed. (For more information about facets, see <a href="../Text/jsf-page.xhtml#BNARZ">Using Data-Bound Table Components</a>.</p>
+
+        <p>The <code>h:panelGroup</code> tag has an attribute, <code>layout</code>, in addition to those listed in <a href="../Text/jsf-page.xhtml#BNARG">Common Component Tag Attributes</a>. If the <code>layout</code> attribute has the value <code>block</code>, an HTML <code>div</code> element is rendered to enclose the row; otherwise, an HTML <code>span</code> element is rendered to enclose the row. If you are specifying styles for the <code>h:panelGroup</code> tag, you should set the <code>layout</code> attribute to <code>block</code> in order for the styles to be applied to the components within the <code>h:panelGroup</code> tag. You should do this because styles, such as those that set width and height, are not applied to inline elements, which is how content enclosed by the <code>span</code> element is defined.</p>
+
+        <p>An <code>h:panelGroup</code> tag can also be used to encapsulate a nested tree of components so that the tree of components appears as a single component to the parent component.</p>
+
+        <p><a id="sthref536"></a>Data, represented by the nested tags, is grouped into rows according to the value of the <code>columns</code> attribute of the <code>h:panelGrid</code> tag. The <code>columns</code> attribute in the example is set to <code>2</code>, and therefore the table will have two columns. The column in which each component is displayed is determined by the order in which the component is listed on the page modulo 2. So, if a component is the fifth one in the list of components, that component will be in the 5 modulo 2 column, or column 1.</p>
+      </div><a id="BNASE"></a><a id="JEETT00923"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.8</span> Displaying Components for Selecting One Value</h2>
+
+        <p>Another commonly used component is one that allows a user to select one value, whether it is the only value available or one of a set of choices. The most common tags for this kind of component are as follows:</p>
+
+        <ul>
+          <li>
+            <p>An <code>h:selectBooleanCheckbox</code> tag, displayed as a check box, which represents a Boolean state</p>
+          </li>
+
+          <li>
+            <p>An <code>h:selectOneRadio</code> tag, displayed as a set of options</p>
+          </li>
+
+          <li>
+            <p>An <code>h:selectOneMenu</code> tag, displayed as a scrollable list</p>
+          </li>
+
+          <li>
+            <p>An <code>h:selectOneListbox</code> tag, displayed as an unscrollable list</p>
+          </li>
+        </ul>
+
+        <p><a href="../Text/jsf-page.xhtml#BNASF">Figure 10-3</a> shows examples of these components.</p>
+
+        <div class="figure">
+          <a id="BNASF"></a><a id="JEETT00017"></a>
+
+          <p class="titleinfigure">Figure 10-3 Example Components for Selecting One Item</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 10-3 follows" longdesc="img_text/jeett_dt_067_slctn.htm" src="../Images/jeett_dt_067_slctn.png" style="line-height: 1.6em;" title="Description of Figure 10-3 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 10-3 Example Components for Selecting One Item"<br />
+          <br />
+        </div><a id="BNASG"></a><a id="JEETT00606"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.8.1</span> <a id="sthref538"></a>Displaying a Check Box Using the h:selectBooleanCheckbox Tag<a id="sthref539"></a></h3>
+
+          <p>The <code>h:selectBooleanCheckbox</code> tag is the only tag that JavaServer Faces technology provides for representing a Boolean state.</p>
+
+          <p>Here is an example that shows how to use the <code>h:selectBooleanCheckbox</code> tag:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectBooleanCheckbox id="fanClub"
+                         rendered="false"
+                         binding="#{cashierBean.specialOffer}" /&gt;
+&lt;h:outputLabel for="fanClub"
+               rendered="false"
+               binding="#{cashierBean.specialOfferText}" 
+               value="#{bundle.DukeFanClub}" /&gt;</pre>
+
+          <p>The <code>h:selectBooleanCheckbox</code> tag and the <code>h:outputLabel</code> tag have <code>rendered</code> attributes that are set to <code>false</code> on the page but are set to true in the <code>CashierBean</code> under certain circumstances. When the <code>h:selectBooleanCheckbox</code> tag is rendered, it displays a check box to allow users to indicate whether they want to join the Duke Fan Club. When the <code>h:outputLabel</code> tag is rendered, it displays the label for the check box. The label text is represented by the <code>value</code> attribute.</p>
+        </div><a id="BNASH"></a><a id="JEETT00607"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.8.2</span> <a id="sthref540"></a><a id="sthref541"></a>Displaying a Menu Using the h:selectOneMenu Tag</h3>
+
+          <p><a id="sthref542"></a><a id="sthref543"></a>A component that allows the user to select one value from a set of values can be rendered as a box or a set of options. This section describes the <code>h:selectOneMenu</code> tag. The <code>h:selectOneRadio</code> and <code>h:selectOneListbox</code> tags are used in a similar way. The <code>h:selectOneListbox</code> tag is similar to the <code>h:selectOneMenu</code> tag except that <code>h:selectOneListbox</code> defines a <code>size</code> attribute that determines how many of the items are displayed at once.</p>
+
+          <p>The <code>h:selectOneMenu</code> tag represents a component that contains a list of items from which a user can select one item. This menu component is sometimes known as a drop-down list or a combo box. The following code snippet shows how the <code>h:selectOneMenu</code> tag is used to allow the user to select a shipping method:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectOneMenu id="shippingOption"
+                 required="true"
+                 value="#{cashierBean.shippingOption}"&gt;
+    &lt;f:selectItem itemValue="2"
+                  itemLabel="#{bundle.QuickShip}"/&gt;
+    &lt;f:selectItem itemValue="5"
+                  itemLabel="#{bundle.NormalShip}"/&gt;
+    &lt;f:selectItem itemValue="7"
+                  itemLabel="#{bundle.SaverShip}"/&gt;
+ &lt;/h:selectOneMenu&gt;</pre>
+
+          <p>The <code>value</code> attribute of the <code>h:selectOneMenu</code> tag maps to the property that holds the currently selected item's value. In this case, the value is set by the backing bean. You are not required to provide a value for the currently selected item. If you don't provide a value, the browser determines which one is selected.</p>
+
+          <p><a id="sthref544"></a><a id="sthref545"></a>Like the <code>h:selectOneRadio</code> tag, the <code>h:selectOneMenu</code> tag must contain either an <code>f:selectItems</code> tag or a set of <code>f:selectItem</code> tags for representing the items in the list. <a href="../Text/jsf-page.xhtml#BNASK">Using the f:selectItem and f:selectItems Tags</a> describes these tags.</p>
+        </div>
+      </div><a id="BNASI"></a><a id="JEETT00924"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.9</span> <a id="sthref546"></a>Displaying Components for Selecting Multiple Values</h2>
+
+        <p>In some cases, you need to allow your users to select multiple values rather than just one value from a list of choices. You can do this using one of the following component tags:</p>
+
+        <ul>
+          <li>
+            <p>An <code>h:selectManyCheckbox</code> tag, displayed as a set of check boxes</p>
+          </li>
+
+          <li>
+            <p><a id="sthref547"></a><a id="sthref548"></a>An <code>h:selectManyMenu</code> tag, displayed as a menu</p>
+          </li>
+
+          <li>
+            <p><a id="sthref549"></a>An <code>h:selectManyListbox</code> tag, displayed as a box</p>
+          </li>
+        </ul>
+
+        <p><a href="../Text/jsf-page.xhtml#BNASJ">Figure 10-4</a> shows examples of these components.</p>
+
+        <div class="figure">
+          <a id="BNASJ"></a><a id="JEETT00018"></a>
+
+          <p class="titleinfigure">Figure 10-4 Example Components for Selecting Multiple Values</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 10-4 follows" longdesc="img_text/jeett_dt_066_slctmny.htm" src="../Images/jeett_dt_066_slctmny.png" style="line-height: 1.6em;" title="Description of Figure 10-4 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 10-4 Example Components for Selecting Multiple Values"<br />
+          <br />
+        </div>
+
+        <p>These tags allow the user to select zero or more values from a set of values. This section explains the <code>h:selectManyCheckbox</code> tag. The <code>h:selectManyListbox</code> and <code>h:selectManyMenu</code> tags are used in a similar way.</p>
+
+        <p>Unlike a menu, a list displays a subset of items in a box; a menu displays only one item at a time when the user is not selecting the menu. The <code>size</code> attribute of the <code>h:selectManyListbox</code> tag determines the number of items displayed at one time. The box includes a scroll bar for scrolling through any remaining items in the list.</p>
+
+        <p>The <code>h:selectManyCheckbox</code> tag renders a group of check boxes, with each check box representing one value that can be selected:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectManyCheckbox id="newslettercheckbox"
+                      layout="pageDirection"
+                      value="#{cashierBean.newsletters}"&gt;
+    &lt;f:selectItems value="#{cashierBean.newsletterItems}"/&gt;
+&lt;/h:selectManyCheckbox&gt;</pre>
+
+        <p>The <code>value</code> attribute of the <code>h:selectManyCheckbox</code> tag identifies the <code>newsletters</code> property of the <code>CashierBean</code> managed bean. This property holds the values of the currently selected items from the set of check boxes. You are not required to provide a value for the currently selected items. If you don't provide a value, the first item in the list is selected by default. In the <code>CashierBean</code> managed bean, this value is instantiated to 0, so no items are selected by default.</p>
+
+        <p>The <code>layout</code> attribute indicates how the set of check boxes is arranged on the page. Because layout is set to <code>pageDirection</code>, the check boxes are arranged vertically. The default is <code>lineDirection</code>, which aligns the check boxes horizontally.</p>
+
+        <p><a id="sthref551"></a><a id="sthref552"></a>The <code>h:selectManyCheckbox</code> tag must also contain a tag or set of tags representing the set of check boxes. To represent a set of items, you use the <code>f:selectItems</code> tag. To represent each item individually, you use the <code>f:selectItem</code> tag. The following section explains these tags in more detail.</p>
+      </div><a id="BNASK"></a><a id="JEETT00925"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.10</span> <a id="sthref553"></a><a id="sthref554"></a>Using the f:selectItem and f:selectItems Tags</h2>
+
+        <p>The <code>f:selectItem</code> and <code>f:selectItems</code> tags represent components that can be nested inside a component that allows you to select one or multiple items. An <code>f:selectItem</code> tag contains the value, label, and description of a single item. An <code>f:selectItems</code> tag contains the values, labels, and descriptions of the entire list of items.</p>
+
+        <p>You can use either a set of <code>f:selectItem</code> tags or a single <code>f:selectItems</code> tag within your component tag.</p>
+
+        <p>The advantages of using the <code>f:selectItems</code> tag are as follows.</p>
+
+        <ul>
+          <li>
+            <p>Items can be represented by using different data structures, including <code>Array</code>, <code>Map</code>, and <code>Collection</code>. The value of the <code>f:selectItems</code> tag can represent even a generic collection of POJOs.</p>
+          </li>
+
+          <li>
+            <p>Different lists can be concatenated into a single component, and the lists can be grouped within the component.</p>
+          </li>
+
+          <li>
+            <p>Values can be generated dynamically at runtime.</p>
+          </li>
+        </ul>
+
+        <p>The advantages of using <code>f:selectItem</code> are as follows.</p>
+
+        <ul>
+          <li>
+            <p>Items in the list can be defined from the page.</p>
+          </li>
+
+          <li>
+            <p>Less code is needed in the backing bean for the <code>f:selectItem</code> properties.</p>
+          </li>
+        </ul>
+
+        <p>The rest of this section shows you how to use the <code>f:selectItems</code> and <code>f:selectItem</code> tags.</p><a id="BNASM"></a><a id="JEETT00608"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.10.1</span> <a id="sthref555"></a>Using the f:selectItems Tag</h3>
+
+          <p>The following example from <a href="../Text/jsf-page.xhtml#BNASI">Displaying Components for Selecting Multiple Values</a> shows how to use the <code>h:selectManyCheckbox</code> tag:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectManyCheckbox id="newslettercheckbox"
+                      layout="pageDirection"
+                      value="#{cashierBean.newsletters}"&gt;
+    &lt;f:selectItems value="#{cashierBean.newsletterItems}"/&gt;
+&lt;/h:selectManyCheckbox&gt;</pre>
+
+          <p>The <code>value</code> attribute of the <code>f:selectItems</code> tag is bound to the managed bean property <code>cashierBean.newsletterItems</code>. The individual <code>SelectItem</code> objects are created programmatically in the managed bean.</p>
+
+          <p>See <a href="../Text/jsf-develop.xhtml#BNAUH">UISelectItems Properties</a> for information on how to write a managed bean property for one of these tags.</p>
+        </div><a id="BNASN"></a><a id="JEETT00609"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">10.2.10.2</span> <a id="sthref556"></a>Using the f:selectItem Tag</h3>
+
+          <p>The <code>f:selectItem</code> tag represents a single item in a list of items. Here is the example from <a href="../Text/jsf-page.xhtml#BNASH">Displaying a Menu Using the h:selectOneMenu Tag</a> once again:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectOneMenu id="shippingOption" 
+                 required="true"
+                 value="#{cashierBean.shippingOption}"&gt;
+    &lt;f:selectItem itemValue="2"
+                  itemLabel="#{bundle.QuickShip}"/&gt;
+    &lt;f:selectItem itemValue="5"
+                  itemLabel="#{bundle.NormalShip}"/&gt;
+    &lt;f:selectItem itemValue="7"
+                  itemLabel="#{bundle.SaverShip}"/&gt;
+ &lt;/h:selectOneMenu&gt;</pre>
+
+          <p>The <code>itemValue</code> attribute represents the value for the <code>f:selectItem</code> tag. The <code>itemLabel</code> attribute represents the <code>String</code> that appears in the list component on the page.</p>
+
+          <p>The <code>itemValue</code> and <code>itemLabel</code> attributes are value-binding enabled, meaning that they can use value-binding expressions to refer to values in external objects. These attributes can also define literal values, as shown in the example <code>h:selectOneMenu</code> tag.</p>
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref557"></a>
+
+        <h2 class="sect2"><span class="secnum">10.2.11</span> Displaying the Results from Selection Components</h2>
+
+        <p>If you display components that allow a user to select values, you may also want to display the result of the selection.</p>
+
+        <p>For example, you might want to thank a user who selected the checkbox to join the Duke Fan Club, as described in <a href="../Text/jsf-page.xhtml#BNASG">Displaying a Check Box Using the h:selectBooleanCheckbox Tag</a>. Because the checkbox is bound to the <code>specialOffer</code> property of <code>CashierBean</code>, a <code>UISelectBoolean</code> value, you can call the <code>isSelected</code> method of the property to determine whether to render a thank-you message:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="#{bundle.DukeFanClubThanks}"
+              rendered="#{cashierBean.specialOffer.isSelected()}"/&gt;</pre>
+
+        <p>Similarly, you might want to acknowledge that a user subscribed to newsletters using the <code>h:selectManyCheckbox</code> tag, as described in <a href="../Text/jsf-page.xhtml#BNASI">Displaying Components for Selecting Multiple Values</a>. To do so, you can retrieve the value of the <code>newsletters</code> property, the <code>String</code> array that holds the selected items:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="#{bundle.NewsletterThanks}"
+              rendered="#{!empty cashierBean.newsletters}"/&gt;
+&lt;ul&gt;
+    &lt;ui:repeat value="#{cashierBean.newsletters}" var="nli"&gt;
+        &lt;li&gt;&lt;h:outputText value="#{nli}" /&gt;&lt;/li&gt;
+    &lt;/ui:repeat&gt;
+&lt;/ul&gt;</pre>
+
+        <p>An introductory thank-you message is displayed only if the <code>newsletters</code> array is not empty. Then a <code>ui:repeat</code> tag, a simple way to show values in a loop, displays the contents of the selected items in an itemized list. (This tag is listed in <a href="../Text/jsf-page.xhtml#GJBFP">Table 8-2</a>.)</p>
+      </div><a id="BNARZ"></a><a id="JEETT00926"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.12</span> <a id="sthref558"></a><a id="sthref559"></a>Using Data-Bound Table Components</h2>
+
+        <p>Data-bound table components display relational data in a tabular format. In a JavaServer Faces application, the <code>h:dataTable</code> component tag supports binding to a collection of data objects and displays the data as an HTML table. The <code>h:column</code> tag represents a column of data within the table, iterating over each record in the data source, which is displayed as a row. Here is an example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:dataTable id="items"
+             captionClass="list-caption
+             columnClasses="list-column-center, list-column-left,
+             list-column-right, list-column-center"
+             footerClass="list-footer"
+             headerClass="list-header"
+             rowClasses="list-row-even, list-row-odd"
+             styleClass="list-background"
+             summary="#{bundle.ShoppingCart}"
+             value="#{cart.items}"
+             border="1"
+             var="item"&gt;
+    &lt;h:column&gt;
+        &lt;f:facet name="header"&gt;
+            &lt;h:outputText value="#{bundle.ItemQuantity}" /&gt;
+        &lt;/f:facet&gt;
+        &lt;h:inputText id="quantity" 
+                     size="4"
+                     value="#{item.quantity}"
+                     title="#{bundle.ItemQuantity}"&gt;
+            &lt;f:validateLongRange minimum="1"/&gt;
+            &lt;f:valueChangeListener 
+                type="javaeetutorial.dukesbookstore.listeners.QuantityChanged"/&gt;
+        &lt;/h:inputText&gt;
+    &lt;/h:column&gt;
+    &lt;h:column&gt;
+        &lt;f:facet name="header"&gt;
+            &lt;h:outputText value="#{bundle.ItemTitle}"/&gt;
+        &lt;/f:facet&gt;
+        &lt;h:commandLink action="#{showcart.details}"&gt;
+            &lt;h:outputText value="#{item.item.title}"/&gt;
+        &lt;/h:commandLink&gt;
+    &lt;/h:column&gt;
+    ...
+    &lt;f:facet name="footer"
+        &lt;h:panelGroup&gt;
+            &lt;h:outputText value="#{bundle.Subtotal}"/&gt;
+            &lt;h:outputText value="#{cart.total}" /&gt;
+                &lt;f:convertNumber currencySymbol="$" type="currency" /&gt;
+            &lt;/h:outputText&gt;
+        &lt;/h:panelGroup&gt;
+    &lt;/f:facet&gt;
+    &lt;f:facet name="caption"&gt;
+        &lt;h:outputText value="#{bundle.Caption}"/&gt;
+    &lt;/f:facet&gt;
+&lt;/h:dataTable&gt;</pre>
+
+        <p>The example <code>h:dataTable</code> tag displays the books in the shopping cart as well as the quantity of each book in the shopping cart, the prices, and a set of buttons the user can click to remove books from the shopping cart.</p>
+
+        <p>The <code>h:column</code> tags represent columns of data in a data component. While the data component is iterating over the rows of data, it processes the column component associated with each <code>h:column</code> tag for each row in the table.</p>
+
+        <p>The <code>h:dataTable</code> tag shown in the preceding code example iterates through the list of books (<code>cart.items</code>) in the shopping cart and displays their titles, authors, and prices. Each time the <code>h:dataTable</code> tag iterates through the list of books, it renders one cell in each column.</p>
+
+        <p><a id="sthref560"></a>The <code>h:dataTable</code> and <code>h:column</code> tags use facets to represent parts of the table that are not repeated or updated. These parts include headers, footers, and captions.</p>
+
+        <p>In the preceding example, <code>h:column</code> tags include <code>f:facet</code> tags for representing column headers or footers. The <code>h:column</code> tag allows you to control the styles of these headers and footers by supporting the <code>headerClass</code> and <code>footerClass</code> attributes. These attributes accept space-separated lists of CSS classes, which will be applied to the header and footer cells of the corresponding column in the rendered table.</p>
+
+        <p>Facets can have only one child, so an <code>h:panelGroup</code> tag is needed if you want to group more than one component within an <code>f:facet</code>. Because the facet tag representing the footer includes more than one tag, the <code>h:panelGroup</code> tag is needed to group those tags. Finally, this <code>h:dataTable</code> tag includes an <code>f:facet</code> tag with its <code>name</code> attribute set to <code>caption</code>, causing a table caption to be rendered above the table.</p>
+
+        <p>This table is a classic use case for a data component because the number of books might not be known to the application developer or the page author when that application is developed. The data component can dynamically adjust the number of rows of the table to accommodate the underlying data.</p>
+
+        <p>The <code>value</code> attribute of an <code>h:dataTable</code> tag references the data to be included in the table. This data can take the form of any of the following:</p>
+
+        <ul>
+          <li>
+            <p>A list of beans</p>
+          </li>
+
+          <li>
+            <p>An array of beans</p>
+          </li>
+
+          <li>
+            <p>A single bean</p>
+          </li>
+
+          <li>
+            <p>A <code>javax.faces.model.DataModel</code> object</p>
+          </li>
+
+          <li>
+            <p>A <code>java.sql.ResultSet</code> object</p>
+          </li>
+
+          <li>
+            <p>A <code>javax.servlet.jsp.jstl.sql.Result</code> object</p>
+          </li>
+
+          <li>
+            <p>A <code>javax.sql.RowSet</code> object</p>
+          </li>
+        </ul>
+
+        <p>All data sources for data components have a <code>DataModel</code> wrapper. Unless you explicitly construct a <code>DataModel</code> wrapper, the JavaServer Faces implementation will create one around data of any of the other acceptable types. See <a href="../Text/jsf-page.xhtml#BNATY">Writing Bean Properties</a> for more information on how to write properties for use with a data component.</p>
+
+        <p>The <code>var</code> attribute specifies a name that is used by the components within the <code>h:dataTable</code> tag as an alias to the data referenced in the <code>value</code> attribute of <code>h:dataTable</code>.</p>
+
+        <p>In the example <code>h:dataTable</code> tag, the <code>value</code> attribute points to a list of books. The <code>var</code> attribute points to a single book in that list. As the <code>h:dataTable</code> tag iterates through the list, each reference to <code>item</code> points to the current book in the list.</p>
+
+        <p>The <code>h:dataTable</code> tag also has the ability to display only a subset of the underlying data. This feature is not shown in the preceding example. To display a subset of the data, you use the optional <code>first</code> and <code>rows</code> attributes.</p>
+
+        <p>The <code>first</code> attribute specifies the first row to be displayed. The <code>rows</code> attribute specifies the number of rows, starting with the first row, to be displayed. For example, if you wanted to display records 2 through 10 of the underlying data, you would set <code>first</code> to 2 and <code>rows</code> to 9. When you display a subset of the data in your pages, you might want to consider including a link or button that causes subsequent rows to display when clicked. By default, both <code>first</code> and <code>rows</code> are set to zero, and this causes all the rows of the underlying data to display.</p>
+
+        <p><a href="../Text/jsf-page.xhtml#GKBUK">Table 10-7</a> shows the optional attributes for the <code>h:dataTable</code> tag.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref561"></a><a id="GKBUK"></a>
+
+          <p class="titleintable">Table 10-7 Optional Attributes for the h:dataTable Tag</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists the optional attributes for the h:dataTable tag and shows what parts of the table each attribute defines styles for." title="Optional Attributes for the h:dataTable Tag" width="100%">
+            <col width="23%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t10" valign="bottom">Attribute</th>
+
+                <th align="left" id="r1c2-t10" valign="bottom">Defines Styles For</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t10" id="r2c1-t10">
+                  <p><code>captionClass</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t10 r1c2-t10">
+                  <p>Table caption</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t10" id="r3c1-t10">
+                  <p><code>columnClasses</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t10 r1c2-t10">
+                  <p>All the columns</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t10" id="r4c1-t10">
+                  <p><code>footerClass</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t10 r1c2-t10">
+                  <p>Footer</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t10" id="r5c1-t10">
+                  <p><code>headerClass</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t10 r1c2-t10">
+                  <p>Header</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t10" id="r6c1-t10">
+                  <p><code>rowClasses</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t10 r1c2-t10">
+                  <p>Rows</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t10" id="r7c1-t10">
+                  <p><code>styleClass</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t10 r1c2-t10">
+                  <p>The entire table</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>Each of the attributes in <a href="../Text/jsf-page.xhtml#GKBUK">Table 10-7</a> can specify more than one style. If <code>columnClasses</code> or <code>rowClasses</code> specifies more than one style, the styles are applied to the columns or rows in the order that the styles are listed in the attribute. For example, if <code>columnClasses</code> specifies styles <code>list-column-center</code> and <code>list-column-right</code>, and if the table has two columns, the first column will have style <code>list-column-center</code>, and the second column will have style <code>list-column-right</code>.</p>
+
+        <p>If the style attribute specifies more styles than there are columns or rows, the remaining styles will be assigned to columns or rows starting from the first column or row. Similarly, if the style attribute specifies fewer styles than there are columns or rows, the remaining columns or rows will be assigned styles starting from the first style.</p>
+      </div><a id="BNASO"></a><a id="JEETT00927"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.13</span> <a id="sthref562"></a><a id="sthref563"></a>Displaying Error Messages with the h:message and h:messages Tags</h2>
+
+        <p>The <code>h:message</code> and <code>h:messages</code> tags are used to display error messages when conversion or validation fails. The <code>h:message</code> tag displays error messages related to a specific input component, whereas the <code>h:messages</code> tag displays the error messages for the entire page.</p>
+
+        <p>Here is an example <code>h:message</code> tag from the <code>guessnumber-jsf</code> application:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;
+    &lt;h:inputText id="userNo"
+                 title="Type a number from 0 to 10:"
+                 value="#{userNumberBean.userNumber}"&gt;
+        &lt;f:validateLongRange minimum="#{userNumberBean.minimum}"
+                             maximum="#{userNumberBean.maximum}"/&gt;
+   &lt;/h:inputText&gt;
+   &lt;h:commandButton id="submit" value="Submit"
+                    action="response"/&gt;
+&lt;/p&gt;
+&lt;h:message showSummary="true" showDetail="false"
+           style="color: #d20005;
+           font-family: 'New Century Schoolbook', serif;
+           font-style: oblique;
+           text-decoration: overline"
+           id="errors1"
+           for="userNo"/&gt;</pre>
+
+        <p><a id="sthref564"></a>The <code>for</code> attribute refers to the ID of the component that generated the error message. The error message is displayed at the same location that the <code>h:message</code> tag appears in the page. In this case, the error message will appear below the <span class="gui-object-action">Submit</span> button.</p>
+
+        <p><a id="sthref565"></a>The <code>style</code> attribute allows you to specify the style of the text of the message. In the example in this section, the text will be a shade of red, New Century Schoolbook, serif font family, and oblique style, and a line will appear over the text. The message and messages tags support many other attributes for defining styles. For more information on these attributes, refer to the documentation at <code><a href="../Text/jsf-page.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>.</p>
+
+        <p>Another attribute supported by the <code>h:messages</code> tag is the <code>layout</code> attribute. Its default value is <code>list</code>, which indicates that the messages are displayed in a bullet list using the HTML <code>ul</code> and <code>li</code> elements. If you set the attribute value to <code>table</code>, the messages will be rendered in a table using the HTML <code>table</code> element.</p>
+
+        <p>The preceding example shows a standard validator that is registered on the input component. The message tag displays the error message that is associated with this validator when the validator cannot validate the input component's value. In general, when you register a converter or validator on a component, you are queueing the error messages associated with the converter or validator on the component. The <code>h:message</code> and <code>h:messages</code> tags display the appropriate error messages that are queued on the component when the validators or converters registered on that component fail to convert or validate the component's value.</p>
+
+        <p>Standard error messages are provided with standard converters and standard validators. An application architect can override these standard messages and supply error messages for custom converters and validators by registering custom error messages with the application.</p>
+      </div><a id="GIQZD"></a><a id="JEETT00928"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.14</span> <a id="sthref566"></a><a id="sthref567"></a><a id="sthref568"></a><a id="sthref569"></a>Creating Bookmarkable URLs with the h:button and h:link Tags</h2>
+
+        <p>The ability to create bookmarkable URLs refers to the ability to generate links based on a specified navigation outcome and on component parameters.</p>
+
+        <p>In HTTP, most browsers by default send GET requests for URL retrieval and POST requests for data processing. The GET requests can have query parameters and can be cached, which is not advised for POST requests, which send data to servers for processing. The other JavaServer Faces tags capable of generating links use either simple GET requests, as in the case of <code>h:outputLink</code>, or POST requests, as in the case of <code>h:commandLink</code> or <code>h:commandButton</code> tags. GET requests with query parameters provide finer granularity to URL strings. These URLs are created with one or more <code>name=value</code> parameters appended to the simple URL after a <code>?</code> character and separated by either <code>;</code> or <code>amp;</code> strings.</p>
+
+        <p>To create a bookmarkable URL, use an <code>h:link</code> or <code>h:button</code> tag. Both of these tags can generate a link based on the <code>outcome</code> attribute of the component. For example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:link outcome="somepage" value="Message" /&gt;</pre>
+
+        <p>The <code>h:link</code> tag will generate a URL link that points to the <code>somepage.xhtml</code> file on the same server. The following sample HTML is generated from the preceding tag, assuming that the application name is <code>simplebookmark</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;a href="/simplebookmark/somepage.xhtml"&gt;Message&lt;/a&gt;</pre>
+
+        <p>This is a simple GET request that cannot pass any data from page to page. To create more complex GET requests and utilize the complete functionality of the <code>h:link</code> tag, use view parameters.</p>
+      </div><a id="GIQWQ"></a><a id="JEETT00929"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.15</span> <a id="sthref570"></a><a id="sthref571"></a><a id="sthref572"></a><a id="sthref573"></a>Using View Parameters to Configure Bookmarkable URLs</h2>
+
+        <p>To pass a parameter from one page to another, use the <code>includeViewParams</code> attribute in your <code>h:link</code> tag and, in addition, use an <code>f:param</code> tag to specify the name and value to be passed. Here the <code>h:link</code> tag specifies the outcome page as <code>personal.xhtml</code> and provides a parameter named <code>Result</code> whose value is a managed bean property:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:body&gt;
+    &lt;h:form&gt;
+        &lt;h:graphicImage url="#{resource['images:duke.waving.gif']}"
+                        alt="Duke waving his hand"/&gt;
+        &lt;h2&gt;Hello, #{hello.name}!&lt;/h2&gt;
+        &lt;p&gt;I've made your
+            &lt;h:link outcome="personal" value="personal greeting page!"
+                    includeViewParams="true"&gt;
+                &lt;f:param name="Result" value="#{hello.name}"/&gt;
+            &lt;/h:link&gt;
+        &lt;/p&gt;
+        &lt;h:commandButton id="back" value="Back" action="index" /&gt;
+    &lt;/h:form&gt;
+&lt;/h:body&gt;</pre>
+
+        <p>If the <code>includeViewParams</code> attribute is set on the component, the view parameters are added to the hyperlink. Therefore, the resulting URL will look something like this if the value of <code>hello.name</code> is <code>Timmy</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/bookmarks/personal.xhtml?Result=Timmy</pre>
+
+        <p>On the outcome page, specify the core tags <code>f:metadata</code> and <code>f:viewparam</code> as the source of parameters for configuring the URLs. View parameters are declared as part of <code>f:metadata</code> for a page, as shown in the following example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:metadata&gt;
+    &lt;f:viewParam name="Result" value="#{hello.name}"/&gt;
+&lt;/f:metadata&gt;</pre>
+
+        <p>This allows you to specify the bean property value on the page:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="Howdy, #{hello.name}!" /&gt;</pre>
+
+        <p>As a view parameter, the name also appears in the page's URL. If you edit the URL, you change the output on the page.</p>
+
+        <p>Because the URL can be the result of various parameter values, the order of the URL creation has been predefined. The order in which the various parameter values are read is as follows:</p>
+
+        <ol>
+          <li>
+            <p>Component</p>
+          </li>
+
+          <li>
+            <p>Navigation-case parameters</p>
+          </li>
+
+          <li>
+            <p>View parameters</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref574"></a>
+
+        <h2 class="sect2"><span class="secnum">10.2.16</span> <a id="sthref575"></a><a id="sthref576"></a>The bookmarks Example Application</h2>
+
+        <p>The <code>bookmarks</code> example application modifies the <code>hello1</code> application described in <a href="../Text/jsf-webapp.xhtml#BNADX">A Web Module That Uses JavaServer Faces Technology: The hello1 Example</a> to use a bookmarkable URL that uses view parameters.</p>
+
+        <p>Like <code>hello1</code>, the application includes the <code>Hello.java</code> managed bean, an <code>index.xhtml</code> page, and a <code>response.xhtml</code> page. In addition, it includes a <code>personal.xhtml page</code>, to which a bookmarkable URL and view parameters are passed from the <code>response.xhtml</code> page, as described in <a href="../Text/jsf-page.xhtml#GIQWQ">Using View Parameters to Configure Bookmarkable URLs</a>.</p>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>bookmarks</code> example. The source code for this example is in the <span class="variable">tut-install</span><code>/examples/web/jsf/bookmarks/</code> directory.</p>
+
+        <div class="sect3">
+          <a id="sthref577"></a>
+
+          <h3 class="sect3"><span class="secnum">10.2.16.1</span> To Build, Package, and Deploy the bookmarks Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>bookmarks</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>bookmarks</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This option builds the example application and deploys it to your GlassFish Server instance.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref578"></a>
+
+          <h3 class="sect3"><span class="secnum">10.2.16.2</span> To Build, Package, and Deploy the bookmarks Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/bookmarks/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>bookmarks.war</code>, that is located in the <code>target</code> directory. It then deploys the WAR file to your GlassFish Server instance.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref579"></a>
+
+          <h3 class="sect3"><span class="secnum">10.2.16.3</span> To Run the bookmarks Example</h3>
+
+          <ol>
+            <li>
+              <p>Enter the following URL in your web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/bookmarks</pre>
+            </li>
+
+            <li>
+              <p>In the text field, enter a name and click <span class="gui-object-action">Submit</span>.</p>
+            </li>
+
+            <li>
+              <p>On the response page, move your mouse over the "personal greeting page" link to view the URL with the view parameter, then click the link.</p>
+
+              <p>The <code>personal.xhtml</code> page opens, displaying a greeting to the name you typed.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">URL</span> field, modify the <span class="gui-object-action">Result</span> parameter value and press <span class="gui-object-action">Return</span>.</p>
+
+              <p>The name in the greeting changes to what you typed.</p>
+            </li>
+          </ol>
+        </div>
+      </div><a id="GJGEP"></a><a id="JEETT00930"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">10.2.17</span> <a id="sthref580"></a><a id="sthref581"></a><a id="sthref582"></a>Resource Relocation Using h:outputScript and h:outputStylesheet Tags</h2>
+
+        <p>Resource relocation refers to the ability of a JavaServer Faces application to specify the location where a resource can be rendered. Resource relocation can be defined with the following HTML tags:</p>
+
+        <ul>
+          <li>
+            <p><code>h:outputScript</code></p>
+          </li>
+
+          <li>
+            <p><code>h:outputStylesheet</code></p>
+          </li>
+        </ul>
+
+        <p>These tags have <code>name</code> and <code>target</code> attributes, which can be used to define the render location. For a complete list of attributes for these tags, see the documentation at <code><a href="../Text/jsf-page.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>.</p>
+
+        <p>For the <code>h:outputScript</code> tag, the <code>name</code> and <code>target</code> attributes define where the output of a resource may appear. Here is an example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+    &lt;h:head id="head"&gt;
+        &lt;title&gt;Resource Relocation&lt;/title&gt;
+    &lt;/h:head&gt;
+    &lt;h:body id="body"&gt;
+        &lt;h:form id="form"&gt;
+            &lt;h:outputScript name="hello.js"/&gt;
+            &lt;h:outputStylesheet name="hello.css"/&gt;
+        &lt;/h:form&gt;
+    &lt;/h:body&gt;
+&lt;/html&gt;</pre>
+
+        <p>Because the <code>target</code> attribute is not defined in the tags, the style sheet <code>hello.css</code> is rendered in the head element of the page, and the <code>hello.js</code> script is rendered in the body of the page.</p>
+
+        <p>Here is the HTML generated by the preceding code:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Resource Relocation&lt;/title&gt;
+        &lt;link type="text/css" rel="stylesheet"
+              href="/context-root/javax.faces.resource/hello.css"/&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;form id="form" name="form" method="post" 
+              action="..." enctype="..."&gt;
+            &lt;script type="text/javascript"
+                    src="/context-root/javax.faces.resource/hello.js"&gt;
+            &lt;/script&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;<br /></pre>
+
+        <p>If you set the <code>target</code> attribute for the <code>h:outputScript</code> tag, the incoming GET request provides the location parameter. Here is an example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+    &lt;h:head id="head"&gt;
+        &lt;title&gt;Resource Relocation&lt;/title&gt;
+    &lt;/h:head&gt;
+    &lt;h:body id="body"&gt;
+        &lt;h:form id="form"&gt;        
+            &lt;h:outputScript name="hello.js" target="#{param.location}"/&gt;
+            &lt;h:outputStylesheet name="hello.css"/&gt;
+        &lt;/h:form&gt;
+    &lt;/h:body&gt;
+&lt;/html&gt;</pre>
+
+        <p>In this case, if the incoming request does not provide a location parameter, the default locations will still apply: The style sheet is rendered in the head, and the script is rendered inline. However, if the incoming request specifies the location parameter as the head, both the style sheet and the script will be rendered in the <code>head</code> element.</p>
+
+        <p>The HTML generated by the preceding code is as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Resource Relocation&lt;/title&gt;
+        &lt;link type="text/css" rel="stylesheet"
+              href="/context-root/javax.faces.resource/hello.css"/&gt;
+        &lt;script type="text/javascript"
+                src="/context-root/javax.faces.resource/hello.js"&gt;
+          &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;form id="form" name="form" method="post" 
+              action="..." enctype="..."&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;<span class="Apple-tab-span" style="white-space:pre">      </span><br /></pre>
+
+        <p>Similarly, if the incoming request provides the location parameter as the body, the script will be rendered in the body element.</p>
+
+        <p>The preceding section describes simple uses for resource relocation. That feature can add even more functionality for the components and pages. A page author does not have to know the location of a resource or its placement.</p>
+
+        <p><a id="sthref583"></a>By using a <code>@ResourceDependency</code> annotation for the components, component authors can define the resources for the component, such as a style sheet and script. This allows the page authors freedom from defining resource locations.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNARC"></a><a id="JEETT00349"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">10.3</span> Using Core Tags</h1>
+
+      <p><a id="sthref584"></a><a id="sthref585"></a>The tags included in the JavaServer Faces core tag library are used to perform core actions that are not performed by HTML tags.</p>
+
+      <p><a href="../Text/jsf-page.xhtml#GKVYB">Table 10-8</a> lists the event-handling core tags.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref586"></a><a id="GKVYB"></a>
+
+        <p class="titleintable">Table 10-8 Event-Handling Core Tags</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the event handling core tags." title="Event-Handling Core Tags" width="100%">
+          <col width="36%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t11" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c2-t11" valign="bottom">Function</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t11" id="r2c1-t11">
+                <p><a id="sthref587"></a><a id="sthref588"></a><code>f:actionListener</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t11 r1c2-t11">
+                <p>Adds an action listener to a parent component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t11" id="r3c1-t11">
+                <p><code>f:phaseListener</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t11 r1c2-t11">
+                <p>Adds a <code>PhaseListener</code> to a page</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t11" id="r4c1-t11">
+                <p><code>f:setPropertyActionListener</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t11 r1c2-t11">
+                <p>Registers a special action listener whose sole purpose is to push a value into a managed bean when a form is submitted</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t11" id="r5c1-t11">
+                <p><a id="sthref589"></a><a id="sthref590"></a><code>f:valueChangeListener</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t11 r1c2-t11">
+                <p>Adds a value-change listener to a parent component</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p><a href="../Text/jsf-page.xhtml#GKVYY">Table 10-9</a> lists the data-conversion core tags.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref591"></a><a id="GKVYY"></a>
+
+        <p class="titleintable">Table 10-9 Data-Conversion Core Tags</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the data conversion core tags." title="Data-Conversion Core Tags" width="100%">
+          <col width="30%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t12" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c2-t12" valign="bottom">Function</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t12" id="r2c1-t12">
+                <p><a id="sthref592"></a><code>f:converter</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t12 r1c2-t12">
+                <p>Adds an arbitrary converter to the parent component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t12" id="r3c1-t12">
+                <p><a id="sthref593"></a><code>f:convertDateTime</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t12 r1c2-t12">
+                <p>Adds a <code>DateTimeConverter</code> instance to the parent component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t12" id="r4c1-t12">
+                <p><a id="sthref594"></a><code>f:convertNumber</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t12 r1c2-t12">
+                <p>Adds a <code>NumberConverter</code> instance to the parent component</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p><a href="../Text/jsf-page.xhtml#GKVZG">Table 10-10</a> lists the facet core tags.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref595"></a><a id="GKVZG"></a>
+
+        <p class="titleintable">Table 10-10 Facet Core Tags</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the facet core tags." title="Facet Core Tags" width="100%">
+          <col width="30%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t13" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c2-t13" valign="bottom">Function</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t13" id="r2c1-t13">
+                <p><a id="sthref596"></a><code>f:facet</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t13 r1c2-t13">
+                <p>Adds a nested component that has a special relationship to its enclosing tag</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t13" id="r3c1-t13">
+                <p><a id="sthref597"></a><code>f:metadata</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t13 r1c2-t13">
+                <p>Registers a <code>facet</code> on a parent component</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p><a href="../Text/jsf-page.xhtml#GKVZA">Table 10-11</a> lists the core tags that represent items in a list.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref598"></a><a id="GKVZA"></a>
+
+        <p class="titleintable">Table 10-11 Core Tags That Represent Items in a List</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the core tags that represent items in a list." title="Core Tags That Represent Items in a List" width="100%">
+          <col width="30%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t14" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c2-t14" valign="bottom">Function</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t14" id="r2c1-t14">
+                <p><a id="sthref599"></a><code>f:selectItem</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t14 r1c2-t14">
+                <p>Represents one item in a list of items</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t14" id="r3c1-t14">
+                <p><a id="sthref600"></a><code>f:selectItems</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t14 r1c2-t14">
+                <p>Represents a set of items</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p><a href="../Text/jsf-page.xhtml#GKVYV">Table 10-12</a> lists the validator core tags.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref601"></a><a id="GKVYV"></a>
+
+        <p class="titleintable">Table 10-12 Validator Core Tags</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the validator core tags." title="Validator Core Tags" width="100%">
+          <col width="30%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t15" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c2-t15" valign="bottom">Function</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t15" id="r2c1-t15">
+                <p><a id="sthref602"></a><code>f:validateDoubleRange</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t15 r1c2-t15">
+                <p><a id="sthref603"></a>Adds a <code>DoubleRangeValidator</code> to a component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t15" id="r3c1-t15">
+                <p><a id="sthref604"></a><code>f:validateLength</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t15 r1c2-t15">
+                <p><a id="sthref605"></a>Adds a <code>LengthValidator</code> to a component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t15" id="r4c1-t15">
+                <p><a id="sthref606"></a><code>f:validateLongRange</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t15 r1c2-t15">
+                <p><a id="sthref607"></a>Adds a <code>LongRangeValidator</code> to a component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t15" id="r5c1-t15">
+                <p><a id="sthref608"></a><code>f:validator</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t15 r1c2-t15">
+                <p><a id="sthref609"></a>Adds a custom validator to a component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t15" id="r6c1-t15">
+                <p><code>f:validateRegEx</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t15 r1c2-t15">
+                <p>Adds a <code>RegExValidator</code> to a component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t15" id="r7c1-t15">
+                <p><code>f:validateBean</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t15 r1c2-t15">
+                <p>Delegates the validation of a local value to a <code>BeanValidator</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t15" id="r8c1-t15">
+                <p><code>f:validateRequired</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t15 r1c2-t15">
+                <p>Enforces the presence of a value in a component</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p><a href="../Text/jsf-page.xhtml#GKVYU">Table 10-13</a> lists the core tags that fall into other categories.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref610"></a><a id="GKVYU"></a>
+
+        <p class="titleintable">Table 10-13 Miscellaneous Core Tags</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table categorizes, lists, and describes the miscellaneous core tags." title="Miscellaneous Core Tags" width="100%">
+          <col width="28%" />
+          <col width="19%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t16" valign="bottom">Tag Category</th>
+
+              <th align="left" id="r1c2-t16" valign="bottom">Tag</th>
+
+              <th align="left" id="r1c3-t16" valign="bottom">Function</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t16" id="r2c1-t16">
+                <p>Attribute configuration</p>
+              </td>
+
+              <td align="left" headers="r2c1-t16 r1c2-t16">
+                <p><a id="sthref611"></a><code>f:attribute</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t16 r1c3-t16">
+                <p>Adds configurable attributes to a parent component</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t16" id="r3c1-t16">
+                <p>Localization</p>
+              </td>
+
+              <td align="left" headers="r3c1-t16 r1c2-t16">
+                <p><a id="sthref612"></a><code>f:loadBundle</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t16 r1c3-t16">
+                <p>Specifies a <code>ResourceBundle</code> that is exposed as a <code>Map</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t16" id="r4c1-t16">
+                <p><a id="sthref613"></a><a id="sthref614"></a>Parameter substitution</p>
+              </td>
+
+              <td align="left" headers="r4c1-t16 r1c2-t16">
+                <p><a id="sthref615"></a><code>f:param</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t16 r1c3-t16">
+                <p><a id="sthref616"></a>Substitutes parameters into a <code>MessageFormat</code> instance and adds query string name-value pairs to a URL</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t16" id="r5c1-t16">
+                <p>Ajax</p>
+              </td>
+
+              <td align="left" headers="r5c1-t16 r1c2-t16">
+                <p><code>f:ajax</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t16 r1c3-t16">
+                <p>Associates an Ajax action with a single component or a group of components based on placement</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t16" id="r6c1-t16">
+                <p>Event</p>
+              </td>
+
+              <td align="left" headers="r6c1-t16 r1c2-t16">
+                <p><code>f:event</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t16 r1c3-t16">
+                <p>Allows installing a <code>ComponentSystemEventListener</code> on a component</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>These tags, which are used in conjunction with component tags, are explained in other sections of this tutorial.</p>
+
+      <p><a href="../Text/jsf-page.xhtml#BNARE">Table 10-14</a> lists the sections that explain how to use specific core tags.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref617"></a><a id="BNARE"></a>
+
+        <p class="titleintable">Table 10-14 Where the Core Tags Are Explained</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table provides links to other sections where the core tags are explained." title="Where the Core Tags Are Explained" width="100%">
+          <col width="28%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t17" valign="bottom">Tags</th>
+
+              <th align="left" id="r1c2-t17" valign="bottom">Where Explained</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r2c1-t17">
+                <p>Event-handling tags</p>
+              </td>
+
+              <td align="left" headers="r2c1-t17 r1c2-t17">
+                <p><a href="../Text/jsf-page-core.xhtml#BNASZ">Registering Listeners on Components</a></p><br />
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r3c1-t17">
+                <p>Data-conversion tags</p>
+              </td>
+
+              <td align="left" headers="r3c1-t17 r1c2-t17">
+                <p><a href="../Text/jsf-page-core.xhtml#BNAST">Using the Standard Converters</a></p><br />
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r4c1-t17">
+                <p><code>f:facet</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t17 r1c2-t17">
+                <p><a href="../Text/jsf-page.xhtml#BNARZ">Using Data-Bound Table Components</a> and <a href="../Text/jsf-page.xhtml#BNASC">Laying Out Components with the h:panelGrid and h:panelGroup Tags</a></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r5c1-t17">
+                <p><code>f:loadBundle</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t17 r1c2-t17">
+                <p><a href="../Text/webi18n.xhtml#BNAXY">Setting the Resource Bundle</a></p><br />
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r6c1-t17">
+                <p><code>f:metadata</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t17 r1c2-t17">
+                <p><a href="../Text/jsf-page.xhtml#GIQWQ">Using View Parameters to Configure Bookmarkable URLs</a></p><br />
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r7c1-t17">
+                <p><code>f:param</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t17 r1c2-t17">
+                <p><a href="../Text/jsf-page.xhtml#BNARU">Displaying a Formatted Message with the h:outputFormat Tag</a></p><br />
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r8c1-t17">
+                <p><code>f:selectItem</code> and <code>f:selectItems</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t17 r1c2-t17">
+                <p><a href="../Text/jsf-page.xhtml#BNASK">Using the f:selectItem and f:selectItems Tags</a></p><br />
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r9c1-t17">
+                <p>Validator tags</p>
+              </td>
+
+              <td align="left" headers="r9c1-t17 r1c2-t17">
+                <p><a href="../Text/jsf-page-core.xhtml#BNATC">Using the Standard Validators</a></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t17" id="r10c1-t17">
+                <p><code>f:ajax</code></p>
+              </td>
+
+              <td align="left" headers="r10c1-t17 r1c2-t17">
+                <p><a href="../Text/jsf-ajax.xhtml#GKIOW">Chapter 13, "Using Ajax with JavaServer Faces Technology"</a></p><br />
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+    </div>
+  </div>
+</body>
+</html>

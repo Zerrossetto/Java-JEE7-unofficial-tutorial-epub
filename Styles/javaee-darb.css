@@ -1,0 +1,143 @@
+@font-face {
+    font-family:'OpenSans';
+    font-weight:normal;
+    font-style:normal;
+    src:url('../Fonts/OpenSans-Regular.ttf');
+}
+@font-face {
+    font-family:'OpenSans';
+    font-weight:bold;
+    font-style:normal;
+    src:url('../Fonts/OpenSans-Bold.ttf');
+}
+@font-face {
+    font-family:'OpenSans';
+    font-weight:normal;
+    font-style:italic;
+    src: url('../Fonts/OpenSans-Italic.ttf');
+}
+@font-face {
+    font-family: 'OpenSans';
+    font-weight:bold;
+    font-style:italic;
+    src: url('../Fonts/OpenSans-BoldItalic.ttf');
+}
+@font-face {
+    font-family:'Consolas';
+    src:url('../Fonts/Consolas.ttf');
+}
+body, p, span  {
+    font-family:'OpenSans';
+}
+
+p {
+	font-weight:normal;
+	font-style:normal;
+}
+
+.italic {
+    font-weight:normal;
+    font-style:italic;
+}
+
+b, .gui-object-action, .bold, .glossaryterm {
+	font-weight:bold;
+	font-style:normal;
+}
+
+pre, code {
+	font-family:'Consolas';
+}
+
+pre {
+	font-size:90%;
+}
+
+p > a:link, p > a:visited, p > a:hover, p > a:active, code > a:link, code > a:visited, code > a:hover, code > a:active   {
+	color: #265F7F;
+	text-decoration: none;
+}
+
+code > a:link, code > a:visited, code > a:hover, code > a:active  {
+	font-size:95%;
+}
+
+h1{
+    color:#385E76;
+    font-size:200%;
+}
+
+h2{
+    color:#000000;
+    font-size:133%;
+}
+
+h3 {
+    font-size: 113%;
+    font-weight: bold;
+    display: inline;
+}
+h4 {
+    font-size: 113%;
+    font-weight: bold;
+    display: inline;
+}
+
+h5 {
+    font-size: 100%;
+    font-weight: bold;
+    font-style: italic;
+    display: inline;
+}
+
+table {
+    font-size: small; /* for ICEBrowser */
+}
+
+td {
+    vertical-align: top;
+}
+
+th {
+    font-weight: bold;
+    text-align: left;
+    vertical-align: bottom;
+}
+
+ol ol {
+    list-style-type: lower-alpha;
+}
+
+ol ol ol {
+    list-style-type: lower-roman;
+}
+
+td p:first-child, td pre:first-child {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+table.table-border {
+    border-collapse: collapse;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+}
+table.table-border th {
+    padding: 0.5ex 0.25em;
+    color: black;
+    background-color: #f7f7ea;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+table.table-border td {
+    padding: 0.5ex 0.25em;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+p.horizontal-rule {
+    width: 100%;
+    border: solid #cc9;
+    border-width: 0px 0px 1px 0px;
+    margin-bottom: 4ex;
+}

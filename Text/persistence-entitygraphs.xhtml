@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BABIJIAC"></a>
+
+    <h1 class="chapter"><span class="secnum">43</span> Creating Fetch Plans with Entity Graphs</h1>
+
+    <p>This chapter explains how to use entity graphs to create <a id="sthref2165"></a>fetch plans for Java Persistence API operations and queries.</p>
+
+    <p><span class="glossaryterm"><a id="sthref2166"></a>Entity graphs</span> are templates for a particular Persistence <a id="sthref2167"></a><a id="sthref2168"></a>query or operation. They are used when creating <span class="glossaryterm">fetch plans</span>, or groups of persistent fields that are retrieved at the same time. Application developers use fetch plans to group together related persistent fields to improve runtime performance.</p>
+
+    <p>By default, entity fields or properties are fetched <a id="sthref2169"></a>lazily. Developers specify fields or properties as part of a fetch plan, and the persistence provider will fetch them <a id="sthref2170"></a>eagerly.</p>
+
+    <p>For example, an email application that stores messages as <code>EmailMessage</code> entities prioritizes fetching some fields over others. The sender, subject, and date will be viewed the most often, in mailbox views and when the message is displayed. The <code>EmailMessage</code> entity has a collection of related <code>EmailAttachment</code> entities. For performance reasons the attachments should not be fetched until they are needed, but the file names of the attachment are important. A developer working on this application might make a fetch plan that eagerly fetches the important fields from <code>EmailMessage</code> and <code>EmailAttachment</code> while fetching the lower priority data lazily.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/persistence-entitygraphs.xhtml#BABCJBCG">Entity Graph Basics</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/persistence-entitygraphs.xhtml#BABFIGEI">Using Named Entity Graphs</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/persistence-entitygraphs.xhtml#BABGJDAJ">Using Entity Graphs in Query Operations</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BABCJBCG"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">43.1</span> Entity Graph Basics</h1>
+
+      <p>You can create entity graphs statically by using annotations or a deployment descriptor, or dynamically by using standard interfaces.</p>
+
+      <p>You can use an entity graph with the <code>EntityManager.find</code> method or as part of a <a id="sthref2171"></a><a id="sthref2172"></a>JPQL or <a id="sthref2173"></a><a id="sthref2174"></a>Criteria API query by specifying the entity graph as a hint to the operation or query.</p>
+
+      <p>Entity graphs have attributes that correspond to the fields that will be eagerly fetched during a <code>find</code> or query operation. The primary key and version fields of the entity class are always fetched and do not need to be explicitly added to an entity graph.</p>
+
+      <div class="sect2">
+        <a id="sthref2175"></a>
+
+        <h2 class="sect2"><span class="secnum">43.1.1</span> The Default Entity Graph</h2>
+
+        <p>By default, all fields in an entity are fetched lazily unless the <code>fetch</code> attribute of the entity metadata is set to <code>javax.persistence.FetchType.EAGER</code>. The default entity graph consists of all the fields of an entity whose fields are set to be eagerly fetched.</p>
+
+        <p>For example, the following <code>EmailMessage</code> entity specifies that some fields will be fetched eagerly:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+public class EmailMessage implements Serializable {
+    @Id
+    String messageId;
+    @Basic(fetch=EAGER)
+    String subject;
+    String body;
+    @Basic(fetch=EAGER)
+    String sender;
+    @OneToMany(mappedBy="message", fetch=LAZY)
+    Set&lt;EmailAttachment&gt; attachments;
+    ...
+}</pre>
+
+        <p>The default entity graph for this entity would contain the <code>messageId</code>, <code>subject</code>, and <code>sender</code> fields, but not the <code>body</code> or <code>attachments</code> fields.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2176"></a>
+
+        <h2 class="sect2"><span class="secnum">43.1.2</span> Using Entity Graphs in Persistence Operations</h2>
+
+        <p>Entity graphs are used by creating an instance of the <code>javax.persistence.EntityGraph</code> interface by calling either <code>EntityManager.getEntityGraph</code> for named entity graphs or <code>EntityManager.createEntityGraph</code> for creating dynamic entity graphs.</p>
+
+        <p>A <span class="bold">named entity graph</span> is an entity graph specified by the <code>@NamedEntityGraph</code> annotation applied to entity classes, or the <code>named-entity-graph</code> element in the application's deployment descriptors. Named entity graphs defined within the deployment descriptor override any annotation-based entity graphs with the same name.</p>
+
+        <p>The created entity graph can be either a <a id="sthref2177"></a><span class="bold">fetch graph</span> or a <a id="sthref2178"></a><span class="bold">load graph</span>.</p>
+
+        <div class="sect3">
+          <a id="sthref2179"></a>
+
+          <h3 class="sect3"><span class="secnum">43.1.2.1</span> Fetch Graphs</h3>
+
+          <p>To specify a <a id="sthref2180"></a>fetch graph, set the <code>javax.persistence.fetchgraph</code> property when you execute an <code>EntityManager.find</code> or query operation. A fetch graph consists of only the fields explicitly specified in the <code>EntityGraph</code> instance, and ignores the default entity graph settings.</p>
+
+          <p>In the following example, the default entity graph is ignored, and only the <code>body</code> field is included in the dynamically created fetch graph:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityGraph&lt;EmailMessage&gt; eg = em.createEntityGraph(EmailMessage.class);
+eg.addAttributeNodes("body");
+...
+Properties props = new Properties();
+props.put("javax.persistence.fetchgraph", eg);
+EmailMessage message = em.find(EmailMessage.class, id, props);</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref2181"></a>
+
+          <h3 class="sect3"><span class="secnum">43.1.2.2</span> Load Graphs</h3>
+
+          <p>To specify a <a id="sthref2182"></a>load graph, set the <code>javax.persistence.loadgraph</code> property when you execute an <code>EntityManager.find</code> or query operation. A load graph consists of the fields explicitly specified in the <code>EntityGraph</code> instance plus any fields in the default entity graph.</p>
+
+          <p>In the following example, the dynamically created load graph contains all the fields in the default entity graph plus the <code>body</code> field:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityGraph&lt;EmailMessage&gt; eg = em.createEntityGraph(EmailMessage.class);
+eg.addAttributeNodes("body");
+...
+Properties props = new Properties();
+props.put("javax.persistence.loadgraph", eg);
+EmailMessage message = em.find(EmailMessage.class, id, props);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABFIGEI"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">43.2</span> Using Named Entity Graphs</h1>
+
+      <p><a id="sthref2183"></a><a id="sthref2184"></a>Named entity graphs are created using annotations applied to entity classes or the <code>named-entity-graph</code> element and its sub-elements in the application's deployment descriptor. The persistence provider will scan for all named entity graphs, defined in both annotations and in XML, within an application. A named entity graph set using an annotation may be overridden using <code>named-entity-graph</code>.</p>
+
+      <div class="sect2">
+        <a id="sthref2185"></a>
+
+        <h2 class="sect2"><span class="secnum">43.2.1</span> Applying Named Entity Graph Annotations to Entity Classes</h2>
+
+        <p>The <code>javax.persistence.NamedEntityGraph</code> annotation defines a single named entity graph and is applied at the class level. Multiple <code>@NamedEntityGraph</code> annotations may be defined for a class by adding them within a <code>javax.persistence.NamedEntityGraphs</code> class-level annotation.</p>
+
+        <p>The <code>@NamedEntityGraph</code> annotation must be applied on the root of the graph of entities. That is, if the <code>EntityManager.find</code> or query operation has as its root entity the <code>EmailMessage</code> class, the named entity graph used in the operation must be defined in the <code>EmailMessage</code> class:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NamedEntityGraph
+@Entity
+public class EmailMessage {
+    @Id
+    String messageId;
+    String subject;
+    String body;
+    String sender;
+}</pre>
+
+        <p>In this example, the <code>EmailMessage</code> class has a <code>@NamedEntityGraph</code> annotation to define a named entity graph that defaults to the name of the class, <code>EmailMessage</code>. No fields are included in the <code>@NamedEntityGraph</code> annotation as attribute nodes, and the fields are not annotated with metadata to set the fetch type, so the only field that will be eagerly fetched in either a load graph or fetch graph is <code>messageId</code>.</p>
+
+        <p>The attributes of a named entity graph are the fields of the entity that should be included in the entity graph. Add the fields to the entity graph by specifying them in the <code>attributeNodes</code> element of <code>@NamedEntityGraph</code> with a <code>javax.persistence.NamedAttributeNode</code> annotation:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NamedEntityGraph(name="emailEntityGraph", attributeNodes={
+    @NamedAttributeNode("subject"),
+    @NamedAttributeNode("sender")
+})
+@Entity
+public class EmailMessage { ... }</pre>
+
+        <p>In this example, the name of the named entity graph is <code>emailEntityGraph</code> and includes the <code>subject</code> and <code>sender</code> fields.</p>
+
+        <p>Multiple <code>@NamedEntityGraph</code> definitions may be applied to a class by grouping them within a <code>@NamedEntityGraphs</code> annotation.</p>
+
+        <p>In the following example, two entity graphs are defined on the <code>EmailMessage</code> class. One is for a preview pane, which fetches only the sender, subject, and body of the message. The other is for a full view of the message, including any message attachments:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NamedEntityGraphs({
+    @NamedEntityGraph(name="previewEmailEntityGraph", attributeNodes={
+        @NamedAttributeNode("subject"),
+        @NamedAttributeNode("sender"),
+        @NamedAttributeNode("body")
+    }),
+    @NamedEntityGraph(name="fullEmailEntityGraph", attributeNodes={
+        @NamedAttributeNode("sender"),
+        @NamedAttributeNode("subject"),
+        @NamedAttributeNode("body"),
+        @NamedAttributeNode("attachments")
+    })
+})
+@Entity
+public class EmailMessage { ... }</pre>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2186"></a>
+
+        <h2 class="sect2"><span class="secnum">43.2.2</span> Obtaining EntityGraph Instances from Named Entity Graphs</h2>
+
+        <p>Use the <code>EntityManager.getEntityGraph</code> method, passing in the named entity graph name, to obtain <code>EntityGraph</code> instances for a named entity graph:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityGraph&lt;EmailMessage&gt; eg = em.getEntityGraph("emailEntityGraph");</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABGJDAJ"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">43.3</span> Using Entity Graphs in Query Operations</h1>
+
+      <p>To specify entity graphs for both typed and untyped queries, call the <a id="sthref2187"></a><code>setHint</code> method on the query object and specify either <a id="sthref2188"></a><code>javax.persistence.loadgraph</code> or <code>javax.persistence.fetchgraph</code> as the property name and an <code>EntityGraph</code> instance as the value:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityGraph&lt;EmailMessage&gt; eg = em.getEntityGraph("previewEmailEntityGraph");
+List&lt;EmailMessage&gt; messages = em.createNamedQuery("findAllEmailMessages")
+        .setParameter("mailbox", "inbox")
+        .setHint("javax.persistence.loadgraph", eg)
+        .getResultList();</pre>
+
+      <p>In this example, the <code>previewEmailEntityGraph</code> is used for the <code>findAllEmailMessages</code> named query.</p>
+
+      <p><a id="sthref2189"></a>Typed queries use the same technique:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CriteriaQuery&lt;EmailMessage&gt; cq = cb.createQuery(EmailMessage.class);
+Root&lt;EmailMessage&gt; message = cq.from(EmailMessage.class);
+TypedQuery&lt;EmailMessage&gt; q = em.createQuery(cq);
+q.setHint("javax.persistence.loadgraph", eg);
+List&lt;EmailMessage&gt; messages = q.getResultList();</pre>
+    </div>
+  </div>
+</body>
+</html>

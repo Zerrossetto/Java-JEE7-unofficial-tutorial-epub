@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BNATX"></a><a id="JEETT00072"></a>
+
+    <h1 class="chapter"><span class="secnum">12</span> Developing with JavaServer Faces Technology</h1>
+
+    <p>This chapter provides an overview of managed beans and explains how to write methods and properties of managed beans that are used by a JavaServer Faces application. This chapter also introduces the Bean Validation feature.</p>
+
+    <p><a href="../Text/jsf-page.xhtml#BNAQZ">Chapter 10, "Using JavaServer Faces Technology in Web Pages"</a> and <a href="../Text/jsf-page-core.xhtml#GJCUT">Chapter 11, "Using Converters, Listeners, and Validators"</a> show how to add components to a page and connect them to server-side objects by using component tags and core tags. These chapters also show how to provide additional functionality to the components through converters, listeners, and validators. Developing a JavaServer Faces application also involves the task of programming the server-side objects: managed beans, converters, event handlers, and validators.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/jsf-develop.xhtml#BNAQM">Managed Beans in JavaServer Faces Technology</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-develop.xhtml#BNATY">Writing Bean Properties</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-develop.xhtml#BNAVB">Writing Managed Bean Methods</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BNAQM"></a><a id="JEETT00354"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">12.1</span> <a id="sthref732"></a><a id="sthref733"></a>Managed Beans in JavaServer Faces Technology</h1>
+
+      <p>A typical JavaServer Faces application includes one or more managed beans, each of which can be associated with the components used in a particular page. This section introduces the basic concepts of creating, configuring, and using managed beans in an application.</p><a id="BNAQN"></a><a id="JEETT00942"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.1.1</span> <a id="sthref734"></a>Creating a Managed Bean</h2>
+
+        <p>A managed bean is created with a constructor with no arguments, a set of properties, and a set of methods that perform functions for a component. Each of the managed bean properties can be bound to one of the following:</p>
+
+        <ul>
+          <li>
+            <p>A component value</p>
+          </li>
+
+          <li>
+            <p>A component instance</p>
+          </li>
+
+          <li>
+            <p>A converter instance</p>
+          </li>
+
+          <li>
+            <p>A listener instance</p>
+          </li>
+
+          <li>
+            <p>A validator instance</p>
+          </li>
+        </ul>
+
+        <p>The most common functions that managed bean methods perform include the following:</p>
+
+        <ul>
+          <li>
+            <p>Validating a component's data</p>
+          </li>
+
+          <li>
+            <p>Handling an event fired by a component</p>
+          </li>
+
+          <li>
+            <p>Performing processing to determine the next page to which the application must navigate</p>
+          </li>
+        </ul>
+
+        <p>As with all JavaBeans components, a property consists of a private data field and a set of accessor methods, as shown by this code:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private Integer userNumber = null;
+...
+public void setUserNumber(Integer user_number) {
+    userNumber = user_number;
+}
+public Integer getUserNumber() {
+    return userNumber;
+}</pre>
+
+        <p>When bound to a component's value, a bean property can be any of the basic primitive and numeric types or any Java object type for which the application has access to an appropriate converter. For example, a property can be of type <code>java.util.Date</code> if the application has access to a converter that can convert the <code>Date</code> type to a <code>String</code> and back again. See <a href="../Text/jsf-develop.xhtml#BNATY">Writing Bean Properties</a> for information on which types are accepted by which component tags.</p>
+
+        <p>When a bean property is bound to a component instance, the property's type must be the same as the component object. For example, if a <code>javax.faces.component.UISelectBoolean</code> component is bound to the property, the property must accept and return a <code>UISelectBoolean</code> object. Likewise, if the property is bound to a converter, validator, or listener instance, the property must be of the appropriate converter, validator, or listener type.</p>
+
+        <p>For more information on writing beans and their properties, see <a href="../Text/jsf-develop.xhtml#BNATY">Writing Bean Properties</a>.</p>
+      </div><a id="BNAQP"></a><a id="JEETT00943"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.1.2</span> <a id="sthref735"></a>Using the EL to Reference Managed Beans</h2>
+
+        <p>To bind component values and objects to managed bean properties or to reference managed bean methods from component tags, page authors use the Expression Language syntax. As explained in <a href="../Text/jsf-el.xhtml#BNAHQ">Overview of the EL</a>, the following are some of the features that the EL offers:</p>
+
+        <ul>
+          <li>
+            <p>Deferred evaluation of expressions</p>
+          </li>
+
+          <li>
+            <p>The ability to use a value expression to both read and write data</p>
+          </li>
+
+          <li>
+            <p>Method expressions</p>
+          </li>
+        </ul>
+
+        <p>Deferred evaluation of expressions is important because the JavaServer Faces lifecycle is split into several phases in which component event handling, data conversion and validation, and data propagation to external objects are all performed in an orderly fashion. The implementation must be able to delay the evaluation of expressions until the proper phase of the lifecycle has been reached. Therefore, the implementation's tag attributes always use deferred-evaluation syntax, which is distinguished by the <code>#{}</code> delimiter.</p>
+
+        <p>To store data in external objects, almost all JavaServer Faces tag attributes use lvalue expressions, which are expressions that allow both getting and setting data on external objects.</p>
+
+        <p>Finally, some component tag attributes accept method expressions that reference methods that handle component events or validate or convert component data.</p>
+
+        <p>To illustrate a JavaServer Faces tag using the EL, the following tag references a method that validates user input:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="inputGuess" 
+    value="#{userNumberBean.userNumber}" 
+    required="true" size="3" 
+    disabled="#{userNumberBean.number eq userNumberBean.userNumber ...}"
+    validator="#{userNumberBean.validateNumberRange}"&gt;
+&lt;/h:inputText&gt;</pre>
+
+        <p>This tag binds the <code>inputGuess</code> component's value to the <code>UserNumberBean.userNumber</code> managed bean property by using an lvalue expression. The tag uses a method expression to refer to the <code>UserNumberBean.validateNumberRange</code> method, which performs validation of the component's local value. The local value is whatever the user types into the field corresponding to this tag. This method is invoked when the expression is evaluated.</p>
+
+        <p><a id="sthref736"></a>Nearly all JavaServer Faces tag attributes accept value expressions. In addition to referencing bean properties, value expressions can reference lists, maps, arrays, implicit objects, and resource bundles.</p>
+
+        <p><a id="sthref737"></a><a id="sthref738"></a><a id="sthref739"></a><a id="sthref740"></a>Another use of value expressions is to bind a component instance to a managed bean property. A page author does this by referencing the property from the <code>binding</code> attribute:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputLabel for="fanClub"
+               rendered="false"
+               binding="#{cashierBean.specialOfferText}"&gt;
+               value="#{bundle.DukeFanClub}"/&gt;
+&lt;/h:outputLabel&gt;</pre>
+
+        <p><a id="sthref741"></a>In addition to using expressions with the standard component tags, you can configure your custom component properties to accept expressions by creating <code>javax.el.ValueExpression</code> or <code>javax.el.MethodExpression</code> instances for them.</p>
+
+        <p>For information on the EL, see <a href="../Text/jsf-el.xhtml#GJDDD">Chapter 9, "Expression Language"</a>.</p>
+
+        <p>For information on referencing managed bean methods from component tags, see <a href="../Text/jsf-page-core.xhtml#BNATN">Referencing a Managed Bean Method</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNATY"></a><a id="JEETT00355"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">12.2</span> <a id="sthref742"></a>Writing Bean Properties</h1>
+
+      <p>As explained in <a href="../Text/jsf-develop.xhtml#BNAQM">Managed Beans in JavaServer Faces Technology</a>, a managed bean property can be bound to one of the following items:</p>
+
+      <ul>
+        <li>
+          <p>A component value</p>
+        </li>
+
+        <li>
+          <p>A component instance</p>
+        </li>
+
+        <li>
+          <p>A converter implementation</p>
+        </li>
+
+        <li>
+          <p>A listener implementation</p>
+        </li>
+
+        <li>
+          <p>A validator implementation</p>
+        </li>
+      </ul>
+
+      <p>These properties follow the conventions of JavaBeans components (also called beans). For more information on JavaBeans components, see the <span class="italic">JavaBeans Tutorial</span> at <code><a href="../Text/jsf-develop.xhtml#http%3A//docs.oracle.com/javase/tutorial/javabeans/index.html">http://docs.oracle.com/javase/tutorial/javabeans/index.html</a></code>.</p>
+
+      <p><a id="sthref743"></a><a id="sthref744"></a><a id="sthref745"></a>The component's tag binds the component's value to a managed bean property by using its <code>value</code> attribute and binds the component's instance to a managed bean property by using its <code>binding</code> attribute. Likewise, all the converter, listener, and validator tags use their <code>binding</code> attributes to bind their associated implementations to managed bean properties. See <a href="../Text/jsf-custom.xhtml#BNATG">Binding Component Values and Instances to Managed Bean Properties</a> and <a href="../Text/jsf-custom.xhtml#BNATM">Binding Converters, Listeners, and Validators to Managed Bean Properties</a> for more information.</p>
+
+      <p>To bind a component's value to a managed bean property, the type of the property must match the type of the component's value to which it is bound. For example, if a managed bean property is bound to a <code>UISelectBoolean</code> component's value, the property should accept and return a <code>boolean</code> value or a <code>Boolean</code> wrapper <code>Object</code> instance.</p>
+
+      <p><a id="sthref746"></a>To bind a component instance to a managed bean property, the property must match the type of component. For example, if a managed bean property is bound to a <code>UISelectBoolean</code> instance, the property should accept and return a <code>UISelectBoolean</code> value.</p>
+
+      <p>Similarly, to bind a converter, listener, or validator implementation to a managed bean property, the property must accept and return the same type of converter, listener, or validator object. For example, if you are using the <code>convertDateTime</code> tag to bind a <code>javax.faces.convert.DateTimeConverter</code> to a property, that property must accept and return a <code>DateTimeConverter</code> instance.</p>
+
+      <p>The rest of this section explains how to write properties that can be bound to component values, to component instances for the component objects described in <a href="../Text/jsf-page.xhtml#BNARF">Adding Components to a Page Using HTML Tag Library Tags</a>, and to converter, listener, and validator implementations.</p><a id="BNATZ"></a><a id="JEETT00944"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.2.1</span> <a id="sthref747"></a>Writing Properties Bound to Component Values</h2>
+
+        <p>To write a managed bean property that is bound to a component's value, you must match the property type to the component's value.</p>
+
+        <p><a href="../Text/jsf-develop.xhtml#BNAUA">Table 12-1</a> lists the <code>javax.faces.component</code> classes and the acceptable types of their values.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref748"></a><a id="BNAUA"></a>
+
+          <p class="titleintable">Table 12-1 <a id="sthref749"></a>Acceptable Types of Component Values</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists the component classes and the acceptable types of their values." title="Acceptable Types of Component Values" width="100%">
+            <col width="32%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t2" valign="bottom">Component Class</th>
+
+                <th align="left" id="r1c2-t2" valign="bottom">Acceptable Types of Component Values</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                  <p><code>UIInput</code>, <code>UIOutput</code>, <code>UISelectItem</code>, <code>UISelectOne</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t2 r1c2-t2">
+                  <p>Any of the basic primitive and numeric types or any Java programming language object type for which an appropriate <code>javax.faces.convert.Converter</code> implementation is available</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                  <p><code>UIData</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t2 r1c2-t2">
+                  <p><code>array</code> of beans, <code>List</code> of beans, single bean, <code>java.sql.ResultSet</code>, <code>javax.servlet.jsp.jstl.sql.Result</code>, <code>javax.sql.RowSet</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                  <p><code>UISelectBoolean</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t2 r1c2-t2">
+                  <p><code>boolean</code> or <code>Boolean</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                  <p><code>UISelectItems</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t2 r1c2-t2">
+                  <p><code>java.lang.String</code>, <code>Collection</code>, <code>Array</code>, <code>Map</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                  <p><code>UISelectMany</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t2 r1c2-t2">
+                  <p><code>array</code> or <code>List</code>, although elements of the <code>array</code> or <code>List</code> can be any of the standard types</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>When they bind components to properties by using the <code>value</code> attributes of the component tags, page authors need to ensure that the corresponding properties match the types of the components' values.</p><a id="BNAUB"></a><a id="JEETT00610"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">12.2.1.1</span> UIInput and UIOutput Properties</h3>
+
+          <p>The <code>UIInput</code> and <code>UIOutput</code> component classes are represented by the component tags that begin with <code>h:input</code> and <code>h:output</code>, respectively (for example, <code>h:inputText</code> and <code>h:outputText</code>).</p>
+
+          <p><a id="sthref750"></a><a id="sthref751"></a>In the following example, an <code>h:inputText</code> tag binds the <code>name</code> component to the <code>name</code> property of a managed bean called <code>CashierBean</code>.</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="name" 
+             size="30"
+             value="#{cashierBean.name}"
+    ...&gt;
+&lt;/h:inputText&gt;</pre>
+
+          <p>The following code snippet from the managed bean <code>CashierBean</code> shows the bean property type bound by the preceding component tag:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">protected String name = null;
+
+public void setName(String name) {
+    this.name = name;
+}
+public String getName() {
+    return this.name;
+}</pre>
+
+          <p>As described in <a href="../Text/jsf-page-core.xhtml#BNAST">Using the Standard Converters</a>, to convert the value of an input or output component you can either apply a converter or create the bean property bound to the component with the matching type. Here is the example tag, from <a href="../Text/jsf-page-core.xhtml#BNASV">Using DateTimeConverter</a>, that displays the date on which items will be shipped.</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="#{cashierBean.shipDate}"&gt;
+    &lt;f:convertDateTime type="date" dateStyle="full" /&gt;
+&lt;/h:outputText&gt;</pre>
+
+          <p><a id="sthref752"></a>The bean property represented by this tag must have a type of <code>java.util.Date</code>. The following code snippet shows the <code>shipDate</code> property, from the managed bean <code>CashierBean</code>, that is bound by the tag's value in the preceding example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private Date shipDate;
+
+public Date getShipDate() {
+    return this.shipDate;
+}
+public void setShipDate(Date shipDate) {
+    this.shipDate = shipDate;
+}</pre>
+        </div><a id="BNAUC"></a><a id="JEETT00611"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">12.2.1.2</span> <a id="sthref753"></a><a id="sthref754"></a>UIData Properties</h3>
+
+          <p>The <code>UIData</code> component class is represented by the <code>h:dataTable</code> component tag.</p>
+
+          <p><a id="sthref755"></a><code>UIData</code> components must be bound to one of the managed bean property types listed in <a href="../Text/jsf-develop.xhtml#BNAUA">Table 12-1</a>. Data components are discussed in <a href="../Text/jsf-page.xhtml#BNARZ">Using Data-Bound Table Components</a>. Here is part of the start tag of <code>dataTable</code> from that section:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:dataTable id="items"
+    ...
+    value="#{cart.items}"
+    ...
+    var="item"&gt;</pre>
+
+          <p><a id="sthref756"></a>The value expression points to the <code>items</code> property of a shopping cart bean named <code>cart</code>. The <code>cart</code> bean maintains a map of <code>ShoppingCartItem</code> beans.</p>
+
+          <p>The <code>getItems</code> method from the <code>cart</code> bean populates a <code>List</code> with <code>ShoppingCartItem</code> instances that are saved in the <code>items</code> map when the customer adds books to the cart, as shown in the following code segment:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public synchronized List&lt;ShoppingCartItem&gt; getItems() {
+    List&lt;ShoppingCartItem&gt; results = new ArrayList&lt;ShoppingCartItem&gt;();
+    results.addAll(this.items.values());
+    return results;
+}</pre>
+
+          <p><a id="sthref757"></a>All the components contained in the <code>UIData</code> component are bound to the properties of the <code>cart</code> bean that is bound to the entire <code>UIData</code> component. For example, here is the <code>h:outputText</code> tag that displays the book title in the table:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandLink action="#{showcart.details}"&gt;
+    &lt;h:outputText value="#{item.item.title}"/&gt;
+&lt;/h:commandLink&gt;</pre>
+
+          <p>The title is actually a link to the <code>bookdetails.xhtml</code> page. The <code>h:outputText</code> tag uses the value expression <code>#{item.item.title}</code> to bind its <code>UIOutput</code> component to the <code>title</code> property of the <code>Book</code> entity. The first item in the expression is the <code>ShoppingCartItem</code> instance that the <code>h:dataTable</code> tag is referencing while rendering the current row. The second item in expression refers to the <code>item</code> property of <code>ShoppingCartItem</code>, which returns an <code>Object</code> (in this case, a <code>Book</code>). The <code>title</code> part of the expression refers to the <code>title</code> property of <code>Book</code>. The value of the <code>UIOutput</code> component corresponding to this tag is bound to the <code>title</code> property of the <code>Book</code> entity:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private String title;
+...
+public String getTitle() {
+    return title;
+}
+
+public void setTitle(String title) {
+    this.title = title;
+}</pre>
+        </div><a id="BNAUD"></a><a id="JEETT00612"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">12.2.1.3</span> <a id="sthref758"></a><a id="sthref759"></a>UISelectBoolean Properties</h3>
+
+          <p>The <code>UISelectBoolean</code> component class is represented by the component tag <code>h:selectBooleanCheckbox</code>.</p>
+
+          <p><a id="sthref760"></a>Managed bean properties that hold a <code>UISelectBoolean</code> component's data must be of <code>boolean</code> or <code>Boolean</code> type. The example <code>selectBooleanCheckbox</code> tag from the section <a href="../Text/jsf-page.xhtml#BNASE">Displaying Components for Selecting One Value</a> binds a component to a property. The following example shows a tag that binds a component value to a <code>boolean</code> property:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectBooleanCheckbox title="#{bundle.receiveEmails}"
+                         value="#{custFormBean.receiveEmails}"&gt;
+&lt;/h:selectBooleanCheckbox&gt;
+&lt;h:outputText value="#{bundle.receiveEmails}"&gt;</pre>
+
+          <p>Here is an example property that can be bound to the component represented by the example tag:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private boolean receiveEmails = false;
+...
+public void setReceiveEmails(boolean receiveEmails) {
+    this.receiveEmails = receiveEmails;
+}
+public boolean getReceiveEmails() {
+    return receiveEmails;
+}</pre>
+        </div><a id="BNAUE"></a><a id="JEETT00613"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">12.2.1.4</span> <a id="sthref761"></a><a id="sthref762"></a>UISelectMany Properties</h3>
+
+          <p>The <code>UISelectMany</code> component class is represented by the component tags that begin with <code>h:selectMany</code> (for example, <code>h:selectManyCheckbox</code> and <code>h:selectManyListbox</code>).</p>
+
+          <p>Because a <code>UISelectMany</code> component allows a user to select one or more items from a list of items, this component must map to a bean property of type <code>List</code> or <code>array</code>. This bean property represents the set of currently selected items from the list of available items.</p>
+
+          <p><a id="sthref763"></a>The following example of the <code>selectManyCheckbox</code> tag comes from <a href="../Text/jsf-page.xhtml#BNASI">Displaying Components for Selecting Multiple Values</a>:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectManyCheckbox id="newslettercheckbox"
+                      layout="pageDirection"
+                      value="#{cashierBean.newsletters}"&gt;
+    &lt;f:selectItems value="#{cashierBean.newsletterItems}"/&gt;
+&lt;/h:selectManyCheckbox&gt;</pre>
+
+          <p>Here is the bean property that maps to the <code>value</code> of the <code>selectManyCheckbox</code> tag from the preceding example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private String[] newsletters;
+
+public void setNewsletters(String[] newsletters) {
+    this.newsletters = newsletters;
+}
+public String[] getNewsletters() {
+    return this.newsletters;
+}</pre>
+
+          <p>The <code>UISelectItem</code> and <code>UISelectItems</code> components are used to represent all the values in a <code>UISelectMany</code> component. See <a href="../Text/jsf-develop.xhtml#BNAUG">UISelectItem Properties</a> and <a href="../Text/jsf-develop.xhtml#BNAUH">UISelectItems Properties</a> for information on writing the bean properties for the <code>UISelectItem</code> and <code>UISelectItems</code> components.</p>
+        </div><a id="BNAUF"></a><a id="JEETT00614"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">12.2.1.5</span> <a id="sthref764"></a><a id="sthref765"></a>UISelectOne Properties</h3>
+
+          <p>The <code>UISelectOne</code> component class is represented by the component tags that begin with <code>h:selectOne</code> (for example, <code>h:selectOneRadio</code> and <code>h:selectOneListbox</code>).</p>
+
+          <p><code>UISelectOne</code> properties accept the same types as <code>UIInput</code> and <code>UIOutput</code> properties, because a <code>UISelectOne</code> component represents the single selected item from a set of items. This item can be any of the primitive types and anything else for which you can apply a converter.</p>
+
+          <p><a id="sthref766"></a>Here is an example of the <code>h:selectOneMenu</code> tag from <a href="../Text/jsf-page.xhtml#BNASH">Displaying a Menu Using the h:selectOneMenu Tag</a>:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectOneMenu id="shippingOption"
+                 required="true"
+                 value="#{cashierBean.shippingOption}"&gt;
+    &lt;f:selectItem itemValue="2"
+                  itemLabel="#{bundle.QuickShip}"/&gt;
+    &lt;f:selectItem itemValue="5"
+                  itemLabel="#{bundle.NormalShip}"/&gt;
+    &lt;f:selectItem itemValue="7"
+                  itemLabel="#{bundle.SaverShip}"/&gt;
+ &lt;/h:selectOneMenu&gt;</pre>
+
+          <p>Here is the bean property corresponding to this tag:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private String shippingOption = "2";
+
+public void setShippingOption(String shippingOption) {
+    this.shippingOption = shippingOption;
+}
+public String getShippingOption() {
+    return this.shippingOption;
+}</pre>
+
+          <p>Note that <code>shippingOption</code> represents the currently selected item from the list of items in the <code>UISelectOne</code> component.</p>
+
+          <p>The <code>UISelectItem</code> and <code>UISelectItems</code> components are used to represent all the values in a <code>UISelectOne</code> component. This is explained in <a href="../Text/jsf-page.xhtml#BNASH">Displaying a Menu Using the h:selectOneMenu Tag</a>.</p>
+
+          <p>For information on how to write the managed bean properties for the <code>UISelectItem</code> and <code>UISelectItems</code> components, see <a href="../Text/jsf-develop.xhtml#BNAUG">UISelectItem Properties</a> and <a href="../Text/jsf-develop.xhtml#BNAUH">UISelectItems Properties</a>.</p>
+        </div><a id="BNAUG"></a><a id="JEETT00615"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">12.2.1.6</span> UISelectItem Properties</h3>
+
+          <p><a id="sthref767"></a><a id="sthref768"></a>A <code>UISelectItem</code> component represents a single value in a set of values in a <code>UISelectMany</code> or a <code>UISelectOne</code> component. A <code>UISelectItem</code> component must be bound to a managed bean property of type <code>javax.faces.model.SelectItem</code>. A <code>SelectItem</code> object is composed of an <code>Object</code> representing the value along with two <code>Strings</code> representing the label and the description of the <code>UISelectItem</code> object.</p>
+
+          <p><a id="sthref769"></a>The example <code>selectOneMenu</code> tag from <a href="../Text/jsf-develop.xhtml#BNAUF">UISelectOne Properties</a> contains <code>selectItem</code> tags that set the values of the list of items in the page. Here is an example of a bean property that can set the values for this list in the bean:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SelectItem itemOne = null;
+
+SelectItem getItemOne(){
+    return itemOne;
+}
+void setItemOne(SelectItem item) {
+    itemOne = item;
+}</pre>
+        </div><a id="BNAUH"></a><a id="JEETT00616"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">12.2.1.7</span> <a id="sthref770"></a>UISelectItems Properties</h3>
+
+          <p><a id="sthref771"></a><a id="sthref772"></a><code>UISelectItems</code> components are children of <code>UISelectMany</code> and <code>UISelectOne</code> components. Each <code>UISelectItems</code> component is composed of a set of either <code>UISelectItem</code> instances or any collection of objects, such as an array, a list, or even POJOs.</p>
+
+          <p>The following code snippet from <code>CashierBean</code> shows how to write the properties for <code>selectItems</code> tags containing <code>SelectItem</code> instances.</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private String[] newsletters;
+private static final SelectItem[] newsletterItems = {
+    new SelectItem("Duke's Quarterly"),
+    new SelectItem("Innovator's Almanac"),
+    new SelectItem("Duke's Diet and Exercise Journal"),
+    new SelectItem("Random Ramblings")
+};
+...
+public void setNewsletters(String[] newsletters) {
+    this.newsletters = newsletters;
+}
+
+public String[] getNewsletters() {
+    return this.newsletters;
+}
+
+public SelectItem[] getNewsletterItems() {
+    return newsletterItems;
+}</pre>
+
+          <p>Here, the <code>newsletters</code> property represents the <code>SelectItems</code> object, whereas the <code>newsletterItems</code> property represents a static array of <code>SelectItem</code> objects. The <code>SelectItem</code> class has several constructors; in this example, the first argument is an <code>Object</code> representing the value of the item, whereas the second argument is a <code>String</code> representing the label that appears in the <code>UISelectMany</code> component on the page.</p>
+        </div>
+      </div><a id="BNAUK"></a><a id="JEETT00945"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.2.2</span> <a id="sthref773"></a>Writing Properties Bound to Component Instances</h2>
+
+        <p>A property bound to a component instance returns and accepts a component instance rather than a component value. The following components bind a component instance to a managed bean property:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectBooleanCheckbox id="fanClub"
+                         rendered="false"
+                         binding="#{cashierBean.specialOffer}" /&gt;
+&lt;h:outputLabel for="fanClub"
+               rendered="false"
+               binding="#{cashierBean.specialOfferText}"
+               value="#{bundle.DukeFanClub}" /&gt;
+&lt;/h:outputLabel&gt;</pre>
+
+        <p>The <code>selectBooleanCheckbox</code> tag renders a check box and binds the <code>fanClub</code> <code>UISelectBoolean</code> component to the <code>specialOffer</code> property of <code>CashierBean</code>. The <code>outputLabel</code> tag binds the value of the <code>value</code> attribute, which represents the check box's label, to the <code>specialOfferText</code> property of <code>CashierBean</code>. If the user orders more than $100 worth of books and clicks the <span class="gui-object-action">Submit</span> button, the <code>submit</code> method of <code>CashierBean</code> sets both components' <code>rendered</code> properties to <code>true</code>, causing the check box and label to display when the page is re-rendered.</p>
+
+        <p>Because the components corresponding to the example tags are bound to the managed bean properties, these properties must match the components' types. This means that the <code>specialOfferText</code> property must be of type <code>UIOutput</code>, and the <code>specialOffer</code> property must be of type <code>UISelectBoolean</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">UIOutput specialOfferText = null;
+UISelectBoolean specialOffer = null;
+
+public UIOutput getSpecialOfferText() {
+    return this.specialOfferText;
+}
+public void setSpecialOfferText(UIOutput specialOfferText) {
+    this.specialOfferText = specialOfferText;
+}
+
+public UISelectBoolean getSpecialOffer() {
+    return this.specialOffer;
+}
+public void setSpecialOffer(UISelectBoolean specialOffer) {
+    this.specialOffer = specialOffer;
+}</pre>
+
+        <p>For more general information on component binding, see <a href="../Text/jsf-develop.xhtml#BNAQM">Managed Beans in JavaServer Faces Technology</a>.</p>
+
+        <p>For information on how to reference a managed bean method that performs navigation when a button is clicked, see <a href="../Text/jsf-page-core.xhtml#BNATP">Referencing a Method That Performs Navigation</a>.</p>
+
+        <p>For more information on writing managed bean methods that handle navigation, see <a href="../Text/jsf-develop.xhtml#BNAVC">Writing a Method to Handle Navigation</a>.</p>
+      </div><a id="BNAUL"></a><a id="JEETT00946"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.2.3</span> <a id="sthref774"></a><a id="sthref775"></a><a id="sthref776"></a>Writing Properties Bound to Converters, Listeners, or Validators</h2>
+
+        <p>All the standard converter, listener, and validator tags included with JavaServer Faces technology support binding attributes that allow you to bind converter, listener, or validator implementations to managed bean properties.</p>
+
+        <p>The following example shows a standard <code>convertDateTime</code> tag using a value expression with its <code>binding</code> attribute to bind the <code>javax.faces.convert.DateTimeConverter</code> instance to the <code>convertDate</code> property of <code>LoginBean</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText value="#{loginBean.birthDate}"&gt;
+    &lt;f:convertDateTime binding="#{loginBean.convertDate}" /&gt;
+&lt;/h:inputText&gt;</pre>
+
+        <p>The <code>convertDate</code> property must therefore accept and return a <code>DateTimeConverter</code> object, as shown here:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private DateTimeConverter convertDate;
+public DateTimeConverter getConvertDate() {
+       ...
+    return convertDate;
+}
+public void setConvertDate(DateTimeConverter convertDate) {
+    convertDate.setPattern("EEEEEEEE, MMM dd, yyyy");
+    this.convertDate = convertDate;
+}</pre>
+
+        <p>Because the converter is bound to a managed bean property, the managed bean property can modify the attributes of the converter or add new functionality to it. In the case of the preceding example, the property sets the date pattern that the converter uses to parse the user's input into a <code>Date</code> object.</p>
+
+        <p>The managed bean properties that are bound to validator or listener implementations are written in the same way and have the same general purpose.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAVB"></a><a id="JEETT00356"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">12.3</span> <a id="sthref777"></a>Writing Managed Bean Methods</h1>
+
+      <p>Methods of a managed bean can perform several application-specific functions for components on the page. These functions include</p>
+
+      <ul>
+        <li>
+          <p>Performing processing associated with navigation</p>
+        </li>
+
+        <li>
+          <p>Handling action events</p>
+        </li>
+
+        <li>
+          <p>Performing validation on the component's value</p>
+        </li>
+
+        <li>
+          <p>Handling value-change events</p>
+        </li>
+      </ul>
+
+      <p><a id="sthref778"></a><a id="sthref779"></a><a id="sthref780"></a>By using a managed bean to perform these functions, you eliminate the need to implement the <code>javax.faces.validator.Validator</code> interface to handle the validation or one of the listener interfaces to handle events. Also, by using a managed bean instead of a <code>Validator</code> implementation to perform validation, you eliminate the need to create a custom tag for the <code>Validator</code> implementation.</p>
+
+      <p>In general, it is good practice to include these methods in the same managed bean that defines the properties for the components referencing these methods. The reason for doing so is that the methods might need to access the component's data to determine how to handle the event or to perform the validation associated with the component.</p>
+
+      <p>The following sections explain how to write various types of managed bean methods.</p><a id="BNAVC"></a><a id="JEETT00947"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.3.1</span> <a id="sthref781"></a><a id="sthref782"></a>Writing a Method to Handle Navigation</h2>
+
+        <p><a id="sthref783"></a><a id="sthref784"></a><a id="sthref785"></a><a id="sthref786"></a><a id="sthref787"></a>An <span class="glossaryterm">action method</span>, a managed bean method that handles navigation processing, must be a public method that takes no parameters and returns an <code>Object</code>, which is the logical outcome that the navigation system uses to determine the page to display next. This method is referenced using the component tag's <code>action</code> attribute.</p>
+
+        <p>The following action method is from the managed bean <code>CashierBean</code>, which is invoked when a user clicks the <span class="gui-object-action">Submit</span> button on the page. If the user has ordered more than $100 worth of books, this method sets the <code>rendered</code> properties of the <code>fanClub</code> and <code>specialOffer</code> components to <code>true</code>, causing them to be displayed on the page the next time that page is rendered.</p>
+
+        <p>After setting the components' <code>rendered</code> properties to <code>true</code>, this method returns the logical outcome <code>null</code>. This causes the JavaServer Faces implementation to re-render the page without creating a new view of the page, retaining the customer's input. If this method were to return <code>purchase</code>, which is the logical outcome to use to advance to a payment page, the page would re-render without retaining the customer's input. In this case, you want to re-render the page without clearing the data.</p>
+
+        <p>If the user does not purchase more than $100 worth of books or if the <code>thankYou</code> component has already been rendered, the method returns <code>bookreceipt</code>. The JavaServer Faces implementation loads the <code>bookreceipt.xhtml</code> page after this method returns:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public String submit() {
+    ...
+    if ((cart().getTotal()&gt; 100.00) &amp;&amp; !specialOffer.isRendered()) {
+        specialOfferText.setRendered(true);
+        specialOffer.setRendered(true);
+        return null;
+    } else if (specialOffer.isRendered() &amp;&amp; !thankYou.isRendered()) {
+        thankYou.setRendered(true);
+        return null;
+    } else {
+        ...
+        cart.clear();
+        return ("bookreceipt");
+    }
+}</pre>
+
+        <p>Typically, an action method will return a <code>String</code> outcome, as shown in the preceding example. Alternatively, you can define an <code>Enum</code> class that encapsulates all possible outcome strings and then make an action method return an <code>enum</code> constant, which represents a particular <code>String</code> outcome defined by the <code>Enum</code> class.</p>
+
+        <p>The following example uses an <code>Enum</code> class to encapsulate all logical outcomes:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public enum Navigation  {
+    main, accountHist, accountList, atm, atmAck, transferFunds,
+     transferAck, error
+}</pre>
+
+        <p>When it returns an outcome, an action method uses the dot notation to reference the outcome from the <code>Enum</code> class:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public Object submit(){
+    ...
+    return Navigation.accountHist;
+}</pre>
+
+        <p>The section <a href="../Text/jsf-page-core.xhtml#BNATP">Referencing a Method That Performs Navigation</a> explains how a component tag references this method. The section <a href="../Text/jsf-develop.xhtml#BNAUK">Writing Properties Bound to Component Instances</a> explains how to write the bean properties to which the components are bound.</p>
+      </div><a id="BNAVD"></a><a id="JEETT00948"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.3.2</span> <a id="sthref788"></a><a id="sthref789"></a>Writing a Method to Handle an Action Event</h2>
+
+        <p><a id="sthref790"></a><a id="sthref791"></a><a id="sthref792"></a>A managed bean method that handles an action event must be a public method that accepts an action event and returns <code>void</code>. This method is referenced using the component tag's <code>actionListener</code> attribute. Only components that implement <code>javax.faces.component.ActionSource</code> can refer to this method.</p>
+
+        <p>In the following example, a method from a managed bean named <code>ActionBean</code> processes the event of a user clicking one of the links on the page:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void chooseBookFromLink(ActionEvent event) {
+    String current = event.getComponent().getId();
+    FacesContext context = FacesContext.getCurrentInstance();
+    String bookId = books.get(current);
+    context.getExternalContext().getSessionMap().put("bookId", bookId);
+}</pre>
+
+        <p>This method gets the component that generated the event from the event object; then it gets the component's ID, which is a code for the book. The method matches the code against a <code>HashMap</code> object that contains the book codes and corresponding book ID values. Finally, the method sets the book ID by using the selected value from the <code>HashMap</code> object.</p>
+
+        <p><a href="../Text/jsf-page-core.xhtml#BNATQ">Referencing a Method That Handles an Action Event</a> explains how a component tag references this method.</p>
+      </div><a id="BNAVE"></a><a id="JEETT00949"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.3.3</span> <a id="sthref793"></a><a id="sthref794"></a><a id="sthref795"></a>Writing a Method to Perform Validation</h2>
+
+        <p><a id="sthref796"></a><a id="sthref797"></a><a id="sthref798"></a><a id="sthref799"></a><a id="sthref800"></a><a id="sthref801"></a>Instead of implementing the <code>javax.faces.validator.Validator</code> interface to perform validation for a component, you can include a method in a managed bean to take care of validating input for the component. A managed bean method that performs validation must accept a <code>javax.faces.context.FacesContext</code>, the component whose data must be validated, and the data to be validated, just as the <code>validate</code> method of the <code>Validator</code> interface does. A component refers to the managed bean method by using its <code>validator</code> attribute. Only values of <code>UIInput</code> components or values of components that extend <code>UIInput</code> can be validated.</p>
+
+        <p>Here is an example of a managed bean method that validates user input, from <a href="../Text/cdi-basic-examples.xhtml#GJCXV">The guessnumber-cdi CDI Example</a>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void validateNumberRange(FacesContext context,
+                                UIComponent toValidate, 
+                                Object value) {
+    if (remainingGuesses &lt;= 0) {
+        ((UIInput) toValidate).setValid(false);
+        FacesMessage message = new FacesMessage("No guesses left!");
+        context.addMessage(toValidate.getClientId(context), message);
+        return;
+    }
+
+    int input = (Integer) value;
+    if (input &lt; minimum || input&gt; maximum) {
+        ((UIInput) toValidate).setValid(false);
+
+        FacesMessage message = new FacesMessage("Invalid guess");
+        context.addMessage(toValidate.getClientId(context), message);
+    }
+}</pre>
+
+        <p><a id="sthref802"></a><a id="sthref803"></a>The <code>validateNumberRange</code> method performs two different validations.</p>
+
+        <ul>
+          <li>
+            <p>If the user has run out of guesses, the method sets the <code>valid</code> property of the <code>UIInput</code> component to <code>false</code>. Then it queues a message onto the <code>FacesContext</code> instance, associating the message with the component ID, and returns.</p>
+          </li>
+
+          <li>
+            <p>If the user has some remaining guesses, the method then retrieves the local value of the component. If the input value is outside the allowable range, the method again sets the <code>valid</code> property of the <code>UIInput</code> component to <code>false</code>, queues a different message on the <code>FacesContext</code> instance, and returns.</p>
+          </li>
+        </ul>
+
+        <p>See <a href="../Text/jsf-page-core.xhtml#BNATR">Referencing a Method That Performs Validation</a> for information on how a component tag references this method.</p>
+      </div><a id="BNAVF"></a><a id="JEETT00950"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">12.3.4</span> <a id="sthref804"></a><a id="sthref805"></a>Writing a Method to Handle a Value-Change Event</h2>
+
+        <p><a id="sthref806"></a><a id="sthref807"></a>A managed bean that handles a value-change event must use a public method that accepts a value-change event and returns <code>void</code>. This method is referenced using the component's <code>valueChangeListener</code> attribute. This section explains how to write a managed bean method to replace the <code>javax.faces.event.ValueChangeListener</code> implementation.</p>
+
+        <p><a id="sthref808"></a><a id="sthref809"></a>The following example tag comes from <a href="../Text/jsf-page-core.xhtml#BNATA">Registering a Value-Change Listener on a Component</a>, where the <code>h:inputText</code> tag with the <code>id</code> of <code>name</code> has a <code>ValueChangeListener</code> instance registered on it. This <code>ValueChangeListener</code> instance handles the event of entering a value in the field corresponding to the component. When the user enters a value, a value-change event is generated, and the <code>processValueChange(ValueChangeEvent)</code> method of the <code>ValueChangeListener</code> class is invoked:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="name"
+             size="30"
+             value="#{cashierBean.name}"
+             required="true"
+             requiredMessage="#{bundle.ReqCustomerName}"&gt;    
+     &lt;f:valueChangeListener
+         type="javaeetutorial.dukesbookstore.listeners.NameChanged" /&gt;
+&lt;/h:inputText&gt;</pre>
+
+        <p>Instead of implementing <code>ValueChangeListener</code>, you can write a managed bean method to handle this event. To do this, you move the <code>processValueChange(ValueChangeEvent)</code> method from the <code>ValueChangeListener</code> class, called <code>NameChanged</code>, to your managed bean.</p>
+
+        <p>Here is the managed bean method that processes the event of entering a value in the <code>name</code> field on the page:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void processValueChange(ValueChangeEvent event)
+        throws AbortProcessingException {
+    if (null != event.getNewValue()) {
+        FacesContext.getCurrentInstance().getExternalContext().
+                getSessionMap().put("name", event.getNewValue());
+    }
+}</pre>
+
+        <p>To make this method handle the <code>ValueChangeEvent</code> generated by an input component, reference this method from the component tag's <code>valueChangeListener</code> attribute. See <a href="../Text/jsf-page-core.xhtml#BNATS">Referencing a Method That Handles a Value-Change Event</a> for more information.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

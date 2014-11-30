@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BNAXU"></a><a id="JEETT00080"></a>
+
+    <h1 class="chapter"><span class="secnum">20</span> <a id="sthref1316"></a><a id="sthref1317"></a>Internationalizing and Localizing Web Applications</h1>
+
+    <p><a id="sthref1318"></a>The process of preparing an application to support more than one language and data format is called <span class="glossaryterm">internationalization</span>. <span class="glossaryterm">Localization</span> is the process of adapting an internationalized application to support a specific region or locale. Examples of locale-dependent information include messages and user interface labels, character sets and encoding, and date and currency formats. Although all client user interfaces should be internationalized and localized, it is particularly important for web applications because of the global nature of the web.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/webi18n.xhtml#BNAXV">Java Platform Localization Classes</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/webi18n.xhtml#BNAXW">Providing Localized Messages and Labels</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/webi18n.xhtml#BNAYA">Date and Number Formatting</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/webi18n.xhtml#BNAYB">Character Sets and Encodings</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXV"></a><a id="JEETT00416"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">20.1</span> Java Platform Localization Classes</h1>
+
+      <p>In the Java platform, java.util.Locale (<code><a href="../Text/webi18n.xhtml#http%3A//docs.oracle.com/javase/7/docs/api/java/util/Locale.html">http://docs.oracle.com/javase/7/docs/api/java/util/Locale.html</a></code>) represents a specific geographical, political, or cultural region. The string representation of a locale consists of the international standard two-character abbreviation for language and country and an optional variant, all separated by underscore (<code>_</code>) characters. Examples of locale strings include <code>fr</code> (French), <code>de_CH</code> (Swiss German), and <code>en_US_POSIX</code> (English on a POSIX-compliant platform).</p>
+
+      <p><a id="sthref1319"></a>Locale-sensitive data is stored in a java.util.ResourceBundle (<code><a href="../Text/webi18n.xhtml#http%3A//docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html">http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html</a></code>). A resource bundle contains key-value pairs, where the keys uniquely identify a locale-specific object in the bundle. A resource bundle can be backed by a text file (properties resource bundle) or a class (list resource bundle) containing the pairs. You construct a resource bundle instance by appending a locale string representation to a base name.</p>
+
+      <p>The Duke's Bookstore application (see <a href="../Text/dukes-bookstore.xhtml#GLNVI">Chapter 57, "Duke's Bookstore Case Study Example"</a>) contains resource bundles with the base name <code>messages.properties</code> for the locales <code>de</code> (German), <code>es</code> (Spanish), and <code>fr</code> (French). The default locale, <code>en</code> (English), which is specified in the <code>faces-config.xml</code> file, uses the resource bundle with the base name, <code>messages.properties</code>.</p>
+
+      <p>For more details on internationalization and localization in the Java platform, see <code><a href="../Text/webi18n.xhtml#http%3A//docs.oracle.com/javase/tutorial/i18n/index.html">http://docs.oracle.com/javase/tutorial/i18n/index.html</a></code>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXW"></a><a id="JEETT00417"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">20.2</span> Providing Localized Messages and Labels</h1>
+
+      <p><a id="sthref1320"></a>Messages and labels should be tailored according to the conventions of a user's language and region. There are two approaches to providing localized messages and labels in a web application.</p>
+
+      <ul>
+        <li>
+          <p>Provide a version of the web page in each of the target locales and have a controller servlet dispatch the request to the appropriate page depending on the requested locale. This approach is useful if large amounts of data on a page or an entire web application need to be internationalized.</p>
+        </li>
+
+        <li>
+          <p>Isolate any locale-sensitive data on a page into resource bundles, and access the data so that the corresponding translated message is fetched automatically and inserted into the page. Thus, instead of creating strings directly in your code, you create a resource bundle that contains translations and read the translations from that bundle using the corresponding key.</p>
+        </li>
+      </ul>
+
+      <p>The Duke's Bookstore application follows the second approach. Here are a few lines from the default resource bundle <code>messages</code>.<code>properties</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">TitleShoppingCart=Shopping Cart
+TitleReceipt=Receipt
+TitleBookCatalog=Book Catalog
+TitleCashier=Cashier
+TitleBookDescription=Book Description
+Visitor=You are visitor number 
+What=What We\'re Reading</pre><a id="GKUIA"></a><a id="JEETT01037"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">20.2.1</span> Establishing the Locale</h2>
+
+        <p><a id="sthref1321"></a><a id="sthref1322"></a>To get the correct strings for a given user, a web application either retrieves the locale (set by a browser language preference) from the request using the <code>getLocale</code> method, or allows the user to explicitly select the locale.</p>
+
+        <p>A component can explicitly set the locale by using the <code>fmt:setLocale</code> tag.</p>
+
+        <p>The <code>locale-config</code> element in the configuration file registers the default locale and also registers other supported locales. This element in Duke's Bookstore registers English as the default locale and indicates that German, French, and Spanish are supported locales.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;locale-config&gt;
+    &lt;default-locale&gt;en&lt;/default-locale&gt;
+    &lt;supported-locale&gt;es&lt;/supported-locale&gt;
+    &lt;supported-locale&gt;de&lt;/supported-locale&gt;
+    &lt;supported-locale&gt;fr&lt;/supported-locale&gt;
+&lt;/locale-config&gt;</pre>
+
+        <p>The <code>LocaleBean</code> in the Duke's Bookstore application uses the <code>getLocale</code> method to retrieve the locale.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class LocaleBean {
+    
+    ...
+    private FacesContext ctx = FacesContext.getCurrentInstance();
+    private Locale locale = ctx.getViewRoot().getLocale();;
+
+    ...
+}</pre>
+      </div><a id="BNAXY"></a><a id="JEETT01038"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">20.2.2</span> Setting the Resource Bundle</h2>
+
+        <p>The resource bundle is set with the <code>resource-bundle</code> element in the configuration file. The setting for Duke's Bookstore looks like this:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;resource-bundle&gt;
+    &lt;base-name&gt;
+        javaeetutorial.dukesbookstore.web.messages.Messages
+    &lt;/base-name&gt;
+    &lt;var&gt;bundle&lt;/var&gt;
+&lt;/resource-bundle&gt;</pre>
+
+        <p><a id="sthref1323"></a>After the locale is set, the controller of a web application could retrieve the resource bundle for that locale and save it as a session attribute (see <a href="../Text/webi18n.xhtml#BNAGO">Associating Objects with a Session</a>) for use by other components or simply be used to return a text string appropriate for the selected locale:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public String toString(Locale locale) {
+    ResourceBundle res = 
+        ResourceBundle.getBundle(
+            "javaeetutorial.dukesbookstore.web.messages.Messages", locale);
+    return res.getString(name() + ".string");
+}</pre>
+
+        <p>Alternatively, an application could use the <code>f:loadBundle</code> tag to set the resource bundle. This tag loads the correct resource bundle according to the locale stored in <code>FacesContext</code>.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:loadBundle basename="javaeetutorial.dukesbookstore.web.messages.Messages"
+    var="bundle"/&gt;</pre>
+
+        <p>Resource bundles containing messages that are explicitly referenced from a JavaServer Faces tag attribute using a value expression must be registered using the <code>resource-bundle</code> element of the configuration file.</p>
+
+        <p>For more information on using this element, see <a href="../Text/jsf-configure.xhtml#BNAXB">Registering Application Messages</a>.</p>
+      </div><a id="GKUFC"></a><a id="JEETT01039"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">20.2.3</span> Retrieving Localized Messages</h2>
+
+        <p><a id="sthref1324"></a>A web component written in the Java programming language retrieves the resource bundle from the session:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ResourceBundle messages = (ResourceBundle)session.getAttribute("messages");</pre>
+
+        <p>Then it looks up the string associated with the key <code>person.lastName</code> as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">messages.getString("person.lastName");</pre>
+
+        <p>You can only use a <code>message</code> or <code>messages</code> tag to display messages that are queued onto a component as a result of a converter or validator being registered on the component. The following example shows a <code>message</code> tag that displays the error message queued on the <code>userNo</code> input component if the validator registered on the component fails to validate the value the user enters into the component.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="userNo" value="#{UserNumberBean.userNumber}"&gt;
+    &lt;f:validateLongRange minimum="0" maximum="10" /&gt;
+&lt;/h:inputText&gt;
+...
+&lt;h:message style="color: red; text-decoration: overline" 
+           id="errors1" for="userNo"/&gt;</pre>
+
+        <p>For more information on using the <code>message</code> or <code>messages</code> tags, see <a href="../Text/webi18n.xhtml#BNASO">Displaying Error Messages with the h:message and h:messages Tags</a>.</p>
+
+        <p>Messages that are not queued on a component and are therefore not loaded automatically are referenced using a value expression. You can reference a localized message from almost any JavaServer Faces tag attribute.</p>
+
+        <p>The value expression that references a message has the same notation whether you loaded the resource bundle with the <code>loadBundle</code> tag or registered it with the <code>resource-bundle</code> element in the configuration file.</p>
+
+        <p><a id="sthref1325"></a><a id="sthref1326"></a>The value expression notation is <code>var.message</code>, in which <code>var</code> matches the <code>var</code> attribute of the <code>loadBundle</code> tag or the <code>var</code> element defined in the <code>resource-bundle</code> element of the configuration file, and <code>message</code> matches the key of the message contained in the resource bundle, referred to by the <code>var</code> attribute.</p>
+
+        <p>Here is an example from <code>bookcashier.xhtml</code> in Duke's Bookstore:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputLabel for="name" value="#{bundle.Name}" /&gt;</pre>
+
+        <p>Notice that <code>bundle</code> matches the <code>var</code> element from the configuration file and that <code>Name</code> matches the key in the resource bundle.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAYA"></a><a id="JEETT00418"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">20.3</span> Date and Number Formatting</h1>
+
+      <p><a id="sthref1327"></a>Java programs use the <code>DateFormat.getDateInstance(int,</code> <code>locale)</code> method to parse and format dates in a locale-sensitive manner. Java programs use the <code>NumberFormat.get</code><span class="variable">XXX</span><code>Instance(locale)</code> method, where <span class="variable">XXX</span> can be <code>Currency</code>, <code>Number</code>, or <code>Percent</code>, to parse and format numerical values in a locale-sensitive manner.</p>
+
+      <p>An application can use date/time and number converters to format dates and numbers in a locale-sensitive manner. For example, a shipping date could be converted as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="#{cashier.shipDate}"&gt;
+    &lt;f:convertDateTime dateStyle="full"/&gt;
+&lt;/h:outputText&gt;</pre>
+
+      <p>For information on JavaServer Faces converters, see <a href="../Text/jsf-page-core.xhtml#BNAST">Using the Standard Converters</a>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAYB"></a><a id="JEETT00419"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">20.4</span> Character Sets and Encodings</h1>
+
+      <p>The following sections describe character sets and character encodings.</p><a id="BNAYC"></a><a id="JEETT01040"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">20.4.1</span> Character Sets</h2>
+
+        <p><a id="sthref1328"></a><a id="sthref1329"></a>A <span class="glossaryterm">character set</span> is a set of textual and graphic symbols, each of which is mapped to a set of nonnegative integers.</p>
+
+        <p>The first character set used in computing was US-ASCII. It is limited in that it can represent only American English. US-ASCII contains uppercase and lowercase Latin alphabets, numerals, punctuation, a set of control codes, and a few miscellaneous symbols.</p>
+
+        <p><a id="sthref1330"></a>Unicode defines a standardized, universal character set that can be extended to accommodate additions. When the Java program source file encoding doesn't support Unicode, you can represent Unicode characters as escape sequences by using the notation <code>\u</code><span class="variable">XXXX</span>, where <span class="variable">XXXX</span> is the character's 16-bit representation in hexadecimal. For example, the Spanish version of a message file could use Unicode for non-ASCII characters, as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">admin.nav.main=P\u00e1gina principal de administraci\u00f3n</pre>
+      </div><a id="BNAYD"></a><a id="JEETT01041"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">20.4.2</span> Character Encoding</h2>
+
+        <p><a id="sthref1331"></a>A <span class="glossaryterm">character encoding</span> maps a character set to units of a specific width and defines byte serialization and ordering rules. Many character sets have more than one encoding. For example, Java programs can represent Japanese character sets using the <code>EUC-JP</code> or <code>Shift-JIS</code> encodings, among others. Each encoding has rules for representing and serializing a character set.</p>
+
+        <p><a id="sthref1332"></a>The ISO 8859 series defines 13 character encodings that can represent texts in dozens of languages. Each ISO 8859 character encoding can have up to 256 characters. ISO-8859-1 (Latin-1) comprises the ASCII character set, characters with diacritics (accents, diaereses, cedillas, circumflexes, and so on), and additional symbols.</p>
+
+        <p><a id="sthref1333"></a>UTF-8 (Unicode Transformation Format, 8-bit form) is a variable-width character encoding that encodes 16-bit Unicode characters as one to four bytes. A byte in UTF-8 is equivalent to 7-bit ASCII if its high-order bit is zero; otherwise, the character comprises a variable number of bytes.</p>
+
+        <p>UTF-8 is compatible with the majority of existing web content and provides access to the Unicode character set. Current versions of browsers and email clients support UTF-8. In addition, many web standards specify UTF-8 as their character encoding. For example, UTF-8 is one of the two required encodings for XML documents (the other is UTF-16).</p>
+
+        <p>Web components usually use <code>PrintWriter</code> to produce responses; <code>PrintWriter</code> automatically encodes using ISO-8859-1. Servlets can also output binary data using <code>OutputStream</code> classes, which perform no encoding. An application that uses a character set that cannot use the default encoding must explicitly set a different encoding.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

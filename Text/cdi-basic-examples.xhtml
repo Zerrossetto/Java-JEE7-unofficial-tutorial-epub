@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GJBLS"></a><a id="JEETT00092"></a>
+
+    <h1 class="chapter"><span class="secnum">24</span> <a id="sthref1406"></a><a id="sthref1407"></a>Running the Basic Contexts and Dependency Injection Examples</h1>
+
+    <p>This chapter describes in detail how to build and run simple examples that use CDI. The examples are in the <span class="variable">tut-install</span><code>/examples/cdi/</code> directory.</p>
+
+    <p>To build and run the examples, you will do the following.</p>
+
+    <ol>
+      <li>
+        <p>Use NetBeans IDE or the Maven tool to compile and package the example.</p>
+      </li>
+
+      <li>
+        <p>Use NetBeans IDE or the Maven tool to deploy the example.</p>
+      </li>
+
+      <li>
+        <p>Run the example in a web browser.</p>
+      </li>
+    </ol>
+
+    <p>See <a href="../Text/usingexamples.xhtml#GFIUD">Chapter 2, "Using the Tutorial Examples"</a>, for basic information on installing, building, and running the examples.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/cdi-basic-examples.xhtml#GJBJU">The simplegreeting CDI Example</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-basic-examples.xhtml#GJCXV">The guessnumber-cdi CDI Example</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GJBJU"></a><a id="JEETT00475"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">24.1</span> The simplegreeting CDI Example</h1>
+
+      <p>The <code>simplegreeting</code> example illustrates some of the most basic features of CDI: scopes, qualifiers, bean injection, and accessing a managed bean in a JavaServer Faces application. When you run the example, you click a button that presents either a formal or an informal greeting, depending on how you edited one of the classes. The example includes four source files, a Facelets page and template, and configuration files.</p><a id="GJCQS"></a><a id="JEETT01123"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">24.1.1</span> The simplegreeting Source Files</h2>
+
+        <p>The four source files for the <code>simplegreeting</code> example are</p>
+
+        <ul>
+          <li>
+            <p>The default <code>Greeting</code> class, shown in <a href="../Text/cdi-basic.xhtml#GIZKS">Beans as Injectable Objects</a></p>
+          </li>
+
+          <li>
+            <p>The <code>@Informal</code> qualifier interface definition and the <code>InformalGreeting</code> class that implements the interface, both shown in <a href="../Text/cdi-basic.xhtml#GJBCK">Using Qualifiers</a></p>
+          </li>
+
+          <li>
+            <p>The <code>Printer</code> managed bean class, which injects one of the two interfaces, shown in full in <a href="../Text/cdi-basic.xhtml#GJBBP">Adding Setter and Getter Methods</a></p>
+          </li>
+        </ul>
+
+        <p>The source files are located in the <span class="variable">tut-install</span><code>/examples/cdi/simplegreeting/src/main/java/javaeetutorial/simplegreeting</code> directory.</p>
+      </div><a id="GJDOJ"></a><a id="JEETT01124"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">24.1.2</span> The Facelets Template and Page</h2>
+
+        <p>To use the managed bean in a simple Facelets application, you can use a very simple template file and <code>index.xhtml</code> page. The template page, <code>template.xhtml</code>, looks like this:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"&gt;
+    &lt;h:head&gt;
+        &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/&gt;
+        &lt;h:outputStylesheet library="css" name="default.css"/&gt;
+        &lt;title&gt;&lt;ui:insert name="title"&gt;Default Title&lt;/ui:insert&gt;&lt;/title&gt;
+    &lt;/h:head&gt;
+
+    &lt;body&gt;
+        &lt;div id="container"&gt;
+            &lt;div id="header"&gt;
+                &lt;h2&gt;&lt;ui:insert name="head"&gt;Head&lt;/ui:insert&gt;&lt;/h2&gt;
+            &lt;/div&gt;
+
+            &lt;div id="space"&gt;
+                &lt;p&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div id="content"&gt;
+                &lt;ui:insert name="content"/&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+        <p>To create the Facelets page, you can redefine the title and head, then add a small form to the content:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+    &lt;ui:composition template="/template.xhtml"&gt;
+
+        &lt;ui:define name="title"&gt;Simple Greeting&lt;/ui:define&gt;
+        &lt;ui:define name="head"&gt;Simple Greeting&lt;/ui:define&gt;
+        &lt;ui:define name="content"&gt;
+            &lt;h:form id="greetme"&gt;
+               &lt;p&gt;&lt;h:outputLabel value="Enter your name: " for="name"/&gt;
+                  &lt;h:inputText id="name" value="#{printer.name}"/&gt;&lt;/p&gt;
+               &lt;p&gt;&lt;h:commandButton value="Say Hello" 
+                                   action="#{printer.createSalutation}"/&gt;&lt;/p&gt;
+               &lt;p&gt;&lt;h:outputText value="#{printer.salutation}"/&gt; &lt;/p&gt;
+            &lt;/h:form&gt;
+        &lt;/ui:define&gt;
+
+    &lt;/ui:composition&gt;
+&lt;/html&gt;</pre>
+
+        <p>The form asks the user to enter a name. The button is labeled <span class="gui-object-action">Say Hello</span>, and the action defined for it is to call the <code>createSalutation</code> method of the <code>Printer</code> managed bean. This method in turn calls the <code>greet</code> method of the defined <code>Greeting</code> class.</p>
+
+        <p>The output text for the form is the value of the greeting returned by the setter method. Depending on whether the default or the <code>@Informal</code> version of the greeting is injected, this is one of the following, where <span class="variable">name</span> is the name entered by the user:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hello, <span class="variable">name</span>.</pre>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hi, <span class="variable">name</span>!</pre>
+
+        <p>The Facelets page and template are located in the <span class="variable">tut-install</span><code>/examples/cdi/simplegreeting/src/main/webapp/</code> directory.</p>
+
+        <p>The simple CSS file that is used by the Facelets page is in the following location:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/simplegreeting/src/main/webapp/resources/css/default.css</pre>
+      </div><a id="GJCYM"></a><a id="JEETT01126"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">24.1.3</span> Running the simplegreeting Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>simplegreeting</code> application.</p><a id="GJCXP"></a><a id="JEETT00213"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.1.3.1</span> To Build, Package, and Run the simplegreeting Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>simplegreeting</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>To modify the <code>Printer.java</code> file, perform these steps:</p>
+
+              <ol>
+                <li>
+                  <p>Expand the <span class="gui-object-action">Source Packages</span> node.</p>
+                </li>
+
+                <li>
+                  <p>Expand the <code>greetings</code> node.</p>
+                </li>
+
+                <li>
+                  <p>Double-click the <code>Printer.java</code> file.</p>
+                </li>
+
+                <li>
+                  <p>In the editor, comment out the <code>@Informal</code> annotation:</p>
+                  <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject//@InformalGreeting greeting;</pre>
+                </li>
+
+                <li>
+                  <p>Save the file.</p>
+                </li>
+              </ol>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>simplegreeting</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>simplegreeting.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GJCZT"></a><a id="JEETT00214"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.1.3.2</span> To Build, Package, and Deploy the simplegreeting Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/simplegreeting/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>simplegreeting.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GJCZE"></a><a id="JEETT00215"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.1.3.3</span> To Run the simplegreeting Example</h3>
+
+          <ol>
+            <li>
+              <p>In a web browser, enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/simplegreeting</pre>
+
+              <p>The <span class="gui-object-title">Simple Greeting</span> page opens.</p>
+            </li>
+
+            <li>
+              <p>Enter a name in the field.</p>
+
+              <p>For example, suppose that you enter <code>Duke</code>.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Say Hello</span>.</p>
+
+              <p>If you did not modify the <code>Printer.java</code> file, the following text string appears below the button:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hi, Duke!</pre>
+
+              <p>If you commented out the <code>@Informal</code> annotation in the <code>Printer.java</code> file, the following text string appears below the button:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hello, Duke.</pre>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GJCXV"></a><a id="JEETT00476"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">24.2</span> The guessnumber-cdi CDI Example</h1>
+
+      <p>The <code>guessnumber-cdi</code> example, somewhat more complex than the <code>simplegreeting</code> example, illustrates the use of producer methods and of session and application scope. The example is a game in which you try to guess a number in fewer than ten attempts. It is similar to the <code>guessnumber-jsf</code> example described in <a href="../Text/jsf-facelets.xhtml#GIEPX">Chapter 8, "Introduction to Facelets"</a>, except that you can keep guessing until you get the right answer or until you use up your ten attempts.</p>
+
+      <p>The example includes four source files, a Facelets page and template, and configuration files. The configuration files and the template are the same as those used for the <code>simplegreeting</code> example.</p><a id="GJDJU"></a><a id="JEETT01127"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">24.2.1</span> The guessnumber-cdi Source Files</h2>
+
+        <p>The four source files for the <code>guessnumber-cdi</code> example are</p>
+
+        <ul>
+          <li>
+            <p>The <code>@MaxNumber</code> qualifier interface</p>
+          </li>
+
+          <li>
+            <p>The <code>@Random</code> qualifier interface</p>
+          </li>
+
+          <li>
+            <p>The <code>Generator</code> managed bean, which defines producer methods</p>
+          </li>
+
+          <li>
+            <p>The <code>UserNumberBean</code> managed bean</p>
+          </li>
+        </ul>
+
+        <p>The source files are located in the <span class="variable">tut-install</span><code>/examples/cdi/guessnumber-cdi/src/main/java/javaeetutorial/guessnumber</code> directory.</p><a id="GJDJP"></a><a id="JEETT00666"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.2.1.1</span> The @MaxNumber and @Random Qualifier Interfaces</h3>
+
+          <p>The <code>@MaxNumber</code> qualifier interface is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package guessnumber;
+
+import java.lang.annotation.Documented;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.Target;
+import javax.inject.Qualifier;
+
+@Target({TYPE, METHOD, PARAMETER, FIELD})
+@Retention(RUNTIME)
+@Documented
+@Qualifier
+public @interface MaxNumber {
+}</pre>
+
+          <p>The <code>@Random</code> qualifier interface is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import java.lang.annotation.Documented;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.Target;
+import javax.inject.Qualifier;
+
+@Target({TYPE, METHOD, PARAMETER, FIELD})
+@Retention(RUNTIME)
+@Documented
+@Qualifier
+public @interface Random {
+}</pre>
+        </div><a id="GJDJN"></a><a id="JEETT00667"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.2.1.2</span> The Generator Managed Bean</h3>
+
+          <p>The <code>Generator</code> managed bean contains the two producer methods for the application. The bean has the <code>@ApplicationScoped</code> annotation to specify that its context extends for the duration of the user's interaction with the application:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package guessnumber;
+
+import java.io.Serializable;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+
+@ApplicationScoped
+public class Generator implements Serializable {
+
+    private static final long serialVersionUID = -7213673465118041882L;
+
+    private final java.util.Random random = 
+        new java.util.Random( System.currentTimeMillis() );
+
+    private final int maxNumber = 100;
+
+    java.util.Random getRandom() {
+        return random;
+    }
+
+    @Produces @Random int next() {
+        return getRandom().nextInt(maxNumber + 1);
+    }
+
+    @Produces @MaxNumber int getMaxNumber() {
+        return maxNumber;
+    }
+}</pre>
+        </div><a id="GJDHY"></a><a id="JEETT00668"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.2.1.3</span> The UserNumberBean Managed Bean</h3>
+
+          <p>The <code>UserNumberBean</code> managed bean, the managed bean for the JavaServer Faces application, provides the basic logic for the game. This bean does the following:</p>
+
+          <ul>
+            <li>
+              <p>Implements setter and getter methods for the bean fields</p>
+            </li>
+
+            <li>
+              <p>Injects the two qualifier objects</p>
+            </li>
+
+            <li>
+              <p>Provides a <code>reset</code> method that allows you to begin a new game after you complete one</p>
+            </li>
+
+            <li>
+              <p>Provides a <code>check</code> method that determines whether the user has guessed the number</p>
+            </li>
+
+            <li>
+              <p>Provides a <code>validateNumberRange</code> method that determines whether the user's input is correct</p>
+            </li>
+          </ul>
+
+          <p>The bean is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package guessnumber;
+
+import java.io.Serializable;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Instance;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
+@SessionScoped
+public class UserNumberBean implements Serializable {
+
+    private static final long serialVersionUID = -7698506329160109476L;
+
+    private int number;
+    private Integer userNumber;
+    private int minimum;
+    private int remainingGuesses;
+
+    @MaxNumber
+    @Inject
+    private int maxNumber;
+
+    private int maximum;
+
+    @Random
+    @Inject
+    Instance&lt;Integer&gt; randomInt;
+
+    public UserNumberBean() {
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setUserNumber(Integer user_number) {
+        userNumber = user_number;
+    }
+
+    public Integer getUserNumber() {
+        return userNumber;
+    }
+
+    public int getMaximum() {
+        return (this.maximum);
+    }
+
+    public void setMaximum(int maximum) {
+        this.maximum = maximum;
+    }
+
+    public int getMinimum() {
+        return (this.minimum);
+    }
+
+    public void setMinimum(int minimum) {
+        this.minimum = minimum;
+    }
+
+    public int getRemainingGuesses() {
+        return remainingGuesses;
+    }
+
+    public String check() throws InterruptedException {
+        if (userNumber &gt; number) {
+            maximum = userNumber - 1;
+        }
+        if (userNumber &lt; number) {
+            minimum = userNumber + 1;
+        }
+        if (userNumber == number) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage("Correct!"));
+        }
+        remainingGuesses--;
+        return null;
+    }
+
+    @PostConstruct
+    public void reset() {
+        this.minimum = 0;
+        this.userNumber = 0;
+        this.remainingGuesses = 10;
+        this.maximum = maxNumber;
+        this.number = randomInt.get();
+    }
+
+    public void validateNumberRange(FacesContext context, 
+                                    UIComponent toValidate, 
+                                    Object value) {
+        int input = (Integer) value;
+
+        if (input &lt; minimum || input &gt; maximum) {
+            ((UIInput) toValidate).setValid(false);
+
+            FacesMessage message = new FacesMessage("Invalid guess");
+            context.addMessage(toValidate.getClientId(context), message);
+        }
+    }
+}</pre>
+        </div>
+      </div><a id="GJDON"></a><a id="JEETT01128"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">24.2.2</span> The Facelets Page</h2>
+
+        <p>This example uses the same template that the <code>simplegreeting</code> example uses. The <code>index.xhtml</code> file, however, is more complex.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+    &lt;ui:composition template="/template.xhtml"&gt;
+
+        &lt;ui:define name="title"&gt;Guess My Number&lt;/ui:define&gt;
+        &lt;ui:define name="head"&gt;Guess My Number&lt;/ui:define&gt;
+        &lt;ui:define name="content"&gt;
+            &lt;h:form id="GuessMain"&gt;
+                &lt;div style="color: black; font-size: 24px;"&gt;
+                    &lt;p&gt;I'm thinking of a number from 
+                    &lt;span style="color: blue"&gt;#{userNumberBean.minimum}&lt;/span&gt; 
+                    to 
+                    &lt;span style="color: blue"&gt;#{userNumberBean.maximum}&lt;/span&gt;. 
+                    You have 
+                    &lt;span style="color: blue"&gt;
+                        #{userNumberBean.remainingGuesses}
+                    &lt;/span&gt; 
+                    guesses.&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;h:panelGrid border="0" columns="5" style="font-size: 18px;"&gt;
+                    &lt;h:outputLabel for="inputGuess"&gt;Number:&lt;/h:outputLabel&gt;
+                    &lt;h:inputText id="inputGuess"
+                                 value="#{userNumberBean.userNumber}"
+                                 required="true" size="3"
+disabled="#{userNumberBean.number eq userNumberBean.userNumber or userNumberBean.remainingGuesses le 0}"
+                               validator="#{userNumberBean.validateNumberRange}"&gt;
+                    &lt;/h:inputText&gt;
+                    &lt;h:commandButton id="GuessButton" value="Guess"
+                                     action="#{userNumberBean.check}"
+disabled="#{userNumberBean.number eq userNumberBean.userNumber or userNumberBean.remainingGuesses le 0}"/&gt;
+                    &lt;h:commandButton id="RestartButton" value="Reset"
+                                     action="#{userNumberBean.reset}"
+                                     immediate="true" /&gt;
+                    &lt;h:outputText id="Higher" value="Higher!"
+rendered="#{userNumberBean.number gt userNumberBean.userNumber and userNumberBean.userNumber ne 0}"
+                                  style="color: #d20005"/&gt;
+                    &lt;h:outputText id="Lower" value="Lower!"
+rendered="#{userNumberBean.number lt userNumberBean.userNumber and userNumberBean.userNumber ne 0}"
+                                  style="color: #d20005"/&gt;
+                &lt;/h:panelGrid&gt;
+                &lt;div style="color: #d20005; font-size: 14px;"&gt;
+                    &lt;h:messages id="messages" globalOnly="false"/&gt;
+                &lt;/div&gt;
+            &lt;/h:form&gt;
+        &lt;/ui:define&gt;
+        
+    &lt;/ui:composition&gt;
+&lt;/html&gt;</pre>
+
+        <p>The Facelets page presents the user with the minimum and maximum values and the number of guesses remaining. The user's interaction with the game takes place within the <code>panelGrid</code> table, which contains an input field, <span class="gui-object-action">Guess</span> and <span class="gui-object-action">Reset</span> buttons, and a field that appears if the guess is higher or lower than the correct number. Every time the user clicks the <span class="gui-object-action">Guess</span> button, the <code>userNumberBean.check</code> method is called to reset the maximum or minimum value or, if the guess is correct, to generate a <code>FacesMessage</code> to that effect. The method that determines whether each guess is valid is <code>userNumberBean.validateNumberRange</code>.</p>
+      </div><a id="GJDPW"></a><a id="JEETT01129"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">24.2.3</span> Running the guessnumber-cdi Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>guessnumber-cdi</code> application.</p><a id="GJDPS"></a><a id="JEETT00216"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.2.3.1</span> To Build, Package, and Deploy the guessnumber-cdi Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>guessnumber-cdi</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>guessnumber-cdi</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>guessnumber-cdi.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GJDPR"></a><a id="JEETT00217"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.2.3.2</span> To Build, Package, and Deploy the guessnumber-cdi Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/guessnumber-cdi/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>guessnumber-cdi.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GJDQB"></a><a id="JEETT00218"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">24.2.3.3</span> To Run the guessnumber Example</h3>
+
+          <ol>
+            <li>
+              <p>In a web browser, enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/guessnumber-cdi</pre>
+
+              <p>The <span class="gui-object-title">Guess My Number</span> page opens.</p>
+            </li>
+
+            <li>
+              <p>On the <span class="gui-object-title">Guess My Number</span> page, enter a number in the <span class="gui-object-action">Number</span> field and click <span class="gui-object-action">Guess</span>.</p>
+
+              <p>The minimum and maximum values are modified, along with the remaining number of guesses.</p>
+            </li>
+
+            <li>
+              <p>Keep guessing numbers until you get the right answer or run out of guesses.</p>
+
+              <p>If you get the right answer or run out of guesses, the input field and <span class="gui-object-action">Guess</span> button are grayed out.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Reset</span> to play the game again with a new random number.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

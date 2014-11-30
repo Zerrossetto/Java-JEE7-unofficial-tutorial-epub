@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BNCJH"></a><a id="JEETT00108"></a>
+
+    <h1 class="chapter"><span class="secnum">52</span> <a id="sthref2884"></a>Resource Adapters and Contracts</h1>
+
+    <p>This chapter examines resource adapters and explains how communications between Java EE servers and EIS systems are mediated by them.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/resources.xhtml#GIPGL">What Is a Resource Adapter?</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/resources.xhtml#GIRDD">Metadata Annotations</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/resources.xhtml#GIPJU">Common Client Interface</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/resources.xhtml#CHDJFIGB">Using Resource Adapters with Contexts and Dependency Injection for Java EE (CDI)</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/resources.xhtml#BNCJW">Further Information about Resource Adapters</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GIPGL"></a><a id="JEETT00540"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">52.1</span> <a id="sthref2885"></a><a id="sthref2886"></a>What Is a Resource Adapter?</h1>
+
+      <p>A resource adapter is a Java EE component that implements the Java EE Connector Architecture for a specific EIS. Examples of EISs include enterprise resource planning, mainframe transaction processing, and database systems. In a Java EE server, the Java Message Server and JavaMail also act as EISs that you access using resource adapters. As illustrated in <a href="../Text/resources.xhtml#GJTZO">Figure 52-1</a>, the resource adapter facilitates communication between a Java EE application and an EIS.</p>
+
+      <div class="figure">
+        <a id="GJTZO"></a><a id="JEETT00045"></a>
+
+        <p class="titleinfigure">Figure 52-1 Resource Adapters</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 52-1 follows" longdesc="img_text/jeett_dt_053.htm" src="../Images/jeett_dt_053.png" style="line-height: 1.6em;" title="Description of Figure 52-1 follows" /></div>
+      </div>
+
+      <div class="figure">
+        Description of "Figure 52-1 Resource Adapters"<br />
+        <br />
+      </div>
+
+      <p>Stored in a Resource Adapter Archive (RAR) file, a resource adapter can be deployed on any Java EE server, much like a Java EE application. A RAR file may be contained in an Enterprise Archive (EAR) file, or it may exist as a separate file.</p>
+
+      <p>A resource adapter is analogous to a JDBC driver. Both provide a standard API through which an application can access a resource that is outside the Java EE server. For a resource adapter, the target system is an EIS; for a JDBC driver, it is a DBMS. Resource adapters and JDBC drivers are rarely created by application developers. In most cases, both types of software are built by vendors that sell tools, servers, or integration software.</p>
+
+      <p>The resource adapter mediates communication between the Java EE server and the EIS by means of contracts. The application contract defines the API through which a Java EE component, such as an enterprise bean, accesses the EIS. This API is the only view that the component has of the EIS. The system contracts link the resource adapter to important services that are managed by the Java EE server. The resource adapter itself and its system contracts are transparent to the Java EE component.</p><a id="GIPGY"></a><a id="JEETT01266"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">52.1.1</span> Management Contracts</h2>
+
+        <p>The Java EE Connector Architecture defines system contracts that enable resource adapter lifecycle and thread management.</p><a id="GIPHT"></a><a id="JEETT00801"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">52.1.1.1</span> Lifecycle Management</h3>
+
+          <p>The Connector Architecture specifies a lifecycle management contract that allows an application server to manage the lifecycle of a resource adapter. This contract provides a mechanism for the application server to bootstrap a resource adapter instance during the deployment or application server startup. This contract also provides a means for the application server to notify the resource adapter instance when it is undeployed or when an orderly shutdown of the application server takes place.</p>
+        </div><a id="GIPIG"></a><a id="JEETT00802"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">52.1.1.2</span> Work Management Contract</h3>
+
+          <p>The Connector Architecture work management contract ensures that resource adapters use threads in the proper, recommended manner. This contract also enables an application server to manage threads for resource adapters.</p>
+
+          <p>Resource adapters that improperly use threads can jeopardize the entire application server environment. For example, a resource adapter might create too many threads or might not properly release threads it has created. Poor thread handling inhibits application server shutdown and impacts the application server's performance because creating and destroying threads are expensive operations.</p>
+
+          <p>The work management contract establishes a means for the application server to pool and reuse threads, similar to pooling and reusing connections. By adhering to this contract, the resource adapter does not have to manage threads itself. Instead, the resource adapter has the application server create and provide needed threads. When it is finished with a given thread, the resource adapter returns the thread to the application server. The application server manages the thread, either returning it to a pool for later reuse or destroying it. Handling threads in this manner results in increased application server performance and more efficient use of resources.</p>
+
+          <p>In addition to moving thread management to the application server, the Connector Architecture provides a flexible model for a resource adapter that uses threads.</p>
+
+          <ul>
+            <li>
+              <p>The requesting thread can choose to block (stop its own execution) until the work thread completes.</p>
+            </li>
+
+            <li>
+              <p>The requesting thread can block while it waits to get the work thread. When the application server provides a work thread, the requesting thread and the work thread execute in parallel.</p>
+            </li>
+
+            <li>
+              <p>The resource adapter can opt to submit the work for the thread to a queue. The thread executes the work from the queue at some later point. The resource adapter continues its own execution from the point it submitted the work to the queue, no matter when the thread executes it.</p>
+            </li>
+          </ul>
+
+          <p>With the latter two approaches, the submitting thread and the work thread may execute simultaneously or independently. For these approaches, the contract specifies a listener mechanism to notify the resource adapter that the thread has completed its operation. The resource adapter can also specify the execution context for the thread, and the work management contract controls the context in which the thread executes.</p>
+        </div>
+      </div><a id="GIPMK"></a><a id="JEETT01267"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">52.1.2</span> Generic Work Context Contract</h2>
+
+        <p>The work management contract between the application server and a resource adapter enables a resource adapter to do a task, such as communicating with the EIS or delivering messages, by delivering <code>Work</code> instances for execution.</p>
+
+        <p>A generic work context contract enables a resource adapter to control the contexts in which the <code>Work</code> instances that it submits are executed by the application server's <code>WorkManager</code>. A generic work context mechanism also enables an application server to support message inflow and delivery schemes. It also provides a richer contextual <code>Work</code> execution environment to the resource adapter while still maintaining control over concurrent behavior in a managed environment.</p>
+
+        <p>The generic work context contract standardizes the transaction context and the security context.</p>
+      </div><a id="GKCKI"></a><a id="JEETT01268"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">52.1.3</span> Outbound and Inbound Contracts</h2>
+
+        <p>The Connector Architecture defines the following outbound contracts, system-level contracts between an application server and an EIS that enable outbound connectivity to an EIS.</p>
+
+        <ul>
+          <li>
+            <p>The connection management contract supports connection pooling, a technique that enhances application performance and scalability. Connection pooling is transparent to the application, which simply obtains a connection to the EIS.</p>
+          </li>
+
+          <li>
+            <p>The transaction management contract extends the connection management contract and provides support for management of both local and XA transactions.</p>
+
+            <p>A local transaction is limited in scope to a single EIS system, and the EIS resource manager itself manages such a transaction. An XA transaction or global transaction can span multiple resource managers. This form of transaction requires transaction coordination by an external transaction manager, typically bundled with an application server. A transaction manager uses a two-phase commit protocol to manage a transaction that spans multiple resource managers or EISs, and uses one-phase commit optimization if only one resource manager is participating in an XA transaction.</p>
+          </li>
+
+          <li>
+            <p>The security management contract provides mechanisms for authentication, authorization, and secure communication between a Java EE server and an EIS to protect the information in the EIS.</p>
+
+            <p>A work security map matches EIS identities to the application server domain's identities.</p>
+          </li>
+        </ul>
+
+        <p>Inbound contracts are system contracts between a Java EE server and an EIS that enable inbound connectivity from the EIS: pluggability contracts for message providers and contracts for importing transactions.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIRDD"></a><a id="JEETT00541"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">52.2</span> <a id="sthref2888"></a><a id="sthref2889"></a>Metadata Annotations</h1>
+
+      <p>Java EE Connector Architecture provides a set of annotations to minimize the need for deployment descriptors.</p>
+
+      <ul>
+        <li>
+          <p>The <code>@Connector</code> annotation can be used by the resource adapter developer to specify that the JavaBeans component is a resource adapter JavaBeans component. This annotation is used for providing metadata about the capabilities of the resource adapter. Optionally, you can provide a JavaBeans component implementing the <code>ResourceAdapter</code> interface, as in the following example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Connector(
+    displayName = "TrafficResourceAdapter",
+    vendorName = "Java EE Tutorial", 
+    version = "7.0"
+)
+public class TrafficResourceAdapter implements ResourceAdapter, 
+                                               Serializable {
+    ...
+}</pre>
+        </li>
+
+        <li>
+          <p>The <code>@ConnectionDefinition</code> annotation defines a set of connection interfaces and classes pertaining to a particular connection type, as in the following example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ConnectionDefinition(
+    connectionFactory = ConnectionFactory.class,
+    connectionFactoryImpl = TradeConnectionFactory.class,
+    connection = Connection.class,
+    connectionImpl = TradeConnection.class
+)
+public class TradeManagedConnectionFactory ... {
+    ...
+}</pre>
+        </li>
+
+        <li>
+          <p>The <code>@AdministeredObject</code> annotation designates a JavaBeans component as an administered object.</p>
+        </li>
+
+        <li>
+          <p>The <code>@Activation</code> annotation contains configuration information pertaining to inbound connectivity from an EIS instance, as in the following example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Activation(
+        messageListeners = { TrafficListener.class }
+)
+public class TrafficActivationSpec implements ActivationSpec, 
+                                              Serializable {
+    ...
+    @ConfigProperty()
+    /* port to listen to requests from the EIS */
+    private String port;
+    ...
+}</pre>
+        </li>
+
+        <li>
+          <p>The <code>@ConfigProperty</code> annotation can be used on JavaBeans components to provide additional configuration information that may be used by the deployer and resource adapter provider. The preceding example code shows several <code>@ConfigProperty</code> annotations.</p>
+        </li>
+
+        <li>
+          <p>The <code>@ConnectionFactoryDefinition</code> annotation is a resource definition annotation that is used to define a connector connection factory and register it in JNDI under the name specified in the mandatory <code>name</code> annotation element. The mandatory <code>interfaceName</code> annotation element specifies the fully qualified name of the connection factory interface class. The <code>transactionSupport</code> annotation element specifies the level of transaction support the connection factory needs to support. The <code>minPoolSize</code> and <code>maxPoolSize</code> annotation elements specify the minimum or maximum number of connections that should be allocated for a connection pool that backs this connection factory resource. Additional properties associated with the connection factory being defined can be specified through the <code>properties</code> element.</p>
+
+          <p>Since repeated annotations are not allowed, the <code>@ConnectionFactoryDefinitions</code> annotation acts as a container for multiple connector connection factory definitions. The <code>value</code> annotation element contains the multiple connector connection factory definitions.</p>
+        </li>
+
+        <li>
+          <p>The <code>@AdministeredObjectDefinition</code> annotation is a resource definition annotation that is used to define an administered object and register it in JNDI under the name specified in the mandatory <code>name</code> annotation element. The mandatory fully qualified name of the administered object's class must be indicated by the <code>className</code> element. Additional properties that must be configured in the administered object can be specified through the <code>properties</code> element.</p>
+
+          <p>Since repeated annotations are not allowed, the <code>@AdministeredObjectDefinitions</code> annotation acts as a container for multiple administered object definitions. The <code>value</code> annotation element contains the multiple administered object definitions.</p>
+        </li>
+      </ul>
+
+      <p>The specification allows a resource adapter to be developed in mixed-mode form, that is the ability for a resource adapter developer to use both metadata annotations and deployment descriptors in applications. An application assembler or deployer may use the deployment descriptor to override the metadata annotations specified by the resource adapter developer.</p>
+
+      <p>The deployment descriptor for a resource adapter, if present, is named <code>ra.xml</code>. The <code>metadata-complete</code> attribute defines whether the deployment descriptor for the resource adapter module is complete or whether the class files available to the module and packaged with the resource adapter need to be examined for annotations that specify deployment information.</p>
+
+      <p>For the complete list of annotations and JavaBeans components provided in the Java EE 7 platform, see the Java EE Connector Architecture 1.7 specification.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPJU"></a><a id="JEETT00542"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">52.3</span> <a id="sthref2890"></a>Common Client Interface</h1>
+
+      <p>This section explains how components use the Connector Architecture Common Client Interface (CCI) API and a resource adapter to access data from an EIS. The CCI API defines a set of interfaces and classes whose methods allow a client to perform typical data access operations. The CCI interfaces and classes are as follows.</p>
+
+      <ul>
+        <li>
+          <p><code>ConnectionFactory</code>: Provides an application component with a <code>Connection</code> instance to an EIS.</p>
+        </li>
+
+        <li>
+          <p><code>Connection</code>: Represents the connection to the underlying EIS.</p>
+        </li>
+
+        <li>
+          <p><code>ConnectionSpec</code>: Provides a means for an application component to pass connection-request-specific properties to the <code>ConnectionFactory</code> when making a connection request.</p>
+        </li>
+
+        <li>
+          <p><code>Interaction</code>: Provides a means for an application component to execute EIS functions, such as database stored procedures.</p>
+        </li>
+
+        <li>
+          <p><code>InteractionSpec</code>: Holds properties pertaining to an application component's interaction with an EIS.</p>
+        </li>
+
+        <li>
+          <p><code>Record</code>: The superinterface for the various kinds of record instances. Record instances can be <code>MappedRecord</code>, <code>IndexedRecord</code>, or <code>ResultSet</code> instances, all of which inherit from the <code>Record</code> interface.</p>
+        </li>
+
+        <li>
+          <p><code>RecordFactory</code>: Provides an application component with a <code>Record</code> instance.</p>
+        </li>
+
+        <li>
+          <p><code>IndexedRecord</code>: Represents an ordered collection of <code>Record</code> instances based on the <code>java.util.List</code> interface.</p>
+        </li>
+      </ul>
+
+      <p>A client or application component that uses the CCI to interact with an underlying EIS does so in a prescribed manner. The component must establish a connection to the EIS's resource manager, and it does so using the <code>ConnectionFactory</code>. The <code>Connection</code> object represents the connection to the EIS and is used for subsequent interactions with the EIS.</p>
+
+      <p>The component performs its interactions with the EIS, such as accessing data from a specific table, using an <code>Interaction</code> object. The application component defines the Interaction object by using an <code>InteractionSpec</code> object. When it reads data from the EIS, such as from database tables, or writes to those tables, the application component does so by using a particular type of <code>Record</code> instance: a <code>MappedRecord</code>, an <code>IndexedRecord</code>, or a <code>ResultSet</code> instance.</p>
+
+      <p>Note, too, that a client application that relies on a CCI resource adapter is very much like any other Java EE client that uses enterprise bean methods.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="CHDJFIGB"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">52.4</span> Using Resource Adapters with Contexts and Dependency Injection for Java EE (CDI)</h1>
+
+      <p>For details about CDI, see <a href="../Text/cdi-basic.xhtml#GIWHB">Chapter 23, "Introduction to Contexts and Dependency Injection for Java EE"</a> and <a href="../Text/cdi-adv.xhtml#GJEHI">Chapter 25, "Contexts and Dependency Injection for Java EE: Advanced Topics."</a></p>
+
+      <p>Do not specify the following classes in the resource adapter as CDI managed beans (that is, do not inject them), because the behavior of these classes as CDI managed beans has not been portably defined.</p>
+
+      <ul>
+        <li>
+          <p><span class="bold">Resource adapter beans</span>: These beans are classes that are annotated with the <code>javax.resource.spi.Connector</code> annotation or are declared as corresponding elements in the resource adapter deployment descriptor, <code>ra.xml</code>.</p>
+        </li>
+
+        <li>
+          <p><span class="bold">Managed connection factory beans</span>: These beans are classes that are annotated with the <code>javax.resource.spi.ConnectorDefinition</code> annotation or the <code>javax.resource.spi.ConnectorDefinitions</code> annotation or are declared as corresponding elements in <code>ra.xml</code>.</p>
+        </li>
+
+        <li>
+          <p><span class="bold">Activation specification beans</span>: These beans are classes that are annotated with the <code>javax.resource.spi.Activation</code> annotation or are declared as corresponding elements in <code>ra.xml</code>.</p>
+        </li>
+
+        <li>
+          <p><span class="bold">Administered object beans</span>: These beans are classes that are annotated with the <code>javax.resource.spi.AdministeredObject</code> annotation or are declared as corresponding elements in <code>ra.xml</code>.</p>
+        </li>
+      </ul>
+
+      <p>Other types of classes in the resource adapter can be CDI managed beans and will behave in a portable manner.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNCJW"></a><a id="JEETT00543"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">52.5</span> Further Information about Resource Adapters</h1>
+
+      <p>For more information about resource adapters and annotations, see</p>
+
+      <ul>
+        <li>
+          <p>Java EE 7 Platform Specification (JSR 342):</p>
+
+          <p><code><a href="../Text/resources.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D342">http://jcp.org/en/jsr/detail?id=342</a></code></p>
+        </li>
+
+        <li>
+          <p>Java EE Connector Architecture 1.7 specification:</p>
+
+          <p><code><a href="../Text/resources.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D322">http://jcp.org/en/jsr/detail?id=322</a></code></p>
+        </li>
+
+        <li>
+          <p>EJB 3.2 specification:</p>
+
+          <p><code><a href="../Text/resources.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D345">http://jcp.org/en/jsr/detail?id=345</a></code></p>
+        </li>
+
+        <li>
+          <p>Common Annotations for the Java Platform:</p>
+
+          <p><code><a href="../Text/resources.xhtml#http%3A//www.jcp.org/en/jsr/detail%3Fid%3D250">http://www.jcp.org/en/jsr/detail?id=250</a></code></p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

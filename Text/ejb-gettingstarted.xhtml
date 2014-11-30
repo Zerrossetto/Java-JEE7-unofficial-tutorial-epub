@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GIJRE"></a><a id="JEETT00086"></a>
+
+    <h1 class="chapter"><span class="secnum">33</span> Getting Started with Enterprise Beans</h1>
+
+    <p>This chapter shows how to develop, deploy, and run a simple Java EE application named <code>converter</code> that uses an EJB for its business logic. The purpose of <code>converter</code> is to calculate currency conversions among Japanese yen, euros, and US dollars. The <code>converter</code> application consists of an enterprise bean, which performs the calculations, and a web client.</p>
+
+    <p>Here's an overview of the steps you'll follow in this chapter.</p>
+
+    <ol>
+      <li>
+        <p>Create the enterprise bean: <code>ConverterBean</code>.</p>
+      </li>
+
+      <li>
+        <p>Create the web client.</p>
+      </li>
+
+      <li>
+        <p>Deploy <code>converter</code> onto the server.</p>
+      </li>
+
+      <li>
+        <p>Using a browser, run the web client.</p>
+      </li>
+    </ol>
+
+    <p>Before proceeding, make sure that you've done the following:</p>
+
+    <ul>
+      <li>
+        <p>Read <a href="../Text/overview.xhtml#BNAAW">Chapter 1, "Overview"</a></p>
+      </li>
+
+      <li>
+        <p>Become familiar with enterprise beans (see <a href="../Text/ejb-intro.xhtml#GIJSZ">Chapter 32, "Enterprise Beans"</a>)</p>
+      </li>
+
+      <li>
+        <p>Started the server (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>)</p>
+      </li>
+    </ul>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/ejb-gettingstarted.xhtml#GIPSS">Creating the Enterprise Bean</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/ejb-gettingstarted.xhtml#GIPTI">Modifying the Java EE Application</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GIPSS"></a><a id="JEETT00446"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">33.1</span> Creating the Enterprise Bean</h1>
+
+      <p>The enterprise bean in our example is a stateless session bean called <code>ConverterBean</code>. The source code for <code>ConverterBean</code> is in the <span class="variable">tut-install</span><code>/examples/ejb/converter/src/main/java/</code> directory.</p>
+
+      <p>Creating <code>ConverterBean</code> requires these steps:</p>
+
+      <ol>
+        <li>
+          <p>Coding the bean's implementation class (the source code is provided)</p>
+        </li>
+
+        <li>
+          <p>Compiling the source code</p>
+        </li>
+      </ol><a id="GIPSX"></a><a id="JEETT01091"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">33.1.1</span> <a id="sthref1709"></a><a id="sthref1710"></a>Coding the Enterprise Bean Class</h2>
+
+        <p>The enterprise bean class for this example is called <code>ConverterBean</code>. This class implements two business methods: <code>dollarToYen</code> and <code>yenToEuro</code>. Because the enterprise bean class doesn't implement a business interface, the enterprise bean exposes a local, no-interface view. The public methods in the enterprise bean class are available to clients that obtain a reference to <code>ConverterBean</code>. The source code for the <code>ConverterBean</code> class is as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.converter.ejb;
+
+import java.math.BigDecimal;
+import javax.ejb.*;
+
+@Stateless
+public class ConverterBean {
+    private BigDecimal yenRate = new BigDecimal("83.0602");
+    private BigDecimal euroRate = new BigDecimal("0.0093016");
+
+    public BigDecimal dollarToYen(BigDecimal dollars) {
+        BigDecimal result = dollars.multiply(yenRate);
+        return result.setScale(2, BigDecimal.ROUND_UP);
+    }
+
+    public BigDecimal yenToEuro(BigDecimal yen) {
+        BigDecimal result = yen.multiply(euroRate);
+        return result.setScale(2, BigDecimal.ROUND_UP);
+    }
+}</pre>
+
+        <p>Note the <code>@Stateless</code> annotation decorating the enterprise bean class. This annotation lets the container know that <code>ConverterBean</code> is a stateless session bean.</p>
+      </div><a id="GIPSI"></a><a id="JEETT01092"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">33.1.2</span> Creating the converter Web Client</h2>
+
+        <p><a id="sthref1711"></a><a id="sthref1712"></a><a id="sthref1713"></a><a id="sthref1714"></a>The web client is contained in the following servlet class under the <span class="variable">tut-install</span><code>/examples/ejb/converter/src/main/java/</code> directory:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">converter/web/ConverterServlet.java</pre>
+
+        <p>A Java servlet is a web component that responds to HTTP requests.</p>
+
+        <p><a id="sthref1715"></a>The <code>ConverterServlet</code> class uses dependency injection to obtain a reference to <code>ConverterBean</code>. The <code>javax.ejb.EJB</code> annotation is added to the declaration of the private member variable <code>converter</code>, which is of type <code>ConverterBean</code>. <code>ConverterBean</code> exposes a local, no-interface view, so the enterprise bean implementation class is the variable type:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@WebServlet(urlPatterns="/")
+public class ConverterServlet extends HttpServlet {
+  @EJB
+  ConverterBean converter;
+  ...
+}</pre>
+
+        <p>When the user enters an amount to be converted to yen and euro, the amount is retrieved from the request parameters; then the <code>ConverterBean.dollarToYen</code> and the <code>ConverterBean.yenToEuro</code> methods are called:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">...
+try {
+  String amount = request.getParameter("amount");
+  if (amount != null &amp;&amp; amount.length()&gt; 0) {
+    // convert the amount to a BigDecimal from the request parameter
+    BigDecimal d = new BigDecimal(amount);
+    // call the ConverterBean.dollarToYen() method to get the amount
+    // in Yen
+    BigDecimal yenAmount = converter.dollarToYen(d);
+
+    // call the ConverterBean.yenToEuro() method to get the amount
+    // in Euros
+    BigDecimal euroAmount = converter.yenToEuro(yenAmount);
+    ...
+  }
+  ...
+}</pre>
+
+        <p>The results are displayed to the user.</p>
+      </div><a id="GIPVV"></a><a id="JEETT01093"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">33.1.3</span> <a id="sthref1716"></a><a id="sthref1717"></a><a id="sthref1718"></a><a id="sthref1719"></a><a id="sthref1720"></a><a id="sthref1721"></a>Running the converter Example</h2>
+
+        <p>Now you are ready to compile the enterprise bean class (<code>ConverterBean.java</code>) and the servlet class (<code>ConverterServlet.java</code>) and to package the compiled classes into a WAR file. You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>converter</code> example.</p><a id="GIPUM"></a><a id="JEETT00193"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">33.1.3.1</span> To Run the converter Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>converter</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>converter</code> project and select <span class="gui-object-action">Build</span>.</p>
+            </li>
+
+            <li>
+              <p>Open a web browser to the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/converter</pre>
+            </li>
+
+            <li>
+              <p>On the <span class="gui-object-title">Servlet ConverterServlet</span> page, enter <code>100</code> in the field and click <span class="gui-object-action">Submit</span>.</p>
+
+              <p>A second page opens, showing the converted values.</p>
+            </li>
+          </ol>
+        </div><a id="GIPVQ"></a><a id="JEETT00194"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">33.1.3.2</span> To Run the converter Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb/converter/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command compiles the source files for the enterprise bean and the servlet, packages the project into a WAR module (<code>converter.war</code>), and deploys the WAR to the server. For more information about Maven, see <a href="../Text/usingexamples.xhtml#BNAAN">Building the Examples</a>.</p>
+            </li>
+
+            <li>
+              <p>Open a web browser to the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/converter</pre>
+            </li>
+
+            <li>
+              <p>On the <span class="gui-object-title">Servlet ConverterServlet</span> page, enter <code>100</code> in the field and click <span class="gui-object-action">Submit</span>.</p>
+
+              <p>A second page opens, showing the converted values.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIPTI"></a><a id="JEETT00447"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">33.2</span> Modifying the Java EE Application</h1>
+
+      <p><a id="sthref1722"></a>GlassFish Server supports iterative development. Whenever you make a change to a Java EE application, you must redeploy the application.</p><a id="GIPUK"></a><a id="JEETT00196"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">33.2.1</span> To Modify a Class File</h2>
+
+        <p>To modify a class file in an enterprise bean, you change the source code, recompile it, and redeploy the application. For example, to update the exchange rate in the <code>dollarToYen</code> business method of the <code>ConverterBean</code> class, you would follow these steps.</p>
+
+        <p>To modify <code>ConverterServlet</code>, the procedure is the same.</p>
+
+        <ol>
+          <li>
+            <p>Edit <code>ConverterBean.java</code> and save the file.</p>
+          </li>
+
+          <li>
+            <p>Recompile the source file.</p>
+
+            <ul>
+              <li>
+                <p>To recompile <code>ConverterBean.java</code> in NetBeans IDE, right-click the <code>converter</code> project and select <span class="gui-object-action">Run</span>.</p>
+
+                <p>This recompiles the <code>ConverterBean.java</code> file, replaces the old class file in the build directory, and redeploys the application to GlassFish Server.</p>
+              </li>
+
+              <li>
+                <p>Recompile <code>ConverterBean.java</code> using Maven.</p>
+
+                <ol>
+                  <li>
+                    <p>In a terminal window, go to the <span class="variable">tut-install</span><code>/examples/ejb/converter/</code> directory.</p>
+                  </li>
+
+                  <li>
+                    <p>Enter the following command:</p>
+                    <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+                    <p>This command repackages and deploys the application.</p>
+                  </li>
+                </ol>
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

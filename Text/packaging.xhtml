@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKJIQ4"></a>
+
+    <h1 class="chapter"><span class="secnum">5</span> Packaging</h1>
+
+    <p>This chapter describes packaging. A Java EE application is packaged into one or more standard units for deployment to any Java EE platformcompliant system. Each unit contains a functional component or components, such as an enterprise bean, web page, servlet, or applet, and an optional deployment descriptor that describes its content.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/packaging.xhtml#BCGDJDFB">Packaging Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/packaging.xhtml#BCGECBIJ">Packaging Enterprise Beans</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/packaging.xhtml#BCGHAHGD">Packaging Web Archives</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/packaging.xhtml#BCGDHBHJ">Packaging Resource Adapter Archives</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BCGDJDFB"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">5.1</span> <a id="sthref157"></a><a id="sthref158"></a>Packaging Applications</h1>
+
+      <p><a id="sthref159"></a><a id="sthref160"></a><a id="sthref161"></a>A Java EE application is delivered in a Java Archive (JAR) file, a Web Archive (WAR) file, or an Enterprise Archive (EAR) file. A WAR or EAR file is a standard JAR (<code>.jar</code>) file with a <code>.war</code> or <code>.ear</code> extension. Using JAR, WAR, and EAR files and modules makes it possible to assemble a number of different Java EE applications using some of the same components. No extra coding is needed; it is only a matter of assembling (or packaging) various Java EE modules into Java EE JAR, WAR, or EAR files.</p>
+
+      <p><a id="sthref162"></a><a id="sthref163"></a>An EAR file (see <a href="../Text/packaging.xhtml#BCGHHIIH">Figure 5-1</a>) contains Java EE modules and, optionally, deployment descriptors. A <span class="glossaryterm">deployment descriptor</span>, an XML document with an <code>.xml</code> extension, describes the deployment settings of an application, a module, or a component. Because deployment descriptor information is declarative, it can be changed without the need to modify the source code. At runtime, the Java EE server reads the deployment descriptor and acts upon the application, module, or component accordingly.</p>
+
+      <p>Deployment information is most commonly specified in the source code by <span class="glossaryterm">annotations</span>. Deployment descriptors, if present, override what is specified in the source code.</p>
+
+      <div class="figure">
+        <a id="BCGHHIIH"></a>
+
+        <p class="titleinfigure">Figure 5-1 EAR File Structure</p><img alt="Description of Figure 5-1 follows" longdesc="img_text/jeett_dt_010.htm" src="../Images/jeett_dt_010.png" title="Description of Figure 5-1 follows" /><br />
+        <a href="../Text/packaging.xhtml#img_text/jeett_dt_010.htm" id="sthref164">Description of "Figure 5-1 EAR File Structure"</a><br />
+        Description of "Figure 5-1 EAR File Structure"<br />
+      </div>
+
+      <p><a id="sthref165"></a><a id="sthref166"></a>The two types of deployment descriptors are Java EE and runtime. A <span class="glossaryterm">Java EE deployment descriptor</span> is defined by a Java EE specification and can be used to configure deployment settings on any Java EE-compliant implementation. A <span class="glossaryterm">runtime deployment descriptor</span> is used to configure Java EE implementation-specific parameters. For example, the GlassFish Server runtime deployment descriptor contains such information as the context root of a web application as well as GlassFish Server implementation-specific parameters, such as caching directives. The GlassFish Server runtime deployment descriptors are named <code>glassfish-</code><span class="variable">moduleType</span><code>.xml</code> and are located in the same <code>META-INF</code> directory as the Java EE deployment descriptor.</p>
+
+      <p><a id="sthref167"></a>A <span class="glossaryterm">Java EE module</span> consists of one or more Java EE components for the same container type and, optionally, one component deployment descriptor of that type. An enterprise bean module deployment descriptor, for example, declares transaction attributes and security authorizations for an enterprise bean. A Java EE module can be deployed as a stand-alone module.</p>
+
+      <p>Java EE modules are of the following types:</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref168"></a>EJB modules, which contain class files for enterprise beans and, optionally, an EJB deployment descriptor. EJB modules are packaged as JAR files with a <code>.jar</code> extension.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref169"></a>Web modules, which contain servlet class files, web files, supporting class files, GIF and HTML files, and, optionally, a web application deployment descriptor. Web modules are packaged as JAR files with a <code>.war</code> (web archive) extension.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref170"></a>Application client modules, which contain class files and, optionally, an application client deployment descriptor. Application client modules are packaged as JAR files with a <code>.jar</code> extension.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref171"></a>Resource adapter modules, which contain all Java interfaces, classes, native libraries, and, optionally, a resource adapter deployment descriptor. Together, these implement the Connector architecture (see <a href="../Text/overview.xhtml#BNACZ">Java EE Connector Architecture</a>) for a particular EIS. Resource adapter modules are packaged as JAR files with an <code>.rar</code> (resource adapter archive) extension.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGECBIJ"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">5.2</span> Packaging Enterprise Beans</h1>
+
+      <p>This section explains how enterprise beans can be packaged in EJB JAR or WAR modules.</p><a id="CHDFCDBG"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">5.2.1</span> <a id="sthref172"></a>Packaging Enterprise Beans in EJB JAR Modules</h2>
+
+        <p>An EJB JAR file is portable and can be used for various applications.</p>
+
+        <p>To assemble a Java EE application, package one or more modules, such as EJB JAR files, into an EAR file, the archive file that holds the application. When deploying the EAR file that contains the enterprise bean's EJB JAR file, you also deploy the enterprise bean to GlassFish Server. You can also deploy an EJB JAR that is not contained in an EAR file. <a href="../Text/packaging.xhtml#BCGFJIJI">Figure 5-2</a> shows the contents of an EJB JAR file.</p>
+
+        <div class="figure">
+          <a id="BCGFJIJI"></a>
+
+          <p class="titleinfigure">Figure 5-2 Structure of an Enterprise Bean JAR</p><img alt="Description of Figure 5-2 follows" longdesc="img_text/jeett_dt_011.htm" src="../Images/jeett_dt_011.png" title="Description of Figure 5-2 follows" /><br />
+          <a href="../Text/packaging.xhtml#img_text/jeett_dt_011.htm" id="sthref173">Description of "Figure 5-2 Structure of an Enterprise Bean JAR"</a><br />
+          <br />
+        </div>
+      </div><a id="CHDJABEJ"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">5.2.2</span> Packaging Enterprise Beans in WAR Modules</h2>
+
+        <p>Enterprise beans often provide the business logic of a web application. In these cases, packaging the enterprise bean within the web application's WAR module simplifies deployment and application organization. Enterprise beans may be packaged within a WAR module as Java programming language class files or within a JAR file that is bundled within the WAR module.</p>
+
+        <p>To include enterprise bean class files in a WAR module, the class files should be in the <code>WEB-INF/classes</code> directory.</p>
+
+        <p>To include a JAR file that contains enterprise beans in a WAR module, add the JAR to the <code>WEB-INF/lib</code> directory of the WAR module.</p>
+
+        <p><a id="sthref174"></a><a id="sthref175"></a>WAR modules that contain enterprise beans do not require an <code>ejb-jar.xml</code> deployment descriptor. If the application uses <code>ejb-jar.xml</code>, it must be located in the WAR module's <code>WEB-INF</code> directory.</p>
+
+        <p>JAR files that contain enterprise bean classes packaged within a WAR module are not considered EJB JAR files, even if the bundled JAR file conforms to the format of an EJB JAR file. The enterprise beans contained within the JAR file are semantically equivalent to enterprise beans located in the WAR module's <code>WEB-INF/classes</code> directory, and the environment namespace of all the enterprise beans are scoped to the WAR module.</p>
+
+        <p>For example, suppose that a web application consists of a shopping cart enterprise bean, a credit cardprocessing enterprise bean, and a Java servlet front end. The shopping cart bean exposes a local, no-interface view and is defined as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package com.example.cart;@Statelesspublic class CartBean { ... }</pre>
+
+        <p>The credit cardprocessing bean is packaged within its own JAR file, <code>cc.jar</code>, exposes a local, no-interface view, and is defined as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package com.example.cc;@Statelesspublic class CreditCardBean { ... }</pre>
+
+        <p>The servlet, <code>com.example.web.StoreServlet</code>, handles the web front end and uses both <code>CartBean</code> and <code>CreditCardBean</code>. The WAR module layout for this application is as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">WEB-INF/classes/com/example/cart/CartBean.classWEB-INF/classes/com/example/web/StoreServletWEB-INF/lib/cc.jarWEB-INF/ejb-jar.xmlWEB-INF/web.xml</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGHAHGD"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">5.3</span> Packaging Web Archives</h1>
+
+      <p><a id="sthref176"></a><a id="sthref177"></a><a id="sthref178"></a>In the Java EE architecture, a <span class="glossaryterm">web module</span> is the smallest deployable and usable unit of web resources. A web module contains web components and static web content files, such as images, which are called <span class="glossaryterm">web resources</span>. A Java EE web module corresponds to a web application as defined in the Java Servlet specification.</p>
+
+      <p>In addition to web components and web resources, a web module can contain other files:</p>
+
+      <ul>
+        <li>
+          <p>Server-side utility classes, such as shopping carts</p>
+        </li>
+
+        <li>
+          <p>Client-side classes, such as utility classes</p>
+        </li>
+      </ul>
+
+      <p><a id="sthref179"></a><a id="sthref180"></a>A web module has a specific structure. The top-level directory of a web module is the <span class="glossaryterm">document root</span> of the application. The document root is where XHTML pages, client-side classes and archives, and static web resources, such as images, are stored.</p>
+
+      <p>The document root contains a subdirectory named <code>WEB-INF</code>, which can contain the following files and directories:</p>
+
+      <ul>
+        <li>
+          <p><code>classes</code>, a directory that contains server-side classes: servlets, enterprise bean class files, utility classes, and JavaBeans components</p>
+        </li>
+
+        <li>
+          <p><code>lib</code>, a directory that contains JAR files that contain enterprise beans, and JAR archives of libraries called by server-side classes</p>
+        </li>
+
+        <li>
+          <p><a id="sthref181"></a><a id="sthref182"></a>Deployment descriptors, such as <code>web.xml</code> (the web application deployment descriptor) and <code>ejb-jar.xml</code> (an EJB deployment descriptor)</p>
+        </li>
+      </ul>
+
+      <p>A web module needs a <code>web.xml</code> file if it uses JavaServer Faces technology, if it must specify certain kinds of security information, or if you want to override information specified by web component annotations.</p>
+
+      <p>You can also create application-specific subdirectories (that is, package directories) in either the document root or the <code>WEB-INF/classes/</code> directory.</p>
+
+      <p>A web module can be deployed as an unpacked file structure or can be packaged in a JAR file known as a Web Archive (WAR) file. Because the contents and use of WAR files differ from those of JAR files, WAR file names use a <code>.war</code> extension. The web module just described is portable; you can deploy it into any web container that conforms to the Java Servlet specification.</p>
+
+      <p><a id="sthref183"></a>You can provide a runtime deployment descriptor (DD) when you deploy a WAR on GlassFish Server, but it is not required under most circumstances. The runtime DD is an XML file that may contain such information as the <span class="glossaryterm">context root</span> of the web application, the mapping of the portable names of an application's resources to GlassFish Server resources, and the mapping of an application's security roles to users, groups, and principals defined in GlassFish Server. The GlassFish Server web application runtime DD, if used, is named <code>glassfish-web.xml</code> and is located in the <code>WEB-INF</code> directory. The structure of a web module that can be deployed on GlassFish Server is shown in <a href="../Text/packaging.xhtml#BCGGCCHE">Figure 5-3</a>.</p>
+
+      <div class="figure">
+        <a id="BCGGCCHE"></a>
+
+        <p class="titleinfigure">Figure 5-3 Web Module Structure</p><img alt="Description of Figure 5-3 follows" longdesc="img_text/jeett_dt_012.htm" src="../Images/jeett_dt_012.png" title="Description of Figure 5-3 follows" /><br />
+        <a href="../Text/packaging.xhtml#img_text/jeett_dt_012.htm" id="sthref184">Description of "Figure 5-3 Web Module Structure"</a><br />
+        <br />
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGDHBHJ"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">5.4</span> <a id="sthref185"></a><a id="sthref186"></a>Packaging Resource Adapter Archives</h1>
+
+      <p>A Resource Adapter Archive (RAR) file stores XML files, Java classes, and other objects for Java EE Connector Architecture (JCA) applications. A resource adapter can be deployed on any Java EE server, much like a Java EE application. A RAR file can be contained in an Enterprise Archive (EAR) file, or it can exist as a separate file.</p>
+
+      <p>The RAR file contains</p>
+
+      <ul>
+        <li>
+          <p>A JAR file with the implementation classes of the resource adapter</p>
+        </li>
+
+        <li>
+          <p>An optional <code>META-INF/</code> directory that can store an <code>ra.xml</code> file and/or an application serverspecific deployment descriptor used for configuration purposes</p>
+        </li>
+      </ul>
+
+      <p>A RAR file can be deployed on the application server as a standalone component or as part of a larger application. In both cases, the adapter is available to all applications using a lookup procedure.</p>
+    </div>
+  </div>
+</body>
+</html>

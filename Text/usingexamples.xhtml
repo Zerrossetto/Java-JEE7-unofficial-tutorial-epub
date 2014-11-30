@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GFIUD"></a><a id="JEETT00065"></a>
+
+    <h1 class="chapter"><span class="secnum">2</span> <a id="sthref120"></a>Using the Tutorial Examples</h1>
+
+    <p>This chapter tells you everything you need to know to install, build, and run the examples.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#GEXAJ">Required Software</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#BNADJ">Starting the Administration Console</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#BNADK">Starting and Stopping the Java DB Server</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#BNAAN">Building the Examples</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#GEXAP">Tutorial Example Directory Structure</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#CIHBHEFF">Java EE 7 Maven Archetypes in the Tutorial</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#GIQWR">Getting the Latest Updates to the Tutorial</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/usingexamples.xhtml#BNADL">Debugging Java EE Applications</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GEXAJ"></a><a id="JEETT00317"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.1</span> <a id="sthref121"></a>Required Software</h1>
+
+      <p>The following software is required to run the examples:</p>
+
+      <ul>
+        <li>
+          <p><a href="../Text/usingexamples.xhtml#GEXAE">Java Platform, Standard Edition</a></p>
+        </li>
+
+        <li>
+          <p><a href="../Text/usingexamples.xhtml#GEXAB">Java EE 7 Software Development Kit</a></p>
+        </li>
+
+        <li>
+          <p><a href="../Text/usingexamples.xhtml#GEXBA">Java EE 7 Tutorial Component</a></p>
+        </li>
+
+        <li>
+          <p><a href="../Text/usingexamples.xhtml#GEXAZ">NetBeans IDE</a></p>
+        </li>
+
+        <li>
+          <p><a href="../Text/usingexamples.xhtml#GEXAA">Apache Maven</a></p>
+        </li>
+      </ul><a id="GEXAE"></a><a id="JEETT00884"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.1.1</span> Java Platform, Standard Edition</h2>
+
+        <p>To build, deploy, and run the examples, you need a copy of the Java Platform, Standard Edition Development Kit (JDK). You must use JDK 7 Update 65 or above or JDK 8 Update 20 or above. You can download JDK software from <code><a href="../Text/usingexamples.xhtml#http%3A//www.oracle.com/technetwork/java/javase/downloads/index.html">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a></code>.</p>
+      </div><a id="GEXAB"></a><a id="JEETT00885"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.1.2</span> Java EE 7 Software Development Kit</h2>
+
+        <p><a id="sthref122"></a><a id="sthref123"></a><a id="sthref124"></a>GlassFish Server Open Source Edition 4.1 is targeted as the build and runtime environment for the tutorial examples. To build, deploy, and run the examples, you need a copy of GlassFish Server and, optionally, NetBeans IDE. To obtain GlassFish Server, you must install the Java EE 7 Software Development Kit (SDK) Update 1, which you can download from <code><a href="../Text/usingexamples.xhtml#http%3A//www.oracle.com/technetwork/java/javaee/downloads/index.html">http://www.oracle.com/technetwork/java/javaee/downloads/index.html</a></code>. Make sure that you download the Java EE 7 SDK Update 1, not the Java EE 7 Web Profile SDK Update 1.</p><a id="GEXBC"></a><a id="JEETT00584"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">2.1.2.1</span> SDK Installation Tips</h3>
+
+          <p>The Java EE 7 SDK Update 1 is installed from a ZIP file. It sets the default administration user name as <code>admin</code> with no required password. The Admin Port is set to 4848, and the HTTP Port is set to 8080.</p>
+
+          <p>This tutorial refers to <span class="variable">as-install-parent</span>, the directory where you install GlassFish Server. For example, the default installation directory on Microsoft Windows is <code>C:\glassfish4</code>, so <span class="variable">as-install-parent</span> is <code>C:\glassfish4</code>. GlassFish Server itself is installed in <span class="variable">as-install</span>, the <code>glassfish</code> directory under <span class="variable">as-install-parent</span>. So on Microsoft Windows, <span class="variable">as-install</span> is <code>C:\glassfish4\glassfish</code>.</p>
+
+          <p>After you install GlassFish Server, add the following directories to your <code>PATH</code> to avoid having to specify the full path when you use commands:</p>
+          <pre class="oac_no_warn" xml:space="preserve"><span class="variable">as-install-parent</span>/bin<span class="variable">as-install</span>/bin</pre>
+        </div>
+      </div><a id="GEXBA"></a><a id="JEETT00886"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.1.3</span> Java EE 7 Tutorial Component</h2>
+
+        <p>The tutorial component, including the documentation and example source, is contained in the Java EE 7 SDK Update 1.</p>
+
+        <p>Updates to the Java EE 7 Tutorial are published periodically. For details on obtaining these updates, see <a href="../Text/usingexamples.xhtml#GIQWR">Getting the Latest Updates to the Tutorial</a>.</p>
+      </div><a id="GEXAZ"></a><a id="JEETT00887"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.1.4</span> <a id="sthref125"></a>NetBeans IDE</h2>
+
+        <p>The NetBeans integrated development environment (IDE) is a free, open-source IDE for developing Java applications, including enterprise applications. NetBeans IDE supports the Java EE platform. You can build, package, deploy, and run the tutorial examples from within NetBeans IDE.</p>
+
+        <p>To run the tutorial examples, you need the latest version of NetBeans IDE. You can download NetBeans IDE from <code><a href="../Text/usingexamples.xhtml#https%3A//www.netbeans.org/downloads/index.html">https://www.netbeans.org/downloads/index.html</a></code>. Make sure that you download the Java EE bundle.</p><a id="GJSEQ"></a><a id="JEETT00137"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">2.1.4.1</span> To Install NetBeans IDE without GlassFish Server</h3>
+
+          <p>When you install NetBeans IDE, do not install the version of GlassFish Server that comes with NetBeans IDE. To skip the installation of GlassFish Server, follow these steps.</p>
+
+          <ol>
+            <li>
+              <p>On the first page of the NetBeans IDE Installer wizard, deselect the check box for GlassFish Server and click <span class="gui-object-action">OK</span>.</p>
+            </li>
+
+            <li>
+              <p>Accept both the License Agreement and the Junit License Agreement.</p>
+
+              <p>A few of the tutorial examples use the Junit library, so you should install it.</p>
+            </li>
+
+            <li>
+              <p>Continue with the installation of NetBeans IDE.</p>
+            </li>
+          </ol>
+        </div><a id="GIQZL"></a><a id="JEETT00138"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">2.1.4.2</span> To Add GlassFish Server as a Server Using NetBeans IDE</h3>
+
+          <p>To run the tutorial examples in NetBeans IDE, you must add your GlassFish Server as a server in NetBeans IDE. Follow these instructions to add GlassFish Server to NetBeans IDE.</p>
+
+          <ol>
+            <li>
+              <p>From the <span class="gui-object-action">Tools</span> menu, choose <span class="gui-object-action">Servers</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Servers</span> wizard, click <span class="gui-object-action">Add Server</span>.</p>
+            </li>
+
+            <li>
+              <p>Under <span class="gui-object-action">Choose Server</span>, select <span class="gui-object-action">GlassFish Server</span> and click <span class="gui-object-action">Next</span>.</p>
+            </li>
+
+            <li>
+              <p>Under <span class="gui-object-action">Server Location</span>, browse to the location of the Java EE 7 SDK and click <span class="gui-object-action">Next</span>.</p>
+            </li>
+
+            <li>
+              <p>Under <span class="gui-object-action">Domain Location</span>, select <span class="gui-object-action">Register Local Domain</span>.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Finish</span>.</p>
+            </li>
+          </ol>
+        </div>
+      </div><a id="GEXAA"></a><a id="JEETT00888"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.1.5</span> <a id="sthref126"></a>Apache Maven</h2>
+
+        <p>Maven is a Java technologybased build tool developed by the Apache Software Foundation and is used to build, package, and deploy the tutorial examples. To run the tutorial examples from the command line, you need Maven 3.0 or higher. If you do not already have Maven, you can install it from:</p>
+
+        <p><code><a href="../Text/usingexamples.xhtml#http%3A//maven.apache.org">http://maven.apache.org</a></code></p>
+
+        <p>Be sure to add the <span class="variable">maven-install</span><code>/bin</code> directory to your path.</p>
+
+        <p>If you are using NetBeans IDE to build and run the examples, it includes a copy of Maven.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNADI"></a><a id="JEETT00318"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.2</span> Starting and Stopping GlassFish Server</h1>
+
+      <p>You can start and stop GlassFish Server using either NetBeans IDE or the command line.</p><a id="CHDCACDI"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.2.1</span> To Start GlassFish Server Using NetBeans IDE</h2>
+
+        <ol>
+          <li>
+            <p>Click the <span class="gui-object-action">Services</span> tab.</p>
+          </li>
+
+          <li>
+            <p>Expand <span class="gui-object-action">Servers</span>.</p>
+          </li>
+
+          <li>
+            <p>Right-click the GlassFish Server instance and select <span class="gui-object-action">Start</span>.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref127"></a>
+
+        <h2 class="sect2"><span class="secnum">2.2.2</span> To Stop GlassFish Server Using NetBeans IDE</h2>
+
+        <p>To stop GlassFish Server using NetBeans IDE, right-click the GlassFish Server instance and select <span class="gui-object-action">Stop</span>.</p>
+      </div><a id="CHDBDDAF"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.2.3</span> To Start GlassFish Server Using the Command Line</h2>
+
+        <p><a id="sthref128"></a>To start GlassFish Server from the command line, open a terminal window or command prompt and execute the following:</p>
+        <pre class="oac_no_warn" xml:space="preserve">asadmin start-domain --verbose</pre>
+
+        <p><a id="sthref129"></a>A <span class="glossaryterm">domain</span> is a set of one or more GlassFish Server instances managed by one administration server. The following elements are associated with a domain:</p>
+
+        <ul>
+          <li>
+            <p><span class="bold">The GlassFish Server port number</span>: The default is 8080.</p>
+          </li>
+
+          <li>
+            <p><span class="bold">The administration server's port number</span>: The default is 4848.</p>
+          </li>
+
+          <li>
+            <p><span class="bold">An administration user name and password</span>: The default user name is <code>admin</code>, and by default no password is required.</p>
+          </li>
+        </ul>
+
+        <p>You specify these values when you install GlassFish Server. The examples in this tutorial assume that you chose the default ports as well as the default user name and lack of password.</p>
+
+        <p>With no arguments, the <code>start-domain</code> command initiates the default domain, which is <code>domain1</code>. The <code>--verbose</code> flag causes all logging and debugging output to appear on the terminal window or command prompt. The output also goes into the server log, which is located in <span class="variable">domain-dir</span><code>/logs/server.log</code>.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref130"></a>
+
+        <h2 class="sect2"><span class="secnum">2.2.4</span> To Stop GlassFish Server Using the Command Line</h2>
+
+        <p><a id="sthref131"></a>To stop GlassFish Server, open a terminal window or command prompt and execute:</p>
+        <pre class="oac_no_warn" xml:space="preserve">asadmin stop-domain domain1</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNADJ"></a><a id="JEETT00319"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.3</span> <a id="sthref132"></a>Starting the Administration Console</h1>
+
+      <p>To administer GlassFish Server and manage users, resources, and Java EE applications, use the Administration Console tool. GlassFish Server must be running before you invoke the Administration Console. To start the Administration Console, open a browser at <code>http://localhost:4848/</code>.</p><a id="GJKST"></a><a id="JEETT00140"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.3.1</span> To Start the Administration Console Using NetBeans IDE</h2>
+
+        <ol>
+          <li>
+            <p>Click the <span class="gui-object-action">Services</span> tab.</p>
+          </li>
+
+          <li>
+            <p>Expand <span class="gui-object-action">Servers</span>.</p>
+          </li>
+
+          <li>
+            <p>Right-click the GlassFish Server instance and select <span class="gui-object-action">View Domain Admin Console</span>.</p>
+
+            <div align="center">
+              <div class="inftblnote">
+                <br />
+
+                <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+                  <tbody>
+                    <tr>
+                      <td align="left">
+                        <p class="notep1">Note:</p>
+
+                        <p>NetBeans IDE uses your default web browser to open the Administration Console.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table><br />
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNADK"></a><a id="JEETT00320"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.4</span> <a id="sthref133"></a>Starting and Stopping the Java DB Server</h1>
+
+      <p>GlassFish Server includes the Java DB database server.</p>
+
+      <p>To start the Java DB server from the command line, open a terminal window or command prompt and execute:</p>
+      <pre class="oac_no_warn" xml:space="preserve">asadmin start-database</pre>
+
+      <p><a id="sthref134"></a>To stop the Java DB server from the command line, open a terminal window or command prompt and execute:</p>
+      <pre class="oac_no_warn" xml:space="preserve">asadmin stop-database</pre>
+
+      <p>For information about the Java DB included with GlassFish Server, see <code><a href="../Text/usingexamples.xhtml#http%3A//www.oracle.com/technetwork/java/javadb/overview/index.html">http://www.oracle.com/technetwork/java/javadb/overview/index.html</a></code>.</p><a id="GJSFS"></a><a id="JEETT00141"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.4.1</span> To Start the Database Server Using NetBeans IDE</h2>
+
+        <p>When you start GlassFish Server using NetBeans IDE, the database server starts automatically. If you ever need to start the server manually, however, follow these steps.</p>
+
+        <ol>
+          <li>
+            <p>Click the <span class="gui-object-action">Services</span> tab.</p>
+          </li>
+
+          <li>
+            <p>Expand <span class="gui-object-action">Databases</span>.</p>
+          </li>
+
+          <li>
+            <p>Right-click <span class="gui-object-action">Java DB</span> and select <span class="gui-object-action">Start Server</span>.</p>
+          </li>
+        </ol><a id="sthref135"></a>
+
+        <p class="subhead2">Next Steps</p>
+
+        <p>To stop the database using NetBeans IDE, right-click <span class="gui-object-action">Java DB</span> and select <span class="gui-object-action">Stop Server</span>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAAN"></a><a id="JEETT00321"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.5</span> <a id="sthref136"></a>Building the Examples</h1>
+
+      <p>The tutorial examples are distributed with a configuration file for either NetBeans IDE or Maven. Either NetBeans IDE or Maven may be used to build, package, deploy, and run the examples. Directions for building the examples are provided in each chapter.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GEXAP"></a><a id="JEETT00322"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.6</span> Tutorial Example Directory Structure</h1>
+
+      <p><a id="sthref137"></a><a id="sthref138"></a>To facilitate iterative development and keep application source files separate from compiled files, the tutorial examples use the Maven application directory structure.</p>
+
+      <p>Each application module has the following structure:</p>
+
+      <ul>
+        <li>
+          <p><code>pom.xml</code>: Maven build file</p>
+        </li>
+
+        <li>
+          <p><code>src/main/java</code>: Java source files for the module</p>
+        </li>
+
+        <li>
+          <p><code>src/main/resources</code>: configuration files for the module, with the exception of web applications</p>
+        </li>
+
+        <li>
+          <p><code>src/main/webapp</code>: web pages, style sheets, tag files, and images (web applications only)</p>
+        </li>
+
+        <li>
+          <p><code>src/main/webapp/WEB-INF</code>: configuration files for web applications (web applications only)</p>
+        </li>
+      </ul>
+
+      <p>When an example has multiple application modules packaged into an EAR file, its submodule directories use the following naming conventions:</p>
+
+      <ul>
+        <li>
+          <p><span class="variable">example-name</span><code>-app-client</code>: application clients</p>
+        </li>
+
+        <li>
+          <p><span class="variable">example-name</span><code>-ejb</code>: enterprise bean JAR files</p>
+        </li>
+
+        <li>
+          <p><span class="variable">example-name</span><code>-war</code>: web applications</p>
+        </li>
+
+        <li>
+          <p><span class="variable">example-name</span><code>-ear</code>: enterprise applications</p>
+        </li>
+
+        <li>
+          <p><span class="variable">example-name</span><code>-common</code>: library JAR containing components, classes, and files used by other modules</p>
+        </li>
+      </ul>
+
+      <p>The Maven build files (<code>pom.xml</code>) distributed with the examples contain goals to compile and assemble the application into the <code>target</code> directory and deploy the archive to GlassFish Server.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="CIHBHEFF"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.7</span> Java EE 7 Maven Archetypes in the Tutorial</h1>
+
+      <p>Some of the chapters have instructions on how to build an example application using Maven archetypes. <span class="glossaryterm">Archetypes</span> are templates for generating a particular Maven project. The Tutorial includes several Maven archetypes for generating Java EE 7 projects.</p><a id="CHDJGCCA"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.7.1</span> Installing the Tutorial Archetypes</h2>
+
+        <p>You must install the included Maven archetypes into your local Maven repository before you can create new projects based on the archetypes. You can install the archetypes using NetBeans IDE or Maven.</p>
+
+        <div class="sect3">
+          <a id="sthref139"></a>
+
+          <h3 class="sect3"><span class="secnum">2.7.1.1</span> Installing the Tutorial Archetypes Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve"><span class="variable">tut-install</span>/examples</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>archetypes</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>archetypes</code> project and select <span class="gui-object-action">Build</span>.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref140"></a>
+
+          <h3 class="sect3"><span class="secnum">2.7.1.2</span> Installing the Tutorial Archetypes Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve"><span class="variable">tut-install</span>/examples/archetypes/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve">mvn install</pre>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIQWR"></a><a id="JEETT00323"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.8</span> Getting the Latest Updates to the Tutorial</h1>
+
+      <p>Check for any updates to the tutorial by using the Update Tool included with the Java EE 7 SDK.</p><a id="GIQYK"></a><a id="JEETT00142"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.8.1</span> To Update the Tutorial Using NetBeans IDE</h2>
+
+        <ol>
+          <li>
+            <p>Open the <span class="gui-object-action">Services</span> tab in NetBeans IDE and expand <span class="gui-object-action">Servers</span>.</p>
+          </li>
+
+          <li>
+            <p>Right-click the GlassFish Server instance and select <span class="gui-object-action">View Domain Update Center</span> to display the Update Tool.</p>
+          </li>
+
+          <li>
+            <p>Select <span class="gui-object-action">Available Updates</span> in the tree to display a list of updated packages.</p>
+          </li>
+
+          <li>
+            <p>Look for updates to the Java EE 7 Tutorial (javaee-tutorial) package.</p>
+          </li>
+
+          <li>
+            <p>If there is an updated version of the Tutorial, select <span class="gui-object-action">Java EE 7 Tutorial</span> (javaee-tutorial) and click <span class="gui-object-action">Install</span>.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref141"></a>
+
+        <h2 class="sect2"><span class="secnum">2.8.2</span> To Update the Tutorial Using the Command Line</h2>
+
+        <ol>
+          <li>
+            <p>Open a terminal window and enter the following command to display the Update Tool:</p>
+            <pre class="oac_no_warn" xml:space="preserve">updatetool</pre>
+          </li>
+
+          <li>
+            <p>Select <span class="gui-object-action">Available Updates</span> in the tree to display a list of updated packages.</p>
+          </li>
+
+          <li>
+            <p>Look for updates to the Java EE 7 Tutorial (javaee-tutorial) package.</p>
+          </li>
+
+          <li>
+            <p>If there is an updated version of the Tutorial, select <span class="gui-object-action">Java EE 7 Tutorial</span> (javaee-tutorial) and click <span class="gui-object-action">Install</span>.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNADL"></a><a id="JEETT00324"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">2.9</span> <a id="sthref142"></a><a id="sthref143"></a>Debugging Java EE Applications</h1>
+
+      <p>This section explains how to determine what is causing an error in your application deployment or execution.</p><a id="BNADM"></a><a id="JEETT00889"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.9.1</span> <a id="sthref144"></a><a id="sthref145"></a><a id="sthref146"></a>Using the Server Log</h2>
+
+        <p>One way to debug applications is to look at the server log in <span class="variable">domain-dir</span><code>/logs/server.log</code>. The log contains output from GlassFish Server and your applications. You can log messages from any Java class in your application with <code>System.out.println</code> and the Java Logging APIs (documented at <code><a href="../Text/usingexamples.xhtml#http%3A//docs.oracle.com/javase/7/docs/technotes/guides/logging/index.html">http://docs.oracle.com/javase/7/docs/technotes/guides/logging/index.html</a></code>) and from web components with the <code>ServletContext.log</code> method.</p>
+
+        <p>If you use NetBeans IDE, logging output appears in the <span class="gui-object-title">Output</span> window as well as the server log.</p>
+
+        <p>If you start GlassFish Server with the <code>--verbose</code> flag, all logging and debugging output will appear on the terminal window or command prompt and the server log. If you start GlassFish Server in the background, debugging information is available only in the log. You can view the server log with a text editor or with the Administration Console log viewer.</p><a id="GJSGH"></a><a id="JEETT00143"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">2.9.1.1</span> To Use the Administration Console Log Viewer</h3>
+
+          <ol>
+            <li>
+              <p>Select the <span class="gui-object-action">GlassFish Server</span> node.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">View Log Files</span>.</p>
+
+              <p>The log viewer opens and displays the last 40 entries.</p>
+            </li>
+
+            <li>
+              <p>To display other entries, follow these steps.</p>
+
+              <ol>
+                <li>
+                  <p>Click <span class="gui-object-action">Modify Search</span>.</p>
+                </li>
+
+                <li>
+                  <p>Specify any constraints on the entries you want to see.</p>
+                </li>
+
+                <li>
+                  <p>Click <span class="gui-object-action">Search</span> at the top of the log viewer.</p>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </div>
+      </div><a id="BNADN"></a><a id="JEETT00890"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">2.9.2</span> Using a Debugger</h2>
+
+        <p>GlassFish Server supports the Java Platform Debugger Architecture (JPDA). With JPDA, you can configure GlassFish Server to communicate debugging information using a socket.</p><a id="GJQWL"></a><a id="JEETT00144"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">2.9.2.1</span> <a id="sthref147"></a>To Debug an Application Using a Debugger</h3>
+
+          <ol>
+            <li>
+              <p>Follow these steps to enable debugging in GlassFish Server using the Administration Console:</p>
+
+              <ol>
+                <li>
+                  <p>Expand the <span class="gui-object-action">Configurations</span> node, then expand the <span class="gui-object-action">server-config</span> node.</p>
+                </li>
+
+                <li>
+                  <p>Select the <span class="gui-object-action">JVM Settings</span> node. The default debug options are set to:</p>
+                  <pre class="oac_no_warn" xml:space="preserve">-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=9009</pre>
+
+                  <p>As you can see, the default debugger socket port is 9009. You can change it to a port not in use by GlassFish Server or another service.</p>
+                </li>
+
+                <li>
+                  <p>Select the <span class="gui-object-action">Debug Enabled</span> check box.</p>
+                </li>
+
+                <li>
+                  <p>Click <span class="gui-object-action">Save</span>.</p>
+                </li>
+              </ol>
+            </li>
+
+            <li>
+              <p>Stop GlassFish Server and then restart it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

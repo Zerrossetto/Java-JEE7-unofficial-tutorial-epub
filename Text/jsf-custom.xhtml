@@ -1,0 +1,2018 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BNAVG"></a><a id="JEETT00076"></a>
+
+    <h1 class="chapter"><span class="secnum">15</span> <a id="sthref863"></a>Creating Custom UI Components and Other Custom Objects</h1>
+
+    <p><a id="sthref864"></a>JavaServer Faces technology offers a basic set of standard, reusable UI components that enable quick and easy construction of user interfaces for web applications. These components mostly map one-to-one to the elements in HTML 4. But often an application requires a component that has additional functionality or requires a completely new component. JavaServer Faces technology allows extension of standard components to enhance their functionality or to create custom components. A rich ecosystem of third-party component libraries is built on this extension capability, but it is beyond the scope of this tutorial to examine them. A web search for "JSF Component Libraries" is a good starting point to learn more about this important aspect of using JavaServer Faces technology.</p>
+
+    <p>In addition to extending the functionality of standard components, a component writer might want to give a page author the ability to change the appearance of the component on the page or to alter listener behavior. Alternatively, the component writer might want to render a component to a different kind of client device type, such as a smartphone or a tablet instead of a desktop computer. Enabled by the flexible JavaServer Faces architecture, a component writer can separate the definition of the component behavior from its appearance by delegating the rendering of the component to a separate renderer. In this way, a component writer can define the behavior of a custom component once but create multiple renderers, each of which defines a different way to render the component to a particular kind of client device.</p>
+
+    <p>A <code>javax.faces.component.UIComponent</code> is a Java class that is responsible for representing a self-contained piece of the user interface during the request-processing lifecycle. It is intended to represent the meaning of the component; the visual representation of the component is the responsibility of the <code>javax.faces.render.Renderer</code>. There can be multiple instances of the same <code>UIComponent</code> class in any given JavaServer Faces view, just as there can be multiple instances of any Java class in any given Java program.</p>
+
+    <p>JavaServer Faces technology provides the ability to create custom components by extending the <code>UIComponent</code> class, the base class for all standard UI components. A custom component can be used anywhere an ordinary component can be used, such as within a composite component. A <code>UIComponent</code> is identified by two names: <code>component-family</code> specifies the general purpose of the component (input or output, for instance), and <code>component-type</code> indicates the specific purpose of a component, such as a text input field or a command button.</p>
+
+    <p>A <code>Renderer</code> is a helper to the <code>UIComponent</code> that deals with how that specific <code>UIComponent</code> class should appear in a specific kind of client device. Renderers are identified by two names: <code>render-kit-id</code> and <code>renderer-type</code>. A render kit is just a bucket into which a particular group of renderers is placed, and the <code>render-kit-id</code> identifies the group. Most JavaServer Faces component libraries provide their own render kits.</p>
+
+    <p>A <code>javax.faces.view.facelets.Tag</code> object is a helper to the <code>UIComponent</code> and <code>Renderer</code> that allows the page author to include an instance of a <code>UIComponent</code> in a JavaServer Faces view. A tag represents a specific combination of <code>component-type</code> and <code>renderer-type</code>.</p>
+
+    <p>See <a href="../Text/jsf-custom.xhtml#BNAVK">Component, Renderer, and Tag Combinations</a> for information on how components, renderers, and tags interact.</p>
+
+    <p>This chapter uses the image map component from the Duke's Bookstore case study example to explain how you can create simple custom components, custom renderers, and associated custom tags, and take care of all the other details associated with using the components and renderers in an application. See <a href="../Text/dukes-bookstore.xhtml#GLNVI">Chapter 57, "Duke's Bookstore Case Study Example"</a> for more information about this example.</p>
+
+    <p>The chapter also describes how to create other custom objects: custom converters, custom listeners, and custom validators. It also describes how to bind component values and instances to data objects and how to bind custom objects to managed bean properties.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAVH">Determining Whether You Need a Custom Component or Renderer</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#GLPCB">Understanding the Image Map Example</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAVT">Steps for Creating a Custom Component</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAVU">Creating Custom Component Classes</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAWA">Delegating Rendering to a Renderer</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAUT">Implementing an Event Listener</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAWD">Handling Events for Custom Components</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAWN">Defining the Custom Component Tag in a Tag Library Descriptor</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNATT">Using a Custom Component</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAUS">Creating and Using a Custom Converter</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNAUW">Creating and Using a Custom Validator</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNATG">Binding Component Values and Instances to Managed Bean Properties</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-custom.xhtml#BNATM">Binding Converters, Listeners, and Validators to Managed Bean Properties</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BNAVH"></a><a id="JEETT00378"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.1</span> Determining Whether You Need a Custom Component or Renderer</h1>
+
+      <p>The JavaServer Faces implementation supports a very basic set of components and associated renderers. This section helps you to decide whether you can use standard components and renderers in your application or need a custom component or custom renderer.</p><a id="BNAVI"></a><a id="JEETT00978"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.1.1</span> <a id="sthref865"></a>When to Use a Custom Component</h2>
+
+        <p><a id="sthref866"></a>A component class defines the state and behavior of a UI component. This behavior includes converting the value of a component to the appropriate markup, queuing events on components, performing validation, and any other behavior related to how the component interacts with the browser and the request-processing lifecycle.</p>
+
+        <p>You need to create a custom component in the following situations.</p>
+
+        <ul>
+          <li>
+            <p>You need to add new behavior to a standard component, such as generating an additional type of event (for example, notifying another part of the page that something changed in this component as a result of user interaction).</p>
+          </li>
+
+          <li>
+            <p>You need to take a different action in the request processing of the value of a component from what is available in any of the existing standard components.</p>
+          </li>
+
+          <li>
+            <p>You want to take advantage of an HTML capability offered by your target browser, but none of the standard JavaServer Faces components take advantage of the capability in the way you want, if at all. The current release does not contain standard components for complex HTML components, such as frames; however, because of the extensibility of the component architecture, you can use JavaServer Faces technology to create components like these. The Duke's Bookstore case study creates custom components that correspond to the HTML <code>map</code> and <code>area</code> tags.</p>
+          </li>
+
+          <li>
+            <p>You need to render to a non-HTML client that requires extra components not supported by HTML. Eventually, the standard HTML render kit will provide support for all standard HTML components. However, if you are rendering to a different client, such as a phone, you might need to create custom components to represent the controls uniquely supported by the client. For example, some component architectures for wireless clients include support for tickers and progress bars, which are not available on an HTML client. In this case, you might also need a custom renderer along with the component, or you might need only a custom renderer.</p>
+          </li>
+        </ul>
+
+        <p>You do not need to create a custom component in the following cases.</p>
+
+        <ul>
+          <li>
+            <p>You need to aggregate components to create a new component that has its own unique behavior. In this situation, you can use a composite component to combine existing standard components. For more information on composite components, see <a href="../Text/jsf-facelets.xhtml#GIQZR">Composite Components</a> and <a href="../Text/jsf-advanced-cc.xhtml#GKHXA">Chapter 14, "Composite Components: Advanced Topics and an Example"</a>.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref867"></a>You simply need to manipulate data on the component or add application-specific functionality to it. In this situation, you should create a managed bean for this purpose and bind it to the standard component rather than create a custom component. See <a href="../Text/jsf-develop.xhtml#BNAQM">Managed Beans in JavaServer Faces Technology</a> for more information on managed beans.</p>
+          </li>
+
+          <li>
+            <p>You need to convert a component's data to a type not supported by its renderer. See <a href="../Text/jsf-page-core.xhtml#BNAST">Using the Standard Converters</a> for more information about converting a component's data.</p>
+          </li>
+
+          <li>
+            <p>You need to perform validation on the component data. Standard validators and custom validators can be added to a component by using the validator tags from the page. See <a href="../Text/jsf-page-core.xhtml#BNATC">Using the Standard Validators</a> and <a href="../Text/jsf-custom.xhtml#BNAUW">Creating and Using a Custom Validator</a> for more information about validating a component's data.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref868"></a><a id="sthref869"></a><a id="sthref870"></a>You need to register event listeners on components. You can either register event listeners on components using the <code>f:valueChangeListener</code> and <code>f:actionListener</code> tags, or you can point at an event-processing method on a managed bean using the component's <code>actionListener</code> or <code>valueChangeListener</code> attributes. See <a href="../Text/jsf-custom.xhtml#BNAUT">Implementing an Event Listener</a> and <a href="../Text/jsf-develop.xhtml#BNAVB">Writing Managed Bean Methods</a> for more information.</p>
+          </li>
+        </ul>
+      </div><a id="BNAVJ"></a><a id="JEETT00979"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.1.2</span> <a id="sthref871"></a>When to Use a Custom Renderer</h2>
+
+        <p>A renderer, which generates the markup to display a component on a web page, allows you to separate the semantics of a component from its appearance. By keeping this separation, you can support different kinds of client devices with the same kind of authoring experience. You can think of a renderer as a "client adapter." It produces output suitable for consumption and display by the client and accepts input from the client when the user interacts with that component.</p>
+
+        <p>If you are creating a custom component, you need to ensure, among other things, that your component class performs these operations that are central to rendering the component:</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref872"></a><span class="glossaryterm">Decoding</span>: Converting the incoming request parameters to the local value of the component</p>
+          </li>
+
+          <li>
+            <p><a id="sthref873"></a><span class="glossaryterm">Encoding</span>: Converting the current local value of the component into the corresponding markup that represents it in the response</p>
+          </li>
+        </ul>
+
+        <p>The JavaServer Faces specification supports two programming models for handling encoding and decoding.</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref874"></a><span class="glossaryterm">Direct implementation</span>: The component class itself implements the decoding and encoding.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref875"></a><span class="glossaryterm">Delegated implementation</span>: The component class delegates the implementation of encoding and decoding to a separate renderer.</p>
+          </li>
+        </ul>
+
+        <p>By delegating the operations to the renderer, you have the option of associating your custom component with different renderers so that you can render the component on different clients. If you don't plan to render a particular component on different clients, it may be simpler to let the component class handle the rendering. However, a separate renderer enables you to preserve the separation of semantics from appearance. The Duke's Bookstore application separates the renderers from the components, although it renders only to HTML 4 web browsers.</p>
+
+        <p>If you aren't sure whether you will need the flexibility offered by separate renderers but you want to use the simpler direct-implementation approach, you can actually use both models. Your component class can include some default rendering code, but it can delegate rendering to a renderer if there is one.</p>
+      </div><a id="BNAVK"></a><a id="JEETT00980"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.1.3</span> <a id="sthref876"></a><a id="sthref877"></a>Component, Renderer, and Tag Combinations</h2>
+
+        <p>When you create a custom component, you can create a custom renderer to go with it. To associate the component with the renderer and to reference the component from the page, you will also need a custom tag.</p>
+
+        <p>Although you need to write the custom component and renderer, there is no need to write code for a custom tag (called a tag handler). If you specify the component and renderer combination, Facelets creates the tag handler automatically.</p>
+
+        <p>In rare situations, you might use a custom renderer with a standard component rather than a custom component. Or you might use a custom tag without a renderer or a component. This section gives examples of these situations and summarizes what is required for a custom component, renderer, and tag.</p>
+
+        <p>You would use a custom renderer without a custom component if you wanted to add some client-side validation on a standard component. You would implement the validation code with a client-side scripting language, such as JavaScript, and then render the JavaScript with the custom renderer. In this situation, you need a custom tag to go with the renderer so that its tag handler can register the renderer on the standard component.</p>
+
+        <p>Custom components as well as custom renderers need custom tags associated with them. However, you can have a custom tag without a custom renderer or custom component. For example, suppose that you need to create a custom validator that requires extra attributes on the validator tag. In this case, the custom tag corresponds to a custom validator and not to a custom component or custom renderer. In any case, you still need to associate the custom tag with a server-side object.</p>
+
+        <p><a href="../Text/jsf-custom.xhtml#BNAVL">Table 15-1</a> summarizes what you must or can associate with a custom component, custom renderer, or custom tag.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref878"></a><a id="BNAVL"></a>
+
+          <p class="titleintable">Table 15-1 Requirements for Custom Components, Custom Renderers, and Custom Tags</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists what items are required and optional for custom components, renderers, and tags." title="Requirements for Custom Components, Custom Renderers, and Custom Tags" width="100%">
+            <col width="20%" />
+            <col width="*" />
+            <col width="40%" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t2" valign="bottom">Custom Item</th>
+
+                <th align="left" id="r1c2-t2" valign="bottom">Must Have</th>
+
+                <th align="left" id="r1c3-t2" valign="bottom">Can Have</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                  <p>Custom component</p>
+                </td>
+
+                <td align="left" headers="r2c1-t2 r1c2-t2">
+                  <p>Custom tag</p>
+                </td>
+
+                <td align="left" headers="r2c1-t2 r1c3-t2">
+                  <p>Custom renderer or standard renderer</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                  <p>Custom renderer</p>
+                </td>
+
+                <td align="left" headers="r3c1-t2 r1c2-t2">
+                  <p>Custom tag</p>
+                </td>
+
+                <td align="left" headers="r3c1-t2 r1c3-t2">
+                  <p>Custom component or standard component</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                  <p>Custom JavaServer Faces tag</p>
+                </td>
+
+                <td align="left" headers="r4c1-t2 r1c2-t2">
+                  <p>Some server-side object, like a component, a custom renderer, or custom validator</p>
+                </td>
+
+                <td align="left" headers="r4c1-t2 r1c3-t2">
+                  <p>Custom component or standard component associated with a custom renderer</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GLPCB"></a><a id="JEETT00379"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.2</span> Understanding the Image Map Example</h1>
+
+      <p>Duke's Bookstore includes a custom image map component on the <code>index.xhtml</code> page. This image map displays a selection of six book titles. When the user clicks one of the book titles in the image map, the application goes to a page that displays the title of the selected book as well as information about a featured book. The page allows the user to add either book (or none) to the shopping cart.</p><a id="GLPBD"></a><a id="JEETT00981"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.2.1</span> Why Use JavaServer Faces Technology to Implement an Image Map?</h2>
+
+        <p>JavaServer Faces technology is an ideal framework to use for implementing this kind of image map because it can perform the work that must be done on the server without requiring you to create a server-side image map.</p>
+
+        <p>In general, client-side image maps are preferred over server-side image maps for several reasons. One reason is that the client-side image map allows the browser to provide immediate feedback when a user positions the mouse over a hotspot. Another reason is that client-side image maps perform better because they don't require round-trips to the server. However, in some situations, your image map might need to access the server to retrieve data or to change the appearance of nonform controls, tasks that a client-side image map cannot do.</p>
+
+        <p>Because the image map custom component uses JavaServer Faces technology, it has the best of both styles of image maps: It can handle the parts of the application that need to be performed on the server while allowing the other parts of the application to be performed on the client side.</p>
+      </div><a id="GLPEM"></a><a id="JEETT00982"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.2.2</span> Understanding the Rendered HTML</h2>
+
+        <p>Here is an abbreviated version of the form part of the HTML page that the application needs to render:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;form id="j_idt13" name="j_idt13" method="post"
+        action="/dukesbookstore/index.xhtml" ...&gt;
+    ...
+    &lt;img id="j_idt13:mapImage"
+         src="/dukesbookstore/javax.faces.resource/book_all.jpg?ln=images"
+         alt="Choose a Book from our Catalog"
+         usemap="#bookMap" /&gt;
+    ...
+    &lt;map name="bookMap"&gt;
+       &lt;area alt="Duke"                        
+          coords="67,23,212,268"
+          shape="rect"
+          onmouseout="document.forms[0]['j_idt13:mapImage'].src='resources/images/book_all.jpg'"
+          onmouseover="document.forms[0]['j_idt13:mapImage'].src='resources/images/book_201.jpg'"
+          onclick="document.forms[0]['bookMap_current'].value='Duke'; document.forms[0].submit()"
+       /&gt;
+    ...
+       &lt;input type="hidden" name="bookMap_current"&gt;
+    &lt;/map&gt;
+    ...
+&lt;/form&gt;</pre>
+
+        <p>The <code>img</code> tag associates an image (<code>book_all.jpg</code>) with the image map referenced in the <code>usemap</code> attribute value.</p>
+
+        <p>The <code>map</code> tag specifies the image map and contains a set of <code>area</code> tags.</p>
+
+        <p>Each <code>area</code> tag specifies a region of the image map. The <code>onmouseover</code>, <code>onmouseout</code>, and <code>onclick</code> attributes define which JavaScript code is executed when these events occur. When the user moves the mouse over a region, the <code>onmouseover</code> function associated with the region displays the map with that region highlighted. When the user moves the mouse out of a region, the <code>onmouseout</code> function redisplays the original image. If the user clicks on a region, the <code>onclick</code> function sets the value of the <code>input</code> tag to the ID of the selected area and submits the page.</p>
+
+        <p>The <code>input</code> tag represents a hidden control that stores the value of the currently selected area between client-server exchanges so that the server-side component classes can retrieve the value.</p>
+
+        <p>The server-side objects retrieve the value of <code>bookMap_current</code> and set the locale in the <code>javax.faces.context.FacesContext</code> instance according to the region that was selected.</p>
+      </div><a id="GLPCD"></a><a id="JEETT00983"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.2.3</span> Understanding the Facelets Page</h2>
+
+        <p>Here is an abbreviated form of the Facelets page that the image map component uses to generate the HTML page shown in the preceding section. It uses custom <code>bookstore:map</code> and <code>bookstore:area</code> tags to represent the custom components:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:form&gt;
+    ...
+        &lt;h:graphicImage id="mapImage" 
+                        name="book_all.jpg"
+                        library="images"
+                        alt="#{bundle.ChooseBook}"
+                        usemap="#bookMap" /&gt;
+        &lt;bookstore:map id="bookMap" 
+                       current="map1"
+                       immediate="true"
+                       action="bookstore"&gt;
+            &lt;f:actionListener
+                type="dukesbookstore.listeners.MapBookChangeListener" /&gt;
+            &lt;bookstore:area id="map1" value="#{Book201}"
+                            onmouseover="resources/images/book_201.jpg"
+                            onmouseout="resources/images/book_all.jpg"
+                            targetImage="mapImage" /&gt;
+            &lt;bookstore:area id="map2" value="#{Book202}" 
+                            onmouseover="resources/images/book_202.jpg"
+                            onmouseout="resources/images/book_all.jpg" 
+                            targetImage="mapImage"/&gt;
+            ...
+        &lt;/bookstore:map&gt;
+    ...
+&lt;/h:form&gt;</pre>
+
+        <p><a id="sthref879"></a><a id="sthref880"></a>The <code>alt</code> attribute of the <code>h:graphicImage</code> tag maps to the localized string <code>"Choose a Book from our Catalog"</code>.</p>
+
+        <p><a id="sthref881"></a><a id="sthref882"></a>The <code>f:actionListener</code> tag within the <code>bookstore:map</code> tag points to a listener class for an action event. The <code>processAction</code> method of the listener places the book ID for the selected map area into the session map. The way this event is handled is explained more in <a href="../Text/jsf-custom.xhtml#BNAWD">Handling Events for Custom Components</a>.</p>
+
+        <p><a id="sthref883"></a><a id="sthref884"></a>The <code>action</code> attribute of the <code>bookstore:map</code> tag specifies a logical outcome <code>String</code>, <code>"bookstore"</code>, which by implicit navigation rules sends the application to the page <code>bookstore.xhtml</code>. For more information on navigation, see <a href="../Text/jsf-configure.xhtml#BNAXF">Configuring Navigation Rules</a>.</p>
+
+        <p><a id="sthref885"></a><a id="sthref886"></a>The <code>immediate</code> attribute of the <code>bookstore:map</code> tag is set to <code>true</code>, which indicates that the default <code>javax.faces.event.ActionListener</code> implementation should execute during the Apply Request Values phase of the request-processing lifecycle, instead of waiting for the Invoke Application phase. Because the request resulting from clicking the map does not require any validation, data conversion, or server-side object updates, it makes sense to skip directly to the Invoke Application phase.</p>
+
+        <p>The <code>current</code> attribute of the <code>bookstore:map</code> tag is set to the default area, which is <code>map1</code> (the book <span class="italic">My Early Years: Growing Up on Star7</span>, by Duke).</p>
+
+        <p>Notice that the <code>bookstore:area</code> tags do not contain any of the JavaScript, coordinate, or shape data that is displayed on the HTML page. The JavaScript is generated by the <code>dukesbookstore.renderers.AreaRenderer</code> class. The <code>onmouseover</code> and <code>onmouseout</code> attribute values indicate the image to be loaded when these events occur. How the JavaScript is generated is explained more in <a href="../Text/jsf-custom.xhtml#BNAVW">Performing Encoding</a>.</p>
+
+        <p>The coordinate, shape, and alternate text data are obtained through the <code>value</code> attribute, whose value refers to an attribute in application scope. The value of this attribute is a bean, which stores the <code>coords</code>, <code>shape</code>, and <code>alt</code> data. How these beans are stored in the application scope is explained more in the next section.</p>
+      </div><a id="GLPBO"></a><a id="JEETT00984"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.2.4</span> Configuring Model Data</h2>
+
+        <p><a id="sthref887"></a><a id="sthref888"></a>In a JavaServer Faces application, data such as the coordinates of a hotspot of an image map is retrieved from the <code>value</code> attribute through a bean. However, the shape and coordinates of a hotspot should be defined together because the coordinates are interpreted differently depending on what shape the hotspot is. Because a component's value can be bound only to one property, the <code>value</code> attribute cannot refer to both the shape and the coordinates.</p>
+
+        <p><a id="sthref889"></a><a id="sthref890"></a>To solve this problem, the application encapsulates all of this information in a set of <code>ImageArea</code> objects. These objects are initialized into application scope by the managed bean creation facility (see <a href="../Text/jsf-configure.xhtml#BNAWR">Section 16.4.1, "Using the managed-bean Element"</a>). Here is part of the managed bean declaration for the <code>ImageArea</code> bean corresponding to the South America hotspot:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean eager="true"&gt;
+    ...
+    &lt;managed-bean-name&gt;Book201&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;
+        javaeetutorial.dukesbookstore.model.ImageArea
+    &lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt;application&lt;/managed-bean-scope&gt;
+    &lt;managed-property&gt;
+        ...
+        &lt;property-name&gt;shape&lt;/property-name&gt;
+        &lt;value&gt;rect&lt;/value&gt;
+    &lt;/managed-property&gt;
+    &lt;managed-property&gt;
+        ...
+        &lt;property-name&gt;alt&lt;/property-name&gt;
+        &lt;value&gt;Duke&lt;/value&gt;
+    &lt;/managed-property&gt;
+    &lt;managed-property&gt;
+        ...
+        &lt;property-name&gt;coords&lt;/property-name&gt;
+        &lt;value&gt;67,23,212,268&lt;/value&gt;
+    &lt;/managed-property&gt;
+&lt;/managed-bean&gt;</pre>
+
+        <p>For more information on initializing managed beans with the managed bean creation facility, see the section <a href="../Text/jsf-configure.xhtml#BNAWP">Application Configuration Resource File</a>.</p>
+
+        <p>The <code>value</code> attributes of the <code>bookstore:area</code> tags refer to the beans in the application scope, as shown in this <code>bookstore:area</code> tag from <code>index.xhtml</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;bookstore:area id="map1" <b>value</b>="#{Book201}"
+                onmouseover="resources/images/book_201.jpg"
+                onmouseout="resources/images/book_all.jpg"
+                targetImage="mapImage" /&gt;<br /></pre>
+
+        <p>To reference the <code>ImageArea</code> model object bean values from the component class, you implement a <code>getValue</code> method in the component class. This method calls <code>super.getValue</code>. The superclass of <span class="variable">tut-install</span><code>/examples/case-studies/dukes-bookstore/src/java/dukesbookstore/components/AreaComponent.java</code>, <code>UIOutput</code>, has a <code>getValue</code> method that does the work of finding the <code>ImageArea</code> object associated with <code>AreaComponent</code>. The <code>AreaRenderer</code> class, which needs to render the <code>alt</code>, <code>shape</code>, and <code>coords</code> values from the <code>ImageArea</code> object, calls the <code>getValue</code> method of <code>AreaComponent</code> to retrieve the <code>ImageArea</code> object.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ImageArea iarea = (ImageArea) area.getValue();</pre>
+
+        <p><code>ImageArea</code> is a simple bean, so you can access the shape, coordinates, and alternative text values by calling the appropriate accessor methods of <code>ImageArea</code>. <a href="../Text/jsf-custom.xhtml#BNAWB">Creating the Renderer Class</a> explains how to do this in the <code>AreaRenderer</code> class.</p>
+      </div><a id="GLPEL"></a><a id="JEETT00985"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.2.5</span> Summary of the Image Map Application Classes</h2>
+
+        <p><a href="../Text/jsf-custom.xhtml#GLPEK">Table 15-2</a> summarizes all the classes needed to implement the image map component.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref891"></a><a id="GLPEK"></a>
+
+          <p class="titleintable">Table 15-2 Image Map Classes</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the classes needed for an image map implementation." title="Image Map Classes" width="100%">
+            <col width="26%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t3" valign="bottom">Class</th>
+
+                <th align="left" id="r1c2-t3" valign="bottom">Function</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r2c1-t3">
+                  <p><code>AreaSelectedEvent</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t3 r1c2-t3">
+                  <p>The <code>javax.faces.event.ActionEvent</code> indicating that an <code>AreaComponent</code> from the <code>MapComponent</code> has been selected.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r3c1-t3">
+                  <p><code>AreaComponent</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t3 r1c2-t3">
+                  <p>The class that defines <code>AreaComponent</code>, which corresponds to the <code>bookstore:area</code> custom tag.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r4c1-t3">
+                  <p><code>MapComponent</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t3 r1c2-t3">
+                  <p>The class that defines <code>MapComponent</code>, which corresponds to the <code>bookstore:map</code> custom tag.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r5c1-t3">
+                  <p><code>AreaRenderer</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t3 r1c2-t3">
+                  <p>This <code>javax.faces.render.Renderer</code> performs the delegated rendering for <code>AreaComponent</code>.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r6c1-t3">
+                  <p><code>ImageArea</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t3 r1c2-t3">
+                  <p>The bean that stores the shape and coordinates of the hotspots.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t3" id="r7c1-t3">
+                  <p><code>MapBookChangeListener</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t3 r1c2-t3">
+                  <p>The action listener for the <code>MapComponent</code>.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>The Duke's Bookstore source directory, called <span class="variable">bookstore-dir</span>, is <span class="variable">tut-install</span><code>/examples/case-studies/dukes-bookstore/src/java/dukesbookstore/</code>. The event and listener classes are located in <span class="variable">bookstore-dir</span><code>/listeners/</code>. The component classes are located in <span class="variable">bookstore-dir</span><code>/components/</code>. The renderer classes are located in <span class="variable">bookstore-dir</span><code>/renderers/</code>. <code>ImageArea</code> is located in <span class="variable">bookstore-dir</span><code>/model/</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAVT"></a><a id="JEETT00380"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.3</span> <a id="sthref892"></a>Steps for Creating a Custom Component</h1>
+
+      <p>You can apply the following steps while developing your own custom component.</p>
+
+      <ol>
+        <li>
+          <p>Create a custom component class that does the following:</p>
+
+          <ol>
+            <li>
+              <p>Overrides the <code>getFamily</code> method to return the component family, which is used to look up renderers that can render the component</p>
+            </li>
+
+            <li>
+              <p>Includes the rendering code or delegates it to a renderer (explained in Step <a href="../Text/jsf-custom.xhtml#CDECBJAE">2</a>)</p>
+            </li>
+
+            <li>
+              <p>Enables component attributes to accept expressions</p>
+            </li>
+
+            <li>
+              <p>Queues an event on the component if the component generates events</p>
+            </li>
+
+            <li>
+              <p>Saves and restores the component state</p>
+            </li>
+          </ol>
+        </li>
+
+        <li>
+          <a id="CDECBJAE"></a>
+
+          <p>Delegate rendering to a renderer if your component does not handle the rendering. To do this:</p>
+
+          <ol>
+            <li>
+              <p>Create a custom renderer class by extending <code>javax.faces.render.Renderer</code>.</p>
+            </li>
+
+            <li>
+              <p>Register the renderer to a render kit.</p>
+            </li>
+          </ol>
+        </li>
+
+        <li>
+          <p><a id="sthref893"></a>Register the component.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref894"></a>Create an event handler if your component generates events.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref895"></a>Create a tag library descriptor (TLD) that defines the custom tag.</p>
+        </li>
+      </ol>
+
+      <p>See <a href="../Text/jsf-configure.xhtml#BNAXI">Registering a Custom Component</a> and <a href="../Text/jsf-configure.xhtml#BNAXH">Registering a Custom Renderer with a Render Kit</a> for information on registering the custom component and the renderer. The section <a href="../Text/jsf-custom.xhtml#BNATT">Using a Custom Component</a> discusses how to use the custom component in a JavaServer Faces page.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAVU"></a><a id="JEETT00381"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.4</span> <a id="sthref896"></a>Creating Custom Component Classes</h1>
+
+      <p>As explained in <a href="../Text/jsf-custom.xhtml#BNAVI">When to Use a Custom Component</a>, a component class defines the state and behavior of a UI component. The state information includes the component's type, identifier, and local value. The behavior defined by the component class includes the following:</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref897"></a>Decoding (converting the request parameter to the component's local value)</p>
+        </li>
+
+        <li>
+          <p><a id="sthref898"></a>Encoding (converting the local value into the corresponding markup)</p>
+        </li>
+
+        <li>
+          <p>Saving the state of the component</p>
+        </li>
+
+        <li>
+          <p>Updating the bean value with the local value</p>
+        </li>
+
+        <li>
+          <p>Processing validation on the local value</p>
+        </li>
+
+        <li>
+          <p>Queueing events</p>
+        </li>
+      </ul>
+
+      <p><a id="sthref899"></a>The <code>javax.faces.component.UIComponentBase</code> class defines the default behavior of a component class. All the classes representing the standard components extend from <code>UIComponentBase</code>. These classes add their own behavior definitions, as your custom component class will do.</p>
+
+      <p><a id="sthref900"></a>Your custom component class must either extend <code>UIComponentBase</code> directly or extend a class representing one of the standard components. These classes are located in the <code>javax.faces.component</code> package, and their names begin with <code>UI</code>.</p>
+
+      <p>If your custom component serves the same purpose as a standard component, you should extend that standard component rather than directly extend <code>UIComponentBase</code>. For example, suppose you want to create an editable menu component. It makes sense to have this component extend <code>UISelectOne</code> rather than <code>UIComponentBase</code> because you can reuse the behavior already defined in <code>UISelectOne</code>. The only new functionality you need to define is to make the menu editable.</p>
+
+      <p>Whether you decide to have your component extend <code>UIComponentBase</code> or a standard component, you might also want your component to implement one or more of these behavioral interfaces defined in the <code>javax.faces.component</code> package:</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref901"></a><code>ActionSource</code>: Indicates that the component can fire a <code>javax.faces.event.ActionEvent</code></p>
+        </li>
+
+        <li>
+          <p><a id="sthref902"></a><code>ActionSource2</code>: Extends <code>ActionSource</code> and allows component properties referencing methods that handle action events to use method expressions as defined by the EL</p>
+        </li>
+
+        <li>
+          <p><a id="sthref903"></a><code>EditableValueHolder</code>: Extends <code>ValueHolder</code> and specifies additional features for editable components, such as validation and emitting value-change events</p>
+        </li>
+
+        <li>
+          <p><a id="sthref904"></a><code>NamingContainer</code>: Mandates that each component rooted at this component has a unique ID</p>
+        </li>
+
+        <li>
+          <p><a id="sthref905"></a><code>StateHolder</code>: Denotes that a component has state that must be saved between requests</p>
+        </li>
+
+        <li>
+          <p><a id="sthref906"></a><code>ValueHolder</code>: Indicates that the component maintains a local value as well as the option of accessing data in the model tier</p>
+        </li>
+      </ul>
+
+      <p>If your component extends <code>UIComponentBase</code>, it automatically implements only <code>StateHolder</code>. Because all components directly or indirectly extend <code>UIComponentBase</code>, they all implement <code>StateHolder</code>. Any component that implements <code>StateHolder</code> also implements the <code>StateHelper</code> interface, which extends <code>StateHolder</code> and defines a <code>Map</code>-like contract that makes it easy for components to save and restore a partial view state.</p>
+
+      <p>If your component extends one of the other standard components, it might also implement other behavioral interfaces in addition to <code>StateHolder</code>. If your component extends <code>UICommand</code>, it automatically implements <code>ActionSource2</code>. If your component extends <code>UIOutput</code> or one of the component classes that extend <code>UIOutput</code>, it automatically implements <code>ValueHolder</code>. If your component extends <code>UIInput</code>, it automatically implements <code>EditableValueHolder</code> and <code>ValueHolder</code>. See the JavaServer Faces API documentation to find out what the other component classes implement.</p>
+
+      <p>You can also make your component explicitly implement a behavioral interface that it doesn't already by virtue of extending a particular standard component. For example, if you have a component that extends <code>UIInput</code> and you want it to fire action events, you must make it explicitly implement <code>ActionSource2</code> because a <code>UIInput</code> component doesn't automatically implement this interface.</p>
+
+      <p>The Duke's Bookstore image map example has two component classes: <code>AreaComponent</code> and <code>MapComponent</code>. The <code>MapComponent</code> class extends <code>UICommand</code> and therefore implements <code>ActionSource2</code>, which means it can fire action events when a user clicks on the map. The <code>AreaComponent</code> class extends the standard component <code>UIOutput</code>. The <code>@FacesComponent</code> annotation registers the components with the JavaServer Faces implementation:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@FacesComponent("DemoMap")
+public class MapComponent extends UICommand {...}
+
+@FacesComponent("DemoArea")
+public class AreaComponent extends UIOutput {...}</pre>
+
+      <p>The <code>MapComponent</code> class represents the component corresponding to the <code>bookstore:map</code> tag:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;bookstore:map id="bookMap" 
+               current="map1" 
+               immediate="true"
+               action="bookstore"&gt;
+    ...
+&lt;/bookstore:map&gt;</pre>
+
+      <p>The <code>AreaComponent</code> class represents the component corresponding to the <code>bookstore:area</code> tag:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;bookstore:area id="map1" value="#{Book201}" 
+                onmouseover="resources/images/book_201.jpg" 
+                onmouseout="resources/images/book_all.jpg" 
+                targetImage="mapImage"/&gt;</pre>
+
+      <p><code>MapComponent</code> has one or more <code>AreaComponent</code> instances as children. Its behavior consists of the following actions:</p>
+
+      <ul>
+        <li>
+          <p>Retrieving the value of the currently selected area</p>
+        </li>
+
+        <li>
+          <p>Defining the properties corresponding to the component's values</p>
+        </li>
+
+        <li>
+          <p>Generating an event when the user clicks on the image map</p>
+        </li>
+
+        <li>
+          <p>Queuing the event</p>
+        </li>
+
+        <li>
+          <p>Saving its state</p>
+        </li>
+
+        <li>
+          <p>Rendering the HTML <code>map</code> tag and the HTML <code>input</code> tag</p>
+        </li>
+      </ul>
+
+      <p><code>MapComponent</code> delegates the rendering of the HTML <code>map</code> and <code>input</code> tags to the <code>MapRenderer</code> class.</p>
+
+      <p><code>AreaComponent</code> is bound to a bean that stores the shape and coordinates of the region of the image map. You will see how all this data is accessed through the value expression in <a href="../Text/jsf-custom.xhtml#BNAWB">Creating the Renderer Class</a>. The behavior of <code>AreaComponent</code> consists of the following:</p>
+
+      <ul>
+        <li>
+          <p>Retrieving the shape and coordinate data from the bean</p>
+        </li>
+
+        <li>
+          <p>Setting the value of the hidden tag to the <code>id</code> of this component</p>
+        </li>
+
+        <li>
+          <p>Rendering the <code>area</code> tag, including the JavaScript for the <code>onmouseover</code>, <code>onmouseout</code>, and <code>onclick</code> functions</p>
+        </li>
+      </ul>
+
+      <p>Although these tasks are actually performed by <code>AreaRenderer</code>, <code>AreaComponent</code> must delegate the tasks to <code>AreaRenderer</code>. See <a href="../Text/jsf-custom.xhtml#BNAWA">Delegating Rendering to a Renderer</a> for more information.</p>
+
+      <p>The rest of this section describes the tasks that <code>MapComponent</code> performs as well as the encoding and decoding that it delegates to <code>MapRenderer</code>. <a href="../Text/jsf-custom.xhtml#BNAWD">Handling Events for Custom Components</a> details how <code>MapComponent</code> handles events.</p><a id="BNAVV"></a><a id="JEETT00986"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.4.1</span> Specifying the Component Family</h2>
+
+        <p>If your custom component class delegates rendering, it needs to override the <code>getFamily</code> method of <code>UIComponent</code> to return the identifier of a <span class="glossaryterm">component family</span>, which is used to refer to a component or set of components that can be rendered by a renderer or set of renderers. The component family is used along with the renderer type to look up renderers that can render the component:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public String getFamily() {
+    return ("Map");
+}</pre>
+
+        <p>The component family identifier, <code>Map</code>, must match that defined by the <code>component-family</code> elements included in the component and renderer configurations in the application configuration resource file. <a href="../Text/jsf-configure.xhtml#BNAXH">Registering a Custom Renderer with a Render Kit</a> explains how to define the component family in the renderer configuration. <a href="../Text/jsf-configure.xhtml#BNAXI">Registering a Custom Component</a> explains how to define the component family in the component configuration.</p>
+      </div><a id="BNAVW"></a><a id="JEETT00987"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.4.2</span> <a id="sthref907"></a>Performing Encoding</h2>
+
+        <p><a id="sthref908"></a>During the Render Response phase, the JavaServer Faces implementation processes the encoding methods of all components and their associated renderers in the view. The encoding methods convert the current local value of the component into the corresponding markup that represents it in the response.</p>
+
+        <p><a id="sthref909"></a><a id="sthref910"></a><a id="sthref911"></a><a id="sthref912"></a>The <code>UIComponentBase</code> class defines a set of methods for rendering markup: <code>encodeBegin</code>, <code>encodeChildren</code>, and <code>encodeEnd</code>. If the component has child components, you might need to use more than one of these methods to render the component; otherwise, all rendering should be done in <code>encodeEnd</code>. Alternatively, you can use the <code>encodeALL</code> method, which encompasses all the methods.</p>
+
+        <p>Because <code>MapComponent</code> is a parent component of <code>AreaComponent</code>, the <code>area</code> tags must be rendered after the beginning <code>map</code> tag and before the ending <code>map</code> tag. To accomplish this, the <code>MapRenderer</code> class renders the beginning <code>map</code> tag in <code>encodeBegin</code> and the rest of the <code>map</code> tag in <code>encodeEnd</code>.</p>
+
+        <p>The JavaServer Faces implementation automatically invokes the <code>encodeEnd</code> method of <code>AreaComponent</code>'s renderer after it invokes <code>MapRenderer</code>'s <code>encodeBegin</code> method and before it invokes <code>MapRenderer</code>'s <code>encodeEnd</code> method. If a component needs to perform the rendering for its children, it does this in the <code>encodeChildren</code> method.</p>
+
+        <p>Here are the <code>encodeBegin</code> and <code>encodeEnd</code> methods of <code>MapRenderer</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public void encodeBegin(FacesContext context, UIComponent component) 
+        throws IOException {
+    if ((context == null)|| (component == null)) {
+        throw new NullPointerException();
+    }
+    MapComponent map = (MapComponent) component;
+    ResponseWriter writer = context.getResponseWriter();
+    writer.startElement("map", map);
+    writer.writeAttribute("name", map.getId(), "id");
+}
+
+@Override
+public void encodeEnd(FacesContext context, UIComponent component) 
+        throws IOException {
+    if ((context == null) || (component == null)){
+        throw new NullPointerException();
+    }
+    MapComponent map = (MapComponent) component;
+    ResponseWriter writer = context.getResponseWriter();
+    writer.startElement("input", map);
+    writer.writeAttribute("type", "hidden", null);
+    writer.writeAttribute("name", getName(context,map), "clientId");
+    writer.endElement("input");
+    writer.endElement("map");
+}</pre>
+
+        <p>Notice that <code>encodeBegin</code> renders only the beginning <code>map</code> tag. The <code>encodeEnd</code> method renders the <code>input</code> tag and the ending <code>map</code> tag.</p>
+
+        <p><a id="sthref913"></a>The encoding methods accept a <code>UIComponent</code> argument and a <code>javax.faces.context.FacesContext</code> argument. The <code>FacesContext</code> instance contains all the information associated with the current request. The <code>UIComponent</code> argument is the component that needs to be rendered.</p>
+
+        <p>The rest of the method renders the markup to the <code>javax.faces.context.ResponseWriter</code> instance, which writes out the markup to the current response. This basically involves passing the HTML tag names and attribute names to the <code>ResponseWriter</code> instance as strings, retrieving the values of the component attributes, and passing these values to the <code>ResponseWriter</code> instance.</p>
+
+        <p>The <code>startElement</code> method takes a <code>String</code> (the name of the tag) and the component to which the tag corresponds (in this case, <code>map</code>). (Passing this information to the <code>ResponseWriter</code> instance helps design-time tools know which portions of the generated markup are related to which components.)</p>
+
+        <p>After calling <code>startElement</code>, you can call <code>writeAttribute</code> to render the tag's attributes. The <code>writeAttribute</code> method takes the name of the attribute, its value, and the name of a property or attribute of the containing component corresponding to the attribute. The last parameter can be null, and it won't be rendered.</p>
+
+        <p>The <code>name</code> attribute value of the <code>map</code> tag is retrieved using the <code>getId</code> method of <code>UIComponent</code>, which returns the component's unique identifier. The <code>name</code> attribute value of the <code>input</code> tag is retrieved using the <code>getName(FacesContext, UIComponent)</code> method of <code>MapRenderer</code>.</p>
+
+        <p>If you want your component to perform its own rendering but delegate to a renderer if there is one, include the following lines in the encoding method to check whether there is a renderer associated with this component:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">if (getRendererType() != null) {
+    super.encodeEnd(context);
+    return;
+}</pre>
+
+        <p>If there is a renderer available, this method invokes the superclass's <code>encodeEnd</code> method, which does the work of finding the renderer. The <code>MapComponent</code> class delegates all rendering to <code>MapRenderer</code>, so it does not need to check for available renderers.</p>
+
+        <p>In some custom component classes that extend standard components, you might need to implement other methods in addition to <code>encodeEnd</code>. For example, if you need to retrieve the component's value from the request parameters, you must also implement the <code>decode</code> method.</p>
+      </div><a id="BNAVX"></a><a id="JEETT00988"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.4.3</span> <a id="sthref914"></a>Performing Decoding</h2>
+
+        <p><a id="sthref915"></a><a id="sthref916"></a>During the Apply Request Values phase, the JavaServer Faces implementation processes the <code>decode</code> methods of all components in the tree. The <code>decode</code> method extracts a component's local value from incoming request parameters and uses a <code>javax.faces.convert.Converter</code> implementation to convert the value to a type that is acceptable to the component class.</p>
+
+        <p><a id="sthref917"></a><a id="sthref918"></a>A custom component class or its renderer must implement the <code>decode</code> method only if it must retrieve the local value or if it needs to queue events. The component queues the event by calling <code>queueEvent</code>.</p>
+
+        <p>Here is the <code>decode</code> method of <code>MapRenderer</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public void decode(FacesContext context, UIComponent component) {
+    if ((context == null) || (component == null)) {
+        throw new NullPointerException();
+    }
+    MapComponent map = (MapComponent) component;
+    String key = getName(context, map);
+    String value = (String) context.getExternalContext().
+            getRequestParameterMap().get(key);
+    if (value != null)
+        map.setCurrent(value);
+    }
+}</pre>
+
+        <p>The <code>decode</code> method first gets the name of the hidden <code>input</code> field by calling <code>getName(FacesContext, UIComponent)</code>. It then uses that name as the key to the request parameter map to retrieve the current value of the <code>input</code> field. This value represents the currently selected area. Finally, it sets the value of the <code>MapComponent</code> class's <code>current</code> attribute to the value of the <code>input</code> field.</p>
+      </div><a id="BNAVY"></a><a id="JEETT00989"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.4.4</span> Enabling Component Properties to Accept Expressions</h2>
+
+        <p><a id="sthref919"></a><a id="sthref920"></a>Nearly all the attributes of the standard JavaServer Faces tags can accept expressions, whether they are value expressions or method expressions. It is recommended that you also enable your component attributes to accept expressions because it gives you much more flexibility when you write Facelets pages.</p>
+
+        <p>To enable the attributes to accept expressions, the component class must implement getter and setter methods for the component properties. These methods can use the facilities offered by the <code>StateHelper</code> interface to store and retrieve not only the values for these properties but also the state of the components across multiple requests.</p>
+
+        <p>Because <code>MapComponent</code> extends <code>UICommand</code>, the <code>UICommand</code> class already does the work of getting the <code>ValueExpression</code> and <code>MethodExpression</code> instances associated with each of the attributes that it supports. Similarly, the <code>UIOutput</code> class that <code>AreaComponent</code> extends already obtains the <code>ValueExpression</code> instances for its supported attributes. For both components, the simple getter and setter methods store and retrieve the key values and state for the attributes, as shown in this code fragment from <code>AreaComponent</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">enum PropertyKeys {
+    alt, coords, shape, targetImage;
+}
+public String getAlt() {
+    return (String) getStateHelper().eval(PropertyKeys.alt, null);
+}
+public void setAlt(String alt) {
+    getStateHelper().put(PropertyKeys.alt, alt);
+}
+...</pre>
+
+        <p>However, if you have a custom component class that extends <code>UIComponentBase</code>, you will need to implement the methods that get the <code>ValueExpression</code> and <code>MethodExpression</code> instances associated with those attributes that are enabled to accept expressions. For example, you could include a method that gets the <code>ValueExpression</code> instance for the <code>immediate</code> attribute:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public boolean isImmediate() {
+    if (this.immediateSet) {
+        return (this.immediate);
+    }
+    ValueExpression ve = getValueExpression("immediate");
+    if (ve != null) {
+        Boolean value = (Boolean) ve.getValue(
+            getFacesContext().getELContext());
+        return (value.booleanValue());
+    } else {
+        return (this.immediate);
+    }
+}</pre>
+
+        <p>The properties corresponding to the component attributes that accept method expressions must accept and return a <code>MethodExpression</code> object. For example, if <code>MapComponent</code> extended <code>UIComponentBase</code> instead of <code>UICommand</code>, it would need to provide an <code>action</code> property that returns and accepts a <code>MethodExpression</code> object:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public MethodExpression getAction() {
+    return (this.action);
+}
+public void setAction(MethodExpression action) {
+    this.action = action;
+}</pre>
+      </div><a id="BNAVZ"></a><a id="JEETT00990"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.4.5</span> <a id="sthref921"></a>Saving and Restoring State</h2>
+
+        <p>As described in <a href="../Text/jsf-custom.xhtml#BNAVY">Enabling Component Properties to Accept Expressions</a>, use of the <code>StateHelper</code> interface facilities allows you to save the component's state at the same time you set and retrieve property values. The <code>StateHelper</code> implementation allows partial state saving; it saves only the changes in the state since the initial request, not the entire state, because the full state can be restored during the Restore View phase.</p>
+
+        <p><a id="sthref922"></a><a id="sthref923"></a><a id="sthref924"></a>Component classes that implement <code>StateHolder</code> may prefer to implement the <code>saveState(FacesContext)</code> and <code>restoreState(FacesContext, Object)</code> methods to help the JavaServer Faces implementation save and restore the state of components across multiple requests.</p>
+
+        <p>To save a set of values, you can implement the <code>saveState(FacesContext)</code> method. This method is called during the Render Response phase, during which the state of the response is saved for processing on subsequent requests. Here is a hypothetical method from <code>MapComponent</code>, which has only one attribute, <code>current</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public Object saveState(FacesContext context) {
+    Object values[] = new Object[2];
+    values[0] = super.saveState(context);
+    values[1] = current;
+    return (values);
+}</pre>
+
+        <p>This method initializes an array, which will hold the saved state. It next saves all of the state associated with the component.</p>
+
+        <p><a id="sthref925"></a>A component that implements <code>StateHolder</code> may also provide an implementation for <code>restoreState(FacesContext, Object)</code>, which restores the state of the component to that saved with the <code>saveState(FacesContext)</code> method. The <code>restoreState(FacesContext, Object)</code> method is called during the Restore View phase, during which the JavaServer Faces implementation checks whether there is any state that was saved during the last Render Response phase and needs to be restored in preparation for the next postback.</p>
+
+        <p>Here is a hypothetical <code>restoreState(FacesContext, Object)</code> method from <code>MapComponent</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void restoreState(FacesContext context, Object state) {
+    Object values[] = (Object[]) state;
+    super.restoreState(context, values[0]);
+    current = (String) values[1];
+}</pre>
+
+        <p>This method takes a <code>FacesContext</code> and an <code>Object</code> instance, representing the array that is holding the state for the component. This method sets the component's properties to the values saved in the <code>Object</code> array.</p>
+
+        <p><a id="sthref926"></a>Whether or not you implement these methods in your component class, you can use the <code>javax.faces.STATE_SAVING_METHOD</code> context parameter to specify in the deployment descriptor where you want the state to be saved: either <code>client</code> or <code>server</code>. If state is saved on the client, the state of the entire view is rendered to a hidden field on the page. By default, the state is saved on the server.</p>
+
+        <p>The web applications in the Duke's Forest case study save their view state on the client.</p>
+
+        <p>Saving state on the client uses more bandwidth as well as more client resources, whereas saving it on the server uses more server resources. You may also want to save state on the client if you expect your users to disable cookies.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAWA"></a><a id="JEETT00382"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.5</span> <a id="sthref927"></a>Delegating Rendering to a Renderer</h1>
+
+      <p>Both <code>MapComponent</code> and <code>AreaComponent</code> delegate all of their rendering to a separate renderer. The section <a href="../Text/jsf-custom.xhtml#BNAVW">Performing Encoding</a> explains how <code>MapRenderer</code> performs the encoding for <code>MapComponent</code>. This section explains in detail the process of delegating rendering to a renderer using <code>AreaRenderer</code>, which performs the rendering for <code>AreaComponent</code>.</p>
+
+      <p>To delegate rendering, you perform these tasks.</p>
+
+      <ul>
+        <li>
+          <p>Create the <code>Renderer</code> class.</p>
+        </li>
+
+        <li>
+          <p>Register the renderer with a render kit by using the <code>@FacesRenderer</code> annotation (or by using the application configuration resource file, as explained in <a href="../Text/jsf-configure.xhtml#BNAXH">Registering a Custom Renderer with a Render Kit</a>).</p>
+        </li>
+
+        <li>
+          <p><a id="sthref928"></a>Identify the renderer type in the <code>FacesRenderer</code> annotation.</p>
+        </li>
+      </ul><a id="BNAWB"></a><a id="JEETT00991"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.5.1</span> <a id="sthref929"></a>Creating the Renderer Class</h2>
+
+        <p>When delegating rendering to a renderer, you can delegate all encoding and decoding to the renderer, or you can choose to do part of it in the component class. The <code>AreaComponent</code> class delegates encoding to the <code>AreaRenderer</code> class.</p>
+
+        <p>The renderer class begins with a <code>@FacesRenderer</code> annotation:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@FacesRenderer(componentFamily = "Area", rendererType = "DemoArea")
+public class AreaRenderer extends Renderer {</pre>
+
+        <p>The <code>@FacesRenderer</code> annotation registers the renderer class with the JavaServer Faces implementation as a renderer class. The annotation identifies the component family as well as the renderer type.</p>
+
+        <p><a id="sthref930"></a>To perform the rendering for <code>AreaComponent</code>, <code>AreaRenderer</code> must implement an <code>encodeEnd</code> method. The <code>encodeEnd</code> method of <code>AreaRenderer</code> retrieves the shape, coordinates, and alternative text values stored in the <code>ImageArea</code> bean that is bound to <code>AreaComponent</code>. Suppose that the <code>area</code> tag currently being rendered has a <code>value</code> attribute value of <code>"book203"</code>. The following line from <code>encodeEnd</code> gets the value of the attribute <code>"book203"</code> from the <code>FacesContext</code> instance:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ImageArea ia = (ImageArea)area.getValue();</pre>
+
+        <p>The attribute value is the <code>ImageArea</code> bean instance, which contains the <code>shape</code>, <code>coords</code>, and <code>alt</code> values associated with the <code>book203</code> <code>AreaComponent</code> instance. <a href="../Text/jsf-custom.xhtml#GLPBO">Configuring Model Data</a> describes how the application stores these values.</p>
+
+        <p>After retrieving the <code>ImageArea</code> object, the method renders the values for <code>shape</code>, <code>coords</code>, and <code>alt</code> by simply calling the associated accessor methods and passing the returned values to the <code>ResponseWriter</code> instance, as shown by these lines of code, which write out the shape and coordinates:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">writer.startElement("area", area);
+writer.writeAttribute("alt", iarea.getAlt(), "alt");
+writer.writeAttribute("coords", iarea.getCoords(), "coords");
+writer.writeAttribute("shape", iarea.getShape(), "shape");</pre>
+
+        <p>The <code>encodeEnd</code> method also renders the JavaScript for the <code>onmouseout</code>, <code>onmouseover</code>, and <code>onclick</code> attributes. The Facelets page needs to provide only the path to the images that are to be loaded during an <code>onmouseover</code> or <code>onmouseout</code> action:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;bookstore:area id="map3" value="#{Book203}" 
+                onmouseover="resources/images/book_203.jpg" 
+                onmouseout="resources/images/book_all.jpg" 
+                targetImage="mapImage"/&gt;</pre>
+
+        <p>The <code>AreaRenderer</code> class takes care of generating the JavaScript for these actions, as shown in the following code from <code>encodeEnd</code>. The JavaScript that <code>AreaRenderer</code> generates for the <code>onclick</code> action sets the value of the hidden field to the value of the current area's component ID and submits the page.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">sb = new StringBuffer("document.forms[0]['").append(targetImageId).
+        append("'].src='");
+sb.append(
+        getURI(context,
+        (String) area.getAttributes().get("onmouseout")));
+sb.append("'");
+writer.writeAttribute("onmouseout", sb.toString(), "onmouseout");
+sb = new StringBuffer("document.forms[0]['").append(targetImageId).
+        append("'].src='");
+sb.append(
+        getURI(context,
+        (String) area.getAttributes().get("onmouseover")));
+sb.append("'");
+writer.writeAttribute("onmouseover", sb.toString(), "onmouseover");
+sb = new StringBuffer("document.forms[0]['");
+sb.append(getName(context, area));
+sb.append("'].value='");
+sb.append(iarea.getAlt());
+sb.append("'; document.forms[0].submit()");
+writer.writeAttribute("onclick", sb.toString(), "value");
+writer.endElement("area");</pre>
+
+        <p>By submitting the page, this code causes the JavaServer Faces lifecycle to return back to the Restore View phase. This phase saves any state information, including the value of the hidden field, so that a new request component tree is constructed. This value is retrieved by the <code>decode</code> method of the <code>MapComponent</code> class. This decode method is called by the JavaServer Faces implementation during the Apply Request Values phase, which follows the Restore View phase.</p>
+
+        <p>In addition to the <code>encodeEnd</code> method, <code>AreaRenderer</code> contains an empty constructor. This is used to create an instance of <code>AreaRenderer</code> so that it can be added to the render kit.</p>
+
+        <p>The <code>@FacesRenderer</code> annotation registers the renderer class with the JavaServer Faces implementation as a renderer class. The annotation identifies the component family as well as the renderer type.</p>
+      </div><a id="BNAWC"></a><a id="JEETT00992"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.5.2</span> Identifying the Renderer Type</h2>
+
+        <p><a id="sthref931"></a><a id="sthref932"></a>During the Render Response phase, the JavaServer Faces implementation calls the <code>getRendererType</code> method of the component's tag handler to determine which renderer to invoke, if there is one.</p>
+
+        <p>You identify the type associated with the renderer in the <code>rendererType</code> element of the <code>@FacesRenderer</code> annotation for <code>AreaRenderer</code> as well as in the <code>renderer-type</code> element of the tag library descriptor.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAUT"></a><a id="JEETT00388"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.6</span> <a id="sthref933"></a><a id="sthref934"></a>Implementing an Event Listener</h1>
+
+      <p>The JavaServer Faces technology supports action events and value-change events for components.</p>
+
+      <p><a id="sthref935"></a><a id="sthref936"></a>Action events occur when the user activates a component that implements <code>javax.faces.component.ActionSource</code>. These events are represented by the class <code>javax.faces.event.ActionEvent</code>.</p>
+
+      <p><a id="sthref937"></a><a id="sthref938"></a>Value-change events occur when the user changes the value of a component that implements <code>javax.faces.component.EditableValueHolder</code>. These events are represented by the class <code>javax.faces.event.ValueChangeEvent</code>.</p>
+
+      <p><a id="sthref939"></a>One way to handle events is to implement the appropriate listener classes. Listener classes that handle the action events in an application must implement the interface <code>javax.faces.event.ActionListener</code>. Similarly, listeners that handle the value-change events must implement the interface <code>javax.faces.event.ValueChangeListener</code>.</p>
+
+      <p>This section explains how to implement the two listener classes.</p>
+
+      <p>To handle events generated by custom components, you must implement an event listener and an event handler and manually queue the event on the component. See <a href="../Text/jsf-custom.xhtml#BNAWD">Handling Events for Custom Components</a> for more information.</p>
+
+      <div align="center">
+        <div class="inftblnote">
+          <br />
+
+          <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+            <tbody>
+              <tr>
+                <td align="left">
+                  <p class="notep1">Note:</p>
+
+                  <p><a id="sthref940"></a>You do not need to create an <code>ActionListener</code> implementation to handle an event that results solely in navigating to a page and does not perform any other application-specific processing. See <a href="../Text/jsf-develop.xhtml#BNAVC">Writing a Method to Handle Navigation</a> for information on how to manage page navigation.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div><a id="BNAUU"></a><a id="JEETT00999"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.6.1</span> Implementing Value-Change Listeners</h2>
+
+        <p><a id="sthref941"></a><a id="sthref942"></a><a id="sthref943"></a>A <code>javax.faces.event.ValueChangeListener</code> implementation must include a <code>processValueChange(ValueChangeEvent)</code> method. This method processes the specified value-change event and is invoked by the JavaServer Faces implementation when the value-change event occurs. The <code>ValueChangeEvent</code> instance stores the old and the new values of the component that fired the event.</p>
+
+        <p>In the Duke's Bookstore case study, the <code>NameChanged</code> listener implementation is registered on the <code>name</code> <code>UIInput</code> component on the <code>bookcashier.xhtml</code> page. This listener stores into session scope the name the user entered in the field corresponding to the name component.</p>
+
+        <p>The <code>bookreceipt.xhtml</code> subsequently retrieves the name from the session scope:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputFormat title="thanks"
+                value="#{bundle.ThankYouParam}"&gt;
+    &lt;f:param value="#{sessionScope.name}"/&gt;
+&lt;/h:outputFormat&gt;</pre>
+
+        <p>When the <code>bookreceipt.xhtml</code> page is loaded, it displays the name inside the message:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">"Thank you, {0}, for purchasing your books from us."</pre>
+
+        <p>Here is part of the <code>NameChanged</code> listener implementation:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class NameChanged extends Object implements ValueChangeListener {
+
+    @Override
+    public void processValueChange(ValueChangeEvent event)
+            throws AbortProcessingException {
+    
+        if (null != event.getNewValue()) {
+            FacesContext.getCurrentInstance().getExternalContext().
+                getSessionMap().put("name", event.getNewValue());
+        }
+    }
+}</pre>
+
+        <p>When the user enters the name in the field, a value-change event is generated, and the <code>processValueChange(ValueChangeEvent)</code> method of the <code>NameChanged</code> listener implementation is invoked. This method first gets the ID of the component that fired the event from the <code>ValueChangeEvent</code> object, and it puts the value, along with an attribute name, into the session map of the <code>FacesContext</code> instance.</p>
+
+        <p><a href="../Text/jsf-page-core.xhtml#BNATA">Registering a Value-Change Listener on a Component</a> explains how to register this listener onto a component.</p>
+      </div><a id="BNAUV"></a><a id="JEETT01000"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.6.2</span> <a id="sthref944"></a>Implementing Action Listeners</h2>
+
+        <p><a id="sthref945"></a><a id="sthref946"></a>A <code>javax.faces.event.ActionListener</code> implementation must include a <code>processAction(ActionEvent)</code> method. The <code>processAction(ActionEvent)</code> method processes the specified action event. The JavaServer Faces implementation invokes the <code>processAction(ActionEvent)</code> method when the <code>ActionEvent</code> occurs.</p>
+
+        <p>The Duke's Bookstore case study uses two <code>ActionListener</code> implementations, <code>LinkBookChangeListener</code> and <code>MapBookChangeListener</code>. See <a href="../Text/jsf-custom.xhtml#BNAWD">Handling Events for Custom Components</a> for details on <code>MapBookChangeListener</code>.</p>
+
+        <p><a href="../Text/jsf-page-core.xhtml#BNATB">Registering an Action Listener on a Component</a> explains how to register this listener onto a component.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAWD"></a><a id="JEETT00383"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.7</span> <a id="sthref947"></a><a id="sthref948"></a>Handling Events for Custom Components</h1>
+
+      <p><a id="sthref949"></a>As explained in <a href="../Text/jsf-custom.xhtml#BNAUT">Implementing an Event Listener</a>, events are automatically queued on standard components that fire events. A custom component, on the other hand, must manually queue events from its <code>decode</code> method if it fires events.</p>
+
+      <p><a href="../Text/jsf-custom.xhtml#BNAVX">Performing Decoding</a> explains how to queue an event on <code>MapComponent</code> using its <code>decode</code> method. This section explains how to write the class that represents the event of clicking on the map and how to write the method that processes this event.</p>
+
+      <p>As explained in <a href="../Text/jsf-custom.xhtml#GLPCD">Understanding the Facelets Page</a>, the <code>actionListener</code> attribute of the <code>bookstore:map</code> tag points to the <code>MapBookChangeListener</code> class. The listener class's <code>processAction</code> method processes the event of clicking the image map. Here is the <code>processAction</code> method:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public void processAction(ActionEvent actionEvent)
+        throws AbortProcessingException {
+
+    AreaSelectedEvent event = (AreaSelectedEvent) actionEvent;
+    String current = event.getMapComponent().getCurrent();
+    FacesContext context = FacesContext.getCurrentInstance();
+    String bookId = books.get(current);
+    context.getExternalContext().getSessionMap().put("bookId", bookId);
+}</pre>
+
+      <p>When the JavaServer Faces implementation calls this method, it passes in an <code>ActionEvent</code> object that represents the event generated by clicking on the image map. Next, it casts it to an <code>AreaSelectedEvent</code> object (see <span class="variable">tut-install</span><code>/examples/case-studies/dukes-bookstore/src/java/dukesbookstore/listeners/AreaSelectedEvent.java</code>). Then this method gets the <code>MapComponent</code> associated with the event. Next, it gets the value of the <code>MapComponent</code> object's <code>current</code> attribute, which indicates the currently selected area. The method then uses the value of the <code>current</code> attribute to get the book's ID value from a <code>HashMap</code> object, which is constructed elsewhere in the <code>MapBookChangeListener</code> class. Finally, the method places the ID obtained from the <code>HashMap</code> object into the session map for the application.</p>
+
+      <p>In addition to the method that processes the event, you need the event class itself. This class is very simple to write; you have it extend <code>ActionEvent</code> and provide a constructor that takes the component on which the event is queued and a method that returns the component. Here is the <code>AreaSelectedEvent</code> class used with the image map:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class AreaSelectedEvent extends ActionEvent {
+    public AreaSelectedEvent(MapComponent map) {
+        super(map);
+    }
+    public MapComponent getMapComponent() {
+        return ((MapComponent) getComponent());
+    }
+}</pre>
+
+      <p>As explained in the section <a href="../Text/jsf-custom.xhtml#BNAVU">Creating Custom Component Classes</a>, in order for <code>MapComponent</code> to fire events in the first place, it must implement <code>ActionSource</code>. Because <code>MapComponent</code> extends <code>UICommand</code>, it also implements <code>ActionSource</code>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAWN"></a><a id="JEETT00385"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.8</span> Defining the Custom Component Tag in a Tag Library Descriptor</h1>
+
+      <p><a id="sthref950"></a><a id="sthref951"></a>To use a custom tag, you declare it in a Tag Library Descriptor (TLD). The TLD file defines how the custom tag is used in a JavaServer Faces page. The web container uses the TLD to validate the tag. The set of tags that are part of the HTML render kit are defined in the HTML_BASIC TLD, available at <code><a href="../Text/jsf-custom.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/renderkitdocs/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/renderkitdocs/</a></code>.</p>
+
+      <p>The TLD file name must end with <code>taglib.xml</code>. In the Duke's Bookstore case study, the custom tags <code>area</code> and <code>map</code> are defined in the file <code>web/WEB-INF/bookstore.taglib.xml</code>.</p>
+
+      <p>All tag definitions must be nested inside the <code>facelet-taglib</code> element in the TLD. Each tag is defined by a <code>tag</code> element. Here are the tag definitions for the <code>area</code> and <code>map</code> components:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+...&gt;
+    &lt;namespace&gt;http://dukesbookstore&lt;/namespace&gt;
+    &lt;tag&gt;
+        &lt;tag-name&gt;area&lt;/tag-name&gt;
+        &lt;component&gt;
+            &lt;component-type&gt;DemoArea&lt;/component-type&gt;
+            &lt;renderer-type&gt;DemoArea&lt;/renderer-type&gt;
+        &lt;/component&gt;
+    &lt;/tag&gt;
+    &lt;tag&gt;
+        &lt;tag-name&gt;map&lt;/tag-name&gt;
+        &lt;component&gt;
+            &lt;component-type&gt;DemoMap&lt;/component-type&gt;
+            &lt;renderer-type&gt;DemoMap&lt;/renderer-type&gt;
+        &lt;/component&gt;
+    &lt;/tag&gt;
+&lt;/facelet-taglib&gt;</pre>
+
+      <p>The <code>component-type</code> element specifies the name defined in the <code>@FacesComponent</code> annotation, and the <code>renderer-type</code> element specifies the <code>rendererType</code> defined in the <code>@FacesRenderer</code> annotation.</p>
+
+      <p>The <code>facelet-taglib</code> element must also include a <code>namespace</code> element, which defines the namespace to be specified in pages that use the custom component. See <a href="../Text/jsf-custom.xhtml#BNATT">Using a Custom Component</a> for information on specifying the namespace in pages.</p>
+
+      <p>The TLD file is located in the <code>WEB-INF</code> directory. In addition, an entry is included in the web deployment descriptor (<code>web.xml</code>) to identify the custom tag library descriptor file, as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;context-param&gt;
+        &lt;param-name&gt;javax.faces.FACELETS_LIBRARIES&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/bookstore.taglib.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;</pre>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNATT"></a><a id="JEETT00386"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.9</span> <a id="sthref952"></a>Using a Custom Component</h1>
+
+      <p><a id="sthref953"></a>To use a custom component in a page, you add the custom tag associated with the component to the page.</p>
+
+      <p>As explained in <a href="../Text/jsf-custom.xhtml#BNAWN">Defining the Custom Component Tag in a Tag Library Descriptor</a>, you must ensure that the TLD that defines any custom tags is packaged in the application if you intend to use the tags in your pages. TLD files are stored in the <code>WEB-INF/</code> directory or subdirectory of the WAR file or in the <code>META-INF/</code> directory or subdirectory of a tag library packaged in a JAR file.</p>
+
+      <p>You also need to include a namespace declaration in the page so that the page has access to the tags. The custom tags for the Duke's Bookstore case study are defined in <code>bookstore.taglib.xml</code>. The <code>ui:composition</code> tag on the <code>index.xhtml</code> page declares the namespace defined in the tag library:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                <b>xmlns:bookstore="http://dukesbookstore"</b>
+                template="./bookstoreTemplate.xhtml"&gt;<br /></pre>
+
+      <p>Finally, to use a custom component in a page, you add the component's tag to the page.</p>
+
+      <p>The Duke's Bookstore case study includes a custom image map component on the <code>index.xhtml</code> page. This component allows you to select a book by clicking on a region of the image map:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">...
+&lt;h:graphicImage id="mapImage"
+                name="book_all.jpg"
+                library="images
+                alt="#{bundle.chooseLocale}"
+                usemap="#bookMap" /&gt;
+&lt;bookstore:map id="bookMap"
+               current="map1"
+               immediate="true"
+               action="bookstore"&gt;
+    &lt;f:actionListener
+        type="javaeetutorial.dukesbookstore.listeners.MapBookChangeListener" /&gt;
+    &lt;bookstore:area id="map1" value="#{Book201}" 
+                    onmouseover="resources/images/book_201.jpg" 
+                    onmouseout="resources/images/book_all.jpg" 
+                    targetImage="mapImage" /&gt;
+    ...
+    &lt;bookstore:area id="map6" value="#{Book207}" 
+                    onmouseover="resources/images/book_207.jpg" 
+                    onmouseout="resources/images//book_all.jpg" 
+                    targetImage="mapImage" /&gt;
+&lt;/bookstore:map&gt;</pre>
+
+      <p>The standard <code>h:graphicImage</code> tag associates an image (<code>book_all.jpg</code>) with an image map that is referenced in the <code>usemap</code> attribute value.</p>
+
+      <p>The custom <code>bookstore:map</code> tag that represents the custom component, <code>MapComponent</code>, specifies the image map and contains a set of <code>bookstore:area</code> tags. Each custom <code>bookstore:area</code> tag represents a custom <code>AreaComponent</code> and specifies a region of the image map.</p>
+
+      <p>On the page, the <code>onmouseover</code> and <code>onmouseout</code> attributes specify the image that is displayed when the user performs the actions described by the attributes. The custom renderer also renders an <code>onclick</code> attribute.</p>
+
+      <p>In the rendered HTML page, the <code>onmouseover</code>, <code>onmouseout</code>, and <code>onclick</code> attributes define which JavaScript code is executed when these events occur. When the user moves the mouse over a region, the <code>onmouseover</code> function associated with the region displays the map with that region highlighted. When the user moves the mouse out of a region, the <code>onmouseout</code> function redisplays the original image. When the user clicks a region, the <code>onclick</code> function sets the value of a hidden <code>input</code> tag to the ID of the selected area and submits the page.</p>
+
+      <p>When the custom renderer renders these attributes in HTML, it also renders the JavaScript code. The custom renderer also renders the entire <code>onclick</code> attribute rather than letting the page author set it.</p>
+
+      <p><a id="sthref954"></a>The custom renderer that renders the HTML <code>map</code> tag also renders a hidden <code>input</code> component that holds the current area. The server-side objects retrieve the value of the hidden <code>input</code> field and set the locale in the <code>FacesContext</code> instance according to which region was selected.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAUS"></a><a id="JEETT00387"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.10</span> <a id="sthref955"></a>Creating and Using a Custom Converter</h1>
+
+      <p>A JavaServer Faces converter class converts strings to objects and objects to strings as required. Several standard converters are provided by JavaServer Faces for this purpose. See <a href="../Text/jsf-page-core.xhtml#BNAST">Using the Standard Converters</a> for more information on these included converters.</p>
+
+      <p>As explained in <a href="../Text/jsf-intro.xhtml#BNAQI">Conversion Model</a>, if the standard converters included with JavaServer Faces cannot perform the data conversion that you need, you can create a custom converter to perform this specialized conversion. This implementation, at a minimum, must define how to convert data both ways between the two views of the data described in <a href="../Text/jsf-intro.xhtml#BNAQI">Conversion Model</a>.</p>
+
+      <p>All custom converters must implement the <code>javax.faces.convert.Converter</code> interface. This section explains how to implement this interface to perform a custom data conversion.</p>
+
+      <p>The Duke's Bookstore case study uses a custom <code>Converter</code> implementation, located in <span class="variable">tut-install</span><code>/examples/case-studies/dukes-bookstore/src/java/dukesbookstore/converters/CreditCardConverter.java</code>, to convert the data entered in the Credit Card Number field on the <code>bookcashier.xhtml</code> page. It strips blanks and hyphens from the text string and formats it so that a blank space separates every four characters.</p>
+
+      <p>Another common use case for a custom converter is in a list for a nonstandard object type. In the Duke's Tutoring case study, the <code>Student</code> and <code>Guardian</code> entities require a custom converter so that they can be converted to and from a <code>UISelectItems</code> input component.</p><a id="GLPHB"></a><a id="JEETT00997"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.10.1</span> Creating a Custom Converter</h2>
+
+        <p>The <code>CreditCardConverter</code> custom converter class is created as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@FacesConverter("ccno")
+public class CreditCardConverter implements Converter {
+    ...
+}</pre>
+
+        <p>The <code>@FacesConverter</code> annotation registers the custom converter class as a converter with the name of <code>ccno</code> with the JavaServer Faces implementation. Alternatively, you can register the converter with entries in the application configuration resource file, as shown in <a href="../Text/jsf-custom.xhtml#BNAXE">Registering a Custom Converter</a>.</p>
+
+        <p><a id="sthref956"></a><a id="sthref957"></a><a id="sthref958"></a><a id="sthref959"></a>To define how the data is converted from the presentation view to the model view, the <code>Converter</code> implementation must implement the <code>getAsObject(FacesContext, UIComponent, String)</code> method from the <code>Converter</code> interface. Here is the implementation of this method from <code>CreditCardConverter</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public Object getAsObject(FacesContext context,
+        UIComponent component, String newValue)
+        throws ConverterException {
+
+    if (newValue.isEmpty()) {
+        return null;
+    }
+    // Since this is only a String to String conversion,
+    // this conversion does not throw ConverterException.
+    
+    String convertedValue = newValue.trim();
+    if ( (convertedValue.contains("-")) || (convertedValue.contains(" "))) {
+        char[] input = convertedValue.toCharArray();
+        StringBuilder builder = new StringBuilder(input.length);
+        for (int i = 0; i &lt; input.length; ++i) {
+            if ((input[i] == '-') || (input[i] == ' ')) {
+            } else {
+                builder.append(input[i]);
+            }
+        }
+        convertedValue = builder.toString();
+    }
+    return convertedValue;
+}</pre>
+
+        <p><a id="sthref960"></a><a id="sthref961"></a><a id="sthref962"></a><a id="sthref963"></a>During the Apply Request Values phase, when the components' <code>decode</code> methods are processed, the JavaServer Faces implementation looks up the component's local value in the request and calls the <code>getAsObject</code> method. When calling this method, the JavaServer Faces implementation passes in the current <code>FacesContext</code> instance, the component whose data needs conversion, and the local value as a <code>String</code>. The method then writes the local value to a character array, trims the hyphens and blanks, adds the rest of the characters to a <code>String</code>, and returns the <code>String</code>.</p>
+
+        <p><a id="sthref964"></a><a id="sthref965"></a><a id="sthref966"></a>To define how the data is converted from the model view to the presentation view, the <code>Converter</code> implementation must implement the <code>getAsString(FacesContext, UIComponent, Object)</code> method from the <code>Converter</code> interface. Here is an implementation of this method:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public String getAsString(FacesContext context,
+        UIComponent component, Object value)
+        throws ConverterException {
+    
+    String inputVal = null;
+    if ( value == null ) {
+        return "";
+    }
+    // value must be of a type that can be cast to a String.
+    try {
+        inputVal = (String)value;
+    } catch (ClassCastException ce) {
+        FacesMessage errMsg = new FacesMessage(CONVERSION_ERROR_MESSAGE_ID);
+        FacesContext.getCurrentInstance().addMessage(null, errMsg);
+        throw new ConverterException(errMsg.getSummary());
+    }
+    // insert spaces after every four characters for better
+    // readability if they are not already present.
+    char[] input = inputVal.toCharArray();
+    StringBuilder builder = new StringBuilder(input.length + 3);
+    for (int i = 0; i &lt; input.length; ++i) {
+        if ((i % 4) == 0 &amp;&amp; (i != 0)) {
+            if ({input[i] != ' ') || (input[i] != '-')){
+                builder.append(" ");
+                // if there are any "-"'s convert them to blanks.
+            } else if (input[i] == '-') {
+                builder.append(" ");
+            }
+         }
+         builder.append(input[i]);
+    }
+    String convertedValue = builder.toString();
+    return convertedValue;
+}</pre>
+
+        <p><a id="sthref967"></a><a id="sthref968"></a><a id="sthref969"></a><a id="sthref970"></a>During the Render Response phase, in which the components' <code>encode</code> methods are called, the JavaServer Faces implementation calls the <code>getAsString</code> method in order to generate the appropriate output. When the JavaServer Faces implementation calls this method, it passes in the current <code>FacesContext</code>, the <code>UIComponent</code> whose value needs to be converted, and the bean value to be converted. Because this converter does a <code>String</code>-to-<code>String</code> conversion, this method can cast the bean value to a <code>String</code>.</p>
+
+        <p>If the value cannot be converted to a <code>String</code>, the method throws an exception, passing an error message from the resource bundle that is registered with the application. <a href="../Text/jsf-configurexhtml#BNAXB">Registering Application Messages</a> explains how to register custom error messages with the application.</p>
+
+        <p>If the value can be converted to a <code>String</code>, the method reads the <code>String</code> to a character array and loops through the array, adding a space after every four characters.</p>
+
+        <p>You can also create a custom converter with a <code>@FacesConverter</code> annotation that specifies the <code>forClass</code> attribute, as shown in the following example from the Duke's Tutoring case study:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@FacesConverter(forClass=Guardian.class, value="guardian")
+public class GuardianConverter extends EntityConverter implements Converter { ...</pre>
+
+        <p>The <code>forClass</code> attribute registers the converter as the default converter for the <code>Guardian</code> class. Therefore, whenever that class is specified by a <code>value</code> attribute of an input component, the converter is invoked automatically.</p>
+
+        <p>A converter class can be a separate Java POJO class, as in the Duke's Bookstore case study. If it needs to access objects defined in a managed bean class, however, it can be a subclass of a JavaServer Faces managed bean, as in the <code>address-book</code> persistence example, in which the converters use an enterprise bean that is injected into the managed bean class.</p>
+      </div><a id="BNATU"></a><a id="JEETT00998"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.10.2</span> <a id="sthref971"></a><a id="sthref972"></a><a id="sthref973"></a>Using a Custom Converter</h2>
+
+        <p>To apply the data conversion performed by a custom converter to a particular component's value, you must do one of the following.</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref974"></a><a id="sthref975"></a>Reference the converter from the component tag's <code>converter</code> attribute.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref976"></a><a id="sthref977"></a>Nest an <code>f:converter</code> tag inside the component's tag and reference the custom converter from one of the <code>f:converter</code> tag's attributes.</p>
+          </li>
+        </ul>
+
+        <p>If you are using the component tag's <code>converter</code> attribute, this attribute must reference the <code>Converter</code> implementation's identifier or the fully-qualified class name of the converter. <a href="../Text/jsf-custom.xhtml#BNAUS">Creating and Using a Custom Converter</a> explains how to implement a custom converter.</p>
+
+        <p>The identifier for the credit card converter class is <code>ccno</code>, the value specified in the <code>@FacesConverter</code> annotation:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@FacesConverter("ccno")
+public class CreditCardConverter implements Converter {
+    ...</pre>
+
+        <p>Therefore, the <code>CreditCardConverter</code> instance can be registered on the <code>ccno</code> component as shown in the following example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="ccno"
+             size="19"
+             converter="ccno"
+             value="#{cashierBean.creditCardNumber}"
+             required="true"
+             requiredMessage="#{bundle.ReqCreditCard}"&gt;
+    ...
+&lt;/h:inputText&gt;</pre>
+
+        <p><a id="sthref978"></a>By setting the <code>converter</code> attribute of a component's tag to the converter's identifier or its class name, you cause that component's local value to be automatically converted according to the rules specified in the <code>Converter</code> implementation.</p>
+
+        <p>Instead of referencing the converter from the component tag's <code>converter</code> attribute, you can reference the converter from an <code>f:converter</code> tag nested inside the component's tag. To reference the custom converter using the <code>f:converter</code> tag, you do one of the following.</p>
+
+        <ul>
+          <li>
+            <p>Set the <code>f:converter</code> tag's <code>converterId</code> attribute to the <code>Converter</code> implementation's identifier defined in the <code>@FacesConverter</code> annotation or in the application configuration resource file. This method is shown in <code>bookcashier.xhtml</code>:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="ccno" 
+             size="19"
+             value="#{cashierBean.creditCardNumber}"
+             required="true"
+             requiredMessage="#{bundle.ReqCreditCard}"&gt;
+    &lt;f:converter converterId="ccno"/&gt;
+    &lt;f:validateRegex 
+       pattern="\d{16}|\d{4} \d{4} \d{4} \d{4}|\d{4}-\d{4}-\d{4}-\d{4}"/&gt;
+&lt;/h:inputText&gt;</pre>
+          </li>
+
+          <li>
+            <p>Bind the <code>Converter</code> implementation to a managed bean property using the <code>f:converter</code> tag's <code>binding</code> attribute, as described in <a href="../Text/jsf-custom.xhtml#BNATM">Binding Converters, Listeners, and Validators to Managed Bean Properties</a>.</p>
+          </li>
+        </ul>
+
+        <p>The JavaServer Faces implementation calls the converter's <code>getAsObject</code> method to strip spaces and hyphens from the input value. The <code>getAsString</code> method is called when the <code>bookcashier.xhtml</code> page is redisplayed; this happens if the user orders more than $100 worth of books.</p>
+
+        <p>In the Duke's Tutoring case study, each converter is registered as the converter for a particular class. The converter is automatically invoked whenever that class is specified by a <code>value</code> attribute of an input component. In the following example, the <code>itemValue</code> attribute (highlighted in <span class="bold">bold</span>) calls the converter for the <code>Guardian</code> class:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectManyListbox id="selectGuardiansMenu"
+                     title="#{bundle['action.add.guardian']}"
+                     value="#{guardianManager.selectedGuardians}"
+                     size="5"
+                     converter="guardian"&gt;
+    &lt;f:selectItems value="#{guardianManager.allGuardians}"
+                   var="selectedGuardian"
+                   itemLabel="#{selectedGuardian.name}"
+                   <b>itemValue="#{selectedGuardian}"</b> /&gt;
+&lt;/h:selectManyListbox&gt;<br /></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAUW"></a><a id="JEETT00389"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.11</span> <a id="sthref979"></a>Creating and Using a Custom Validator</h1>
+
+      <p>If the standard validators or Bean Validation don't perform the validation checking you need, you can create a custom validator to validate user input. As explained in <a href="../Text/jsf-intro.xhtml#BNAQK">Validation Model</a>, there are two ways to implement validation code.</p>
+
+      <ul>
+        <li>
+          <p>Implement a managed bean method that performs the validation.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref980"></a>Provide an implementation of the <code>javax.faces.validator.Validator</code> interface to perform the validation.</p>
+        </li>
+      </ul>
+
+      <p><a href="../Text/jsf-develop.xhtml#BNAVE">Writing a Method to Perform Validation</a> explains how to implement a managed bean method to perform validation. The rest of this section explains how to implement the <code>Validator</code> interface.</p>
+
+      <p>If you choose to implement the <code>Validator</code> interface and you want to allow the page author to configure the validator's attributes from the page, you also must specify a custom tag for registering the validator on a component.</p>
+
+      <p><a id="sthref981"></a><a id="sthref982"></a>If you prefer to configure the attributes in the <code>Validator</code> implementation, you can forgo specifying a custom tag and instead let the page author register the validator on a component using the <code>f:validator</code> tag, as described in <a href="../Text/jsf-custom.xhtml#BNATV">Using a Custom Validator</a>.</p>
+
+      <p>You can also create a managed bean property that accepts and returns the <code>Validator</code> implementation you create, as described in <a href="../Text/jsf-develop.xhtml#BNAUL">Writing Properties Bound to Converters, Listeners, or Validators</a>. You can use the <code>f:validator</code> tag's binding attribute to bind the <code>Validator</code> implementation to the managed bean property.</p>
+
+      <p>Usually, you will want to display an error message when data fails validation. You need to store these error messages in a resource bundle.</p>
+
+      <p><a id="sthref983"></a>After creating the resource bundle, you have two ways to make the messages available to the application. You can queue the error messages onto the <code>FacesContext</code> programmatically, or you can register the error messages in the application configuration resource file, as explained in <a href="../Text/jsf-configure.xhtml#BNAXB">Registering Application Messages</a>.</p>
+
+      <p>For example, an e-commerce application might use a general-purpose custom validator called <code>FormatValidator.java</code> to validate input data against a format pattern that is specified in the custom validator tag. This validator would be used with a Credit Card Number field on a Facelets page. Here is the custom validator tag:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;mystore:formatValidator
+ formatPatterns="9999999999999999|9999 9999 9999 9999|9999-9999-9999-9999"/&gt;</pre>
+
+      <p>According to this validator, the data entered in the field must be one of the following:</p>
+
+      <ul>
+        <li>
+          <p>A 16-digit number with no spaces</p>
+        </li>
+
+        <li>
+          <p>A 16-digit number with a space between every four digits</p>
+        </li>
+
+        <li>
+          <p>A 16-digit number with hyphens between every four digits</p>
+        </li>
+      </ul>
+
+      <p>The <code>f:validateRegex</code> tag makes a custom validator unnecessary in this situation. However, the rest of this section describes how this validator would be implemented and how to specify a custom tag so that the page author could register the validator on a component.</p><a id="BNAUX"></a><a id="JEETT01001"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.11.1</span> <a id="sthref984"></a>Implementing the Validator Interface</h2>
+
+        <p><a id="sthref985"></a><a id="sthref986"></a><a id="sthref987"></a>A <code>Validator</code> implementation must contain a constructor, a set of accessor methods for any attributes on the tag, and a <code>validate</code> method, which overrides the <code>validate</code> method of the <code>Validator</code> interface.</p>
+
+        <p>The hypothetical <code>FormatValidator</code> class also defines accessor methods for setting the <code>formatPatterns</code> attribute, which specifies the acceptable format patterns for input into the fields. The setter method calls the <code>parseFormatPatterns</code> method, which separates the components of the pattern string into a string array, <code>formatPatternsList</code>.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public String getFormatPatterns() {
+    return (this.formatPatterns);
+}
+public void setFormatPatterns(String formatPatterns) {
+    this.formatPatterns = formatPatterns;
+    parseFormatPatterns();
+}</pre>
+
+        <p>In addition to defining accessor methods for the attributes, the class overrides the <code>validate</code> method of the <code>Validator</code> interface. This method validates the input and also accesses the custom error messages to be displayed when the <code>String</code> is invalid.</p>
+
+        <p><a id="sthref988"></a>The <code>validate</code> method performs the actual validation of the data. It takes the <code>FacesContext</code> instance, the component whose data needs to be validated, and the value that needs to be validated. A validator can validate only data of a component that implements <code>javax.faces.component.EditableValueHolder</code>.</p>
+
+        <p>Here is an implementation of the <code>validate</code> method:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@FacesValidator
+public class FormatValidator implements Validator, StateHolder {
+    ...
+    public void validate(FacesContext context, UIComponent component, 
+                         Object toValidate) {
+
+        boolean valid = false;
+        String value = null;
+        if ((context == null) || (component == null)) {
+            throw new NullPointerException();
+        }
+        if (!(component instanceof UIInput)) {
+            return;
+        }
+        if ( null == formatPatternsList || null == toValidate) {
+            return;
+        }
+        value = toValidate.toString();
+        // validate the value against the list of valid patterns.
+        Iterator patternIt = formatPatternsList.iterator();
+        while (patternIt.hasNext()) {
+            valid = isFormatValid(
+                ((String)patternIt.next()), value);
+            if (valid) {
+                break;
+            }
+        }
+        if ( !valid ) {
+            FacesMessage errMsg =
+                new FacesMessage(FORMAT_INVALID_MESSAGE_ID);
+            FacesContext.getCurrentInstance().addMessage(null, errMsg);
+            throw new ValidatorException(errMsg);
+        }
+    }
+}</pre>
+
+        <p>The <code>@FacesValidator</code> annotation registers the <code>FormatValidator</code> class as a validator with the JavaServer Faces implementation. The <code>validate</code> method gets the local value of the component and converts it to a <code>String</code>. It then iterates over the <code>formatPatternsList</code> list, which is the list of acceptable patterns that was parsed from the <code>formatPatterns</code> attribute of the custom validator tag.</p>
+
+        <p><a id="sthref989"></a>While iterating over the list, this method checks the pattern of the component's local value against the patterns in the list. If the pattern of the local value does not match any pattern in the list, this method generates an error message. It then creates a <code>javax.faces.application.FacesMessage</code> and queues it on the <code>FacesContext</code> for display, using a <code>String</code> that represents the key in the <code>Properties</code> file:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public static final String FORMAT_INVALID_MESSAGE_ID =
+     "FormatInvalid";
+}</pre>
+
+        <p>Finally, the method passes the message to the constructor of <code>javax.faces.validator.ValidatorException</code>.</p>
+
+        <p>When the error message is displayed, the format pattern will be substituted for the <code>{0}</code> in the error message, which, in English, is as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Input must match one of the following patterns: {0}</pre>
+
+        <p>You may wish to save and restore state for your validator, although state saving is not usually necessary. To do so, you will need to implement the <code>StateHolder</code> interface as well as the <code>Validator</code> interface. To implement <code>StateHolder</code>, you would need to implement its four methods: <code>saveState(FacesContext)</code>, <code>restoreState(FacesContext, Object)</code>, <code>isTransient</code>, and <code>setTransient(boolean)</code>. See <a href="../Text/jsf-custom.xhtml#BNAVZ">Saving and Restoring State</a> for more information.</p>
+      </div><a id="BNAUY"></a><a id="JEETT01002"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.11.2</span> <a id="sthref990"></a><a id="sthref991"></a>Specifying a Custom Tag</h2>
+
+        <p><a id="sthref992"></a>If you implemented a <code>Validator</code> interface rather than implementing a managed bean method that performs the validation, you need to do one of the following.</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref993"></a><a id="sthref994"></a><a id="sthref995"></a><a id="sthref996"></a>Allow the page author to specify the <code>Validator</code> implementation to use with the <code>f:validator</code> tag. In this case, the <code>Validator</code> implementation must define its own properties. <a href="../Text/jsf-custom.xhtml#BNATV">Using a Custom Validator</a> explains how to use the <code>f:validator</code> tag.</p>
+          </li>
+
+          <li>
+            <p>Specify a custom tag that provides attributes for configuring the properties of the validator from the page.</p>
+          </li>
+        </ul>
+
+        <p>To create a custom tag, you need to add the tag to the tag library descriptor for the application, <code>bookstore.taglib.xml</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;tag&gt;
+    &lt;tag-name&gt;validator&lt;/tag-name&gt;
+    &lt;validator&gt;
+        &lt;validator-id&gt;formatValidator&lt;/validator-id&gt;
+        &lt;validator-class&gt;
+            dukesbookstore.validators.FormatValidator
+        &lt;/validator-class&gt;
+    &lt;/validator&gt;
+&lt;/tag&gt;</pre>
+
+        <p>The <code>tag-name</code> element defines the name of the tag as it must be used in a Facelets page. The <code>validator-id</code> element identifies the custom validator. The <code>validator-class</code> element wires the custom tag to its implementation class.</p>
+
+        <p><a href="../Text/jsf-custom.xhtml#BNATV">Using a Custom Validator</a> explains how to use the custom validator tag on the page.</p>
+      </div><a id="BNATV"></a><a id="JEETT01003"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.11.3</span> <a id="sthref997"></a><a id="sthref998"></a>Using a Custom Validator</h2>
+
+        <p>To register a custom validator on a component, you must do one of the following.</p>
+
+        <ul>
+          <li>
+            <p>Nest the validator's custom tag inside the tag of the component whose value you want to be validated.</p>
+          </li>
+
+          <li>
+            <p>Nest the standard <code>f:validator</code> tag within the tag of the component and reference the custom <code>Validator</code> implementation from the <code>f:validator</code> tag.</p>
+          </li>
+        </ul>
+
+        <p>Here is a hypothetical custom <code>formatValidator</code> tag for the Credit Card Number field, nested within the <code>h:inputText</code> tag:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="ccno" size="19"
+  ...
+  required="true"&gt;
+  &lt;mystore:formatValidator
+  formatPatterns="9999999999999999|9999 9999 9999 9999|9999-9999-9999-9999"/&gt;
+&lt;/h:inputText&gt;
+&lt;h:message styleClass="validationMessage" for="ccno"/&gt;</pre>
+
+        <p>This tag validates the input of the <code>ccno</code> field against the patterns defined by the page author in the <code>formatPatterns</code> attribute.</p>
+
+        <p>You can use the same custom validator for any similar component by simply nesting the custom validator tag within the component tag.</p>
+
+        <p><a id="sthref999"></a>If the application developer who created the custom validator prefers to configure the attributes in the <code>Validator</code> implementation rather than allow the page author to configure the attributes from the page, the developer will not create a custom tag for use with the validator.</p>
+
+        <p>In this case, the page author must nest the <code>f:validator</code> tag inside the tag of the component whose data needs to be validated. Then the page author needs to do one of the following.</p>
+
+        <ul>
+          <li>
+            <p>Set the <code>f:validator</code> tag's <code>validatorId</code> attribute to the ID of the validator that is defined in the application configuration resource file.</p>
+          </li>
+
+          <li>
+            <p>Bind the custom <code>Validator</code> implementation to a managed bean property using the <code>f:validator</code> tag's <code>binding</code> attribute, as described in <a href="../Text/jsf-custom.xhtml#BNATM">Binding Converters, Listeners, and Validators to Managed Bean Properties</a>.</p>
+          </li>
+        </ul>
+
+        <p>The following tag registers a hypothetical validator on a component using an <code>f:validator</code> tag and references the ID of the validator:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="name" value="#{CustomerBean.name}"
+            size="10" ...&gt;
+    &lt;f:validator validatorId="customValidator" /&gt;
+    ...
+&lt;/h:inputText&gt;</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNATG"></a><a id="JEETT00390"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.12</span> <a id="sthref1000"></a>Binding Component Values and Instances to Managed Bean Properties</h1>
+
+      <p>A component tag can wire its data to a managed bean by one of the following methods:</p>
+
+      <ul>
+        <li>
+          <p>Binding its component's value to a bean property</p>
+        </li>
+
+        <li>
+          <p><a id="sthref1001"></a>Binding its component's instance to a bean property</p>
+        </li>
+      </ul>
+
+      <p><a id="sthref1002"></a><a id="sthref1003"></a><a id="sthref1004"></a><a id="sthref1005"></a><a id="sthref1006"></a>To bind a component's value to a managed bean property, a component tag's <code>value</code> attribute uses an EL value expression. To bind a component instance to a bean property, a component tag's <code>binding</code> attribute uses a value expression.</p>
+
+      <p>When a component instance is bound to a managed bean property, the property holds the component's local value. Conversely, when a component's value is bound to a managed bean property, the property holds the value stored in the managed bean. This value is updated with the local value during the Update Model Values phase of the lifecycle. There are advantages to both of these methods.</p>
+
+      <p>Binding a component instance to a bean property has the following advantages.</p>
+
+      <ul>
+        <li>
+          <p>The managed bean can programmatically modify component attributes.</p>
+        </li>
+
+        <li>
+          <p>The managed bean can instantiate components rather than let the page author do so.</p>
+        </li>
+      </ul>
+
+      <p>Binding a component's value to a bean property has the following advantages.</p>
+
+      <ul>
+        <li>
+          <p>The page author has more control over the component attributes.</p>
+        </li>
+
+        <li>
+          <p>The managed bean has no dependencies on the JavaServer Faces API (such as the component classes), allowing for greater separation of the presentation layer from the model layer.</p>
+        </li>
+
+        <li>
+          <p>The JavaServer Faces implementation can perform conversions on the data based on the type of the bean property without the developer needing to apply a converter.</p>
+        </li>
+      </ul>
+
+      <p>In most situations, you will bind a component's value rather than its instance to a bean property. You'll need to use a component binding only when you need to change one of the component's attributes dynamically. For example, if an application renders a component only under certain conditions, it can set the component's <code>rendered</code> property accordingly by accessing the property to which the component is bound.</p>
+
+      <p>When referencing the property using the component tag's <code>value</code> attribute, you need to use the proper syntax. For example, suppose a managed bean called <code>MyBean</code> has this <code>int</code> property:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">protected int currentOption = null;
+public int getCurrentOption(){...}
+public void setCurrentOption(int option){...}</pre>
+
+      <p>The <code>value</code> attribute that references this property must have this value-binding expression:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">#{myBean.currentOption}</pre>
+
+      <p>In addition to binding a component's value to a bean property, the <code>value</code> attribute can specify a literal value or can map the component's data to any primitive (such as <code>int</code>), structure (such as an array), or collection (such as a list), independent of a JavaBeans component. <a href="../Text/jsf-custom.xhtml#BNATH">Table 15-3</a> lists some example value-binding expressions that you can use with the <code>value</code> attribute.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref1007"></a><a id="BNATH"></a>
+
+        <p class="titleintable">Table 15-3 <a id="sthref1008"></a>Examples of Value-Binding Expressions</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table provides examples of value-binding expressions." title="Examples of Value-Binding Expressions" width="100%">
+          <col width="*" />
+          <col width="47%" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t5" valign="bottom">Value</th>
+
+              <th align="left" id="r1c2-t5" valign="bottom">Expression</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t5" id="r2c1-t5">
+                <p>A Boolean</p>
+              </td>
+
+              <td align="left" headers="r2c1-t5 r1c2-t5">
+                <p><code>cart.numberOfItems 0</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t5" id="r3c1-t5">
+                <p>A property initialized from a context initialization parameter</p>
+              </td>
+
+              <td align="left" headers="r3c1-t5 r1c2-t5">
+                <p><code>initParam.quantity</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t5" id="r4c1-t5">
+                <p>A bean property</p>
+              </td>
+
+              <td align="left" headers="r4c1-t5 r1c2-t5">
+                <p><code>cashierBean.name</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t5" id="r5c1-t5">
+                <p>A value in an array</p>
+              </td>
+
+              <td align="left" headers="r5c1-t5 r1c2-t5">
+                <p><code>books[3]</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t5" id="r6c1-t5">
+                <p>A value in a collection</p>
+              </td>
+
+              <td align="left" headers="r6c1-t5 r1c2-t5">
+                <p><code>books["fiction"]</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t5" id="r7c1-t5">
+                <p>A property of an object in an array of objects</p>
+              </td>
+
+              <td align="left" headers="r7c1-t5 r1c2-t5">
+                <p><code>books[3].price</code></p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>The next two sections explain how to use the <code>value</code> attribute to bind a component's value to a bean property or other data objects and how to use the <code>binding</code> attribute to bind a component instance to a bean property.</p><a id="BNATI"></a><a id="JEETT01004"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.12.1</span> <a id="sthref1009"></a><a id="sthref1010"></a><a id="sthref1011"></a><a id="sthref1012"></a>Binding a Component Value to a Property</h2>
+
+        <p>To bind a component's value to a managed bean property, you specify the name of the bean and the property using the <code>value</code> attribute.</p>
+
+        <p>This means that the first part of the EL value expression must match the name of the managed bean up to the first period (<code>.</code>) and the part of the value expression after the period must match the property of the managed bean.</p>
+
+        <p>For example, in the Duke's Bookstore case study, the <code>h:dataTable</code> tag in <code>bookcatalog.xhtml</code> sets the value of the component to the value of the <code>books</code> property of the <code>BookstoreBean</code> backing bean, whose name is <code>store</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:dataTable id="books"
+             value="#{store.books}"
+             var="book"
+             headerClass="list-header"
+             styleClass="list-background"
+             rowClasses="list-row-even, list-row-odd"
+             border="1" 
+             summary="#{bundle.BookCatalog}"&gt;</pre>
+
+        <p>The value is obtained by calling the backing bean's <code>getBooks</code> method, which in turn calls the <code>BookRequestBean</code> session bean's <code>getBooks</code> method.</p>
+
+        <p>If you use the application configuration resource file to configure managed beans instead of defining them in managed bean classes, the name of the bean in the <code>value</code> expression must match the <code>managed-bean-name</code> element of the managed bean declaration up to the first period (<code>.</code>) in the expression. Similarly, the part of the value expression after the period must match the name specified in the corresponding <code>property-name</code> element in the application configuration resource file.</p>
+
+        <p>For example, consider this managed bean configuration, which configures the <code>ImageArea</code> bean corresponding to the top-left book in the image map on the <code>index.html</code> page of the Duke's Bookstore case study:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean eager="true"&gt;
+    ...
+    &lt;managed-bean-name&gt;Book201&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;dukesbookstore.model.ImageArea&lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt;application&lt;/managed-bean-scope&gt;
+    &lt;managed-property&gt;
+        ...
+        &lt;property-name&gt;shape&lt;/property-name&gt;
+        &lt;value&gt;rect&lt;/value&gt;
+    &lt;/managed-property&gt;
+    &lt;managed-property&gt;
+        ...
+        &lt;property-name&gt;alt&lt;/property-name&gt;
+        &lt;value&gt;Duke&lt;/value&gt;
+    &lt;/managed-property&gt;
+    ...</pre>
+
+        <p>This example configures a bean called <code>Book201</code>, which has several properties, one of which is called <code>shape</code>.</p>
+
+        <p>Although the <code>bookstore:area</code> tags on the <code>index.xhtml</code> page do not bind to an <code>ImageArea</code> property (they bind to the bean itself), you could refer to the property using a value expression from the <code>value</code> attribute of the component's tag:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">h:outputText value="#{Book201.shape}" /</pre>
+
+        <p>See <a href="../Text/jsf-configure.xhtml#BNAWQ">Configuring Managed Beans</a> for information on how to configure beans in the application configuration resource file.</p>
+      </div><a id="BNATJ"></a><a id="JEETT01005"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.12.2</span> <a id="sthref1013"></a><a id="sthref1014"></a>Binding a Component Value to an Implicit Object</h2>
+
+        <p>One external data source that a <code>value</code> attribute can refer to is an implicit object.</p>
+
+        <p>The <code>bookreceipt.xhtml</code> page of the Duke's Bookstore case study has a reference to an implicit object:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputFormat title="thanks" 
+                value="#{bundle.ThankYouParam}"&gt;
+    &lt;f:param value="#{sessionScope.name}"/&gt;
+&lt;/h:outputFormat&gt;</pre>
+
+        <p>This tag gets the name of the customer from the session scope and inserts it into the parameterized message at the key <code>ThankYouParam</code> from the resource bundle. For example, if the name of the customer is Gwen Canigetit, this tag will render:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Thank you, Gwen Canigetit, for purchasing your books from us.</pre>
+
+        <p>Retrieving values from other implicit objects is done in a similar way to the example shown in this section. <a href="../Text/jsf-custom.xhtml#BNATK">Table 15-4</a> lists the implicit objects to which a value attribute can refer. All of the implicit objects, except for the scope objects, are read-only and therefore should not be used as values for a <code>UIInput</code> component.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref1015"></a><a id="BNATK"></a>
+
+          <p class="titleintable">Table 15-4 <a id="sthref1016"></a>Implicit Objects</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the implicit objects to which a value attribute can refer." title="Implicit Objects" width="100%">
+            <col width="22%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t6" valign="bottom">Implicit Object</th>
+
+                <th align="left" id="r1c2-t6" valign="bottom">What It Is</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r2c1-t6">
+                  <p><code>applicationScope</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of the application scope attribute values, keyed by attribute name</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r3c1-t6">
+                  <p><code>cookie</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of the cookie values for the current request, keyed by cookie name</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r4c1-t6">
+                  <p><code>facesContext</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t6 r1c2-t6">
+                  <p>The <code>FacesContext</code> instance for the current request</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r5c1-t6">
+                  <p><code>header</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of HTTP header values for the current request, keyed by header name</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r6c1-t6">
+                  <p><code>headerValues</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of <code>String</code> arrays containing all the header values for HTTP headers in the current request, keyed by header name</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r7c1-t6">
+                  <p><code>initParam</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of the context initialization parameters for this web application</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r8c1-t6">
+                  <p><code>param</code></p>
+                </td>
+
+                <td align="left" headers="r8c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of the request parameters for this request, keyed by parameter name</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r9c1-t6">
+                  <p><code>paramValues</code></p>
+                </td>
+
+                <td align="left" headers="r9c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of <code>String</code> arrays containing all the parameter values for request parameters in the current request, keyed by parameter name</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r10c1-t6">
+                  <p><code>requestScope</code></p>
+                </td>
+
+                <td align="left" headers="r10c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of the request attributes for this request, keyed by attribute name</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r11c1-t6">
+                  <p><code>sessionScope</code></p>
+                </td>
+
+                <td align="left" headers="r11c1-t6 r1c2-t6">
+                  <p>A <code>Map</code> of the session attributes for this request, keyed by attribute name</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r12c1-t6">
+                  <p><code>view</code></p>
+                </td>
+
+                <td align="left" headers="r12c1-t6 r1c2-t6">
+                  <p>The root <code>UIComponent</code> in the current component tree stored in the <code>FacesRequest</code> for this request</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div><a id="BNATL"></a><a id="JEETT01006"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">15.12.3</span> <a id="sthref1017"></a>Binding a Component Instance to a Bean Property</h2>
+
+        <p><a id="sthref1018"></a><a id="sthref1019"></a><a id="sthref1020"></a>A component instance can be bound to a bean property using a value expression with the <code>binding</code> attribute of the component's tag. You usually bind a component instance rather than its value to a bean property if the bean must dynamically change the component's attributes.</p>
+
+        <p>Here are two tags from the <code>bookcashier.xhtml</code> page that bind components to bean properties:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:selectBooleanCheckbox id="fanClub" 
+                         rendered="false"
+                         binding="#{cashierBean.specialOffer}" /&gt;
+&lt;h:outputLabel for="fanClub"
+               rendered="false"
+               binding="#{cashierBean.specialOfferText}"
+               value="#{bundle.DukeFanClub}"/&gt;
+&lt;/h:outputLabel&gt;</pre>
+
+        <p>The <code>h:selectBooleanCheckbox</code> tag renders a check box and binds the <code>fanClub</code> <code>UISelectBoolean</code> component to the <code>specialOffer</code> property of the <code>cashier</code> bean. The <code>h:outputLabel</code> tag binds the component representing the check box's label to the <code>specialOfferText</code> property of the <code>cashier</code> bean. If the application's locale is English, the <code>h:outputLabel</code> tag renders</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">I'd like to join the Duke Fan Club, free with my purchase of over $100</pre>
+
+        <p><a id="sthref1021"></a>The <code>rendered</code> attributes of both tags are set to <code>false</code> to prevent the check box and its label from being rendered. If the customer makes a large order and clicks the <span class="gui-object-action">Submit</span> button, the <code>submit</code> method of <code>CashierBean</code> sets both components' <code>rendered</code> properties to <code>true</code>, causing the check box and its label to be rendered.</p>
+
+        <p>These tags use component bindings rather than value bindings because the managed bean must dynamically set the values of the components' <code>rendered</code> properties.</p>
+
+        <p>If the tags were to use value bindings instead of component bindings, the managed bean would not have direct access to the components and would therefore require additional code to access the components from the <code>FacesContext</code> instance to change the components' <code>rendered</code> properties.</p>
+
+        <p><a href="../Text/jsf-develop.xhtml#BNAUK">Writing Properties Bound to Component Instances</a> explains how to write the bean properties bound to the example components.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNATM"></a><a id="JEETT00391"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">15.13</span> <a id="sthref1022"></a><a id="sthref1023"></a><a id="sthref1024"></a>Binding Converters, Listeners, and Validators to Managed Bean Properties</h1>
+
+      <p>As described in <a href="../Text/jsf-page.xhtml#BNARF">Adding Components to a Page Using HTML Tag Library Tags</a>, a page author can bind converter, listener, and validator implementations to managed bean properties using the <code>binding</code> attributes of the tags that are used to register the implementations on components.</p>
+
+      <p>This technique has similar advantages to binding component instances to managed bean properties, as described in <a href="../Text/jsf-custom.xhtml#BNATG">Binding Component Values and Instances to Managed Bean Properties</a>. In particular, binding a converter, listener, or validator implementation to a managed bean property yields the following benefits.</p>
+
+      <ul>
+        <li>
+          <p>The managed bean can instantiate the implementation instead of allowing the page author to do so.</p>
+        </li>
+
+        <li>
+          <p>The managed bean can programmatically modify the attributes of the implementation. In the case of a custom implementation, the only other way to modify the attributes outside of the implementation class would be to create a custom tag for it and require the page author to set the attribute values from the page.</p>
+        </li>
+      </ul>
+
+      <p>Whether you are binding a converter, listener, or validator to a managed bean property, the process is the same for any of the implementations.</p>
+
+      <ul>
+        <li>
+          <p>Nest the converter, listener, or validator tag within an appropriate component tag.</p>
+        </li>
+
+        <li>
+          <p>Make sure that the managed bean has a property that accepts and returns the converter, listener, or validator implementation class that you want to bind to the property.</p>
+        </li>
+
+        <li>
+          <p>Reference the managed bean property using a value expression from the <code>binding</code> attribute of the converter, listener, or validator tag.</p>
+        </li>
+      </ul>
+
+      <p>For example, say that you want to bind the standard <code>DateTime</code> converter to a managed bean property because you want to set the formatting pattern of the user's input in the managed bean rather than on the Facelets page. First, the page registers the converter onto the component by nesting the <code>f:convertDateTime</code> tag within the component tag. Then, the page references the property with the <code>binding</code> attribute of the <code>f:convertDateTime</code> tag:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText value="#{loginBean.birthDate}"&gt;
+    &lt;f:convertDateTime binding="#{loginBean.convertDate}" /&gt;
+&lt;/h:inputText&gt;</pre>
+
+      <p>The <code>convertDate</code> property would look something like this:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private DateTimeConverter convertDate;
+public DateTimeConverter getConvertDate() {
+    ...
+    return convertDate;
+}
+public void setConvertDate(DateTimeConverter convertDate) {
+    convertDate.setPattern("EEEEEEEE, MMM dd, yyyy");
+    this.convertDate = convertDate;
+}</pre>
+
+      <p>See <a href="../Text/jsf-develop.xhtml#BNAUL">Writing Properties Bound to Converters, Listeners, or Validators</a> for more information on writing managed bean properties for converter, listener, and validator implementations.</p>
+    </div>
+  </div>
+</body>
+</html>

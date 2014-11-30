@@ -1,0 +1,2012 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="BNAWO"></a><a id="JEETT00077"></a>
+
+    <h1 class="chapter"><span class="secnum">16</span>&nbsp;<span style="line-height: 38.390625px;">Configuring JavaServer Faces Applications</span></h1>
+
+    <p>The process of building and deploying simple JavaServer Faces applications is described in earlier chapters of this tutorial, including <a href="../Text/webapp.xhtml#BNADR">Chapter 6, "Getting Started with Web Applications,"</a> <a href="../Text/jsf-facelets.xhtml#GIEPX">Chapter 8, "Introduction to Facelets,"</a> <a href="../Text/jsf-ajax.xhtml#GKIOW">Chapter 13, "Using Ajax with JavaServer Faces Technology,"</a> and <a href="../Text/jsf-advanced-cc.xhtml#GKHXA">Chapter 14, "Composite Components: Advanced Topics and an Example."</a> When you create large and complex applications, however, various additional configuration tasks are required. These tasks include the following:</p>
+
+    <ul>
+      <li>
+        <p>Registering managed beans with the application so that all parts of the application have access to them</p>
+      </li>
+
+      <li>
+        <p>Configuring managed beans and model beans so that they are instantiated with the proper values when a page makes reference to them</p>
+      </li>
+
+      <li>
+        <p>Defining navigation rules for each of the pages in the application so that the application has a smooth page flow, if nondefault navigation is needed</p>
+      </li>
+
+      <li>
+        <p>Packaging the application to include all the pages, resources, and other files so that the application can be deployed on any compliant container</p>
+      </li>
+    </ul>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#GIRCH">Using Annotations to Configure Managed Beans</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAWP">Application Configuration Resource File</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#CHDGFCJF">Using Faces Flows</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAWQ">Configuring Managed Beans</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAXB">Registering Application Messages</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#GIREB">Using Default Validators</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAXD">Registering a Custom Validator</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAXE">Registering a Custom Converter</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAXF">Configuring Navigation Rules</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAXH">Registering a Custom Renderer with a Render Kit</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAXI">Registering a Custom Component</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jsf-configure.xhtml#BNAXJ">Basic Requirements of a JavaServer Faces Application</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GIRCH"></a><a id="JEETT00392"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.1</span> <a id="sthref1025"></a><a id="sthref1026"></a><a id="sthref1027"></a>Using Annotations to Configure Managed Beans</h1>
+
+      <p>JavaServer Faces support for bean annotations is introduced in <a href="../Text/jsf-intro.xhtml#BNAPH">Chapter 7, "JavaServer Faces Technology"</a>. Bean annotations can be used for configuring JavaServer Faces applications.</p>
+
+      <p>The <code>@Named</code> (<code>javax.inject.Named</code>) annotation in a class, along with a scope annotation, automatically registers that class as a resource with the JavaServer Faces implementation. A bean that uses these annotations is a CDI managed bean.</p>
+
+      <p>The following shows the use of the <code>@Named</code> and <code>@SessionScoped</code> annotations in a class:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named("cart")
+@SessionScoped
+public class ShoppingCart ... { ... }</pre>
+
+      <p>The above code snippet shows a bean that is managed by the JavaServer Faces implementation and is available for the length of the session.</p>
+
+      <p>You can annotate beans with any of the scopes listed in the next section, <a href="../Text/jsf-configure.xhtml#GIRCR">Using Managed Bean Scopes</a>.</p>
+
+      <p>All classes will be scanned for annotations at startup unless the <code>faces-config</code> element in the <code>faces-config.xml</code> file has the <code>metadata-complete</code> attribute set to <code>true</code>.</p>
+
+      <p>Annotations are also available for other artifacts, such as components, converters, validators, and renderers, to be used in place of application configuration resource file entries. These are discussed, along with registration of custom listeners, custom validators, and custom converters, in <a href="../Text/jsf-custom.xhtml#BNAVG">Chapter 15, "Creating Custom UI Components and Other Custom Objects"</a>.</p><a id="GIRCR"></a><a id="JEETT01007"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.1.1</span> <a id="sthref1028"></a>Using Managed Bean Scopes</h2>
+
+        <p>You can use annotations to define the scope in which the bean will be stored. You can specify one of the following scopes for a bean class.</p>
+
+        <ul>
+          <li>
+            <p><a id="sthref1029"></a><span class="bold">Application (</span><code>javax.enterprise.context.ApplicationScoped</code><span class="bold">)</span>: Application scope persists across all users' interactions with a web application.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref1030"></a><span class="bold">Session (</span><code>javax.enterprise.context.SessionScoped</code><span class="bold">)</span>: Session scope persists across multiple HTTP requests in a web application.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref1031"></a><span class="bold">Flow (</span><code>javax.faces.flows.FlowScoped</code><span class="bold">)</span>: Flow scope persists during a user's interaction with a specific flow of a web application. See <a href="../Text/jsf-configure.xhtml#CHDGFCJF">Using Faces Flows</a> for more information.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref1032"></a><span class="bold">Request (</span><code>javax.enterprise.context.RequestScoped</code><span class="bold">)</span>: Request scope persists during a single HTTP request in a web application.</p>
+          </li>
+
+          <li>
+            <p><a id="sthref1033"></a><span class="bold">Dependent (</span><code>javax.enterprise.context.Dependent</code><span class="bold">)</span>: Indicates that the bean depends on some other bean.</p>
+          </li>
+        </ul>
+
+        <p>You may want to use <code>@Dependent</code> when a managed bean references another managed bean. The second bean should not be in a scope (<code>@Dependent</code>) if it is supposed to be created only when it is referenced. If you define a bean as <code>@Dependent</code>, the bean is instantiated anew each time it is referenced, so it does not get saved in any scope.</p>
+
+        <p>If your managed bean is referenced by the <code>binding</code> attribute of a component tag, you should define the bean with a request scope. If you placed the bean in session or application scope instead, the bean would need to take precautions to ensure thread safety, because <code>javax.faces.component.UIComponent</code> instances each depend on running inside of a single thread.</p>
+
+        <p>If you are configuring a bean that allows attributes to be associated with the view, you can use the view scope. The attributes persist until the user has navigated to the next view.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAWP"></a><a id="JEETT00393"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.2</span> <a id="sthref1034"></a><a id="sthref1035"></a>Application Configuration Resource File</h1>
+
+      <p>JavaServer Faces technology provides a portable configuration format (as an XML document) for configuring application resources. One or more XML documents, called <span class="italic">application configuration resource files</span>, may use this format to register and configure objects and resources and to define navigation rules for applications. An application configuration resource file is usually named <code>faces-config.xml</code>.</p>
+
+      <p>You need an application configuration resource file in the following cases:</p>
+
+      <ul>
+        <li>
+          <p>To specify configuration elements for your application that are not available through managed bean annotations, such as localized messages and navigation rules</p>
+        </li>
+
+        <li>
+          <p>To override managed bean annotations when the application is deployed</p>
+        </li>
+      </ul>
+
+      <p>The application configuration resource file must be valid against the XML schema located at <code><a href="../Text/jsf-configure.xhtml#http%3A//xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd</a></code>.</p>
+
+      <p>In addition, each file must include the following information, in the following order:</p>
+
+      <ul>
+        <li>
+          <p>The XML version number, usually with an <code>encoding</code> attribute:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding='UTF-8'?&gt;</pre>
+        </li>
+
+        <li>
+          <p>A <code>faces-config</code> tag enclosing all the other declarations:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+              http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"&gt; 
+    ...
+&lt;/faces-config&gt;</pre>
+        </li>
+      </ul>
+
+      <p>You can have more than one application configuration resource file for an application. The JavaServer Faces implementation finds the configuration file or files by looking for the following.</p>
+
+      <ul>
+        <li>
+          <p>A resource named <code>/META-INF/faces-config.xml</code> in any of the JAR files in the web application's <code>/WEB-INF/lib/</code> directory and in parent class loaders. If a resource with this name exists, it is loaded as a configuration resource. This method is practical for a packaged library containing some components and renderers. In addition, any file with a name that ends in <code>faces-config.xml</code> is also considered a configuration resource and is loaded as such.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref1036"></a>A context initialization parameter, <code>javax.faces.application.CONFIG_FILES</code>, in your web deployment descriptor file that specifies one or more (comma-delimited) paths to multiple configuration files for your web application. This method is most often used for enterprise-scale applications that delegate to separate groups the responsibility for maintaining the file for each portion of a big application.</p>
+        </li>
+
+        <li>
+          <p>A resource named <code>faces-config.xml</code> in the <code>/WEB-INF/</code> directory of your application. Simple web applications make their configuration files available in this way.</p>
+        </li>
+      </ul>
+
+      <p><a id="sthref1037"></a>To access the resources registered with the application, an application developer can use an instance of the <code>javax.faces.application.Application</code> class, which is automatically created for each application. The <code>Application</code> instance acts as a centralized factory for resources that are defined in the XML file.</p>
+
+      <p>When an application starts up, the JavaServer Faces implementation creates a single instance of the <code>Application</code> class and configures it with the information you provided in the application configuration resource file.</p><a id="GIREP"></a><a id="JEETT00624"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.2.1</span> <a id="sthref1038"></a>Configuring Eager Application-Scoped Managed Beans</h2>
+
+        <p>JavaServer Faces managed beans (either specified in the f<code>aces-config.xml</code> file or annotated with <code>javax.faces.bean.ManagedBean</code>) are lazily instantiated. That is, that they are instantiated when a request is made from the application.</p>
+
+        <p>To force an application-scoped bean to be instantiated and placed in the application scope as soon as the application is started and before any request is made, the <code>eager</code> attribute of the managed bean should be set to <code>true</code>, as shown in the following examples.</p>
+
+        <p>The <code>faces-config.xml</code> file declaration is as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean eager="true"&gt;</pre>
+
+        <p>The annotation is as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ManagedBean(eager=true)
+@ApplicationScoped</pre>
+      </div><a id="GIQCK"></a><a id="JEETT01008"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.2.2</span> Ordering of Application Configuration Resource Files</h2>
+
+        <p>Because JavaServer Faces technology allows the use of multiple application configuration resource files stored in different locations, the order in which they are loaded by the implementation becomes important in certain situations (for example, when using application-level objects). This order can be defined through an <code>ordering</code> element and its subelements in the application configuration resource file itself. The ordering of application configuration resource files can be absolute or relative.</p>
+
+        <p>Absolute ordering is defined by an <code>absolute-ordering</code> element in the file. With absolute ordering, the user specifies the order in which application configuration resource files will be loaded. The following example shows an entry for absolute ordering.</p>
+
+        <p>File <code>my-faces-config.xml</code> contains the following elements:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;faces-config&gt;
+    &lt;name&gt;myJSF&lt;/name&gt;
+    &lt;absolute-ordering&gt;
+        &lt;name&gt;A&lt;/name&gt;
+        &lt;name&gt;B&lt;/name&gt;
+        &lt;name&gt;C&lt;/name&gt;
+    &lt;/absolute-ordering&gt;
+&lt;/faces-config&gt;</pre>
+
+        <p>In this example, A, B, and C are different application configuration resource files and are to be loaded in the listed order.</p>
+
+        <p>If there is an <code>absolute-ordering</code> element in the file, only the files listed by the subelement <code>name</code> are processed. To process any other application configuration resource files, an <code>others</code> subelement is required. In the absence of the <code>others</code> subelement, all other unlisted files will be ignored at load time.</p>
+
+        <p>Relative ordering is defined by an <code>ordering</code> element and its subelements <code>before</code> and <code>after</code>. With relative ordering, the order in which application configuration resource files will be loaded is calculated by considering ordering entries from the different files. The following example shows some of these considerations. In the following example, <code>config-A</code>, <code>config-B</code>, and <code>config-C</code> are different application configuration resource files.</p>
+
+        <p>File <code>config-A</code> contains the following elements:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;faces-config&gt;
+    &lt;name&gt;config-A&lt;/name&gt;
+    &lt;ordering&gt;
+        &lt;before&gt;
+            &lt;name&gt;config-B&lt;/name&gt;
+        &lt;/before&gt;
+    &lt;/ordering&gt;
+&lt;/faces-config&gt;</pre>
+
+        <p>File <code>config-B</code> (not shown here) does not contain any <code>ordering</code> elements.</p>
+
+        <p>File <code>config-C</code> contains the following elements:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;faces-config&gt;
+    &lt;name&gt;config-C&lt;/name&gt;
+    &lt;ordering&gt;
+        &lt;after&gt;
+            &lt;name&gt;config-B&lt;/name&gt;
+        &lt;/after&gt;
+    &lt;/ordering&gt;
+&lt;/faces-config&gt;</pre>
+
+        <p>Based on the <code>before</code> subelement entry, file <code>config-A</code> will be loaded before the <code>config-B</code> file. Based on the <code>after</code> subelement entry, file <code>config-C</code> will be loaded after the <code>config-B</code> file.</p>
+
+        <p>In addition, a subelement <code>others</code> can also be nested within the <code>before</code> and <code>after</code> subelements. If the <code>others</code> element is present, the specified file may receive highest or lowest preference among both listed and unlisted configuration files.</p>
+
+        <p>If an <code>ordering</code> element is not present in an application configuration file, then that file will be loaded after all the files that contain <code>ordering</code> elements.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="CHDGFCJF"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.3</span> <a id="sthref1039"></a><a id="sthref1040"></a>Using Faces Flows</h1>
+
+      <p>The Faces Flows feature of JavaServer Faces technology allows you to create a set of pages with a scope, <code>FlowScoped</code>, that is greater than request scope but less than session scope. For example, you might want to create a series of pages for the checkout process in an online store. You could create a set of self-contained pages that could be transferred from one store to another as needed.</p>
+
+      <p>Faces Flows are somewhat analogous to subroutines in procedural programming, in the following ways.</p>
+
+      <ul>
+        <li>
+          <p>Like a subroutine, a flow has a well defined entry point, list of parameters, and return value. However, unlike a subroutine, a flow can return multiple values.</p>
+        </li>
+
+        <li>
+          <p>Like a subroutine, a flow has a scope, allowing information to be available only during the invocation of the flow. Such information is not available outside the scope of the flow and does not consume any resources once the flow returns.</p>
+        </li>
+
+        <li>
+          <p>Like a subroutine, a flow may call other flows before returning. The invocation of flows is maintained in a call stack: a new flow causes a push onto the stack, and a return causes a pop.</p>
+        </li>
+      </ul>
+
+      <p>An application can have any number of flows. Each flow includes a set of pages and, usually, one or more managed beans scoped to that flow. Each flow has a starting point, called a start node, and an exit point, called a return node.</p>
+
+      <p>The data in a flow is scoped to that flow alone, but you can pass data from one flow to another by specifying parameters and calling the other flow.</p>
+
+      <p>Flows can be nested, so that if you call one flow from another and then exit the second flow, you return to the calling flow rather than to the second flow's return node.</p>
+
+      <p>You can configure a flow programmatically, by creating a class annotated <code>@FlowDefinition</code>, or you can configure a flow by using a configuration file. The configuration file can be limited to one flow, or you can use the <code>faces-config.xml</code> file to put all the flows in one place, if you have many flows in an application. The programmatic configuration places the code closer to the rest of the flow code and enables you to modularize the flows.</p>
+
+      <p><a href="../Text/jsf-configure.xhtml#CHDIHDCD">Figure 16-1</a> shows two flows and illustrates how they interact.</p>
+
+      <div class="figure">
+        <a id="CHDIHDCD"></a>
+
+        <p class="titleinfigure">Figure 16-1 Two Faces Flows and Their Interactions</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 16-1 follows" longdesc="img_text/jeett_dt_017.htm" src="../Images/jeett_dt_017.png" style="line-height: 1.6em;" title="Description of Figure 16-1 follows" /></div>
+      </div>
+
+      <div class="figure">
+        Description of "Figure 16-1 Two Faces Flows and Their Interactions"<br />
+        <br />
+      </div>
+
+      <p>In this figure, Flow A has a start node named <code>flow-a</code> and two additional pages, <code>next_a1</code> and <code>next_a2</code>. From <code>next_a2</code>, a user can either exit the flow using the defined return node, <code>taskFlowReturn1</code>, or call Flow B, passing two parameters. Flow A also defines two inbound parameters that it can accept from Flow B. Flow B is identical to Flow A except for the names of the flow and files. Each flow also has an associated managed bean; the beans are <code>Flow_a_Bean</code> and <code>Flow_b_Bean</code>.</p>
+
+      <div class="sect2">
+        <a id="sthref1042"></a>
+
+        <h2 class="sect2"><span class="secnum">16.3.1</span> Packaging Flows in an Application</h2>
+
+        <p>Typically, you package flows in a web application using a directory structure that modularizes the flows. In the <code>src/main/webapp</code> directory of a Maven project, for example, you would place the Facelets files that are outside the flow at the top level as usual. Then the <code>webapp</code> files for each flow would be in a separate directory, and the Java files would be under <code>src/main/java</code>. For example, the files for the application shown in <a href="../Text/jsf-configure.xhtml#CHDIHDCD">Figure 16-1</a> might look like this:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">src/main/webapp/
+    index.xhtml
+    return.xhtml
+    WEB_INF/
+        beans.xml
+        web.xml
+    flow-a/
+        flow-a.xhtml
+        next_a1.xhtml
+        next_a2.xhtml
+    flow-b/
+        flow-b-flow.xml
+        next_b1.xhtml
+        next_b2.xhtml
+src/main/java/javaeetutorial/flowexample
+            FlowA.java
+            Flow_a_Bean.java
+            Flow_b_Bean.java</pre>
+
+        <p>In this example, <code>flow-a</code> is defined programmatically in <code>FlowA.java</code>, while <code>flow-b</code> is defined by the configuration file <code>flow-b-flow.xml</code>.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1043"></a>
+
+        <h2 class="sect2"><span class="secnum">16.3.2</span> The Simplest Possible Flow: The simple-flow Example Application</h2>
+
+        <p>The <code>simple-flow</code> example application demonstrates the most basic building blocks of a Faces Flows application and illustrates some of the conventions that make it easy to get started with iterative development using flows. You may want to start with a simple example like this one and build upon it.</p>
+
+        <p>This example provides an <span class="glossaryterm">implicit flow definition</span> by including an empty configuration file. A configuration file that has content, or a class annotated <code>@FlowDefinition</code>, provides an <span class="glossaryterm">explicit flow definition</span>.</p>
+
+        <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/jsf/simple-flow/</code> directory.</p>
+
+        <p>The file layout of the <code>simple-flow</code> example looks like this:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">src/main/webapp
+    index.xhtml
+    simple-flow-return.xhtml
+    WEB_INF/
+        web.xml
+    simple-flow
+        simple-flow-flow.xml
+        simple-flow.xhtml
+        simple-flow-page2.xhtml</pre>
+
+        <p>The <code>simple-flow</code> example has an empty configuration file, which is by convention named <span class="variable">flow-name</span>-<code>flow.xml</code>. The flow does not require any configuration for the following reasons.</p>
+
+        <ul>
+          <li>
+            <p>The flow does not call another flow, nor does it pass parameters to another flow.</p>
+          </li>
+
+          <li>
+            <p>The flow uses default names for the first page of the flow, <span class="variable">flow-name</span><code>.xhtml</code>, and the return page, <span class="variable">flow-name</span><code>-return.xhtml</code>.</p>
+          </li>
+        </ul>
+
+        <p>This example has only four Facelets pages.</p>
+
+        <ul>
+          <li>
+            <p><code>index.xhtml</code>, the start page, which contains almost nothing but a button that navigates to the first page of the flow:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;&lt;h:commandButton value="Enter Flow" action="simple-flow"/&gt;&lt;/p&gt;</pre>
+          </li>
+
+          <li>
+            <p><code>simple-flow.xhtml</code> and <code>simple-flow-page2.xhtml</code>, the two pages of the flow itself. In the absence of an explicit flow definition, the page whose name is the same as the name of the flow is assumed to be the start node of the flow. In this case, the flow is named <code>simple-flow</code>, so the page named <code>simple-flow.xhtml</code> is assumed to be the start node of the flow. The start node is the node navigated to upon entry into the flow. It can be thought of as the home page of the flow.</p>
+
+            <p>The <code>simple-flow.xhtml</code> page asks you to enter a flow-scoped value and provides a button that navigates to the next page of the flow:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">pValue: h:inputText id="input" value="#{flowScope.value}" //pph:commandButton value="Next" action="simple-flow-page2" //p</pre>
+
+            <p>The second page, which can have any name, displays the flow-scoped value and provides a button that navigates to the return page:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;Value: &lt;h:inputText id="input" value="#{flowScope.value}" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;h:commandButton value="Next" action="simple-flow-page2" /&gt;&lt;/p&gt;</pre>
+          </li>
+
+          <li>
+            <p><code>simple-flow-return.xhtml</code>, the return page. The return page, which by convention is named <span class="variable">flow-name</span><code>-return.xhtml</code>, must be located outside of the flow. This page displays the flow-scoped value, to show that it has no value outside of the flow, and provides a link that navigates to the <code>index.xhtml</code> page:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;Value (should be empty): 
+    "&lt;h:outputText id="output" value="#{flowScope.value}" /&gt;"&lt;/p&gt;
+
+&lt;p&gt;&lt;h:link outcome="index" value="Back to Start" /&gt;&lt;/p&gt;</pre>
+          </li>
+        </ul>
+
+        <p>The Facelets pages use only flow-scoped data, so the example does not need a managed bean.</p>
+
+        <div class="sect3">
+          <a id="sthref1044"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.2.1</span> To Build, Package, and Deploy the simple-flow Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>simple-flow</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>simple-flow</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>simple-flow.war</code>, that is located in the <code>target</code> directory. It then deploys the application to the server.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1045"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.2.2</span> To Build, Package, and Deploy the simple-flow Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/simple-flow/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>simple-flow.war</code>, that is located in the <code>target</code> directory. It then deploys the application to the server.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1046"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.2.3</span> To Run the simple-flow Example</h3>
+
+          <ol>
+            <li>
+              <p>Enter the following URL in your web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/simple-flow</pre>
+            </li>
+
+            <li>
+              <p>On the <code>index.xhtml</code> page, click <span class="gui-object-action">Enter Flow</span>.</p>
+            </li>
+
+            <li>
+              <p>On the first page of the flow, enter any string in the <span class="gui-object-action">Value</span> field, then click <span class="gui-object-action">Next</span>.</p>
+            </li>
+
+            <li>
+              <p>On the second page of the flow, you can see the value you entered. Click <span class="gui-object-action">Return</span>.</p>
+            </li>
+
+            <li>
+              <p>On the return page, an empty pair of quotation marks encloses the inaccessible value. Click <span class="gui-object-action">Back to Start</span> to return to the <code>index.xhtml</code> page.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1047"></a>
+
+        <h2 class="sect2"><span class="secnum">16.3.3</span> The checkout-module Example Application</h2>
+
+        <p>The <code>checkout-module</code> example application is considerably more complex than <code>simple-flow</code>. It shows how you might use the Faces Flows feature to implement a checkout module for an online store.</p>
+
+        <p>Like the hypothetical example in <a href="../Text/jsf-configure.xhtml#CHDIHDCD">Figure 16-1</a>, the example application contains two flows, each of which can call the other. Both flows have explicit flow definitions. One flow, <code>checkoutFlow</code>, is specified programmatically. The other flow, <code>joinFlow</code>, is specified in a configuration file.</p>
+
+        <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/jsf/checkout-module/</code> directory.</p>
+
+        <p>For the <code>checkout-module</code> application, the directory structure is as follows (there is also a <code>src/main/webapp/resources</code> directory with a stylesheet and an image):</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">src/main/webapp/
+    index.xhtml
+    exithome.xhtml
+    WEB_INF/
+        beans.xml
+        web.xml
+    checkoutFlow/
+        checkoutFlow.xhtml
+        checkoutFlow2.xhtml
+        checkoutFlow3.xhtml
+        checkoutFlow4.xhtml
+    joinFlow/
+        joinFlow-flow.xml
+        joinFlow.xhtml
+        joinFlow2.xhtml
+src/main/java/javaeetutorial/checkoutmodule
+            CheckoutBean.java
+            CheckoutFlow.java
+            CheckoutFlowBean.java
+            JoinFlowBean.java</pre>
+
+        <p>For the example, <code>index.xhtml</code> is the beginning page for the application as well as the return node for the checkout flow. The <code>exithome.xhtml</code> page is the return node for the join flow.</p>
+
+        <p>The configuration file <code>joinFlow-flow.xml</code> defines the join flow, and the source file <code>CheckoutFlow.java</code> defines the checkout flow.</p>
+
+        <p>The checkout flow contains four Facelets pages, whereas the join flow contains two.</p>
+
+        <p>The managed beans scoped to each flow are <code>CheckoutFlowBean.java</code> and <code>JoinFlowBean.java</code>, whereas <code>CheckoutBean.java</code> is the backing bean for the <code>index.html</code> page.</p>
+
+        <div class="sect3">
+          <a id="sthref1048"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.3.1</span> The Facelets Pages for the checkout-module Example</h3>
+
+          <p>The starting page for the example, <code>index.xhtml</code>, summarizes the contents of a hypothetical shopping cart. It allows the user to click either of two buttons to enter one of the two flows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;&lt;h:commandButton value="Check Out" action="checkoutFlow"/&gt;&lt;/p&gt;
+...
+&lt;p&gt;&lt;h:commandButton value="Join" action="joinFlow"/&gt;&lt;/p&gt;</pre>
+
+          <p>This page is also the return node for the checkout flow.</p>
+
+          <p>The Facelets page <code>exithome.xhtml</code> is the return node for the join flow. This page has a button that allows you to return to the <code>index.xhtml</code> page.</p>
+
+          <p>The four Facelets pages within the checkout flow, starting with <code>checkoutFlow.xhtml</code> and ending with <code>checkoutFlow4.xhtml</code>, allow you to proceed to the next page or, in some cases, to return from the flow. The <code>checkoutFlow.xhtml</code> page allows you to access parameters passed from the join flow through the flow scope. These appear as empty quotation marks if you have not called the checkout flow from the join flow.</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;If you called this flow from the Join flow, you can see these parameters:
+    "&lt;h:outputText value="#{flowScope.param1Value}"/&gt;" and
+    "&lt;h:outputText value="#{flowScope.param2Value}"/&gt;"
+&lt;/p&gt;</pre>
+
+          <p>Only <code>checkoutFlow2.xhtml</code> has a button to return to the previous page, but moving between pages is generally permitted within flows. Here are the buttons for c<code>heckoutFlow2.xhtml</code>:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;&lt;h:commandButton value="Continue" action="checkoutFlow3"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;h:commandButton value="Go Back" action="checkoutFlow"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;h:commandButton value="Exit Flow" action="returnFromCheckoutFlow"/&gt;&lt;/p&gt;</pre>
+
+          <p>The action <code>returnFromCheckoutFlow</code> is defined in the configuration source code file, <code>CheckoutFlow.java</code>.</p>
+
+          <p>The final page of the checkout flow, <code>checkoutFlow4.xhtml</code>, contains a button that calls the join flow:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;&lt;h:commandButton value="Join" action="calljoin"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;h:commandButton value="Exit Flow" action="returnFromCheckoutFlow"/&gt;&lt;/p&gt;</pre>
+
+          <p>The <code>calljoin</code> action is also defined in the configuration source code file, <code>CheckoutFlow.java</code>. This action enters the join flow, passing two parameters from the checkout flow.</p>
+
+          <p>The two pages in the join flow, <code>joinFlow.xhtml</code> and <code>joinFlow2.xhtml</code>, are similar to those in the checkout flow. The second page has a button to call the checkout flow as well as one to return from the join flow:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;&lt;h:commandButton value="Check Out" action="callcheckoutFlow"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;h:commandButton value="Exit Flow" action="returnFromJoinFlow"/&gt;&lt;/p&gt;</pre>
+
+          <p>For this flow, the actions <code>callcheckoutFlow</code> and <code>returnFromJoinFlow</code> are defined in the configuration file <code>joinFlow-flow.xml</code>.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1049"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.3.2</span> Using a Configuration File to Configure a Flow</h3>
+
+          <p>If you use an application configuration resource file to configure a flow, it must be named <span class="variable">flowName</span><code>-flow.xml</code>. In this example, the join flow uses a configuration file named <code>joinFlow-flow.xml</code>. The file is a <code>faces-config</code> file that specifies a <code>flow-definition</code> element. This element must define the flow name using the <code>id</code> attribute. Under the <code>flow-definition</code> element, there must be a <code>flow-return</code> element that specifies the return point for the flow. Any inbound parameters are specified with <code>inbound-parameter</code> elements. If the flow calls another flow, the <code>call-flow</code> element must use the flow-reference element to name the called flow and may use the <code>outbound-parameter</code> element to specify any outbound parameters.</p>
+
+          <p>The configuration file for the join flow looks like this:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">f&lt;faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee \
+              http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"&gt;
+ 
+    &lt;flow-definition id="joinFlow"&gt;
+        &lt;flow-return id="returnFromJoinFlow"&gt;
+            &lt;from-outcome&gt;#{joinFlowBean.returnValue}&lt;/from-outcome&gt;
+        &lt;/flow-return&gt;
+ 
+        &lt;inbound-parameter&gt;
+            &lt;name&gt;param1FromCheckoutFlow&lt;/name&gt;
+            &lt;value&gt;#{flowScope.param1Value}&lt;/value&gt;
+        &lt;/inbound-parameter&gt;
+        &lt;inbound-parameter&gt;
+            &lt;name&gt;param2FromCheckoutFlow&lt;/name&gt;
+            &lt;value&gt;#{flowScope.param2Value}&lt;/value&gt;
+        &lt;/inbound-parameter&gt;
+        
+        &lt;flow-call id="callcheckoutFlow"&gt;
+            &lt;flow-reference&gt;
+                &lt;flow-id&gt;checkoutFlow&lt;/flow-id&gt;
+            &lt;/flow-reference&gt;
+            &lt;outbound-parameter&gt;
+                &lt;name&gt;param1FromJoinFlow&lt;/name&gt;
+                &lt;value&gt;param1 joinFlow value&lt;/value&gt;
+            &lt;/outbound-parameter&gt;
+            &lt;outbound-parameter&gt;
+                &lt;name&gt;param2FromJoinFlow&lt;/name&gt;
+                &lt;value&gt;param2 joinFlow value&lt;/value&gt;
+            &lt;/outbound-parameter&gt;
+        &lt;/flow-call&gt;
+    &lt;/flow-definition&gt;
+&lt;/faces-config&gt;</pre>
+
+          <p>The <code>id</code> attribute of the <code>flow-definition</code> element defines the name of the flow as <code>joinFlow</code>. The value of the <code>id</code> attribute of the <code>flow-return</code> element identifies the name of the return node, and its value is defined in the <code>from-outcome</code> element as the <code>returnValue</code> property of the flow-scoped managed bean for the join flow, <code>JoinFlowBean</code>.</p>
+
+          <p>The names and values of the inbound parameters are retrieved from the flow scope in order (<code>flowScope.param1Value</code>, <code>flowScope.param2Value</code>), based on the way they were defined in the checkout flow configuration.</p>
+
+          <p>The <code>flow-call</code> element defines how the join flow calls the checkout flow. The <code>id</code> attribute of the element, <code>callcheckoutFlow</code>, defines the action of calling the flow. Within the <code>flow-call</code> element, the <code>flow-reference</code> element defines the actual name of the flow to call, <code>checkoutFlow</code>. The <code>outbound-parameter</code> elements define the parameters to be passed when <code>checkoutFlow</code> is called. Here they are just arbitrary strings.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1050"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.3.3</span> Using a Java Class to Configure a Flow</h3>
+
+          <p>If you use a Java class to configure a flow, it must have the name of the flow. The class for the checkout flow is called <code>CheckoutFlow.java</code>.</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import java.io.Serializable;
+import javax.enterprise.inject.Produces;
+import javax.faces.flow.Flow;
+import javax.faces.flow.builder.FlowBuilder;
+import javax.faces.flow.builder.FlowBuilderParameter;
+import javax.faces.flow.builder.FlowDefinition;
+
+class CheckoutFlow implements Serializable {
+ 
+    private static final long serialVersionUID = 1L;
+ 
+    @Produces
+    @FlowDefinition
+    public Flow defineFlow(@FlowBuilderParameter FlowBuilder flowBuilder) {
+ 
+        String flowId = "checkoutFlow";
+        flowBuilder.id("", flowId);
+        flowBuilder.viewNode(flowId, 
+                "/" + flowId + "/" + flowId + ".xhtml").
+                markAsStartNode();
+ 
+        flowBuilder.returnNode("returnFromCheckoutFlow").
+                fromOutcome("#{checkoutFlowBean.returnValue}");
+ 
+        flowBuilder.inboundParameter("param1FromJoinFlow", 
+                "#{flowScope.param1Value}");
+        flowBuilder.inboundParameter("param2FromJoinFlow", 
+                "#{flowScope.param2Value}");
+ 
+        flowBuilder.flowCallNode("calljoin").flowReference("", "joinFlow").
+                outboundParameter("param1FromCheckoutFlow", 
+                    "#{checkoutFlowBean.name}").
+                outboundParameter("param2FromCheckoutFlow", 
+                    "#{checkoutFlowBean.city}");
+        return flowBuilder.getFlow();
+    }
+}</pre>
+
+          <p>The class performs actions that are almost identical to those performed by the configuration file <code>joinFlow-flow.xml</code>. It contains a single method, <code>defineFlow</code>, as a producer method with the <code>@FlowDefinition</code> qualifier that returns a <code>javax.faces.flow.Flow</code> class. The <code>defineFlow</code> method takes one parameter, a <code>FlowBuilder</code> with the qualifier <code>@FlowBuilderParameter</code>, which is passed in from the JavaServer Faces implementation. The method then calls methods from the <code>javax.faces.flow.Builder.FlowBuilder</code> class to configure the flow.</p>
+
+          <p>First, the method defines the flow <code>id</code> as <code>checkoutFlow</code>. Then, it explicitly defines the start node for the flow. By default, this is the name of the flow with an <code>.xhtml</code> suffix.</p>
+
+          <p>The method then defines the return node similarly to the way the configuration file does. The <code>returnNode</code> method sets the name of the return node as <code>returnFromCheckoutFlow</code>, and the chained <code>fromOutcome</code> method specifies its value as the <code>returnValue</code> property of the flow-scoped managed bean for the checkout flow, <code>CheckoutFlowBean</code>.</p>
+
+          <p>The <code>inboundParameter</code> method sets the names and values of the inbound parameters from the join flow, which are retrieved from the flow scope in order (<code>flowScope.param1Value</code>, <code>flowScope.param2Value</code>), based on the way they were defined in the join flow configuration.</p>
+
+          <p>The <code>flowCallNode</code> method defines how the checkout flow calls the join flow. The argument, <code>calljoin</code>, specifies the action of calling the flow. The chained <code>flowReference</code> method defines the actual name of the flow to call, <code>joinFlow</code>, then calls <code>outboundParameter</code> methods to define the parameters to be passed when <code>joinFlow</code> is called. Here they are values from the <code>CheckoutFlowBean</code> managed bean.</p>
+
+          <p>Finally, the <code>defineFlow</code> method calls the <code>getFlow</code> method and returns the result.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1051"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.3.4</span> The Flow-Scoped Managed Beans</h3>
+
+          <p>Each of the two flows has a managed bean that defines properties for the pages within the flow. For example, the <code>CheckoutFlowBean</code> defines properties whose values are entered by the user on both the <code>checkoutFlow.xhtml</code> page and the <code>checkoutFlow3.xhtml</code> page.</p>
+
+          <p>Each managed bean has a <code>getReturnValue</code> method that sets the value of the return node. For the <code>CheckoutFlowBean</code>, the return node is the <code>index.xhtml</code> page, specified using implicit navigation:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public String getReturnValue() {
+    return "index";
+}</pre>
+
+          <p>For the <code>JoinFlowBean</code>, the return node is the <code>exithome.xhtml</code> page.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1052"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.3.5</span> To Build, Package, and Deploy the checkout-module Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>checkout-module</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>checkout-module</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>checkout-module.war</code>, that is located in the <code>target</code> directory. It then deploys the application to the server.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1053"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.3.6</span> To Build, Package, and Deploy the checkout-module Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/checkout-module/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>checkout-module.war</code>, that is located in the <code>target</code> directory. It then deploys the application to the server.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1054"></a>
+
+          <h3 class="sect3"><span class="secnum">16.3.3.7</span> To Run the checkout-module Example</h3>
+
+          <ol>
+            <li>
+              <p>Enter the following URL in your web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/checkout-module</pre>
+            </li>
+
+            <li>
+              <p>The <code>index.xhtml</code> page presents hypothetical results of the shopping expedition. Click either <span class="gui-object-action">Check Out</span> or <span class="gui-object-action">Join</span> to enter one of the two flows.</p>
+            </li>
+
+            <li>
+              <p>Follow the flow, providing input as needed and choosing whether to continue, go back, or exit the flow.</p>
+
+              <p>In the checkout flow, only one of the input fields is validated (the credit card field expects 16 digits), so you can enter any values you like. The join flow does not require you to check any boxes in its checkbox menus.</p>
+            </li>
+
+            <li>
+              <p>On the last page of a flow, select the option to enter the other flow. This allows you to view the inbound parameters from the previous flow.</p>
+            </li>
+
+            <li>
+              <p>Because flows are nested, if you click <span class="gui-object-action">Exit Flow</span> from a called flow, you will return to the first page of the calling flow. (You may see a warning, which you can ignore.) Click <span class="gui-object-action">Exit Flow</span> on that page to go to the specified return node.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAWQ"></a><a id="JEETT00394"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.4</span> <a id="sthref1055"></a><a id="sthref1056"></a><a id="sthref1057"></a>Configuring Managed Beans</h1>
+
+      <p>When a page references a managed bean for the first time, the JavaServer Faces implementation initializes it either based on a <code>@Named</code> annotation and scope annotation in the bean class or according to its configuration in the application configuration resource file. For information on using annotations to initialize beans, see <a href="../Text/jsf-configure.xhtml#GIRCH">Using Annotations to Configure Managed Beans</a>.</p>
+
+      <p>You can use either annotations or the application configuration resource file to instantiate managed beans that are used in a JavaServer Faces application and to store them in scope. The managed bean creation facility is configured in the application configuration resource file using <code>managed-bean</code> XML elements to define each bean. This file is processed at application startup time. For information on using this facility, see <a href="../Text/jsf-configure.xhtml#BNAWR">Using the managed-bean Element</a>.</p>
+
+      <p>Managed beans created in the application configuration resource file are JavaServer Faces managed beans, not CDI managed beans.</p>
+
+      <p>With the managed bean creation facility, you can</p>
+
+      <ul>
+        <li>
+          <p>Create beans in one centralized file that is available to the entire application, rather than conditionally instantiate beans throughout the application</p>
+        </li>
+
+        <li>
+          <p>Customize a bean's properties without any additional code</p>
+        </li>
+
+        <li>
+          <p>Customize a bean's property values directly from within the configuration file so that it is initialized with these values when it is created</p>
+        </li>
+
+        <li>
+          <p>Using <code>value</code> elements, set a property of one managed bean to be the result of evaluating another value expression</p>
+        </li>
+      </ul>
+
+      <p>This section shows you how to initialize beans using the managed bean creation facility. See <a href="../Text/jsf-develop.xhtml#BNATY">Writing Bean Properties</a> and <a href="../Text/jsf-develop.xhtml#BNAVB">Writing Managed Bean Methods</a> for information on programming managed beans.</p><a id="BNAWR"></a><a id="JEETT01009"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.4.1</span> <a id="sthref1058"></a>Using the managed-bean Element</h2>
+
+        <p>A managed bean is initiated in the application configuration resource file using a <code>managed-bean</code> element, which represents an instance of a bean class that must exist in the application. At runtime, the JavaServer Faces implementation processes the <code>managed-bean</code> element. If a page references the bean and no bean instance exists, the JavaServer Faces implementation instantiates the bean as specified by the element configuration.</p>
+
+        <p>Here is an example managed bean configuration from the Duke's Bookstore case study:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean eager="true"&gt;
+    &lt;managed-bean-name&gt;Book201&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;dukesbookstore.model.ImageArea&lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt;application&lt;/managed-bean-scope&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;shape&lt;/property-name&gt;
+        &lt;value&gt;rect&lt;/value&gt;
+    &lt;/managed-property&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;alt&lt;/property-name&gt;
+        &lt;value&gt;Duke&lt;/value&gt;
+    &lt;/managed-property&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;coords&lt;/property-name&gt;
+        &lt;value&gt;67,23,212,268&lt;/value&gt;
+    &lt;/managed-property&gt;
+&lt;/managed-bean&gt;</pre>
+
+        <p><a id="sthref1059"></a>The <code>managed-bean-name</code> element defines the key under which the bean will be stored in a scope. For a component's value to map to this bean, the component tag's <code>value</code> attribute must match the <code>managed-bean-name</code> up to the first period.</p>
+
+        <p>The <code>managed-bean-class</code> element defines the fully qualified name of the JavaBeans component class used to instantiate the bean.</p>
+
+        <p>The <code>managed-bean</code> element can contain zero or more <code>managed-property</code> elements, each corresponding to a property defined in the bean class. These elements are used to initialize the values of the bean properties. If you don't want a particular property initialized with a value when the bean is instantiated, do not include a <code>managed-property</code> definition for it in your application configuration resource file.</p>
+
+        <p>If a <code>managed-bean</code> element does not contain other <code>managed-bean</code> elements, it can contain one <code>map-entries</code> element or <code>list-entries</code> element. The <code>map-entries</code> element configures a set of beans that are instances of <code>Map</code>. The <code>list-entries</code> element configures a set of beans that are instances of <code>List</code>.</p>
+
+        <p>In the following example, the <code>newsletters</code> managed bean, representing a <code>UISelectItems</code> component, is configured as an <code>ArrayList</code> that represents a set of <code>SelectItem</code> objects. Each <code>SelectItem</code> object is in turn configured as a managed bean with properties:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean&gt;
+    &lt;managed-bean-name&gt;newsletters&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;java.util.ArrayList&lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt;application&lt;/managed-bean-scope&gt;
+    &lt;list-entries&gt;
+        &lt;value-class&gt;javax.faces.model.SelectItem&lt;/value-class&gt;
+        &lt;value&gt;#{newsletter0}&lt;/value&gt;
+        &lt;value&gt;#{newsletter1}&lt;/value&gt;
+        &lt;value&gt;#{newsletter2}&lt;/value&gt;
+        &lt;value&gt;#{newsletter3}&lt;/value&gt;
+    &lt;/list-entries&gt;
+&lt;/managed-bean&gt;
+&lt;managed-bean&gt;
+    &lt;managed-bean-name&gt;newsletter0&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;javax.faces.model.SelectItem&lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt;none&lt;/managed-bean-scope&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;label&lt;/property-name&gt;
+        &lt;value&gt;Duke's Quarterly&lt;/value&gt;
+    &lt;/managed-property&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;value&lt;/property-name&gt;
+        &lt;value&gt;200&lt;/value&gt;
+    &lt;/managed-property&gt;
+&lt;/managed-bean&gt;
+...</pre>
+
+        <p>This approach may be useful for quick-and-dirty creation of selection item lists before a development team has had time to create such lists from the database. Note that each of the individual newsletter beans has a <code>managed-bean-scope</code> setting of <code>none</code> so that they will not themselves be placed into any scope.</p>
+
+        <p>See <a href="../Text/jsf-configure.xhtml#BNAWX">Initializing Array and List Properties</a> for more information on configuring collections as beans.</p>
+
+        <p>To map to a property defined by a <code>managed-property</code> element, you must ensure that the part of a component tag's <code>value</code> expression after the period matches the <code>managed-property</code> element's <code>property-name</code> element. The next section, <a href="../Text/jsf-configure.xhtml#BNAWS">Initializing Properties Using the managed-property Element</a>, explains in more detail how to use the <code>managed-property</code> element. See <a href="../Text/jsf-configure.xhtml#BNAWY">Initializing Managed Bean Properties</a> for an example of initializing a managed bean property.</p>
+      </div><a id="BNAWS"></a><a id="JEETT01010"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.4.2</span> <a id="sthref1060"></a>Initializing Properties Using the managed-property Element</h2>
+
+        <p>A <code>managed-property</code> element must contain a <code>property-name</code> element, which must match the name of the corresponding property in the bean. A <code>managed-property</code> element must also contain one of a set of elements that defines the value of the property. This value must be of the same type as that defined for the property in the corresponding bean. Which element you use to define the value depends on the type of the property defined in the bean. <a href="../Text/jsf-configure.xhtml#BNAWT">Table 16-1</a> lists all the elements that are used to initialize a value.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref1061"></a><a id="BNAWT"></a>
+
+          <p class="titleintable">Table 16-1 Subelements of managed-property Elements That Define Property Values</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the managed-property sub-elements that define properties." title="Subelements of managed-property Elements That Define Property Values" width="100%">
+            <col width="18%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t2" valign="bottom">Element</th>
+
+                <th align="left" id="r1c2-t2" valign="bottom">Value It Defines</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                  <p><a id="sthref1062"></a><code>list-entries</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t2 r1c2-t2">
+                  <p>Defines the values in a list</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                  <p><a id="sthref1063"></a><code>map-entries</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t2 r1c2-t2">
+                  <p>Defines the values of a map</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                  <p><a id="sthref1064"></a><code>null-value</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t2 r1c2-t2">
+                  <p>Explicitly sets the property to <code>null</code></p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                  <p><a id="sthref1065"></a><code>value</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t2 r1c2-t2">
+                  <p>Defines a single value, such as a <code>String</code>, <code>int</code>, or JavaServer Faces EL expression</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p><a href="../Text/jsf-configure.xhtml#BNAWR">Using the managed-bean Element</a> includes an example of initializing an <code>int</code> property (a primitive type) using the <code>value</code> subelement. You also use the <code>value</code> subelement to initialize <code>String</code> and other reference types. The rest of this section describes how to use the <code>value</code> subelement and other subelements to initialize properties of Java <code>Enum</code> types, <code>Map</code>, <code>array</code>, and <code>Collection</code>, as well as initialization parameters.</p><a id="BNAWU"></a><a id="JEETT00625"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">16.4.2.1</span> Referencing a Java Enum Type</h3>
+
+          <p>A managed bean property can also be a Java <code>Enum</code> type (see <code><a href="../Text/jsf-configure.xhtml#http%3A//docs.oracle.com/javase/7/docs/api/java/lang/Enum.html">http://docs.oracle.com/javase/7/docs/api/java/lang/Enum.html</a></code>). In this case, the <code>value</code> element of the <code>managed-property</code> element must be a <code>String</code> that matches one of the <code>String</code> constants of the <code>Enum</code>. In other words, the <code>String</code> must be one of the valid values that can be returned if you were to call <code>valueOf(Class, String)</code> on <code>enum</code>, where <code>Class</code> is the <code>Enum</code> class and <code>String</code> is the contents of the <code>value</code> subelement. For example, suppose the managed bean property is the following:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public enum Suit { Hearts, Spades, Diamonds, Clubs }
+ ...
+public Suit getSuit() { ... return Suit.Hearts; }</pre>
+
+          <p>Assuming you want to configure this property in the application configuration resource file, the corresponding <code>managed-property</code> element looks like this:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-property&gt;
+    &lt;property-name&gt;Suit&lt;/property-name&gt;
+    &lt;value&gt;Hearts&lt;/value&gt;
+&lt;/managed-property&gt;</pre>
+
+          <p>When the system encounters this property, it iterates over each of the members of the <code>enum</code> and calls <code>toString()</code> on each member until it finds one that is exactly equal to the value from the <code>value</code> element.</p>
+        </div><a id="BNAWV"></a><a id="JEETT00626"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">16.4.2.2</span> <a id="sthref1066"></a>Referencing a Context Initialization Parameter</h3>
+
+          <p>Another powerful feature of the managed bean creation facility is the ability to reference implicit objects from a managed bean property.</p>
+
+          <p>Suppose you have a page that accepts data from a customer, including the customer's address. Suppose also that most of your customers live in a particular area code. You can make the area code component render this area code by saving it in an implicit object and referencing it when the page is rendered.</p>
+
+          <p>You can save the area code as an initial default value in the context <code>initParam</code> implicit object by adding a context parameter to your web application and setting its value in the deployment descriptor. For example, to set a context parameter called <code>defaultAreaCode</code> to <code>650</code>, add a <code>context-param</code> element to the deployment descriptor and give the parameter the name <code>defaultAreaCode</code> and the value <code>650</code>.</p>
+
+          <p>Next, write a <code>managed-bean</code> declaration that configures a property that references the parameter:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean&gt;
+    &lt;managed-bean-name&gt;customer&lt;/managed-bean-name&gt;
+        &lt;managed-bean-class&gt;CustomerBean&lt;/managed-bean-class&gt;
+        &lt;managed-bean-scope&gt;request&lt;/managed-bean-scope&gt;
+        &lt;managed-property&gt;
+            &lt;property-name&gt;areaCode&lt;/property-name&gt;
+                &lt;value&gt;#{initParam.defaultAreaCode}&lt;/value&gt;
+            &lt;/managed-property&gt;
+            ...
+&lt;/managed-bean&gt;</pre>
+
+          <p>To access the area code at the time the page is rendered, refer to the property from the <code>area</code> component tag's <code>value</code> attribute:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id=area value="#{customer.areaCode}"</pre>
+
+          <p>Values are retrieved from other implicit objects in a similar way.</p>
+        </div><a id="BNAWW"></a><a id="JEETT00627"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">16.4.2.3</span> <a id="sthref1067"></a>Initializing Map Properties</h3>
+
+          <p><a id="sthref1068"></a>The <code>map-entries</code> element is used to initialize the values of a bean property with a type of <code>Map</code> if the <code>map-entries</code> element is used within a <code>managed-property</code> element. A <code>map-entries</code> element contains an optional <code>key-class</code> element, an optional <code>value-class</code> element, and zero or more <code>map-entry</code> elements.</p>
+
+          <p><a id="sthref1069"></a>Each of the <code>map-entry</code> elements must contain a <code>key</code> element and either a <code>null-value</code> or <code>value</code> element. Here is an example that uses the <code>map-entries</code> element:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean&gt;
+    ...
+    &lt;managed-property&gt;
+        &lt;property-name&gt;prices&lt;/property-name&gt;
+        &lt;map-entries&gt;
+            &lt;map-entry&gt;
+                &lt;key&gt;My Early Years: Growing Up on *7&lt;/key&gt;
+                &lt;value&gt;30.75&lt;/value&gt;
+            &lt;/map-entry&gt;
+            &lt;map-entry&gt;
+                &lt;key&gt;Web Servers for Fun and Profit&lt;/key&gt;
+                &lt;value&gt;40.75&lt;/value&gt;
+            &lt;/map-entry&gt;
+        &lt;/map-entries&gt;
+    &lt;/managed-property&gt;
+&lt;/managed-bean&gt;</pre>
+
+          <p><a id="sthref1070"></a>The map created from this <code>map-entries</code> tag contains two entries. By default, all the keys and values are converted to <code>String</code>. If you want to specify a different type for the keys in the map, embed the <code>key-class</code> element just inside the <code>map-entries</code> element:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;map-entries&gt;
+    &lt;key-class&gt;java.math.BigDecimal&lt;/key-class&gt;
+    ...
+&lt;/map-entries&gt;</pre>
+
+          <p>This declaration will convert all the keys into <code>java.math.BigDecimal</code>. Of course, you must make sure that the keys can be converted to the type you specify. The key from the example in this section cannot be converted to a <code>BigDecimal</code>, because it is a <code>String</code>.</p>
+
+          <p>If you want to specify a different type for all the values in the map, include the <code>value-class</code> element after the <code>key-class</code> element:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;map-entries&gt;
+    &lt;key-class&gt;int&lt;/key-class&gt;
+    &lt;value-class&gt;java.math.BigDecimal&lt;/value-class&gt;
+    ...
+&lt;/map-entries&gt;</pre>
+
+          <p>Note that this tag sets only the type of all the <code>value</code> subelements.</p>
+
+          <p>Each <code>map-entry</code> in the preceding example includes a <code>value</code> subelement. The <code>value</code> subelement defines a single value, which will be converted to the type specified in the bean.</p>
+
+          <p>Instead of using a <code>map-entries</code> element, it is also possible to assign the entire map using a <code>value</code> element that specifies a map-typed expression.</p>
+        </div><a id="BNAWX"></a><a id="JEETT00628"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">16.4.2.4</span> <a id="sthref1071"></a>Initializing Array and List Properties</h3>
+
+          <p>The <code>list-entries</code> element is used to initialize the values of an array or <code>List</code> property. Each individual value of the array or <code>List</code> is initialized using a <code>value</code> or <code>null-value</code> element. Here is an example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean&gt;
+    ...
+    &lt;managed-property&gt;
+        &lt;property-name&gt;books&lt;/property-name&gt;
+        &lt;list-entries&gt;
+            &lt;value-class&gt;java.lang.String&lt;/value-class&gt;
+            &lt;value&gt;Web Servers for Fun and Profit&lt;/value&gt;
+            &lt;value&gt;#{myBooks.bookId[3]}&lt;/value&gt;
+            &lt;null-value/&gt;
+        &lt;/list-entries&gt;
+    &lt;/managed-property&gt;
+&lt;/managed-bean&gt;</pre>
+
+          <p>This example initializes an array or a <code>List</code>. The type of the corresponding property in the bean determines which data structure is created. The <code>list-entries</code> element defines the list of values in the array or <code>List</code>. The <code>value</code> element specifies a single value in the array or <code>List</code> and can reference a property in another bean. The <code>null-value</code> element will cause the <code>setBooks</code> method to be called with an argument of <code>null</code>. A <code>null</code> property cannot be specified for a property whose data type is a Java primitive, such as <code>int</code> or <code>boolean</code>.</p>
+        </div><a id="BNAWY"></a><a id="JEETT00629"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">16.4.2.5</span> <a id="sthref1072"></a>Initializing Managed Bean Properties</h3>
+
+          <p>Sometimes you might want to create a bean that also references other managed beans so that you can construct a graph or a tree of beans. For example, suppose you want to create a bean representing a customer's information, including the mailing address and street address, each of which is also a bean. The following <code>managed-bean</code> declarations create a <code>CustomerBean</code> instance that has two <code>AddressBean</code> properties: one representing the mailing address and the other representing the street address. This declaration results in a tree of beans with <code>CustomerBean</code> as its root and the two <code>AddressBean</code> objects as children.</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;managed-bean&gt;
+    &lt;managed-bean-name&gt;customer&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;
+        com.example.mybeans.CustomerBean
+    &lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt; request &lt;/managed-bean-scope&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;mailingAddress&lt;/property-name&gt;
+        &lt;value&gt;#{addressBean}&lt;/value&gt;
+    &lt;/managed-property&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;streetAddress&lt;/property-name&gt;
+        &lt;value&gt;#{addressBean}&lt;/value&gt;
+    &lt;/managed-property&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;customerType&lt;/property-name&gt;
+        &lt;value&gt;New&lt;/value&gt;
+    &lt;/managed-property&gt;
+&lt;/managed-bean&gt;
+&lt;managed-bean&gt;
+    &lt;managed-bean-name&gt;addressBean&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;
+        com.example.mybeans.AddressBean
+    &lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt; none &lt;/managed-bean-scope&gt;
+    &lt;managed-property&gt;
+        &lt;property-name&gt;street&lt;/property-name&gt;
+        &lt;null-value/&gt;
+    &lt;managed-property&gt;
+    ...
+&lt;/managed-bean&gt;</pre>
+
+          <p>The first <code>CustomerBean</code> declaration (with the <code>managed-bean-name</code> of <code>customer</code>) creates a <code>CustomerBean</code> in request scope. This bean has two properties, <code>mailingAddress</code> and <code>streetAddress</code>. These properties use the <code>value</code> element to reference a bean named <code>addressBean</code>.</p>
+
+          <p><a id="sthref1073"></a>The second managed bean declaration defines an <code>AddressBean</code> but does not create it, because its <code>managed-bean-scope</code> element defines a scope of <code>none</code>. Recall that a scope of <code>none</code> means that the bean is created only when something else references it. Because both the <code>mailingAddress</code> and the <code>streetAddress</code> properties reference <code>addressBean</code> using the <code>value</code> element, two instances of <code>AddressBean</code> are created when <code>CustomerBean</code> is created.</p>
+
+          <p>When you create an object that points to other objects, do not try to point to an object with a shorter life span, because it might be impossible to recover that scope's resources when it goes away. A session-scoped object, for example, cannot point to a request-scoped object. And objects with <code>none</code> scope have no effective life span managed by the framework, so they can point only to other <code>none</code>-scoped objects. <a href="../Text/jsf-configure.xhtml#BNAWZ">Table 16-2</a> outlines all of the allowed connections.</p>
+
+          <div class="tblhruleformal">
+            <a id="sthref1074"></a><a id="BNAWZ"></a>
+
+            <p class="titleintable">Table 16-2 Allowable Connections between Scoped Objects</p>
+
+            <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists the allowable connections between objects of different scopes." title="Allowable Connections between Scoped Objects" width="100%">
+              <col width="27%" />
+              <col width="*" />
+
+              <thead>
+                <tr align="left" valign="top">
+                  <th align="left" id="r1c1-t3" valign="bottom">An Object of This Scope</th>
+
+                  <th align="left" id="r1c2-t3" valign="bottom">May Point to an Object of This Scope</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r2c1-t3">
+                    <p><code>none</code></p>
+                  </td>
+
+                  <td align="left" headers="r2c1-t3 r1c2-t3">
+                    <p><code>none</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r3c1-t3">
+                    <p><code>application</code></p>
+                  </td>
+
+                  <td align="left" headers="r3c1-t3 r1c2-t3">
+                    <p><code>none</code>, <code>application</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r4c1-t3">
+                    <p><code>session</code></p>
+                  </td>
+
+                  <td align="left" headers="r4c1-t3 r1c2-t3">
+                    <p><code>none</code>, <code>application</code>, <code>session</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r5c1-t3">
+                    <p><code>request</code></p>
+                  </td>
+
+                  <td align="left" headers="r5c1-t3 r1c2-t3">
+                    <p><code>none</code>, <code>application</code>, <code>session</code>, <code>request</code>, <code>view</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t3" id="r6c1-t3">
+                    <p><code>view</code></p>
+                  </td>
+
+                  <td align="left" headers="r6c1-t3 r1c2-t3">
+                    <p><code>none</code>, <code>application</code>, <code>session</code>, <code>view</code></p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+
+          <p>Be sure not to allow cyclical references between objects. For example, neither of the <code>AddressBean</code> objects in the preceding example should point back to the <code>CustomerBean</code> object, because <code>CustomerBean</code> already points to the <code>AddressBean</code> objects.</p>
+        </div>
+      </div><a id="BNAXA"></a><a id="JEETT01011"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.4.3</span> <a id="sthref1075"></a>Initializing Maps and Lists</h2>
+
+        <p>In addition to configuring <code>Map</code> and <code>List</code> properties, you can also configure a <code>Map</code> and a <code>List</code> directly so that you can reference them from a tag rather than referencing a property that wraps a <code>Map</code> or a <code>List</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXB"></a><a id="JEETT00395"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.5</span> <a id="sthref1076"></a><a id="sthref1077"></a>Registering Application Messages</h1>
+
+      <p>Application messages can include any strings displayed to the user as well as custom error messages (which are displayed by the <code>message</code> and <code>messages</code> tags) for your custom converters or validators. To make messages available at application startup time, do one of the following:</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref1078"></a>Queue an individual message onto the <code>javax.faces.context.FacesContext</code> instance programmatically, as described in <a href="../Text/jsf-configure.xhtml#GKUHG">Using FacesMessage to Create a Message</a></p>
+        </li>
+
+        <li>
+          <p>Register all the messages with your application using the application configuration resource file</p>
+        </li>
+      </ul>
+
+      <p>Here is the section of the <code>faces-config.xml</code> file that registers the messages for the Duke's Bookstore case study application:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;application&gt;
+    &lt;resource-bundle&gt;
+        &lt;base-name&gt;
+            javaeetutorial.dukesbookstore.web.messages.Messages
+        &lt;/base-name&gt;
+        &lt;var&gt;bundle&lt;/var&gt;
+    &lt;/resource-bundle&gt;
+    &lt;locale-config&gt;
+        &lt;default-locale&gt;en&lt;/default-locale&gt;
+        &lt;supported-locale&gt;es&lt;/supported-locale&gt;
+        &lt;supported-locale&gt;de&lt;/supported-locale&gt;
+        &lt;supported-locale&gt;fr&lt;/supported-locale&gt;
+    &lt;/locale-config&gt;
+&lt;/application&gt;</pre>
+
+      <p>This set of elements causes the application to be populated with the messages that are contained in the specified resource bundle.</p>
+
+      <p><a id="sthref1079"></a>The <code>resource-bundle</code> element represents a set of localized messages. It must contain the fully qualified path to the resource bundle containing the localized messages (in this case, <code>dukesbookstore.web.messages.Messages</code>). The <code>var</code> element defines the EL name by which page authors refer to the resource bundle.</p>
+
+      <p>The <code>locale-config</code> element lists the default locale and the other supported locales. The <code>locale-config</code> element enables the system to find the correct locale based on the browser's language settings.</p>
+
+      <p>The <code>supported-locale</code> and <code>default-locale</code> tags accept the lowercase, two-character codes defined by ISO 639-1 (see <code><a href="../Text/jsf-configure.xhtml#http%3A//www.loc.gov/standards/iso639-2/php/English_list.php">http://www.loc.gov/standards/iso639-2/php/English_list.php</a></code>). Make sure that your resource bundle actually contains the messages for the locales you specify with these tags.</p>
+
+      <p>To access the localized message, the application developer merely references the key of the message from the resource bundle.</p>
+
+      <p>You can pull localized text into an <code>alt</code> tag for a graphic image, as in the following example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:graphicImage id="mapImage" 
+                name="book_all.jpg"
+                library="images"
+                alt="#{bundle.ChooseBook}"
+                usemap="#bookMap" /&gt;</pre>
+
+      <p>The <code>alt</code> attribute can accept value expressions. In this case, the <code>alt</code> attribute refers to localized text that will be included in the alternative text of the image rendered by this tag.</p><a id="GKUHG"></a><a id="JEETT01012"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.5.1</span> <a id="sthref1080"></a><a id="sthref1081"></a>Using FacesMessage to Create a Message</h2>
+
+        <p>Instead of registering messages in the application configuration resource file, you can access the <code>java.util.ResourceBundle</code> directly from managed bean code. The code snippet below locates an email error message:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">String message = "";
+...
+message = ExampleBean.loadErrorMessage(context,
+    ExampleBean.EX_RESOURCE_BUNDLE_NAME,
+         "EMailError");
+context.addMessage(toValidate.getClientId(context),
+    new FacesMessage(message));</pre>
+
+        <p>These lines call the bean's <code>loadErrorMessage</code> method to get the message from the <code>ResourceBundle</code>. Here is the <code>loadErrorMessage</code> method:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public static String loadErrorMessage(FacesContext context,
+     String basename, String key) {
+    if ( bundle == null ) {
+         try {
+            bundle = ResourceBundle.getBundle(basename,
+                 context.getViewRoot().getLocale());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    return bundle.getString(key);
+}</pre>
+      </div><a id="BNASS"></a><a id="JEETT01013"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.5.2</span> Referencing Error Messages</h2>
+
+        <p>A JavaServer Faces page uses the <code>message</code> or <code>messages</code> tags to access error messages, as explained in <a href="../Text/jsf-page.xhtml#BNASO">Displaying Error Messages with the h:message and h:messages Tags</a>.</p>
+
+        <p>The error messages these tags access include</p>
+
+        <ul>
+          <li>
+            <p>The standard error messages that accompany the standard converters and validators that ship with the API. (see Section 2.5.2.4 of the JavaServer Faces specification for a complete list of standard error messages)</p>
+          </li>
+
+          <li>
+            <p>Custom error messages contained in resource bundles registered with the application by the application architect using the <code>resource-bundle</code> element in the configuration file</p>
+          </li>
+        </ul>
+
+        <p>When a converter or validator is registered on an input component, the appropriate error message is automatically queued on the component.</p>
+
+        <p>A page author can override the error messages queued on a component by using the following attributes of the component's tag:</p>
+
+        <ul>
+          <li>
+            <p><code>converterMessage</code>: References the error message to display when the data on the enclosing component cannot be converted by the converter registered on this component.</p>
+          </li>
+
+          <li>
+            <p><code>requiredMessage</code>: References the error message to display when no value has been entered into the enclosing component.</p>
+          </li>
+
+          <li>
+            <p><code>validatorMessage</code>: References the error message to display when the data on the enclosing component cannot be validated by the validator registered on this component.</p>
+          </li>
+        </ul>
+
+        <p>All three attributes are enabled to take literal values and value expressions. If an attribute uses a value expression, this expression references the error message in a resource bundle. This resource bundle must be made available to the application in one of the following ways:</p>
+
+        <ul>
+          <li>
+            <p>By the application architect using the <code>resource-bundle</code> element in the configuration file</p>
+          </li>
+
+          <li>
+            <p>By the page author using the <code>f:loadBundle</code> tag</p>
+          </li>
+        </ul>
+
+        <p>Conversely, the <code>resource-bundle</code> element must be used to make available to the application those resource bundles containing custom error messages that are queued on the component as a result of a custom converter or validator being registered on the component.</p>
+
+        <p>The following tags show how to specify the <code>requiredMessage</code> attribute using a value expression to reference an error message:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="ccno" size="19"
+    required="true"
+    requiredMessage="#{customMessages.ReqMessage}"&gt;
+    ...
+&lt;/h:inputText&gt;
+&lt;h:message styleClass="error-message" for="ccno"/&gt;</pre>
+
+        <p>The value expression used by <code>requiredMessage</code> in this example references the error message with the <code>ReqMessage</code> key in the resource bundle <code>customMessages</code>.</p>
+
+        <p>This message replaces the corresponding message queued on the component and will display wherever the <code>message</code> or <code>messages</code> tag is placed on the page.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GIREB"></a><a id="JEETT00396"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.6</span> <a id="sthref1082"></a>Using Default Validators</h1>
+
+      <p>In addition to the validators you declare on the components, you can also specify zero or more default validators in the application configuration resource file. The default validator applies to all <code>javax.faces.component.UIInput</code> instances in a view or component tree and is appended after the local defined validators. Here is an example of a default validator registered in the application configuration resource file:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;faces-config&gt;
+    &lt;application&gt;
+        &lt;default-validators&gt;
+            &lt;validator-id&gt;javax.faces.Bean&lt;/validator-id&gt;
+        &lt;/default-validators&gt;
+    &lt;application/&gt;
+&lt;/faces-config&gt;</pre>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXD"></a><a id="JEETT00397"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.7</span> <a id="sthref1083"></a><a id="sthref1084"></a><a id="sthref1085"></a>Registering a Custom Validator</h1>
+
+      <p><a id="sthref1086"></a>If the application developer provides an implementation of the <code>javax.faces.validator.Validator</code> interface to perform validation, you must register this custom validator either by using the <code>@FacesValidator</code> annotation, as described in <a href="../Text/jsf-custom.xhtml#BNAUX">Implementing the Validator Interface</a>, or by using the <code>validator</code> XML element in the application configuration resource file:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;validator&gt;
+    ...
+    &lt;validator-id&gt;FormatValidator&lt;/validator-id&gt;
+    &lt;validator-class&gt;
+        myapplication.validators.FormatValidator
+    &lt;/validator-class&gt;
+    &lt;attribute&gt;
+        ...
+        &lt;attribute-name&gt;formatPatterns&lt;/attribute-name&gt;
+        &lt;attribute-class&gt;java.lang.String&lt;/attribute-class&gt;
+    &lt;/attribute&gt;
+&lt;/validator&gt;</pre>
+
+      <p>Attributes specified in a <code>validator</code> tag override any settings in the <code>@FacesValidator</code> annotation.</p>
+
+      <p>The <code>validator-id</code> and <code>validator-class</code> elements are required subelements. The <code>validator-id</code> element represents the identifier under which the <code>Validator</code> class should be registered. This ID is used by the tag class corresponding to the custom <code>validator</code> tag.</p>
+
+      <p>The <code>validator-class</code> element represents the fully qualified class name of the <code>Validator</code> class.</p>
+
+      <p>The <code>attribute</code> element identifies an attribute associated with the <code>Validator</code> implementation. It has required <code>attribute-name</code> and <code>attribute-class</code> subelements. The <code>attribute-name</code> element refers to the name of the attribute as it appears in the <code>validator</code> tag. The <code>attribute-class</code> element identifies the Java type of the value associated with the attribute.</p>
+
+      <p><a href="../Text/jsf-custom.xhtml#BNAUW">Creating and Using a Custom Validator</a> explains how to implement the <code>Validator</code> interface.</p>
+
+      <p><a href="../Text/jsf-custom.xhtml#BNATV">Using a Custom Validator</a> explains how to reference the validator from the page.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXE"></a><a id="JEETT00398"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.8</span> <a id="sthref1087"></a><a id="sthref1088"></a>Registering a Custom Converter</h1>
+
+      <p><a id="sthref1089"></a>As is the case with a custom validator, if the application developer creates a custom converter, you must register it with the application either by using the <code>@FacesConverter</code> annotation, as described in <a href="../Text/jsf-configure.xhtml#GLPHB">Creating a Custom Converter</a>, or by using the <code>converter</code> XML element in the application configuration resource file. Here is a hypothetical <code>converter</code> configuration for <code>CreditCardConverter</code> from the Duke's Bookstore case study:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;converter&gt;
+    &lt;description&gt;
+        Converter for credit card numbers that normalizes
+        the input to a standard format
+    &lt;/description&gt;
+    &lt;converter-id&gt;CreditCardConverter&lt;/converter-id&gt;
+    &lt;converter-class&gt;
+        dukesbookstore.converters.CreditCardConverter
+    &lt;/converter-class&gt;
+&lt;/converter&gt;</pre>
+
+      <p>Attributes specified in a <code>converter</code> tag override any settings in the <code>@FacesConverter</code> annotation.</p>
+
+      <p>The <code>converter</code> element represents a <code>javax.faces.convert.Converter</code> implementation and contains required <code>converter-id</code> and <code>converter-class</code> elements.</p>
+
+      <p>The <code>converter-id</code> element identifies an ID that is used by the <code>converter</code> attribute of a UI component tag to apply the converter to the component's data. <a href="../Text/jsf-custom.xhtml#BNATU">Using a Custom Converter</a> includes an example of referencing the custom converter from a component tag.</p>
+
+      <p>The <code>converter-class</code> element identifies the <code>Converter</code> implementation.</p>
+
+      <p><a href="../Text/jsf-custom.xhtml#BNAUS">Creating and Using a Custom Converter</a> explains how to create a custom converter.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXF"></a><a id="JEETT00399"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.9</span> <a id="sthref1090"></a><a id="sthref1091"></a><a id="sthref1092"></a>Configuring Navigation Rules</h1>
+
+      <p>Navigation between different pages of a JavaServer Faces application, such as choosing the next page to be displayed after a button or link component is clicked, is defined by a set of rules. Navigation rules can be implicit, or they can be explicitly defined in the application configuration resource file. For more information on implicit navigation rules, see <a href="../Text/jsf-intro.xhtml#BNAQL">Navigation Model</a>.</p>
+
+      <p>Each navigation rule specifies how to navigate from one page to another page or set of pages. The JavaServer Faces implementation chooses the proper navigation rule according to which page is currently displayed.</p>
+
+      <p>After the proper navigation rule is selected, the choice of which page to access next from the current page depends on two factors:</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref1093"></a>The action method invoked when the component was clicked</p>
+        </li>
+
+        <li>
+          <p><a id="sthref1094"></a>The logical outcome referenced by the component's tag or returned from the action method</p>
+        </li>
+      </ul>
+
+      <p>The outcome can be anything the developer chooses, but <a href="../Text/jsf-configure.xhtml#BNAXG">Table 16-3</a> lists some outcomes commonly used in web applications.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref1095"></a><a id="BNAXG"></a>
+
+        <p class="titleintable">Table 16-3 Common Outcome Strings</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the most common outcome strings used in navigation rules." title="Common Outcome Strings" width="100%">
+          <col width="17%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t4" valign="bottom">Outcome</th>
+
+              <th align="left" id="r1c2-t4" valign="bottom">What It Means</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r2c1-t4">
+                <p><code>success</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t4 r1c2-t4">
+                <p>Everything worked. Go on to the next page.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r3c1-t4">
+                <p><code>failure</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t4 r1c2-t4">
+                <p>Something is wrong. Go on to an error page.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r4c1-t4">
+                <p><code>login</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t4 r1c2-t4">
+                <p>The user needs to log in first. Go on to the login page.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r5c1-t4">
+                <p><code>no results</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t4 r1c2-t4">
+                <p>The search did not find anything. Go to the search page again.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>Usually, the action method performs some processing on the form data of the current page. For example, the method might check whether the user name and password entered in the form match the user name and password on file. If they match, the method returns the outcome <code>success</code>. Otherwise, it returns the outcome <code>failure</code>. As this example demonstrates, both the method used to process the action and the outcome returned are necessary to determine the correct page to access.</p>
+
+      <p>Here is a navigation rule that could be used with the example just described:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;navigation-rule&gt;
+    &lt;from-view-id&gt;/login.xhtml&lt;/from-view-id&gt;
+    &lt;navigation-case&gt;
+        &lt;from-action&gt;#{LoginForm.login}&lt;/from-action&gt;
+        &lt;from-outcome&gt;success&lt;/from-outcome&gt;
+        &lt;to-view-id&gt;/storefront.xhtml&lt;/to-view-id&gt;
+    &lt;/navigation-case&gt;
+    &lt;navigation-case&gt;
+        &lt;from-action&gt;#{LoginForm.logon}&lt;/from-action&gt;
+        &lt;from-outcome&gt;failure&lt;/from-outcome&gt;
+        &lt;to-view-id&gt;/logon.xhtml&lt;/to-view-id&gt;
+    &lt;/navigation-case&gt;
+&lt;/navigation-rule&gt;</pre>
+
+      <p><a id="sthref1096"></a>This navigation rule defines the possible ways to navigate from <code>login.xhtml</code>. Each <code>navigation-case</code> element defines one possible navigation path from <code>login.xhtml</code>. The first <code>navigation-case</code> says that if <code>LoginForm.login</code> returns an outcome of <code>success</code>, then <code>storefront.xhtml</code> will be accessed. The second <code>navigation-case</code> says that <code>login.xhtml</code> will be re-rendered if <code>LoginForm.login</code> returns <code>failure</code>.</p>
+
+      <p><a id="sthref1097"></a><a id="sthref1098"></a>The configuration of an application's page flow consists of a set of navigation rules. Each rule is defined by the <code>navigation-rule</code> element in the <code>faces-config.xml</code> file.</p>
+
+      <p><a id="sthref1099"></a><a id="sthref1100"></a>Each <code>navigation-rule</code> element corresponds to one component tree identifier defined by the optional <code>from-view-id</code> element. This means that each rule defines all the possible ways to navigate from one particular page in the application. If there is no <code>from-view-id</code> element, the navigation rules defined in the <code>navigation-rule</code> element apply to all the pages in the application. The <code>from-view-id</code> element also allows wildcard matching patterns. For example, this <code>from-view-id</code> element says that the navigation rule applies to all the pages in the <code>books</code> directory:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;from-view-id/books&gt;/*&lt;/from-view-id&gt;</pre>
+
+      <p><a id="sthref1101"></a>A <code>navigation-rule</code> element can contain zero or more <code>navigation-case</code> elements. The <code>navigation-case</code> element defines a set of matching criteria. When these criteria are satisfied, the application will navigate to the page defined by the <code>to-view-id</code> element contained in the same <code>navigation-case</code> element.</p>
+
+      <p><a id="sthref1102"></a>The navigation criteria are defined by optional <code>from-outcome</code> and <code>from-action</code> elements. The <code>from-outcome</code> element defines a logical outcome, such as <code>success</code>. The <code>from-action</code> element uses a method expression to refer to an action method that returns a <code>String</code>, which is the logical outcome. The method performs some logic to determine the outcome and returns the outcome.</p>
+
+      <p><a id="sthref1103"></a><a id="sthref1104"></a>The <code>navigation-case</code> elements are checked against the outcome and the method expression in the following order.</p>
+
+      <ol>
+        <li>
+          <p>Cases specifying both a <code>from-outcome</code> value and a <code>from-action</code> value. Both of these elements can be used if the action method returns different outcomes depending on the result of the processing it performs.</p>
+        </li>
+
+        <li>
+          <p>Cases specifying only a <code>from-outcome</code> value. The <code>from-outcome</code> element must match either the outcome defined by the <code>action</code> attribute of the <code>javax.faces.component.UICommand</code> component or the outcome returned by the method referred to by the <code>UICommand</code> component.</p>
+        </li>
+
+        <li>
+          <p>Cases specifying only a <code>from-action</code> value. This value must match the <code>action</code> expression specified by the component tag.</p>
+        </li>
+      </ol>
+
+      <p>When any of these cases is matched, the component tree defined by the <code>to-view-id</code> element will be selected for rendering.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXH"></a><a id="JEETT00400"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.10</span> <a id="sthref1105"></a><a id="sthref1106"></a><a id="sthref1107"></a>Registering a Custom Renderer with a Render Kit</h1>
+
+      <p><a id="sthref1108"></a><a id="sthref1109"></a>When the application developer creates a custom renderer, as described in <a href="../Text/jsf-configure.xhtml#BNAWA">Delegating Rendering to a Renderer</a>, you must register it using the appropriate render kit. Because the image map application implements an HTML image map, the <code>AreaRenderer</code> and <code>MapRenderer</code> classes in the Duke's Bookstore case study should be registered using the HTML render kit.</p>
+
+      <p><a id="sthref1110"></a>You register the renderer either by using the <code>@FacesRenderer</code> annotation, as described in <a href="../Text/jsf-configure.xhtml#BNAWB">Creating the Renderer Class</a>, or by using the <code>render-kit</code> element of the application configuration resource file. Here is a hypothetical configuration of <code>AreaRenderer</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;render-kit&gt;
+    &lt;renderer&gt;
+        &lt;component-family&gt;Area&lt;/component-family&gt;
+        &lt;renderer-type&gt;DemoArea&lt;/renderer-type&gt;
+        &lt;renderer-class&gt;
+            dukesbookstore.renderers.AreaRenderer
+        &lt;/renderer-class&gt;
+        &lt;attribute&gt;
+            &lt;attribute-name&gt;onmouseout&lt;/attribute-name&gt;
+            &lt;attribute-class&gt;java.lang.String&lt;/attribute-class&gt;
+        &lt;/attribute&gt;
+        &lt;attribute&gt;
+            &lt;attribute-name&gt;onmouseover&lt;/attribute-name&gt;
+            &lt;attribute-class&gt;java.lang.String&lt;/attribute-class&gt;
+        &lt;/attribute&gt;
+        &lt;attribute&gt;
+            &lt;attribute-name&gt;styleClass&lt;/attribute-name&gt;
+            &lt;attribute-class&gt;java.lang.String&lt;/attribute-class&gt;
+        &lt;/attribute&gt;
+    &lt;/renderer&gt;
+    ...</pre>
+
+      <p>Attributes specified in a <code>renderer</code> tag override any settings in the <code>@FacesRenderer</code> annotation.</p>
+
+      <p><a id="sthref1111"></a><a id="sthref1112"></a><a id="sthref1113"></a><a id="sthref1114"></a>The <code>render-kit</code> element represents a javax.faces.render.<code>RenderKit</code> implementation. If no <code>render-kit-id</code> is specified, the default HTML render kit is assumed. The <code>renderer</code> element represents a <code>javax.faces.render.Renderer</code> implementation. By nesting the <code>renderer</code> element inside the <code>render-kit</code> element, you are registering the renderer with the <code>RenderKit</code> implementation associated with the <code>render-kit</code> element.</p>
+
+      <p>The <code>renderer-class</code> is the fully qualified class name of the <code>Renderer</code>.</p>
+
+      <p>The <code>component-family</code> and <code>renderer-type</code> elements are used by a component to find renderers that can render it. The <code>component-family</code> identifier must match that returned by the component class's <code>getFamily</code> method. The component family represents a component or set of components that a particular renderer can render. The <code>renderer-type</code> must match that returned by the <code>getRendererType</code> method of the tag handler class.</p>
+
+      <p>By using the component family and renderer type to look up renderers for components, the JavaServer Faces implementation allows a component to be rendered by multiple renderers and allows a renderer to render multiple components.</p>
+
+      <p>Each of the <code>attribute</code> tags specifies a render-dependent attribute and its type. The <code>attribute</code> element doesn't affect the runtime execution of your application. Rather, it provides information to tools about the attributes the <code>Renderer</code> supports.</p>
+
+      <p>The object responsible for rendering a component (be it the component itself or a renderer to which the component delegates the rendering) can use facets to aid in the rendering process. These facets allow the custom component developer to control some aspects of rendering the component. Consider this custom component tag example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;d:dataScroller&gt;
+    &lt;f:facet name="header"&gt;
+        &lt;h:panelGroup&gt;
+            &lt;h:outputText value="Account Id"/&gt;
+            &lt;h:outputText value="Customer Name"/&gt;
+            &lt;h:outputText value="Total Sales"/&gt;
+        &lt;/h:panelGroup&gt;
+    &lt;/f:facet&gt;
+    &lt;f:facet name="next"&gt;
+        &lt;h:panelGroup&gt;
+            &lt;h:outputText value="Next"/&gt;
+            &lt;h:graphicImage url="/images/arrow-right.gif" /&gt;
+        &lt;/h:panelGroup&gt;
+    &lt;/f:facet&gt;
+    ...
+&lt;/d:dataScroller&gt;</pre>
+
+      <p>The <code>dataScroller</code> component tag includes a component that will render the header and a component that will render the <span class="gui-object-action">Next</span> button. If the renderer associated with this component renders the facets, you can include the following <code>facet</code> elements in the <code>renderer</code> element:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;facet&gt;
+    &lt;description&gt;This facet renders as the header of the table. It should be
+         a panelGroup with the same number of columns as the data.
+    &lt;/description&gt;
+    &lt;display-name&gt;header&lt;/display-name&gt;
+    &lt;facet-name&gt;header&lt;/facet-name&gt;
+&lt;/facet&gt;
+&lt;facet&gt;
+    &lt;description&gt;This facet renders as the content of the "next" button in
+         the scroller. It should be a panelGroup that includes an outputText
+         tag that has the text "Next" and a right arrow icon.
+    &lt;/description&gt;
+    &lt;display-name&gt;Next&lt;/display-name&gt;
+    &lt;facet-name&gt;next&lt;/facet-name&gt;
+&lt;/facet&gt;</pre>
+
+      <p>If a component that supports facets provides its own rendering and you want to include <code>facet</code> elements in the application configuration resource file, you need to put them in the component's configuration rather than the renderer's configuration.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXI"></a><a id="JEETT00401"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.11</span> <a id="sthref1115"></a><a id="sthref1116"></a>Registering a Custom Component</h1>
+
+      <p>In addition to registering custom renderers (as explained in the preceding section), you also must register the custom components that are usually associated with the custom renderers. You use either a <code>@FacesComponent</code> annotation, as described in <a href="../Text/jsf-custom.xhtml#BNAVU">Creating Custom Component Classes</a>, or the <code>component</code> element of the application configuration resource file.</p>
+
+      <p><a id="sthref1117"></a>Here is a hypothetical <code>component</code> element from the application configuration resource file that registers <code>AreaComponent</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;component&gt;
+    &lt;component-type&gt;DemoArea&lt;/component-type&gt;
+    &lt;component-class&gt;
+        dukesbookstore.components.AreaComponent
+    &lt;/component-class&gt;
+    &lt;property&gt;
+        &lt;property-name&gt;alt&lt;/property-name&gt;
+        &lt;property-class&gt;java.lang.String&lt;/property-class&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;property-name&gt;coords&lt;/property-name&gt;
+        &lt;property-class&gt;java.lang.String&lt;/property-class&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;property-name&gt;shape&lt;/property-name&gt;
+        &lt;property-class&gt;java.lang.String&lt;/property-class&gt;
+    &lt;/property&gt;
+&lt;/component&gt;</pre>
+
+      <p>Attributes specified in a <code>component</code> tag override any settings in the <code>@FacesComponent</code> annotation.</p>
+
+      <p>The <code>component-type</code> element indicates the name under which the component should be registered. Other objects referring to this component use this name. For example, the <code>component-type</code> element in the configuration for <code>AreaComponent</code> defines a value of <code>DemoArea</code>, which matches the value returned by the <code>AreaTag</code> class's <code>getComponentType</code> method.</p>
+
+      <p>The <code>component-class</code> element indicates the fully qualified class name of the component. The <code>property</code> elements specify the component properties and their types.</p>
+
+      <p>If the custom component can include facets, you can configure the facets in the component configuration using <code>facet</code> elements, which are allowed after the <code>component-class</code> elements. See <a href="../Text/jsf-configure.xhtml#BNAXH">Registering a Custom Renderer with a Render Kit</a> for further details on configuring facets.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNAXJ"></a><a id="JEETT00402"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">16.12</span> Basic Requirements of a JavaServer Faces Application</h1>
+
+      <p>In addition to configuring your application, you must satisfy other requirements of JavaServer Faces applications, including properly packaging all the necessary files and providing a deployment descriptor. This section describes how to perform these administrative tasks.</p>
+
+      <p>JavaServer Faces applications can be packaged in a WAR file, which must conform to specific requirements to execute across different containers. At a minimum, a WAR file for a JavaServer Faces application may contain the following:</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref1118"></a><a id="sthref1119"></a>A web application deployment descriptor, called <code>web.xml</code>, to configure resources required by a web application (required)</p>
+        </li>
+
+        <li>
+          <p>A specific set of JAR files containing essential classes (optional)</p>
+        </li>
+
+        <li>
+          <p>A set of application classes, JavaServer Faces pages, and other required resources, such as image files</p>
+        </li>
+      </ul>
+
+      <p>A WAR file may also contain:</p>
+
+      <ul>
+        <li>
+          <p>An application configuration resource file, which configures application resources</p>
+        </li>
+
+        <li>
+          <p>A set of tag library descriptor files</p>
+        </li>
+      </ul>
+
+      <p>For example, a Java Server Faces web application WAR file using Facelets typically has the following directory structure:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">$PROJECT_DIR
+[Web Pages]
++- /[xhtml or html documents]
++- /resources
++- /WEB-INF
+   +- /web.xml
+   +- /beans.xml (optional)
+   +- /classes (optional)
+   +- /lib (optional)
+   +- /faces-config.xml (optional)
+   +- /*.taglib.xml (optional)
+   +- /glassfish-web.xml (optional)</pre>
+
+      <p>The <code>web.xml</code> file (or web deployment descriptor), the set of JAR files, and the set of application files must be contained in the <code>WEB-INF</code> directory of the WAR file.</p><a id="BNAXK"></a><a id="JEETT01015"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.12.1</span> Configuring an Application with a Web Deployment Descriptor</h2>
+
+        <p>Web applications are commonly configured using elements contained in the web application deployment descriptor, <code>web.xml</code>. The deployment descriptor for a JavaServer Faces application must specify certain configurations, including the following:</p>
+
+        <ul>
+          <li>
+            <p>The servlet used to process JavaServer Faces requests</p>
+          </li>
+
+          <li>
+            <p>The servlet mapping for the processing servlet</p>
+          </li>
+
+          <li>
+            <p>The path to the configuration resource file, if it exists and is not located in a default location</p>
+          </li>
+        </ul>
+
+        <p>The deployment descriptor can also include other, optional configurations, such as those that</p>
+
+        <ul>
+          <li>
+            <p>Specify where component state is saved</p>
+          </li>
+
+          <li>
+            <p>Encrypt state saved on the client</p>
+          </li>
+
+          <li>
+            <p>Compress state saved on the client</p>
+          </li>
+
+          <li>
+            <p>Restrict access to pages containing JavaServer Faces tags</p>
+          </li>
+
+          <li>
+            <p>Turn on XML validation</p>
+          </li>
+
+          <li>
+            <p>Specify the Project Stage</p>
+          </li>
+
+          <li>
+            <p>Verify custom objects</p>
+          </li>
+        </ul>
+
+        <p>This section gives more details on these configurations. Where appropriate, it also describes how you can make these configurations using NetBeans IDE.</p><a id="GLPOO"></a><a id="JEETT00630"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">16.12.1.1</span> Identifying the Servlet for Lifecycle Processing</h3>
+
+          <p><a id="sthref1120"></a><a id="sthref1121"></a>A requirement of a JavaServer Faces application is that all requests to the application that reference previously saved JavaServer Faces components must go through <code>javax.faces.webapp.FacesServlet</code>. A <code>FacesServlet</code> instance manages the request-processing lifecycle for web applications and initializes the resources required by JavaServer Faces technology.</p>
+
+          <p>Before a JavaServer Faces application can launch its first web page, the web container must invoke the <code>FacesServlet</code> instance in order for the application lifecycle process to start. See <a href="../Text/jsf-configure.xhtml#BNAQQ">The Lifecycle of a JavaServer Faces Application</a> for more information.</p>
+
+          <p>The following example shows the default configuration of the <code>FacesServlet</code>:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;servlet&gt;
+    &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;javax.faces.webapp.FacesServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;</pre>
+
+          <p>You will provide a mapping configuration entry to make sure that the <code>FacesServlet</code> instance is invoked. The mapping to <code>FacesServlet</code> can be a prefix mapping, such as <code>/faces/*</code>, or an extension mapping, such as <code>*.xhtml</code>. The mapping is used to identify a page as having JavaServer Faces content. Because of this, the URL to the first page of the application must include the URL pattern mapping.</p>
+
+          <p>The following elements specify a prefix mapping:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/faces/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+...
+&lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;faces/greeting.xhtml&lt;/welcome-file&gt;
+&lt;/welcome-file-list&gt;</pre>
+
+          <p>The following elements, used in the tutorial examples, specify an extension mapping:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;*.xhtml&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+...
+&lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.xhtml&lt;/welcome-file&gt;
+&lt;/welcome-file-list&gt;</pre>
+
+          <p>When you use this mechanism, users access the application as shown in the following example:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/guessNumber</pre>
+
+          <p>In the case of extension mapping, if a request comes to the server for a page with an <code>.xhtml</code> extension, the container will send the request to the <code>FacesServlet</code> instance, which will expect a corresponding page of the same name containing the content to exist.</p>
+
+          <p>If you are using NetBeans IDE to create your application, a web deployment descriptor is automatically created for you with default configurations. If you created your application without an IDE, you can create a web deployment descriptor.</p>
+        </div><a id="BNAXM"></a><a id="JEETT00631"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">16.12.1.2</span> <a id="sthref1122"></a>To Specify a Path to an Application Configuration Resource File</h3>
+
+          <p>As explained in <a href="../Text/jsf-configure.xhtml#BNAWP">Application Configuration Resource File</a>, an application can have multiple application configuration resource files. If these files are not located in the directories that the implementation searches by default or the files are not named <code>faces-config.xml</code>, you need to specify paths to these files.</p>
+
+          <p>To specify these paths using NetBeans IDE, do the following.</p>
+
+          <ol>
+            <li>
+              <p>Expand the node of your project in the <span class="gui-object-action">Projects</span> tab.</p>
+            </li>
+
+            <li>
+              <p>Expand the <span class="gui-object-action">Web Pages</span> and <span class="gui-object-action">WEB-INF</span> nodes that are under the project node.</p>
+            </li>
+
+            <li>
+              <p>Double-click <code>web.xml</code>.</p>
+            </li>
+
+            <li>
+              <p>After the <code>web.xml</code> file appears in the editor, click <span class="gui-object-action">General</span> at the top of the editor window.</p>
+            </li>
+
+            <li>
+              <p>Expand the <span class="gui-object-action">Context Parameters</span> node.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Add</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Add Context Parameter</span> dialog box:</p>
+
+              <ol>
+                <li>
+                  <p>Enter <code>javax.faces.CONFIG_FILES</code> in the <span class="gui-object-action">Parameter Name</span> field.</p>
+                </li>
+
+                <li>
+                  <p>Enter the path to your configuration file in the <span class="gui-object-action">Parameter Value</span> field.</p>
+                </li>
+
+                <li>
+                  <p>Click <span class="gui-object-action">OK</span>.</p>
+                </li>
+              </ol>
+            </li>
+
+            <li>
+              <p>Repeat steps 1 through 7 for each configuration file.</p>
+            </li>
+          </ol>
+        </div><a id="BNAXN"></a><a id="JEETT00632"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">16.12.1.3</span> <a id="sthref1123"></a><a id="sthref1124"></a>To Specify Where State Is Saved</h3>
+
+          <p>For all the components in a web application, you can specify in your deployment descriptor where you want the state to be saved, on either client or server. You do this by setting a context parameter in your deployment descriptor. By default, state is saved on the server, so you need to specify this context parameter only if you want to save state on the client. See <a href="../Text/jsf-custom.xhtml#BNAVZ">Saving and Restoring State</a> for information on the advantages and disadvantages of each location.</p>
+
+          <p>To specify where state is saved using NetBeans IDE, do the following.</p>
+
+          <ol>
+            <li>
+              <p>Expand the node of your project in the <span class="gui-object-action">Projects</span> tab.</p>
+            </li>
+
+            <li>
+              <p>Expand the <span class="gui-object-action">Web Pages</span> and <span class="gui-object-action">WEB-INF</span> nodes under the project node.</p>
+            </li>
+
+            <li>
+              <p>Double-click <code>web.xml</code>.</p>
+            </li>
+
+            <li>
+              <p>After the <code>web.xml</code> file appears in the editor window, click <span class="gui-object-action">General</span> at the top of the editor window.</p>
+            </li>
+
+            <li>
+              <p>Expand the <span class="gui-object-action">Context Parameters</span> node.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Add</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Add Context Parameter</span> dialog box:</p>
+
+              <ol>
+                <li>
+                  <p>Enter <code>javax.faces.STATE_SAVING_METHOD</code> in the <span class="gui-object-action">Parameter Name</span> field.</p>
+                </li>
+
+                <li>
+                  <p>Enter <code>client</code> or <code>server</code> in the <span class="gui-object-action">Parameter Value</span> field.</p>
+                </li>
+
+                <li>
+                  <p>Click <span class="gui-object-action">OK</span>.</p>
+                </li>
+              </ol>
+            </li>
+          </ol>
+
+          <p>If state is saved on the client, the state of the entire view is rendered to a hidden field on the page. The JavaServer Faces implementation saves the state on the server by default. Duke's Forest saves its state on the client.</p>
+        </div>
+      </div><a id="GIQXL"></a><a id="JEETT01016"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.12.2</span> Configuring Project Stage</h2>
+
+        <p>Project Stage is a context parameter identifying the status of a JavaServer Faces application in the software lifecycle. The stage of an application can affect the behavior of the application. For example, error messages can be displayed during the Development stage but suppressed during the Production stage.</p>
+
+        <p>The possible Project Stage values are as follows:</p>
+
+        <ul>
+          <li>
+            <p><code>Development</code></p>
+          </li>
+
+          <li>
+            <p><code>UnitTest</code></p>
+          </li>
+
+          <li>
+            <p><code>SystemTest</code></p>
+          </li>
+
+          <li>
+            <p><code>Production</code></p>
+          </li>
+        </ul>
+
+        <p>Project Stage is configured through a context parameter in the web deployment descriptor file. Here is an example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;context-param&gt;
+    &lt;param-name&gt;javax.faces.PROJECT_STAGE&lt;/param-name&gt;
+    &lt;param-value&gt;Development&lt;/param-value&gt;
+&lt;/context-param&gt;</pre>
+
+        <p>If no Project Stage is defined, the default stage is <code>Production</code>. You can also add custom stages according to your requirements.</p>
+      </div><a id="BNAXT"></a><a id="JEETT01017"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">16.12.3</span> <a id="sthref1125"></a>Including the Classes, Pages, and Other Resources</h2>
+
+        <p>When packaging web applications using the included build scripts, you'll notice that the scripts package resources in the following ways.</p>
+
+        <ul>
+          <li>
+            <p>All web pages are placed at the top level of the WAR file.</p>
+          </li>
+
+          <li>
+            <p>The <code>faces-config.xml</code> file and the <code>web.xml</code> file are packaged in the <code>WEB-INF</code> directory.</p>
+          </li>
+
+          <li>
+            <p>All packages are stored in the <code>WEB-INF/classes/</code> directory.</p>
+          </li>
+
+          <li>
+            <p>All application JAR files are packaged in the <code>WEB-INF/lib/</code> directory.</p>
+          </li>
+
+          <li>
+            <p>All resource files are either under the root of the web application <code>/resources</code> directory or in the web application's classpath, the <code>META-INF/resources/</code><span class="variable">resourceIdentifier</span> directory. For more information on resources, see <a href="../Text/jsf-facelets.xhtml#GIRGM">Web Resources</a>.</p>
+          </li>
+        </ul>
+
+        <p>When packaging your own applications, you can use NetBeans IDE or you can use XML files such as those created for Maven. You can modify the XML files to fit your situation. However, you can continue to package your WAR files by using the directory structure described in this section, because this technique complies with the commonly accepted practice for packaging web applications.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,2715 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKJIQ6"></a>
+
+    <h1 class="chapter"><span class="secnum">55</span> <a id="sthref2938"></a>Batch Processing</h1>
+
+    <p>This chapter describes Batch Applications for the Java Platform (JSR 352), which provides support for defining, implementing, and running batch jobs. Batch jobs are tasks that can be executed without user interaction. The batch framework is composed of a job specification language based on XML, a Java API, and a batch runtime.<a id="sthref2939"></a></p>
+
+    <p>Some enterprise applications contain tasks that can be executed without user interaction. These tasks are executed periodically or when resource usage is low, and they often process large amounts of information such as log files, database records, or images. Examples include billing, report generation, data format conversion, and image processing. These tasks are called <span class="glossaryterm">batch jobs</span>.</p>
+
+    <p><a id="sthref2940"></a><span class="glossaryterm">Batch processing</span> refers to running batch jobs on a computer system. Java EE includes a batch processing framework that provides the batch execution infrastructure common to all batch applications, enabling developers to concentrate on the business logic of their batch applications. The batch framework consists of a job specification language based on XML, a set of batch annotations and interfaces for application classes that implement the business logic, a batch container that manages the execution of batch jobs, and supporting classes and interfaces to interact with the batch container.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGJDEEH">Introduction to Batch Processing</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGGIBHA">Batch Processing in Java EE</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGHBJIG">Simple Use Case</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGDDBBG">Using the Job Specification Language</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGHDHGH">Creating Batch Artifacts</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGCAHCB">Submitting Jobs to the Batch Runtime</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGBBGJI">Packaging Batch Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGJHEHJ">The webserverlog Example Application</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGFCACD">The phonebilling Example Application</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/batch-processing.xhtml#BCGHCHAJ">Further Information about Batch Processing</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BCGJDEEH"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.1</span> <a id="sthref2941"></a>Introduction to Batch Processing</h1>
+
+      <p>A batch <span class="glossaryterm">job</span> can be completed without user intervention. For example, consider a telephone billing application that reads phone call records from the enterprise information systems and generates a monthly bill for each account. Since this application does not require any user interaction, it can run as a batch job.</p>
+
+      <p>The phone billing application consists of two phases: The first phase associates each call from the registry with a monthly bill, and the second phase calculates the tax and total amount due for each bill. Each of these phases is a <span class="glossaryterm">step</span> of the batch job.</p>
+
+      <p>Batch applications specify a set of steps and their execution order. Different batch frameworks may specify additional elements, like decision elements or groups of steps that run in parallel. The following sections describe steps in more detail and provide information about other common characteristics of batch frameworks.</p>
+
+      <div class="sect2">
+        <a id="sthref2942"></a>
+
+        <h2 class="sect2"><span class="secnum">55.1.1</span> <a id="sthref2943"></a>Steps in Batch Jobs</h2>
+
+        <p>A step is an independent and sequential phase of a batch job. Batch jobs contain chunk-oriented steps and task-oriented steps.</p>
+
+        <ul>
+          <li>
+            <p><span class="glossaryterm">Chunk-oriented steps</span> (chunk steps) process data by reading items from a data source, applying some business logic to each item, and storing the results. Chunk steps read and process one item at a time and group the results into a chunk. The results are stored when the chunk reaches a configurable size. Chunk-oriented processing makes storing results more efficient and facilitates transaction demarcation.</p>
+
+            <p>Chunk steps have three parts.</p>
+
+            <ul>
+              <li>
+                <p>The input retrieval part reads one item at a time from a data source, such as entries on a database, files in a directory, or entries in a log file.</p>
+              </li>
+
+              <li>
+                <p>The business processing part manipulates one item at a time using the business logic defined by the application. Examples include filtering, formatting, and accessing data from the item for computing a result.</p>
+              </li>
+
+              <li>
+                <p>The output writing part stores a chunk of processed items at a time.</p>
+              </li>
+            </ul>
+
+            <p>Chunk steps are often long-running because they process large amounts of data. Batch frameworks enable chunk steps to bookmark their progress using <span class="glossaryterm">checkpoints</span>. A chunk step that is interrupted can be restarted from the last checkpoint. The input retrieval and output writing parts of a chunk step save their current position after the processing of each chunk, and can recover it when the step is restarted.</p>
+
+            <p><a href="../Text/batch-processing.xhtml#BABFJBAH">Figure 55-1</a> shows the three parts of two steps in a batch job.</p>
+
+            <div class="figure">
+              <a id="BABFJBAH"></a>
+
+              <p class="titleinfigure">Figure 55-1 Chunk Steps in a Batch Job</p>
+
+              <div style="text-align: center;"><img alt="Description of Figure 55-1 follows" longdesc="img_text/jeett_dt_058.htm" src="../Images/jeett_dt_058.png" style="line-height: 1.6em;" title="Description of Figure 55-1 follows" /></div>
+            </div>
+
+            <div class="figure">
+              Description of "Figure 55-1 Chunk Steps in a Batch Job"<br />
+              <br />
+            </div>
+          </li>
+
+          <li>
+            <p><span class="glossaryterm">Task-oriented steps</span> (task steps) execute tasks other than processing items from a data source. Examples include creating or removing directories, moving files, creating or dropping database tables, configuring resources, and so on. Task steps are not usually long-running compared to chunk steps.</p>
+          </li>
+        </ul>
+
+        <p>For example, the phone billing application consists of two chunk steps.</p>
+
+        <ul>
+          <li>
+            <p>In the first step, the input retrieval part reads call records from the registry; the business processing part associates each call with a bill and creates a bill if one does not exist for an account; and the output writing part stores each bill in a database.</p>
+          </li>
+
+          <li>
+            <p>In the second step, the input retrieval part reads bills from the database; the business processing part calculates the tax and total amount due for each bill; and the output writing part updates the database records and generates printable versions of each bill.</p>
+          </li>
+        </ul>
+
+        <p>This application could also contain a task step that cleaned up the files from the bills generated for the previous month.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2945"></a>
+
+        <h2 class="sect2"><span class="secnum">55.1.2</span> Parallel Processing</h2>
+
+        <p>Batch jobs often process large amounts of data or perform computationally expensive operations. Batch applications can benefit from parallel processing in two scenarios.</p>
+
+        <ul>
+          <li>
+            <p>Steps that do not depend on each other can run on different threads.</p>
+          </li>
+
+          <li>
+            <p>Chunk-oriented steps where the processing of each item does not depend on the results of processing previous items can run on more than one thread.</p>
+          </li>
+        </ul>
+
+        <p>Batch frameworks provide mechanisms for developers to define groups of independent steps and to split chunk-oriented steps in parts that can run in parallel.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2946"></a>
+
+        <h2 class="sect2"><span class="secnum">55.1.3</span> <a id="sthref2947"></a>Status and Decision Elements</h2>
+
+        <p>Batch frameworks keep track of a <span class="glossaryterm">status</span> for every step in a job. The status indicates if a step is running or if it has completed. If the step has completed, the status indicates one of the following.</p>
+
+        <ul>
+          <li>
+            <p>The execution of the step was successful.</p>
+          </li>
+
+          <li>
+            <p>The step was interrupted.</p>
+          </li>
+
+          <li>
+            <p>An error occurred in the execution of the step.</p>
+          </li>
+        </ul>
+
+        <p>In addition to steps, batch jobs can also contain <span class="glossaryterm">decision elements</span>. Decision elements use the exit status of the previous step to determine the next step or to terminate the batch job. Decision elements set the status of the batch job when terminating it. Like a step, a batch job can terminate successfully, be interrupted, or fail.</p>
+
+        <p><a href="../Text/batch-processing.xhtml#BCGDCDCA">Figure 55-2</a> shows an example of a job that contains chunk steps, task steps and a decision element.</p>
+
+        <div class="figure">
+          <a id="BCGDCDCA"></a>
+
+          <p class="titleinfigure">Figure 55-2 Steps and Decision Elements in a Job</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 55-2 follows" longdesc="img_text/jeett_dt_059.htm" src="../Images/jeett_dt_059.png" style="line-height: 1.6em;" title="Description of Figure 55-2 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 55-2 Steps and Decision Elements in a Job"<br />
+          <br />
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2949"></a>
+
+        <h2 class="sect2"><span class="secnum">55.1.4</span> Batch Framework Functionality</h2>
+
+        <p>Batch applications have the following common requirements.</p>
+
+        <ul>
+          <li>
+            <p>Define jobs, steps, decision elements, and the relationships between them.</p>
+          </li>
+
+          <li>
+            <p>Execute some groups of steps or parts of a step in parallel.</p>
+          </li>
+
+          <li>
+            <p>Maintain state information for jobs and steps.</p>
+          </li>
+
+          <li>
+            <p>Launch jobs and resume interrupted jobs.</p>
+          </li>
+
+          <li>
+            <p>Handle errors.</p>
+          </li>
+        </ul>
+
+        <p>Batch frameworks provide the batch execution infrastructure that addresses the common requirements of all batch applications, enabling developers to concentrate on the business logic of their applications. Batch frameworks consist of a format to specify jobs and steps, an application programming interface (API), and a service available at runtime that manages the execution of batch jobs.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGGIBHA"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.2</span> <a id="sthref2950"></a>Batch Processing in Java EE</h1>
+
+      <p>This section lists the components of the batch processing framework in Java EE and provides an overview of the steps you have to follow to create a batch application.</p>
+
+      <div class="sect2">
+        <a id="sthref2951"></a>
+
+        <h2 class="sect2"><span class="secnum">55.2.1</span> <a id="sthref2952"></a>The Batch Processing Framework</h2>
+
+        <p>Java EE includes a batch processing framework that consists of the following elements:</p>
+
+        <ul>
+          <li>
+            <p>A batch runtime that manages the execution of jobs</p>
+          </li>
+
+          <li>
+            <p>A job specification language based on XML</p>
+          </li>
+
+          <li>
+            <p>A Java API to interact with the batch runtime</p>
+          </li>
+
+          <li>
+            <p>A Java API to implement steps, decision elements, and other batch artifacts</p>
+          </li>
+        </ul>
+
+        <p>Batch applications in Java EE contain XML files and Java classes. The XML files define the structure of a job in terms of batch artifacts and the relationships between them. (A batch artifact is a part of a chunk-oriented step, a task-oriented step, a decision element, or another component of a batch application). The Java classes implement the application logic of the batch artifacts defined in the XML files. The batch runtime parses the XML files and loads the batch artifacts as Java classes to run the jobs in a batch application.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2953"></a>
+
+        <h2 class="sect2"><span class="secnum">55.2.2</span> <a id="sthref2954"></a>Creating Batch Applications</h2>
+
+        <p>The process for creating a batch application in Java EE is the following.</p>
+
+        <ol>
+          <li>
+            <p>Design the batch application.</p>
+
+            <ol>
+              <li>
+                <p>Identify the input sources, the format of the input data, the desired final result, and the required processing phases.</p>
+              </li>
+
+              <li>
+                <p>Organize the application as a job with chunk-oriented steps, task-oriented steps, and decision elements. Determine the dependencies between them.</p>
+              </li>
+
+              <li>
+                <p>Determine the order of execution in terms of transitions between steps.</p>
+              </li>
+
+              <li>
+                <p>Identify steps that can run in parallel and steps that can run in more than one thread.</p>
+              </li>
+            </ol>
+          </li>
+
+          <li>
+            <p>Create the batch artifacts as Java classes by implementing the interfaces specified by the framework for steps, decision elements, and so on. These Java classes contain the code to read data from input sources, format items, process items, and store results. Batch artifacts can access context objects from the batch runtime using dependency injection.</p>
+          </li>
+
+          <li>
+            <p>Define jobs, steps, and their execution flow in XML files using the Job Specification Language. The elements in the XML files reference batch artifacts implemented as Java classes. The batch artifacts can access properties declared in the XML files, such as names of files and databases.</p>
+          </li>
+
+          <li>
+            <p>Use the Java API provided by the batch runtime to launch the batch application.</p>
+          </li>
+        </ol>
+
+        <p>The following sections describe in detail how to use the components of the batch processing framework in Java EE to create batch applications.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2955"></a>
+
+        <h2 class="sect2"><span class="secnum">55.2.3</span> <a id="sthref2956"></a>Elements of a Batch Job</h2>
+
+        <p>A batch job can contain one or more of the following elements:</p>
+
+        <ul>
+          <li>
+            <p>Steps</p>
+          </li>
+
+          <li>
+            <p>Flows</p>
+          </li>
+
+          <li>
+            <p>Splits</p>
+          </li>
+
+          <li>
+            <p>Decision elements</p>
+          </li>
+        </ul>
+
+        <p>Steps are described in <a href="../Text/batch-processing.xhtml#BCGJDEEH">Introduction to Batch Processing</a>, and can be chunk-oriented or task-oriented. Chunk-oriented steps can be <span class="glossaryterm">partitioned steps</span>. In a partitioned chunk step, the processing of one item does not depend on other items, so these steps can run in more than one thread.</p>
+
+        <p>A <span class="glossaryterm">flow</span> is a sequence of steps that execute as a unit. A sequence of related steps can be grouped together into a flow. The steps in a flow cannot transition to steps outside the flow. The flow transitions to the next element when its last step completes.</p>
+
+        <p>A <span class="glossaryterm">split</span> is a set of flows that execute in parallel; each flow runs on a separate thread. The split transitions to the next element when all its flows complete.</p>
+
+        <p>Decision elements use the exit status of the previous step to determine the next step or to terminate the batch job.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2957"></a>
+
+        <h2 class="sect2"><span class="secnum">55.2.4</span> <a id="sthref2958"></a>Properties and Parameters</h2>
+
+        <p>Jobs and steps can have a number of <span class="glossaryterm">properties</span> associated with them. You define properties in the job definition file, and batch artifacts access these properties using context objects from the batch runtime. Using properties in this manner enables you to decouple static parameters of the job from the business logic and to reuse batch artifacts in different job definition files.</p>
+
+        <p>Specifying properties is described in <a href="../Text/batch-processing.xhtml#BCGDDBBG">Using the Job Specification Language</a>, and accessing properties in batch artifacts is described in <a href="../Text/batch-processing.xhtml#BCGHDHGH">Creating Batch Artifacts</a>.</p>
+
+        <p>Java EE applications can also pass <span class="glossaryterm">parameters</span> to a job when they submit it to the batch runtime. This enables you to specify dynamic parameters that are only known at runtime. Parameters are also necessary for partitioned steps, since each partition needs to know, for example, what range of items to process.</p>
+
+        <p>Specifying parameters when submitting jobs is described in <a href="../Text/batch-processing.xhtml#BCGCAHCB">Submitting Jobs to the Batch Runtime</a>. Specifying parameters for partitioned steps and accessing them in batch artifacts is demonstrated in <a href="../Text/batch-processing.xhtml#BCGFCACD">The phonebilling Example Application</a>.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2959"></a>
+
+        <h2 class="sect2"><span class="secnum">55.2.5</span> <a id="sthref2960"></a>Job Instances and Job Executions</h2>
+
+        <p>A job definition can have multiple <span class="glossaryterm">instances</span>, each with different parameters. A job <span class="glossaryterm">execution</span> is an attempt to run a job instance. The batch runtime maintains information about job instances and job executions, as described in <a href="../Text/batch-processing.xhtml#BCGIBGFC">Checking the Status of a Job</a>.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2961"></a>
+
+        <h2 class="sect2"><span class="secnum">55.2.6</span> <a id="sthref2962"></a>Batch and Exit Status</h2>
+
+        <p>The state of jobs, steps, splits, and flows is represented in the batch runtime as a <span class="glossaryterm">batch status</span> value. Batch status values are listed <a href="../Text/batch-processing.xhtml#BCGJBGDF">Table 55-1</a>. They are represented as strings.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref2963"></a><a id="BCGJBGDF"></a>
+
+          <p class="titleintable">Table 55-1 Batch Status Values</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="The table lists the batch status vaules for jobs and steps. The left column lists the batch status values. The right column provides a description for each value." title="Batch Status Values" width="100%">
+            <col width="28%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t2" valign="bottom">Value</th>
+
+                <th align="left" id="r1c2-t2" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                  <p><code>STARTING</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t2 r1c2-t2">
+                  <p>The job has been submitted to the batch runtime.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                  <p><code>STARTED</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t2 r1c2-t2">
+                  <p>The job is running.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                  <p><code>STOPPING</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t2 r1c2-t2">
+                  <p>The job has been requested to stop.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                  <p><code>STOPPED</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t2 r1c2-t2">
+                  <p>The job has stopped.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                  <p><code>FAILED</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t2 r1c2-t2">
+                  <p>The job finished executing because of an error.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r7c1-t2">
+                  <p><code>COMPLETED</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t2 r1c2-t2">
+                  <p>The job finished executing successfully.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r8c1-t2">
+                  <p><code>ABANDONED</code></p>
+                </td>
+
+                <td align="left" headers="r8c1-t2 r1c2-t2">
+                  <p>The job was marked abandoned.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>Java EE applications can submit jobs and access the batch status of a job using the <code>JobOperator</code> interface, as described in <a href="../Text/batch-processing.xhtml#BCGCAHCB">Submitting Jobs to the Batch Runtime</a>. Job definition files can refer to batch status values using the Job Specification Language (JSL), as described in <a href="../Text/batch-processing.xhtml#BCGDDBBG">Using the Job Specification Language</a>. Batch artifacts can access batch status values using context objects, as described in <a href="../Text/batch-processing.xhtml#BCGCJEEF">Using the Context Objects from the Batch Runtime</a>.</p>
+
+        <p>For flows, the batch status is that of its last step. For splits, the batch status is the following:</p>
+
+        <ul>
+          <li>
+            <p><code>COMPLETED</code>: If all its flows have a batch status of <code>COMPLETED</code></p>
+          </li>
+
+          <li>
+            <p><code>FAILED</code>: If any flow has a batch status of <code>FAILED</code></p>
+          </li>
+
+          <li>
+            <p><code>STOPPED</code>: If any flow has a batch status of <code>STOPPED</code>, and no flows have a batch status of <code>FAILED</code></p>
+          </li>
+        </ul>
+
+        <p>The batch status for jobs, steps, splits, and flows is set by the batch runtime. Jobs, steps, splits, and flows also have an <span class="glossaryterm">exit status</span>, which is a user-defined value based on the batch status. You can set the exit status inside batch artifacts or in the job definition file. You can access the exit status in the same manner as the batch status, described above. The default value for the exit status is the same as the batch status.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGHBJIG"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.3</span> <a id="sthref2964"></a><a id="sthref2965"></a>Simple Use Case</h1>
+
+      <p>This section demonstrates how to define a simple job using the Job Specification Language (JSL) and how to implement the corresponding batch artifacts. Refer to the rest of the sections in this chapter for detailed descriptions of the elements in the batch framework.</p>
+
+      <p>The following job definition specifies a chunk step and a task step as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;job id="simplejob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+                    version="1.0"&gt;
+  &lt;properties&gt;
+    &lt;property name="input_file" value="input.txt"/&gt;
+    &lt;property name="output_file" value="output.txt"/&gt;
+  &lt;/properties&gt;
+  &lt;step id="mychunk" next="mytask"&gt;
+    &lt;chunk&gt;
+      &lt;reader ref="MyReader"&gt;&lt;/reader&gt;
+      &lt;processor ref="MyProcessor"&gt;&lt;/processor&gt;
+      &lt;writer ref="MyWriter"&gt;&lt;/writer&gt;
+    &lt;/chunk&gt;
+  &lt;/step&gt;
+  &lt;step id="mytask"&gt;
+    &lt;batchlet ref="MyBatchlet"&gt;&lt;/batchlet&gt;
+    &lt;end on="COMPLETED"/&gt;
+  &lt;/step&gt;
+&lt;/job&gt;</pre>
+
+      <div class="sect2">
+        <a id="sthref2966"></a>
+
+        <h2 class="sect2"><span class="secnum">55.3.1</span> <a id="sthref2967"></a>Chunk Step</h2>
+
+        <p>In most cases, you have to implement a checkpoint class for chunk-oriented steps. The following class just keeps track of the line number in a text file:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class MyCheckpoint implements Serializable {
+    private long lineNum = 0;
+    public void increase() { lineNum++; }
+    public long getLineNum() { return lineNum; }
+}</pre>
+
+        <p>The following item reader implementation continues reading the input file from the provided checkpoint if the job was restarted. The items consist of each line in the text file (in more complex scenarios, the items are custom Java types and the input source can be a database):</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("MyReader")
+public class MyReader implements javax.batch.api.chunk.ItemReader {
+    private MyCheckpoint checkpoint;
+    private BufferedReader breader;
+    @Inject
+    JobContext jobCtx;
+
+    public MyReader() {}
+
+    @Override
+    public void open(Serializable ckpt) throws Exception {
+        if (ckpt == null)
+            checkpoint = new MyCheckpoint();
+        else
+            checkpoint = (MyCheckpoint) ckpt;
+        String fileName = jobCtx.getProperties()
+                                .getProperty("input_file");
+        breader = new BufferedReader(new FileReader(fileName));
+        for (long i = 0; i &lt; checkpoint.getLineNum(); i++)
+            breader.readLine();
+    }
+
+    @Override
+    public void close() throws Exception {
+        breader.close();
+    }
+
+    @Override
+    public Object readItem() throws Exception {
+        String line = breader.readLine();
+        return line;
+    }
+}</pre>
+
+        <p>In the following case, the item processor only converts the line to uppercase. More complex examples can process items in different ways or transform them into custom output Java types:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("MyProcessor")
+public class MyProcessor implements javax.batch.api.chunk.ItemProcessor {
+    public MyProcessor() {}
+
+    @Override
+    public Object processItem(Object obj) throws Exception {
+        String line = (String) obj;
+        return line.toUpperCase();
+    }
+}</pre>
+
+        <div align="center">
+          <div class="inftblnote">
+            <br />
+
+            <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+              <tbody>
+                <tr>
+                  <td align="left">
+                    <p class="notep1">Note:</p>
+
+                    <p>The batch processing API does not support generics. In most cases, you need to cast items to their specific type before processing them.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+        </div>
+
+        <p>The item writer writes the processed items to the output file. It overwrites the output file if no checkpoint is provided; otherwise, it resumes writing at the end of the file. Items are written in chunks:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("MyWriter")
+public class MyWriter implements javax.batch.api.chunk.ItemWriter {
+    private BufferedWriter bwriter;
+    @Inject
+    private JobContext jobCtx;
+
+    @Override
+    public void open(Serializable ckpt) throws Exception {
+        String fileName = jobCtx.getProperties()
+                                .getProperty("output_file");
+        bwriter = new BufferedWriter(new FileWriter(fileName, 
+                                                    (ckpt != null)));
+    }
+
+    @Override
+    public void writeItems(List&lt;Object&gt; items) throws Exception {
+        for (int i = 0; i &lt; items.size(); i++) {
+            String line = (String) items.get(i);
+            bwriter.write(line);
+            bwriter.newLine();
+        }
+    }
+
+    @Override
+    public Serializable checkpointInfo() throws Exception {
+        return new MyCheckpoint();
+}</pre>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2968"></a>
+
+        <h2 class="sect2"><span class="secnum">55.3.2</span> <a id="sthref2969"></a>Task Step</h2>
+
+        <p>The task step displays the length of the output file. In more complex scenarios, task steps perform any task that does not fit the chunk processing programming model:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("MyBatchlet")
+public class MyBatchlet implements javax.batch.api.chunk.Batchlet {
+    @Inject
+    private JobContext jobCtx;
+    
+    @Override
+    public String process() throws Exception {
+        String fileName = jobCtx.getProperties()
+                                .getProperty("output_file");
+        System.out.println(""+(new File(fileName)).length());
+        return "COMPLETED";
+    }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGDDBBG"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.4</span> <a id="sthref2970"></a><a id="sthref2971"></a>Using the Job Specification Language</h1>
+
+      <p>The Job Specification Language (JSL) enables you to define the steps in a job and their execution order using an XML file. The following example shows how to define a simple job that contains one chunk step and one task step:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;job id="loganalysis" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+                      version="1.0"&gt;
+  &lt;properties&gt;
+    &lt;property name="input_file" value="input1.txt"/&gt;
+    &lt;property name="output_file" value="output2.txt"/&gt;
+  &lt;/properties&gt;
+
+  &lt;step id="logprocessor" next="cleanup"&gt;
+    &lt;chunk checkpoint-policy="item" item-count="10"&gt;
+      &lt;reader ref="com.example.pkg.LogItemReader"&gt;&lt;/reader&gt;
+      &lt;processor ref="com.example.pkg.LogItemProcessor"&gt;&lt;/processor&gt;
+      &lt;writer ref="com.example.pkg.LogItemWriter"&gt;&lt;/writer&gt;
+    &lt;/chunk&gt;
+  &lt;/step&gt;
+
+  &lt;step id="cleanup"&gt;
+    &lt;batchlet ref="com.example.pkg.CleanUp"&gt;&lt;/batchlet&gt;
+    &lt;end on="COMPLETED"/&gt;
+  &lt;/step&gt;
+&lt;/job&gt;</pre>
+
+      <p>This example defines the <code>loganalysis</code> batch job, which consists of the <code>logprocessor</code> chunk step and the <code>cleanup</code> task step. The <code>logprocessor</code> step transitions to the <code>cleanup</code> step, which terminates the job when completed.</p>
+
+      <p>The <code>job</code> element defines two properties, <code>input_file</code> and <code>output_file</code>. Specifying properties in this manner enables you to run a batch job with different configuration parameters without having to recompile its Java batch artifacts. The batch artifacts can access these properties using the context objects from the batch runtime.</p>
+
+      <p>The <code>logprocessor</code> step is a chunk step that specifies batch artifacts for the reader (<code>LogItemReader</code>), the processor (<code>LogItemProcessor</code>), and the writer (<code>LogItemWriter</code>). This step creates a checkpoint for every ten items processed.</p>
+
+      <p>The <code>cleanup</code> step is a task step that specifies the <code>CleanUp</code> class as its batch artifact. The job terminates when this step completes.</p>
+
+      <p>The following sections describe the elements of the Job Specification Language (JSL) in more detail and show the most common attributes and child elements.</p>
+
+      <div class="sect2">
+        <a id="sthref2972"></a>
+
+        <h2 class="sect2"><span class="secnum">55.4.1</span> <a id="sthref2973"></a>The job Element</h2>
+
+        <p>The <code>job</code> element is always the top-level element in a job definition file. Its main attributes are <code>id</code> and <code>restartable</code>. The <code>job</code> element can contain one <code>properties</code> element and zero or more of each of the following elements: <code>listener</code>, <code>step</code>, <code>flow</code>, and <code>split</code>. For example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;job id="jobname" restartable="true"&gt;
+  &lt;listeners&gt;
+    &lt;listener ref="com.example.pkg.ListenerBatchArtifact"/&gt;
+  &lt;/listeners&gt;
+  &lt;properties&gt;
+    &lt;property name="propertyName1" value="propertyValue1"/&gt;
+    &lt;property name="propertyName2" value="propertyValue2"/&gt;
+  &lt;/properties&gt;
+  &lt;step ...&gt; ... &lt;/step&gt;
+  &lt;step ...&gt; ... &lt;/step&gt;
+  &lt;decision ...&gt; ... &lt;/decision&gt;
+  &lt;flow ...&gt; ... &lt;/flow&gt;
+  &lt;split ...&gt; ... &lt;/split&gt;
+&lt;/job&gt;</pre>
+
+        <p>The <code>listener</code> element specifies a batch artifact whose methods are invoked before and after the execution of the job. The batch artifact is an implementation of the <code>javax.batch.api.listener.JobListener</code> interface. See <a href="../Text/batch-processing.xhtml#BCGCCFAC">The Listener Batch Artifacts</a> for an example of a job listener implementation.</p>
+
+        <p>The first <code>step</code>, <code>flow</code>, or <code>split</code> element inside the <code>job</code> element executes first.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2974"></a>
+
+        <h2 class="sect2"><span class="secnum">55.4.2</span> <a id="sthref2975"></a>The step Element</h2>
+
+        <p>The <code>step</code> element can be a child of the <code>job</code> and <code>flow</code> elements. Its main attributes are <code>id</code> and <code>next</code>. The <code>step</code> element can contain the following elements.</p>
+
+        <ul>
+          <li>
+            <p>One <code>chunk</code> element for chunk-oriented steps or one <code>batchlet</code> element for task-oriented steps.</p>
+          </li>
+
+          <li>
+            <p>One <code>properties</code> element (optional).</p>
+
+            <p>This element specifies a set of properties that batch artifacts can access using batch context objects.</p>
+          </li>
+
+          <li>
+            <p>One <code>listener</code> element (optional); one <code>listeners</code> element if more than one listener is specified.</p>
+
+            <p>This element specifies listener artifacts that intercept various phases of step execution.</p>
+
+            <p>For chunk steps, the batch artifacts for these listeners can be implementations of the following interfaces: <code>StepListener</code>, <code>ItemReadListener</code>, <code>ItemProcessListener</code>, <code>ItemWriteListener</code>, <code>ChunkListener</code>, <code>RetryReadListener</code>, <code>RetryProcessListener</code>, <code>RetryWriteListener</code>, <code>SkipReadListener</code>, <code>SkipProcessListener</code>, and <code>SkipWriteListener</code>.</p>
+
+            <p>For task steps, the batch artifact for these listeners must be an implementation of the <code>StepListener</code> interface.</p>
+
+            <p>See <a href="../Text/batch-processing.xhtml#BCGCCFAC">The Listener Batch Artifacts</a> for an example of an item processor listener implementation.</p>
+          </li>
+
+          <li>
+            <p>One <code>partition</code> element (optional).</p>
+
+            <p>This element is used in partitioned steps which execute in more than one thread.</p>
+          </li>
+
+          <li>
+            <p>One <code>end</code> element if this is the last step in a job.</p>
+
+            <p>This element sets the batch status to <code>COMPLETED</code>.</p>
+          </li>
+
+          <li>
+            <p>One <code>stop</code> element (optional) to stop a job at this step.</p>
+
+            <p>This element sets the batch status to <code>STOPPED</code>.</p>
+          </li>
+
+          <li>
+            <p>One <code>fail</code> element (optional) to terminate a job at this step.</p>
+
+            <p>This element sets the batch status to <code>FAILED</code>.</p>
+          </li>
+
+          <li>
+            <p>One or more <code>next</code> elements if the <code>next</code> attribute is not specified.</p>
+
+            <p>This element is associated with an exit status and refers to another step, a flow, a split, or a decision element.</p>
+          </li>
+        </ul>
+
+        <p>The following is an example of a chunk step:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="stepA" next="stepB"&gt;
+  &lt;properties&gt; ... &lt;/properties&gt;
+  &lt;listeners&gt;
+    &lt;listener ref="MyItemReadListenerImpl"/&gt;
+    ...
+  &lt;/listeners&gt;
+  &lt;chunk ...&gt; ... &lt;/chunk&gt;
+  &lt;partition&gt; ... &lt;/partition&gt;
+  &lt;end on="COMPLETED" exit-status="MY_COMPLETED_EXIT_STATUS"/&gt;
+  &lt;stop on="MY_TEMP_ISSUE_EXIST_STATUS" restart="step0"/&gt;
+  &lt;fail on="MY_ERROR_EXIT_STATUS" exit-status="MY_ERROR_EXIT_STATUS"/&gt;
+&lt;/step&gt;</pre>
+
+        <p>The following is an example of a task step:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="stepB" next="stepC"&gt;
+  &lt;batchlet ...&gt; ... &lt;/batchlet&gt;
+  &lt;properties&gt; ... &lt;/properties&gt;
+  &lt;listener ref="MyStepListenerImpl"/&gt;
+&lt;/step&gt;</pre>
+
+        <div class="sect3">
+          <a id="sthref2976"></a>
+
+          <h3 class="sect3"><span class="secnum">55.4.2.1</span> <a id="sthref2977"></a>The chunk Element</h3>
+
+          <p>The <code>chunk</code> element is a child of the <code>step</code> element for chunk-oriented steps. The attributes of this element are listed in <a href="../Text/batch-processing.xhtml#BCGJCIEI">Table 55-2</a>.</p>
+
+          <div class="tblhruleformalwide">
+            <a id="sthref2978"></a><a id="BCGJCIEI"></a>
+
+            <p class="titleintable">Table 55-2 Attributes of the chunk Element</p>
+
+            <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormalWide" dir="ltr" frame="hsides" rules="rows" summary="The table lists the attributes for the chunk element. The first column contains the attribute name. The second column contains a description of the attribute and its possible values. The third column contains the default value of the attribute." title="Attributes of the chunk Element" width="100%">
+              <col width="19%" />
+              <col width="*" />
+              <col width="15%" />
+
+              <thead>
+                <tr align="left" valign="top">
+                  <th align="left" id="r1c1-t4" valign="bottom">Attribute Name</th>
+
+                  <th align="left" id="r1c2-t4" valign="bottom">Description</th>
+
+                  <th align="left" id="r1c3-t4" valign="bottom">Default Value</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t4" id="r2c1-t4">
+                    <p><code>checkpoint-policy</code></p>
+                  </td>
+
+                  <td align="left" headers="r2c1-t4 r1c2-t4">
+                    <p>Specifies how to commit the results of processing each chunk:</p>
+
+                    <ul>
+                      <li>
+                        <p><code>"item"</code>: the chunk is committed after processing <code>item-count</code> items</p>
+                      </li>
+
+                      <li>
+                        <p><code>"custom"</code>: the chunk is committed according to a checkpoint algorithm specified with the <code>checkpoint-algorithm</code> element</p>
+                      </li>
+                    </ul>
+
+                    <p>The checkpoint is updated when the results of a chunk are committed.</p>
+
+                    <p><span class="italic">Every chunk is processed in a global Java EE transaction.</span> If the processing of one item in the chunk fails, the transaction is rolled back and no processed items from this chunk are stored.</p>
+                  </td>
+
+                  <td align="left" headers="r2c1-t4 r1c3-t4">
+                    <p><code>"item"</code></p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t4" id="r3c1-t4">
+                    <p><code>item-count</code></p>
+                  </td>
+
+                  <td align="left" headers="r3c1-t4 r1c2-t4">
+                    <p>Specifies the number of items to process before committing the chunk and taking a checkpoint.</p>
+                  </td>
+
+                  <td align="left" headers="r3c1-t4 r1c3-t4">
+                    <p>10</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t4" id="r4c1-t4">
+                    <p><code>time-limit</code></p>
+                  </td>
+
+                  <td align="left" headers="r4c1-t4 r1c2-t4">
+                    <p>Specifies the number of seconds before committing the chunk and taking a checkpoint when <code>checkpoint-policy="item"</code>.</p>
+
+                    <p>If <code>item-count</code> items have not been processed by <code>time-limit</code> seconds, the chunk is committed and a checkpoint is taken.</p>
+                  </td>
+
+                  <td align="left" headers="r4c1-t4 r1c3-t4">
+                    <p>0 (no limit)</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t4" id="r5c1-t4">
+                    <p><code>buffer-items</code></p>
+                  </td>
+
+                  <td align="left" headers="r5c1-t4 r1c2-t4">
+                    <p>Specifies if processed items are buffered until it is time to take a checkpoint. If true, a single call to the item writer is made with a list of the buffered items before committing the chunk and taking a checkpoint.</p>
+                  </td>
+
+                  <td align="left" headers="r5c1-t4 r1c3-t4">
+                    <p>true</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t4" id="r6c1-t4">
+                    <p><code>skip-limit</code></p>
+                  </td>
+
+                  <td align="left" headers="r6c1-t4 r1c2-t4">
+                    <p>Specifies the number of skippable exceptions to skip in this step during chunk processing. Skippable exception classes are specified with the <code>skippable-exception-classes</code> element.</p>
+                  </td>
+
+                  <td align="left" headers="r6c1-t4 r1c3-t4">
+                    <p>No limit</p>
+                  </td>
+                </tr>
+
+                <tr align="left" valign="top">
+                  <td align="left" headers="r1c1-t4" id="r7c1-t4">
+                    <p><code>retry-limit</code></p>
+                  </td>
+
+                  <td align="left" headers="r7c1-t4 r1c2-t4">
+                    <p>Specifies the number of attempts to execute this step if retryable exceptions occur. Retryable exception classes are specified with the <code>retryable-exception-classes</code> element.</p>
+                  </td>
+
+                  <td align="left" headers="r7c1-t4 r1c3-t4">
+                    <p>No limit</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+
+          <p>The <code>chunk</code> element can contain the following elements.</p>
+
+          <ul>
+            <li>
+              <p>One <code>reader</code> element.</p>
+
+              <p>This element specifies a batch artifact that implements the <code>ItemReader</code> interface.</p>
+            </li>
+
+            <li>
+              <p>One <code>processor</code> element.</p>
+
+              <p>This element specifies a batch artifact that implements the <code>ItemProcessor</code> interface.</p>
+            </li>
+
+            <li>
+              <p>One <code>writer</code> element.</p>
+
+              <p>This element specifies a batch artifact that implements the <code>ItemWriter</code> interface.</p>
+            </li>
+
+            <li>
+              <p>One <code>checkpoint-algorithm</code> element (optional).</p>
+
+              <p>This element specifies a batch artifact that implements the <code>CheckpointAlgorithm</code> interface and provides a custom checkpoint policy.</p>
+            </li>
+
+            <li>
+              <p>One <code>skippable-exception-classes</code> element (optional).</p>
+
+              <p>This element specifies a set of exceptions thrown from the reader, writer, and processor batch artifacts that chunk processing should skip. The <code>skip-limit</code> attribute from the <code>chunk</code> element specifies the maximum number of skipped exceptions.</p>
+            </li>
+
+            <li>
+              <p>One <code>retryable-exception-classes</code> element (optional).</p>
+
+              <p>This element specifies a set of exceptions thrown from the reader, writer, and processor batch artifacts that chunk processing will retry. The <code>retry-limit</code> attribute from the <code>chunk</code> element specifies the maximum number of attempts.</p>
+            </li>
+
+            <li>
+              <p>One <code>no-rollback-exception-classes</code> element (optional).</p>
+
+              <p>This element specifies a set of exceptions thrown from the reader, writer, and processor batch artifacts that should not cause the batch runtime to roll back the current chunk, but to retry the current operation without a rollback instead.</p>
+
+              <p>For exception types not specified in this element, the current chunk is rolled back by default when an exception occurs.</p>
+            </li>
+          </ul>
+
+          <p>The following is an example of a chunk-oriented step:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="stepC" next="stepD"&gt;
+  &lt;chunk checkpoint-policy="item" item-count="5" time-limit="180"
+         buffer-items="true" skip-limit="10" retry-limit="3"&gt;
+    &lt;reader ref="pkg.MyItemReaderImpl"&gt;&lt;/reader&gt;
+    &lt;processor ref="pkg.MyItemProcessorImpl"&gt;&lt;/processor&gt;
+    &lt;writer ref="pkg.MyItemWriterImpl"&gt;&lt;/writer&gt;
+    &lt;skippable-exception-classes&gt;
+      &lt;include class="pkg.MyItemException"/&gt;
+      &lt;exclude class="pkg.MyItemSeriousSubException"/&gt;
+    &lt;/skippable-exception-classes&gt;
+    &lt;retryable-exception-classes&gt;
+      &lt;include class="pkg.MyResourceTempUnavailable"/&gt;
+    &lt;/retryable-exception-classes&gt;
+  &lt;/chunk&gt;
+&lt;/step&gt;</pre>
+
+          <p>This example defines a chunk step and specifies its reader, processor, and writer artifacts. The step updates a checkpoint and commits each chunk after processing five items. It skips all <code>MyItemException</code> exceptions and all its subtypes, except for <code>MyItemSeriousSubException</code>, up to a maximum of ten skipped exceptions. The step retries a chunk when a <code>MyResourceTempUnavailable</code> exception occurs, up to a maximum of three attempts.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref2979"></a>
+
+          <h3 class="sect3"><span class="secnum">55.4.2.2</span> <a id="sthref2980"></a>The batchlet Element</h3>
+
+          <p>The <code>batchlet</code> element is a child of the <code>step</code> element for task-oriented steps. This element only has the <code>ref</code> attribute, which specifies a batch artifact that implements the <code>Batchlet</code> interface. The <code>batch</code> element can contain a <code>properties</code> element.</p>
+
+          <p>The following is an example of a task-oriented step:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="stepD" next="stepE"&gt;
+  &lt;batchlet ref="pkg.MyBatchletImpl"&gt;
+    &lt;properties&gt;
+      &lt;property name="pname" value="pvalue"/&gt;
+    &lt;/properties&gt;
+  &lt;/batchlet&gt;
+&lt;/step&gt;</pre>
+
+          <p>This example defines a batch step and specifies its batch artifact.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref2981"></a>
+
+          <h3 class="sect3"><span class="secnum">55.4.2.3</span> <a id="sthref2982"></a>The partition Element</h3>
+
+          <p>The <code>partition</code> element is a child of the <code>step</code> element. It indicates that a step is partitioned. Most partitioned steps are chunk steps where the processing of each item does not depend on the results of processing previous items. You specify the number of partitions in a step and provide each partition with specific information on which items to process, such as the following.</p>
+
+          <ul>
+            <li>
+              <p>A range of items. For example, partition 1 processes items 1 through 500, and partition 2 processes items 501 through 1000.</p>
+            </li>
+
+            <li>
+              <p>An input source. For example, partition 1 processes the items in <code>input1.txt</code> and partition 2 processes the items in <code>input2.txt</code>.</p>
+            </li>
+          </ul>
+
+          <p>When the number of partitions, the number of items, and the input sources for a partitioned step are known at development or deployment time, you can use partition properties in the job definition file to specify partition-specific information and access these properties from the step batch artifacts. The runtime creates as many instances of the step batch artifacts (reader, processor, and writer) as partitions, and each artifact instance receives the properties specific to its partition.</p>
+
+          <p>In most cases, the number of partitions, the number of items, or the input sources for a partitioned step can only be determined at runtime. Instead of specifying partition-specific properties statically in the job definition file, you provide a batch artifact that can access your data sources at runtime and determine how many partitions are needed and what range of items each partition should process. This batch artifact is an implementation of the <code>PartitionMapper</code> interface. The batch runtime invokes this artifact and then uses the information it provides to instantiate the step batch artifacts (reader, writer, and processor) for each partition and to pass them partition-specific data as parameters.</p>
+
+          <p>The rest of this section describes the <code>partition</code> element in detail and shows two examples of job definition files: one that uses partition properties to specify a range of items for each partition, and one that relies on a <code>PartitionMapper</code> implementation to determine partition-specific information.</p>
+
+          <p>See <a href="../Text/batch-processing.xhtml#BCGGGAHB">The Phone Billing Chunk Step</a> in <a href="../Text/batch-processing.xhtml#BCGFCACD">The phonebilling Example Application</a> for a complete example of a partitioned chunk step.</p>
+
+          <p>The <code>partition</code> element can contain the following elements.</p>
+
+          <ul>
+            <li>
+              <p>One <code>plan</code> element, if the <code>mapper</code> element is not specified.</p>
+
+              <p>This element defines the number of partitions, the number of threads, and the properties for each partition in the job definition file. The <code>plan</code> element is useful when this information is known at development or deployment time.</p>
+            </li>
+
+            <li>
+              <p>One <code>mapper</code> element, if the <code>plan</code> element is not specified.</p>
+
+              <p>This element specifies a batch artifact that provides the number of partitions, the number of threads, and the properties for each partition. The batch artifact is an implementation of the <code>PartitionMapper</code> interface. You use this option when the information required for each partition is only known at runtime.</p>
+            </li>
+
+            <li>
+              <p>One <code>reducer</code> element (optional).</p>
+
+              <p>This element specifies a batch artifact that receives control when a partitioned step begins, ends, or rolls back. The batch artifact enables you to merge results from different partitions and perform other related operations. The batch artifact is an implementation of the <code>PartitionReducer</code> interface.</p>
+            </li>
+
+            <li>
+              <p>One <code>collector</code> element (optional).</p>
+
+              <p>This element specifies a batch artifact that sends intermediary results from each partition to a partition analyzer. The batch artifact sends the intermediary results after each checkpoint for chunk steps and at the end of the step for task steps. The batch artifact is an implementation of the <code>PartitionCollector</code> interface.</p>
+            </li>
+
+            <li>
+              <p>One <code>analyzer</code> element (optional).</p>
+
+              <p>This element specifies a batch artifact that analyzes the intermediary results from the partition collector instances. The batch artifact is an implementation of the <code>PartitionAnalyzer</code> interface.</p>
+            </li>
+          </ul>
+
+          <p>The following is an example of a partitioned step using the <code>plan</code> element:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="stepE" next="stepF"&gt;
+  &lt;chunk&gt;
+    &lt;reader ...&gt;&lt;/reader&gt;
+    &lt;processor ...&gt;&lt;/processor&gt;
+    &lt;writer ...&gt;&lt;/writer&gt;
+  &lt;/chunk&gt;
+  &lt;partition&gt;
+    &lt;plan partitions="2" threads="2"&gt;
+      &lt;properties partition="0"&gt;
+        &lt;property name="firstItem" value="0"/&gt;
+        &lt;property name="lastItem" value="500"/&gt;
+      &lt;/properties&gt;
+      &lt;properties partition="1"&gt;
+        &lt;property name="firstItem" value="501"/&gt;
+        &lt;property name="lastItem" value="999"/&gt;
+      &lt;/properties&gt;
+    &lt;/plan&gt;
+  &lt;/partition&gt;
+  &lt;reducer ref="MyPartitionReducerImpl"/&gt;
+  &lt;collector ref="MyPartitionCollectorImpl"/&gt;
+  &lt;analyzer ref="MyPartitionAnalyzerImpl"/&gt;
+&lt;/step&gt;</pre>
+
+          <p>In this example, the <code>plan</code> element specifies the properties for each partition in the job definition file.</p>
+
+          <p>The following example uses a <code>mapper</code> element instead of a <code>plan</code> element. The <code>PartitionMapper</code> implementation dynamically provides the same information as the <code>plan</code> element provides in the job definition file:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="stepE" next="stepF"&gt;
+  &lt;chunk&gt;
+    &lt;reader ...&gt;&lt;/reader&gt;
+    &lt;processor ...&gt;&lt;/processor&gt;
+    &lt;writer ...&gt;&lt;/writer&gt;
+  &lt;/chunk&gt;
+  &lt;partition&gt;
+    &lt;mapper ref="MyPartitionMapperImpl"/&gt;
+    &lt;reducer ref="MyPartitionReducerImpl"/&gt;
+    &lt;collector ref="MyPartitionCollectorImpl"/&gt;
+    &lt;analyzer ref="MyPartitionAnalyzerImpl"/&gt;
+  &lt;/partition&gt;
+&lt;/step&gt;</pre>
+
+          <p>Refer to <a href="../Text/batch-processing.xhtml#BCGFCACD">The phonebilling Example Application</a> for an example implementation of the <code>PartitionMapper</code> interface.</p>
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2983"></a>
+
+        <h2 class="sect2"><span class="secnum">55.4.3</span> <a id="sthref2984"></a>The flow Element</h2>
+
+        <p>The <code>flow</code> element can be a child of the <code>job</code>, <code>flow</code>, and <code>split</code> elements. Its attributes are <code>id</code> and <code>next</code>. Flows can transition to flows, steps, splits, and decision elements. The <code>flow</code> element can contain the following elements:</p>
+
+        <ul>
+          <li>
+            <p>One or more <code>step</code> elements</p>
+          </li>
+
+          <li>
+            <p>One or more <code>flow</code> elements (optional)</p>
+          </li>
+
+          <li>
+            <p>One or more <code>split</code> elements (optional)</p>
+          </li>
+
+          <li>
+            <p>One or more <code>decision</code> elements (optional)</p>
+          </li>
+        </ul>
+
+        <p>The last <code>step</code> in a flow is the one with no <code>next</code> attribute or <code>next</code> element. Steps and other elements in a flow cannot transition to elements outside the flow.</p>
+
+        <p>The following is an example of the <code>flow</code> element:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;flow id="flowA" next="stepE"&gt;
+  &lt;step id="flowAstepA" next="flowAstepB"&gt;...&lt;/step&gt;
+  &lt;step id="flowAstepB" next="flowAflowC"&gt;...&lt;/step&gt;
+  &lt;flow id="flowAflowC" next="flowAsplitD"&gt;...&lt;/flow&gt;
+  &lt;split id="flowAsplitD" next="flowAstepE"&gt;...&lt;/split&gt;
+  &lt;step id="flowAstepE"&gt;...&lt;/step&gt;
+&lt;/flow&gt;</pre>
+
+        <p>This example flow contains three steps, one flow, and one split. The last step does not have the <code>next</code> attribute. The flow transitions to <code>stepE</code> when its last step completes.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2985"></a>
+
+        <h2 class="sect2"><span class="secnum">55.4.4</span> <a id="sthref2986"></a>The split Element</h2>
+
+        <p>The <code>split</code> element can be a child of the <code>job</code> and <code>flow</code> elements. Its attributes are <code>id</code> and <code>next</code>. Splits can transition to splits, steps, flows, and decision elements. The <code>split</code> element can only contain one or more <code>flow</code> elements that can only transition to other <code>flow</code> elements in the split.</p>
+
+        <p>The following is an example of a split with three flows that execute concurrently:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;split id="splitA" next="stepB"&gt;
+  &lt;flow id="splitAflowA"&gt;...&lt;/flow&gt;
+  &lt;flow id="splitAflowB"&gt;...&lt;/flow&gt;
+  &lt;flow id="splitAflowC"&gt;...&lt;/flow&gt;
+&lt;/split&gt;</pre>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2987"></a>
+
+        <h2 class="sect2"><span class="secnum">55.4.5</span> <a id="sthref2988"></a>The decision Element</h2>
+
+        <p>The <code>decision</code> element can be a child of the <code>job</code> and <code>flow</code> elements. Its attributes are <code>id</code> and <code>next</code>. Steps, flows, and splits can transition to a <code>decision</code> element. This element specifies a batch artifact that decides the next step, flow, or split to execute based on information from the execution of the previous step, flow, or split. The batch artifact implements the <code>Decider</code> interface. The <code>decision</code> element can contain the following elements.</p>
+
+        <ul>
+          <li>
+            <p>One or more <code>end</code> elements (optional).</p>
+
+            <p>This element sets the batch status to <code>COMPLETED</code>.</p>
+          </li>
+
+          <li>
+            <p>One or more <code>stop</code> elements (optional).</p>
+
+            <p>This element sets the batch status to <code>STOPPED</code>.</p>
+          </li>
+
+          <li>
+            <p>One or more <code>fail</code> elements (optional).</p>
+
+            <p>This element sets the batch status to <code>FAILED</code>.</p>
+          </li>
+
+          <li>
+            <p>One or more <code>next</code> elements (optional).</p>
+          </li>
+
+          <li>
+            <p>One <code>properties</code> element (optional).</p>
+          </li>
+        </ul>
+
+        <p>The following is an example of the <code>decider</code> element:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;decision id="decisionA" ref="MyDeciderImpl"&gt;
+  &lt;fail on="FAILED" exit-status="FAILED_AT_DECIDER"/&gt;
+  &lt;end on="COMPLETED" exit-status="COMPLETED_AT_DECIDER"/&gt;
+  &lt;stop on="MY_TEMP_ISSUE_EXIST_STATUS" restart="step2"/&gt;
+&lt;/decision&gt;</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGHDHGH"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.5</span> <a id="sthref2989"></a>Creating Batch Artifacts</h1>
+
+      <p>After you define a job in terms of its batch artifacts using the Job Specification Language (JSL), you create these artifacts as Java classes that implement the interfaces in the <code>javax.batch.api</code> package and its subpackages.</p>
+
+      <p>This section lists the main batch artifact interfaces, demonstrates how to access context objects from the batch runtime, and provides some examples.</p>
+
+      <div class="sect2">
+        <a id="sthref2990"></a>
+
+        <h2 class="sect2"><span class="secnum">55.5.1</span> Batch Artifact Interfaces</h2>
+
+        <p>The following tables list the interfaces that you implement to create batch artifacts. The interface implementations are referenced from the elements described in <a href="../Text/batch-processing.xhtml#BCGDDBBG">Using the Job Specification Language</a>.</p>
+
+        <p><a href="../Text/batch-processing.xhtml#BCGGCIDC">Table 55-3</a> lists the interfaces to implement batch artifacts for chunk steps, task steps, and decision elements.</p>
+
+        <p><a href="../Text/batch-processing.xhtml#BCGEAAEA">Table 55-4</a> lists the interfaces to implement batch artifacts for partitioned steps.</p>
+
+        <p><a href="../Text/batch-processing.xhtml#BCGCAEDI">Table 55-5</a> lists the interfaces to implement batch artifacts for job and step listeners.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref2991"></a><a id="BCGGCIDC"></a>
+
+          <p class="titleintable">Table 55-3 Main Batch Artifact Interfaces</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="The table lists the batch artifact interfaces and the packages they belong to. The first column contains the package name. The second column contains the interface name. The third column contains a description of each interface." title="Main Batch Artifact Interfaces" width="100%">
+            <col width="29%" />
+            <col width="27%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t5" valign="bottom">Package</th>
+
+                <th align="left" id="r1c2-t5" valign="bottom">Interface</th>
+
+                <th align="left" id="r1c3-t5" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r2c1-t5">
+                  <p><code>javax.batch.api</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t5 r1c2-t5">
+                  <p><code>Batchlet</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t5 r1c3-t5">
+                  <p>Implements the business logic of a task-oriented step. It is referenced from the <code>batchlet</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r3c1-t5">
+                  <p><code>javax.batch.api</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t5 r1c2-t5">
+                  <p><code>Decider</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t5 r1c3-t5">
+                  <p>Decides the next step, flow, or split to execute based on information from the execution of the previous step, flow, or split. It is referenced from the <code>decision</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r4c1-t5">
+                  <p><code>javax.batch.api.chunk</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t5 r1c2-t5">
+                  <p><code>CheckPointAlgorithm</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t5 r1c3-t5">
+                  <p>Implements a custom checkpoint policy for chunk steps. It is referenced from the <code>checkpoint-algorithm</code> element inside the <code>chunk</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r5c1-t5">
+                  <p><code>javax.batch.api.chunk</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t5 r1c2-t5">
+                  <p><code>ItemReader</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t5 r1c3-t5">
+                  <p>Reads items from an input source in a chunk step. It is referenced from the <code>reader</code> element inside the <code>chunk</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r6c1-t5">
+                  <p><code>javax.batch.api.chunk</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t5 r1c2-t5">
+                  <p><code>ItemProcessor</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t5 r1c3-t5">
+                  <p>Processes input items to obtain output items in chunk steps. It is referenced from the <code>processor</code> element inside the <code>chunk</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r7c1-t5">
+                  <p><code>javax.batch.api.chunk</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t5 r1c2-t5">
+                  <p><code>ItemWriter</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t5 r1c3-t5">
+                  <p>Writes output items in chunk steps. It is referenced from the <code>writer</code> element inside the <code>chunk</code> element.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <div class="tblhruleformal">
+          <a id="sthref2992"></a><a id="BCGEAAEA"></a>
+
+          <p class="titleintable">Table 55-4 Partition Batch Artifact Interfaces</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="The table lists the batch artifact interfaces and the packages they belong to. The first column contains the package name. The second column contains the interface name. The third column contains a description of each interface." title="Partition Batch Artifact Interfaces" width="100%">
+            <col width="33%" />
+            <col width="25%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t6" valign="bottom">Package</th>
+
+                <th align="left" id="r1c2-t6" valign="bottom">Interface</th>
+
+                <th align="left" id="r1c3-t6" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r2c1-t6">
+                  <p><code>javax.batch.api.partition</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t6 r1c2-t6">
+                  <p><code>PartitionPlan</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t6 r1c3-t6">
+                  <p>Provides details on how to execute a partitioned step, such as the number of partitions, the number of threads, and the parameters for each partition. This artifact is not referenced directly from the job definition file.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r3c1-t6">
+                  <p><code>javax.batch.api.partition</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t6 r1c2-t6">
+                  <p><code>PartitionMapper</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t6 r1c3-t6">
+                  <p>Provides a <code>PartitionPlan</code> object. It is referenced from the <code>mapper</code> element inside the <code>partition</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r4c1-t6">
+                  <p><code>javax.batch.api.partition</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t6 r1c2-t6">
+                  <p><code>PartitionReducer</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t6 r1c3-t6">
+                  <p>Receives control when a partitioned step begins, ends, or rolls back. It is referenced from the <code>reducer</code> element inside the <code>partition</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r5c1-t6">
+                  <p><code>javax.batch.api.partition</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t6 r1c2-t6">
+                  <p><code>PartitionCollector</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t6 r1c3-t6">
+                  <p>Sends intermediary results from each partition to a partition analyzer. It is referenced from the <code>collector</code> element inside the <code>partition</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t6" id="r6c1-t6">
+                  <p><code>javax.batch.api.partition</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t6 r1c2-t6">
+                  <p><code>PartitionAnalyzer</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t6 r1c3-t6">
+                  <p>Processes data and final results from each partition. It is referenced from the <code>analyzer</code> element inside the <code>partition</code> element.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <div class="tblhruleformal">
+          <a id="sthref2993"></a><a id="BCGCAEDI"></a>
+
+          <p class="titleintable">Table 55-5 Listener Batch Artifact Interfaces</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="The table lists the batch artifact interfaces and the packages they belong to. The first column contains the package name. The second column contains the interface name. The third column contains a description of each interface." title="Listener Batch Artifact Interfaces" width="100%">
+            <col width="*" />
+            <col width="27%" />
+            <col width="34%" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t7" valign="bottom">Package</th>
+
+                <th align="left" id="r1c2-t7" valign="bottom">Interface</th>
+
+                <th align="left" id="r1c3-t7" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r2c1-t7">
+                  <p><code>javax.batch.api.listener</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t7 r1c2-t7">
+                  <p><code>JobListener</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t7 r1c3-t7">
+                  <p>Intercepts job execution before and after running a job. It is referenced from the <code>listener</code> element inside the <code>job</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r3c1-t7">
+                  <p><code>javax.batch.api.listener</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t7 r1c2-t7">
+                  <p><code>StepListener</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t7 r1c3-t7">
+                  <p>Intercepts step execution before and after running a step. It is referenced from the <code>listener</code> element inside the <code>step</code> element</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r4c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t7 r1c2-t7">
+                  <p><code>ChunkListener</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t7 r1c3-t7">
+                  <p>Intercepts chunk processing in chunk steps before and after processing each chunk, and on errors. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r5c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t7 r1c2-t7">
+                  <p><code>ItemReadListener</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t7 r1c3-t7">
+                  <p>Intercepts item reading in chunk steps before and after reading each item, and on errors. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r6c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t7 r1c2-t7">
+                  <p><code>ItemProcessListener</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t7 r1c3-t7">
+                  <p>Intercepts item processing in chunk steps before and after processing each item, and on errors. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r7c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t7 r1c2-t7">
+                  <p><code>ItemWriteListener</code></p>
+                </td>
+
+                <td align="left" headers="r7c1-t7 r1c3-t7">
+                  <p>Intercepts item writing in chunk steps before and after writing each item, and on errors. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r8c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r8c1-t7 r1c2-t7">
+                  <p><code>RetryReadListener</code></p>
+                </td>
+
+                <td align="left" headers="r8c1-t7 r1c3-t7">
+                  <p>Intercepts retry item reading in chunk steps when an exception occurs. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r9c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r9c1-t7 r1c2-t7">
+                  <p><code>RetryProcessListener</code></p>
+                </td>
+
+                <td align="left" headers="r9c1-t7 r1c3-t7">
+                  <p>Intercepts retry item processing in chunk steps when an exception occurs. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r10c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r10c1-t7 r1c2-t7">
+                  <p><code>RetryWriteListener</code></p>
+                </td>
+
+                <td align="left" headers="r10c1-t7 r1c3-t7">
+                  <p>Intercepts retry item writing in chunk steps when an exception occurs. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r11c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r11c1-t7 r1c2-t7">
+                  <p><code>SkipReadListener</code></p>
+                </td>
+
+                <td align="left" headers="r11c1-t7 r1c3-t7">
+                  <p>Intercepts skippable exception handling for item readers in chunk steps. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r12c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r12c1-t7 r1c2-t7">
+                  <p><code>SkipProcessListener</code></p>
+                </td>
+
+                <td align="left" headers="r12c1-t7 r1c3-t7">
+                  <p>Intercepts skippable exception handling for item processors in chunk steps. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t7" id="r13c1-t7">
+                  <p><code>javax.batch.api.chunk.listener</code></p>
+                </td>
+
+                <td align="left" headers="r13c1-t7 r1c2-t7">
+                  <p><code>SkipWriteListener</code></p>
+                </td>
+
+                <td align="left" headers="r13c1-t7 r1c3-t7">
+                  <p>Intercepts skippable exception handling for item writers in chunk steps. It is referenced from the <code>listener</code> element inside the <code>step</code> element.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div><a id="BCGIFJBB"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">55.5.2</span> <a id="sthref2994"></a>Dependency Injection in Batch Artifacts</h2>
+
+        <p>To ensure that Contexts and Dependency Injection (CDI) works in your batch artifacts, follow these steps.</p>
+
+        <ol>
+          <li>
+            <p>Define your batch artifact implementations as CDI named beans using the <code>Named</code> annotation.</p>
+
+            <p>For example, define an item reader implementation in a chunk step as follows:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named("MyItemReaderImpl")
+public class MyItemReaderImpl implements ItemReader {
+    /* ... Override the ItemReader interface methods ... */
+}</pre>
+          </li>
+
+          <li>
+            <p>Provide a public, empty, no-argument constructor for your batch artifacts.</p>
+
+            <p>For example, provide the following constructor for the artifact above:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public MyItemReaderImpl() {}</pre>
+          </li>
+
+          <li>
+            <p>Specify the CDI name for the batch artifacts in the job definition file, instead of using the fully qualified name of the class.</p>
+
+            <p>For example, define the step for the artifact above as follows:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="stepA" next="stepB"&gt;
+  &lt;chunk&gt;
+    &lt;reader ref="MyItemReaderImpl"&gt;&lt;/reader&gt;
+    ...
+  &lt;/chunk&gt;
+&lt;/step&gt;</pre>
+
+            <p>This example uses the CDI name (<code>MyItemReaderImpl</code>) instead of the fully qualified name of the class (<code>com.example.pkg.MyItemReaderImpl</code>) to specify a batch artifact.</p>
+          </li>
+
+          <li>
+            <p>Ensure that your module is a CDI bean archive by annotating your batch artifacts with the <code>javax.enterprise.context.Dependent</code> annotation or by including an empty <code>beans.xml</code> deployment description with your application. For example, the following batch artifact is annotated with <code>@Dependent</code>:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent@Named("MyItemReaderImpl")public class MyItemReaderImpl implements ItemReader { ... }</pre>
+
+            <p>For more information on bean archives, see <a href="../Text/cdi-adv.xhtml#CACDCFDE">Packaging CDI Applications</a> in <a href="../Text/cdi-adv.xhtml#GJEHI">Chapter 25, "Contexts and Dependency Injection for Java EE: Advanced Topics"</a>.</p>
+          </li>
+        </ol>
+
+        <div align="center">
+          <div class="inftblnote">
+            <br />
+
+            <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+              <tbody>
+                <tr>
+                  <td align="left">
+                    <p class="notep1">Note:</p>
+
+                    <p>Contexts and Dependency Injection (CDI) is required in order to access context objects from the batch runtime in batch artifacts.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+        </div>
+
+        <p>You may encounter the following errors if you do not follow this procedure.</p>
+
+        <ul>
+          <li>
+            <p>The batch runtime cannot locate some batch artifacts.</p>
+          </li>
+
+          <li>
+            <p>The batch artifacts throw null pointer exceptions when accessing injected objects.</p>
+          </li>
+        </ul>
+      </div><a id="BCGCJEEF"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">55.5.3</span> <a id="sthref2995"></a>Using the Context Objects from the Batch Runtime</h2>
+
+        <p>The batch runtime provides context objects that implement the <code>JobContext</code> and <code>StepContext</code> interfaces in the <code>javax.batch.runtime.context</code> package. These objects are associated with the current job and step, respectively, and enable you to do the following:</p>
+
+        <ul>
+          <li>
+            <p>Get information from the current job or step, such as its name, instance ID, execution ID, batch status, and exit status</p>
+          </li>
+
+          <li>
+            <p>Set the user-defined exit status</p>
+          </li>
+
+          <li>
+            <p>Store user data</p>
+          </li>
+
+          <li>
+            <p>Get property values from the job or step definition</p>
+          </li>
+        </ul>
+
+        <p>You can inject context objects from the batch runtime inside batch artifact implementations like item readers, item processors, item writers, batchlets, listeners, and so on. The following example demonstrates how to access property values from the job definition file in an item reader implementation:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("MyItemReaderImpl")
+public class MyItemReaderImpl implements ItemReader {
+    @Inject
+    JobContext jobCtx;
+
+    public MyItemReaderImpl() {}
+
+    @Override
+    public void open(Serializable checkpoint) throws Exception {
+        String fileName = jobCtx.getProperties()
+                                .getProperty("log_file_name");
+        ...
+    }
+    ...
+}</pre>
+
+        <p>See <a href="../Text/batch-processing.xhtml#BCGIFJBB">Dependency Injection in Batch Artifacts</a> for instructions on how to define your batch artifacts to use dependency injection.</p>
+
+        <div align="center">
+          <div class="inftblnote">
+            <br />
+
+            <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+              <tbody>
+                <tr>
+                  <td align="left">
+                    <p class="notep1">Note:</p>
+
+                    <p>Do <span class="italic">not</span> access batch context objects inside artifact constructors.</p>
+
+                    <p>Because the job does not run until you submit it to the batch runtime, the batch context objects are not available when CDI instantiates your artifacts upon loading your application. The instantiation of these beans fails and the batch runtime cannot find your batch artifacts when your application submits the job.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGCAHCB"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.6</span> <a id="sthref2996"></a>Submitting Jobs to the Batch Runtime</h1>
+
+      <p>The <code>JobOperator</code> interface in the <code>javax.batch.operations</code> package enables you to submit jobs to the batch runtime and obtain information about existing jobs. This interface provides the following functionality.</p>
+
+      <ul>
+        <li>
+          <p>Obtain the names of all known jobs.</p>
+        </li>
+
+        <li>
+          <p>Start, stop, restart, and abandon jobs.</p>
+        </li>
+
+        <li>
+          <p>Obtain job instances and job executions.</p>
+        </li>
+      </ul>
+
+      <p>The <code>BatchRuntime</code> class in the <code>javax.batch.runtime</code> package provides the <code>getJobOperator</code> factory method to obtain <code>JobOperator</code> objects.</p>
+
+      <div class="sect2">
+        <a id="sthref2997"></a>
+
+        <h2 class="sect2"><span class="secnum">55.6.1</span> <a id="sthref2998"></a>Starting a Job</h2>
+
+        <p>The following example code demonstrates how to obtain a <code>JobOperator</code> object and submit a batch job:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">JobOperator jobOperator = BatchRuntime.getJobOperator();
+Properties props = new Properties();
+props.setProperty("parameter1", "value1");
+...
+long execID = jobOperator.start("simplejob", props);</pre>
+
+        <p>The first argument of the <code>JobOperator.start</code> method is the name of the job as specified in its job definition file. The second parameter is a <code>Properties</code> object that represents the parameters for this job execution. You can use job parameters to pass to a job information that is only known at runtime.</p>
+      </div><a id="BCGIBGFC"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">55.6.2</span> <a id="sthref2999"></a>Checking the Status of a Job</h2>
+
+        <p>The <code>JobExecution</code> interface in the <code>javax.batch.runtime</code> package provides methods to obtain information about submitted jobs. This interface provides the following functionality.</p>
+
+        <ul>
+          <li>
+            <p>Obtain the batch and exit status of a job execution.</p>
+          </li>
+
+          <li>
+            <p>Obtain the time the execution was started, updated, or ended.</p>
+          </li>
+
+          <li>
+            <p>Obtain the job name.</p>
+          </li>
+
+          <li>
+            <p>Obtain the execution ID.</p>
+          </li>
+        </ul>
+
+        <p>The following example code demonstrates how to obtain the batch status of a job using its execution ID:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">JobExecution jobExec = jobOperator.getJobExecution(execID);
+String status = jobExec.getBatchStatus().toString();</pre>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref3000"></a>
+
+        <h2 class="sect2"><span class="secnum">55.6.3</span> Invoking the Batch Runtime in Your Application</h2>
+
+        <p>The component from which you invoke the batch runtime depends on the architecture of your particular application. For example, you can invoke the batch runtime from an enterprise bean, a servlet, a managed bean, and so on.</p>
+
+        <p>See <a href="../Text/batch-processing.xhtml#BCGJHEHJ">The webserverlog Example Application</a> and <a href="../Text/batch-processing.xhtml#BCGFCACD">The phonebilling Example Application</a> for details on how to invoke the batch runtime from a managed bean driven by a JavaServer Faces user interface.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGBBGJI"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.7</span> <a id="sthref3001"></a>Packaging Batch Applications</h1>
+
+      <p>Job definition files and batch artifacts do not require separate packaging and can be included in any Java EE application.</p>
+
+      <p>Package the batch artifact classes with the rest of the classes of your application, and include the job definition files in one of the following directories:</p>
+
+      <ul>
+        <li>
+          <p><code>META-INF/batch-jobs/</code> for <code>jar</code> packages</p>
+        </li>
+
+        <li>
+          <p><code>WEB-INF/classes/META-INF/batch-jobs/</code> for <code>war</code> packages</p>
+        </li>
+      </ul>
+
+      <p>The name of each job definition file must match its job ID. For example, if you define a job as follows, and you are packaging your application as a WAR file, include the job definition file in <code>WEB-INF/classes/META-INF/batch-jobs/simplejob.xml</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;job id="simplejob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+                    version="1.0"&gt;
+  ...
+&lt;/job&gt;</pre>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGJHEHJ"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.8</span> <a id="sthref3002"></a><a id="sthref3003"></a>The webserverlog Example Application</h1>
+
+      <p>The <code>webserverlog</code> example application, located in the <span class="variable">tut-install</span><code>/examples/batch/webserverlog/</code> directory, demonstrates how to use the batch framework in Java EE to analyze the log file from a web server. This example application reads a log file and finds what percentage of page views from tablet devices are product sales.</p>
+
+      <div class="sect2">
+        <a id="sthref3004"></a>
+
+        <h2 class="sect2"><span class="secnum">55.8.1</span> Architecture of the webserverlog Example Application</h2>
+
+        <p>The <code>webserverlog</code> example application consists of the following elements.</p>
+
+        <ul>
+          <li>
+            <p>A job definition file (<code>webserverlog.xml</code>) that uses the Job Specification Language (JSL) to define a batch job with a chunk step and a task step. The chunk step acts as a filter, and the task step calculates statistics on the remaining entries.</p>
+          </li>
+
+          <li>
+            <p>A log file (<code>log1.txt</code>) that serves as input data to the batch job.</p>
+          </li>
+
+          <li>
+            <p>Two Java classes (<code>LogLine</code> and <code>LogFilteredLine</code>) that represent input items and output items for the chunk step.</p>
+          </li>
+
+          <li>
+            <p>Three batch artifacts (<code>LogLineReader</code>, <code>LogLineProcessor</code>, and <code>LogFilteredLineWriter</code>) that implement the chunk step of the application. This step reads items from the web server log file, filters them by the web browser used by the client, and writes the results to a text file.</p>
+          </li>
+
+          <li>
+            <p>Two batch artifacts (<code>InfoJobListener</code> and <code>InfoItemProcessListener</code>) that implement two simple listeners.</p>
+          </li>
+
+          <li>
+            <p>A batch artifact (<code>MobileBatchlet.java</code>) that calculates statistics on the filtered items.</p>
+          </li>
+
+          <li>
+            <p>Two Facelets pages (<code>index.xhtml</code> and <code>jobstarted.xhtml</code>) that provide the front end of the batch application. The first page shows the log file that will be processed by the batch job, and the second page enables the user to check on the status of the job and shows the results.</p>
+          </li>
+
+          <li>
+            <p>A managed bean (<code>JsfBean</code>) that is accessed from the Facelets pages. The bean submits the job to the batch runtime, checks on the status of the job, and reads the results from a text file.</p>
+          </li>
+        </ul>
+
+        <div class="sect3">
+          <a id="sthref3005"></a>
+
+          <h3 class="sect3"><span class="secnum">55.8.1.1</span> The Job Definition File</h3>
+
+          <p>The <code>webserverlog.xml</code> job definition file is located in the <code>WEB-INF/classes/META-INF/batch-jobs/</code> directory. The file specifies seven job-level properties and two steps:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;job id="webserverlog" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+     version="1.0"&gt;
+    &lt;properties&gt;
+        &lt;property name="log_file_name" value="log1.txt"/&gt;
+        &lt;property name="filtered_file_name" value="filtered1.txt"/&gt;
+        &lt;property name="num_browsers" value="2"/&gt;
+        &lt;property name="browser_1" value="Tablet Browser D"/&gt;
+        &lt;property name="browser_2" value="Tablet Browser E"/&gt;
+        &lt;property name="buy_page" value="/auth/buy.html"/&gt;
+        &lt;property name="out_file_name" value="result1.txt"/&gt;
+    &lt;/properties&gt;
+    &lt;listeners&gt;
+        &lt;listener ref="InfoJobListener"/&gt;
+    &lt;/listeners&gt;
+    &lt;step id="mobilefilter" next="mobileanalyzer"&gt; ... &lt;/step&gt;
+    &lt;step id="mobileanalyzer"&gt; ... &lt;/step&gt;
+&lt;/job&gt;</pre>
+
+          <p>The first step is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="mobilefilter" next="mobileanalyzer"&gt;
+    &lt;listeners&gt;
+        &lt;listener ref="InfoItemProcessListeners"/&gt;
+    &lt;/listeners&gt;
+    &lt;chunk checkpoint-policy="item" item-count="10"&gt;
+        &lt;reader ref="LogLineReader"&gt;&lt;/reader&gt;
+        &lt;processor ref="LogLineProcessor"&gt;&lt;/processor&gt;
+        &lt;writer ref="LogFilteredLineWriter"&gt;&lt;/writer&gt;
+    &lt;/chunk&gt;
+&lt;/step&gt;</pre>
+
+          <p>This step is a normal chunk step that specifies the batch artifacts that implement each phase of the step. The batch artifact names are not fully qualified class names, so the batch artifacts are CDI beans annotated with <code>@Named</code>.</p>
+
+          <p>The second step is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="mobileanalyzer"&gt;
+    &lt;batchlet ref="MobileBatchlet"&gt;&lt;/batchlet&gt;
+    &lt;end on="COMPLETED"/&gt;
+&lt;/step&gt;</pre>
+
+          <p>This step is a task step that specifies the batch artifact that implements it. This is the last step of the job.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3006"></a>
+
+          <h3 class="sect3"><span class="secnum">55.8.1.2</span> The LogLine and LogFilteredLine Items</h3>
+
+          <p>The <code>LogLine</code> class represents entries in the web server log file and it is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class LogLine {
+    private final String datetime;
+    private final String ipaddr;
+    private final String browser;
+    private final String url;
+
+    /* ... Constructor, getters, and setters ... */
+}</pre>
+
+          <p>The <code>LogFileteredLine</code> class is similar to this class but only has two fields: the IP address of the client and the URL.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3007"></a>
+
+          <h3 class="sect3"><span class="secnum">55.8.1.3</span> The Chunk Step Batch Artifacts</h3>
+
+          <p>The first step is composed of the <code>LogLineReader</code>, <code>LogLineProcessor</code>, and <code>LogFilteredLineWriter</code> batch artifacts.</p>
+
+          <p>The <code>LogLineReader</code> artifact reads records from the web server log file:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("LogLineReader")
+public class LogLineReader implements ItemReader {
+    private ItemNumberCheckpoint checkpoint;
+    private String fileName;
+    private BufferedReader breader;
+    @Inject
+    private JobContext jobCtx;
+    
+    public LogLineReader() { }
+
+    /* ... Override the open, close, readItem, and 
+     *     checkpointInfo methods ... */
+}</pre>
+
+          <p>The <code>open</code> method reads the <code>log_file_name</code> property and opens the log file with a buffered reader. In this example, the log file has been included with the application under <code>webserverlog/WEB-INF/classes/log1.txt</code>:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">fileName = jobCtx.getProperties().getProperty("log_file_name");
+ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+InputStream iStream = classLoader.getResourceAsStream(fileName);
+breader = new BufferedReader(new InputStreamReader(iStream));</pre>
+
+          <p>If a checkpoint object is provided, the <code>open</code> method advances the reader up to the last checkpoint. Otherwise, this method creates a new checkpoint object. The checkpoint object keeps track of the line number from the last committed chunk.</p>
+
+          <p>The <code>readItem</code> method returns a new <code>LogLine</code> object or null at the end of the log file:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public Object readItem() throws Exception {
+    String entry = breader.readLine();
+    if (entry != null) {
+        checkpoint.nextLine();
+        return new LogLine(entry);
+    } else {
+        return null;
+    }
+}</pre>
+
+          <p>The <code>LogLineProcessor</code> artifact obtains a list of browsers from the job properties and filters the log entries according to the list:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public Object processItem(Object item) {
+    /* Obtain a list of browsers we are interested in */
+    if (nbrowsers == 0) {
+        Properties props = jobCtx.getProperties();
+        nbrowsers = Integer.parseInt(props.getProperty("num_browsers"));
+        browsers = new String[nbrowsers];
+        for (int i = 1; i &lt; nbrowsers + 1; i++)
+            browsers[i - 1] = props.getProperty("browser_" + i);
+    }
+    
+    LogLine logline = (LogLine) item;
+    /* Filter for only the mobile/tablet browsers as specified */
+    for (int i = 0; i &lt; nbrowsers; i++) {
+        if (logline.getBrowser().equals(browsers[i])) {
+            return new LogFilteredLine(logline);
+        }
+    }
+    return null;
+}</pre>
+
+          <p>The <code>LogFilteredLineWriter</code> artifact reads the name of the output file from the job properties. The <code>open</code> method opens the file for writing. If a checkpoint object is provided, the artifact continues writing at the end of the file; otherwise, it overwrites the file if it exists. The <code>writeItems</code> method writes filtered items to the output file:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public void writeItems(List&lt;Object&gt; items) throws Exception {
+    /* Write the filtered lines to the output file */
+    for (int i = 0; i &lt; items.size(); i++) {
+        LogFilteredLine filtLine = (LogFilteredLine) items.get(i);
+        bwriter.write(filtLine.toString());
+        bwriter.newLine();
+    }
+}</pre>
+        </div><a id="BCGCCFAC"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">55.8.1.4</span> The Listener Batch Artifacts</h3>
+
+          <p>The <code>InfoJobListener</code> batch artifact implements a simple listener that writes log messages when the job starts and when it ends:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("InfoJobListener")
+public class InfoJobListener implements JobListener {
+    ...
+    @Override
+    public void beforeJob() throws Exception {
+        logger.log(Level.INFO, "The job is starting");
+    }
+ 
+    @Override
+    public void afterJob() throws Exception { ... }
+}</pre>
+
+          <p>The <code>InfoItemProcessListener</code> batch artifact implements the <code>ItemProcessListener</code> interface for chunk steps:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("InfoItemProcessListener")
+public class InfoItemProcessListener implements ItemProcessListener {
+    ...
+    @Override
+    public void beforeProcess(Object o) throws Exception {
+        LogLine logline = (LogLine) o;
+        llogger.log(Level.INFO, "Processing entry {0}", logline);
+    }
+    ...
+}</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3008"></a>
+
+          <h3 class="sect3"><span class="secnum">55.8.1.5</span> The Task Step Batch Artifact</h3>
+
+          <p>The task step is implemented by the <code>MobileBatchlet</code> artifact, which computes what percentage of the filtered log entries are purchases:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public String process() throws Exception {
+    /* Get properties from the job definition file */
+    ...
+    /* Count from the output of the previous chunk step */
+    breader = new BufferedReader(new FileReader(fileName));
+    String line = breader.readLine();
+    while (line != null) {
+        String[] lineSplit = line.split(", ");
+        if (buyPage.compareTo(lineSplit[1]) == 0)
+            pageVisits++;
+        totalVisits++;
+        line = breader.readLine();
+    }
+    breader.close();
+    /* Write the result */
+    ...
+}</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3009"></a>
+
+          <h3 class="sect3"><span class="secnum">55.8.1.6</span> The JavaServer Faces Pages</h3>
+
+          <p>The <code>index.xhtml</code> page contains a text area that shows the web server log. The page provides a button for the user to submit the batch job and navigate to the next page:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;body&gt;
+    ...
+    &lt;textarea cols="90" rows="25" 
+              readonly="true"&gt;#{jsfBean.getInputLog()}&lt;/textarea&gt;
+    &lt;p&gt; &lt;/p&gt;
+    &lt;h:form&gt;
+        &lt;h:commandButton value="Start Batch Job" 
+                         action="#{jsfBean.startBatchJob()}" /&gt;
+    &lt;/h:form&gt;
+&lt;/body&gt;</pre>
+
+          <p>This page calls the methods of the managed bean to show the log file and submit the batch job.</p>
+
+          <p>The <code>jobstarted.xhtml</code> page provides a button to check the current status of the batch job and displays the results when the job finishes:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;Current Status of the Job: &lt;b&gt;#{jsfBean.jobStatus}&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;#{jsfBean.showResults()}&lt;/p&gt;
+&lt;h:form&gt;
+    &lt;h:commandButton value="Check Status" 
+                     action="jobstarted"
+                     rendered="#{jsfBean.completed==false}" /&gt;
+&lt;/h:form&gt;</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3010"></a>
+
+          <h3 class="sect3"><span class="secnum">55.8.1.7</span> The Managed Bean</h3>
+
+          <p>The <code>JsfBean</code> managed bean submits the job to the batch runtime, checks on the status of the job, and reads the results from a text file.</p>
+
+          <p>The <code>startBatchJob</code> method submits the job to the batch runtime:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">/* Submit the batch job to the batch runtime.
+ * JSF Navigation method (return the name of the next page) */
+public String startBatchJob() {
+    jobOperator = BatchRuntime.getJobOperator();
+    execID = jobOperator.start("webserverlog", null);
+    return "jobstarted";
+}</pre>
+
+          <p>The <code>getJobStatus</code> method checks the status of the job:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">/* Get the status of the job from the batch runtime */
+public String getJobStatus() {
+    return jobOperator.getJobExecution(execID).getBatchStatus().toString();
+}</pre>
+
+          <p>The <code>showResults</code> method reads the results from a text file.</p>
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref3011"></a>
+
+        <h2 class="sect2"><span class="secnum">55.8.2</span> Running the webserverlog Example Application</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>webserverlog</code> example application.</p>
+
+        <div class="sect3">
+          <a id="sthref3012"></a>
+
+          <h3 class="sect3"><span class="secnum">55.8.2.1</span> To Run the webserverlog Example Application Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the Open Project dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/batch</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>webserverlog</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>webserverlog</code> project and select <span class="gui-object-action">Run</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>webserverlog.war</code>, located in the <code>target/</code> directory; deploys it to the server; and launches a web browser window at the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/webserverlog/</pre>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3013"></a>
+
+          <h3 class="sect3"><span class="secnum">55.8.2.2</span> To Run the webserverlog Example Application Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/batch/webserverlog/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+            </li>
+
+            <li>
+              <p>Open a web browser window at the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/webserverlog/</pre>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGFCACD"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.9</span> <a id="sthref3014"></a><a id="sthref3015"></a>The phonebilling Example Application</h1>
+
+      <p>The <code>phonebilling</code> example application, located in the <span class="variable">tut-install</span><code>/examples/batch/phonebilling/</code> directory, demonstrates how to use the batch framework in Java EE to implement a phone billing system. This example application processes a log file of phone calls and creates a bill for each customer.</p>
+
+      <div class="sect2">
+        <a id="sthref3016"></a>
+
+        <h2 class="sect2"><span class="secnum">55.9.1</span> Architecture of the phonebilling Example Application</h2>
+
+        <p>The <code>phonebilling</code> example application consists of the following elements.</p>
+
+        <ul>
+          <li>
+            <p>A job definition file (<code>phonebilling.xml</code>) that uses the Job Specification Language (JSL) to define a batch job with two chunk steps. The first step reads call records from a log file and associates them with a bill. The second step computes the amount due and writes each bill to a text file.</p>
+          </li>
+
+          <li>
+            <p>A Java class (<code>CallRecordLogCreator</code>) that creates the log file for the batch job. This is an auxiliary component that does not demonstrate any key functionality in this example.</p>
+          </li>
+
+          <li>
+            <p>Two Java Persistence API (JPA) entities (<code>CallRecord</code> and <code>PhoneBill</code>) that represent call records and customer bills. The application uses a JPA entity manager to store instances of these entities in a database.</p>
+          </li>
+
+          <li>
+            <p>Three batch artifacts (<code>CallRecordReader</code>, <code>CallRecordProcessor</code>, and <code>CallRecordWriter</code>) that implement the first step of the application. This step reads call records from the log file, associates them with a bill, and stores them in a database.</p>
+          </li>
+
+          <li>
+            <p>Four batch artifacts (<code>BillReader</code>, <code>BillProcessor</code>, <code>BillWriter</code>, and <code>BillPartitionMapper</code>) that implement the second step of the application. This step is a partitioned step that gets each bill from the database, calculates the amount due, and writes it to a text file.</p>
+          </li>
+
+          <li>
+            <p>Two Facelets pages (<code>index.xhtml</code> and <code>jobstarted.xhtml</code>) that provide the front end of the batch application. The first page shows the log file that will be processed by the batch job, and the second page enables the user to check on the status of the job and shows the resulting bill for each customer.</p>
+          </li>
+
+          <li>
+            <p>A managed bean (<code>JsfBean</code>) that is accessed from the Facelets pages. The bean submits the job to the batch runtime, checks on the status of the job, and reads the text files for each bill.</p>
+          </li>
+        </ul>
+
+        <div class="sect3">
+          <a id="sthref3017"></a>
+
+          <h3 class="sect3"><span class="secnum">55.9.1.1</span> The Job Definition File</h3>
+
+          <p>The <code>phonebilling.xml</code> job definition file is located in the <code>WEB-INF/classes/META-INF/batch-jobs/</code> directory. The file specifies three job-level properties and two steps:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;job id="phonebilling" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+     version="1.0"&gt;
+    &lt;properties&gt;
+        &lt;property name="log_file_name" value="log1.txt"/&gt;
+        &lt;property name="airtime_price" value="0.08"/&gt;
+        &lt;property name="tax_rate" value="0.07"/&gt;
+    &lt;/properties&gt;
+    &lt;step id="callrecords" next="bills"&gt; ... &lt;/step&gt;
+    &lt;step id="bills"&gt; ... &lt;/step&gt;
+&lt;/job&gt;</pre>
+
+          <p>The first step is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="callrecords" next="bills"&gt;
+    &lt;chunk checkpoint-policy="item" item-count="10"&gt;
+        &lt;reader ref="CallRecordReader"&gt;&lt;/reader&gt;
+        &lt;processor ref="CallRecordProcessor"&gt;&lt;/processor&gt;
+        &lt;writer ref="CallRecordWriter"&gt;&lt;/writer&gt;
+    &lt;/chunk&gt;
+&lt;/step&gt;</pre>
+
+          <p>This step is a normal chunk step that specifies the batch artifacts that implement each phase of the step. The batch artifact names are not fully qualified class names, so the batch artifacts are CDI beans annotated with <code>@Named</code>.</p>
+
+          <p>The second step is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;step id="bills"&gt;
+    &lt;chunk checkpoint-policy="item" item-count="2"&gt;
+        &lt;reader ref="BillReader"&gt;
+            &lt;properties&gt;                &lt;property name="firstItem" value="#{partitionPlan['firstItem']}"/&gt;                &lt;property name="numItems" value="#{partitionPlan['numItems']}"/&gt;            &lt;/properties&gt;        &lt;/reader&gt;
+        &lt;processor ref="BillProcessor"&gt;&lt;/processor&gt;
+        &lt;writer ref="BillWriter"&gt;&lt;/writer&gt;
+    &lt;/chunk&gt;
+    &lt;partition&gt;
+        &lt;mapper ref="BillPartitionMapper"/&gt;
+    &lt;/partition&gt;
+    &lt;end on="COMPLETED"/&gt;
+&lt;/step&gt;</pre>
+
+          <p>This step is a partitioned chunk step. The partition plan is specified through the <code>BillPartitionMapper</code> artifact instead of using the <code>plan</code> element.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3018"></a>
+
+          <h3 class="sect3"><span class="secnum">55.9.1.2</span> The CallRecord and PhoneBill Entities</h3>
+
+          <p>The <code>CallRecord</code> entity is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+public class CallRecord implements Serializable {
+    @Id @GeneratedValue
+    private Long id;
+    @Temporal(TemporalType.DATE)
+    private Date datetime;
+    private String fromNumber;
+    private String toNumber;
+    private int minutes;
+    private int seconds;
+    private BigDecimal price;
+
+    public CallRecord() { }
+
+    public CallRecord(String datetime, String from, 
+            String to, int min, int sec)             throws ParseException { ... }
+
+    public CallRecord(String jsonData) throws ParseException { ... }
+
+    /* ... Getters and setters ... */
+}</pre>
+
+          <p>The <code>id</code> field is generated automatically by the JPA implementation to store and retrieve <code>CallRecord</code> objects to and from a database.</p>
+
+          <p>The second constructor creates a <code>CallRecord</code> object from an entry of JSON data in the log file using the JSON Processing API. Log entries look as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">{"datetime":"03/01/2013 04:03","from":"555-0101",
+"to":"555-0114","length":"03:39"}</pre>
+
+          <p>The <code>PhoneBill</code> entity is defined as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+public class PhoneBill implements Serializable {
+    @Id
+    private String phoneNumber;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OrderBy("datetime ASC")
+    private List&lt;CallRecord&gt; calls;
+    private BigDecimal amountBase;
+    private BigDecimal taxRate;
+    private BigDecimal tax;
+    private BigDecimal amountTotal;
+ 
+    public PhoneBill() { }
+    
+    public PhoneBill(String number) {
+        this.phoneNumber = number;
+        calls = new ArrayList&lt;&gt;();
+    }
+    
+    public void addCall(CallRecord call) {
+        calls.add(call);
+    }
+    
+    public void calculate(BigDecimal taxRate) { ... }
+
+    /* ... Getters and setters ... *
+}</pre>
+
+          <p>The <code>OneToMany</code> annotation defines the relationship between a bill and its call records. The <code>FetchType.EAGER</code> attribute specifies that the collection should be retrieved eagerly. The <code>CascadeType.PERSIST</code> attribute indicates that the elements in the call list should be automatically persisted when the phone bill is persisted. The <code>OrderBy</code> annotation defines an order for retrieving the elements of the call list from the database.</p>
+
+          <p>The batch artifacts use instances of these two entities as items to read, process, and write.</p>
+
+          <p>For more information on the Java Persistence API, see <a href="../Text/persistence-intro.xhtml#BNBPZ">Chapter 37, "Introduction to the Java Persistence API"</a>. For more information on the JSON Processing API, see <a href="../Text/jsonp.xhtml#GLRBB">Chapter 19, "JSON Processing"</a>.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3019"></a>
+
+          <h3 class="sect3"><span class="secnum">55.9.1.3</span> The Call Records Chunk Step</h3>
+
+          <p>The first step is composed of the <code>CallRecordReader</code>, <code>CallRecordProcessor</code>, and <code>CallRecordWriter</code> batch artifacts.</p>
+
+          <p>The <code>CallRecordReader</code> artifact reads call records from the log file:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("CallRecordReader")
+public class CallRecordReader implements ItemReader {
+    private ItemNumberCheckpoint checkpoint;
+    private String fileName;
+    private BufferedReader breader;
+    @Inject
+    JobContext jobCtx;
+
+    /* ... Override the open, close, readItem, 
+     *     and checkpointInfo methods ... */
+}</pre>
+
+          <p>The <code>open</code> method reads the <code>log_filename</code> property and opens the log file with a buffered reader:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">fileName = jobCtx.getProperties().getProperty("log_file_name");
+breader = new BufferedReader(new FileReader(fileName));</pre>
+
+          <p>If a checkpoint object is provided, the <code>open</code> method advances the reader up to the last checkpoint. Otherwise, this method creates a new checkpoint object. The checkpoint object keeps track of the line number from the last committed chunk.</p>
+
+          <p>The <code>readItem</code> method returns a new <code>CallRecord</code> object or null at the end of the log file:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public Object readItem() throws Exception {
+    /* Read a line from the log file and 
+     * create a CallRecord from JSON */
+    String callEntryJson = breader.readLine();
+    if (callEntryJson != null) {
+        checkpoint.nextItem();
+        return new CallRecord(callEntryJson);
+    } else
+        return null;
+}</pre>
+
+          <p>The <code>CallRecordProcessor</code> artifact obtains the airtime price from the job properties, calculates the price of each call, and returns the call object. This artifact overrides only the <code>processItem</code> method.</p>
+
+          <p>The <code>CallRecordWriter</code> artifact associates each call record with a bill and stores the bill in the database. This artifact overrides the <code>open</code>, <code>close</code>, <code>writeItems</code>, and <code>checkpointInfo</code> methods. The <code>writeItems</code> method looks like this:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public void writeItems(List&lt;Object&gt; callList) throws Exception {
+    
+    for (Object callObject : callList) {
+        CallRecord call = (CallRecord) callObject;
+        PhoneBill bill = em.find(PhoneBill.class, call.getFromNumber());
+        if (bill == null) {
+            /* No bill for this customer yet, create one */
+            bill = new PhoneBill(call.getFromNumber());
+            bill.addCall(call);
+            em.persist(bill);
+        } else {
+            /* Add call to existing bill */
+            bill.addCall(call);
+        }
+    }
+}</pre>
+        </div><a id="BCGGGAHB"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">55.9.1.4</span> The Phone Billing Chunk Step</h3>
+
+          <p>The second step is composed of the <code>BillReader</code>, <code>BillProcessor</code>, <code>BillWriter</code>, and <code>BillPartitionMapper</code> batch artifacts. This step gets the phone bills from the database, computes the tax and total amount due, and writes each bill to a text file. Since the processing of each bill is independent of the others, this step can be partitioned and run in more than one thread.</p>
+
+          <p>The <code>BillPartitionMapper</code> artifact specifies the number of partitions and the parameters for each partition. In this example, the parameters represent the range of items each partition should process. The artifact obtains the number of bills in the database to calculate these ranges. It provides a partition plan object that overrides the <code>getPartitions</code> and <code>getPartitionProperties</code> methods of the <code>PartitionPlan</code> interface. The <code>getPartitions</code> method looks like this:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+public Properties[] getPartitionProperties() {
+    /* Assign an (approximately) equal number of elements
+     * to each partition. */
+    long totalItems = getBillCount();
+    long partItems = (long) totalItems / getPartitions();
+    long remItems = totalItems % getPartitions();
+ 
+    /* Populate a Properties array. Each Properties element
+     * in the array corresponds to a partition. */
+    Properties[] props = new Properties[getPartitions()];
+
+    for (int i = 0; i &lt; getPartitions(); i++) {
+        props[i] = new Properties();
+        props[i].setProperty("firstItem", 
+                String.valueOf(i * partItems));
+        /* Last partition gets the remainder elements */
+        if (i == getPartitions() - 1) {
+            props[i].setProperty("numItems", 
+                    String.valueOf(partItems + remItems));
+        } else {
+            props[i].setProperty("numItems", 
+                    String.valueOf(partItems));
+    }
+    return props;
+}</pre>
+
+          <p>The <code>BillReader</code> artifact obtains the partition parameters as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Dependent
+@Named("BillReader")
+public class BillReader implements ItemReader {
+    @Inject    @BatchProperty(name = "firstItem")    private String firstItemValue;    @Inject    @BatchProperty(name = "numItems")    private String numItemsValue;
+    private ItemNumberCheckpoint checkpoint;    @PersistenceContext    private EntityManager em;    private Iterator iterator;
+
+    @Override
+    public void open(Serializable ckpt) throws Exception {
+        /* Get the range of items to work on in this partition */
+        long firstItem0 = Long.parseLong(firstItemValue);
+        long numItems0 = Long.parseLong(numItemsValue);
+ 
+        if (ckpt == null) {
+            /* Create a checkpoint object for this partition */
+            checkpoint = new ItemNumberCheckpoint();
+            checkpoint.setItemNumber(firstItem0);
+            checkpoint.setNumItems(numItems0);
+        } else {
+            checkpoint = (ItemNumberCheckpoint) ckpt;
+        }
+ 
+        /* Adjust range for this partition from the checkpoint */
+        long firstItem = checkpoint.getItemNumber();
+        long numItems = numItems0 - (firstItem - firstItem0);
+        ...
+    }
+    ...
+}</pre>
+
+          <p>This artifact also obtains an iterator to read items from the JPA entity manager:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">/* Obtain an iterator for the bills in this partition */
+String query = "SELECT b FROM PhoneBill b ORDER BY b.phoneNumber";
+Query q = em.createQuery(query).setFirstResult((int) firstItem)
+        .setMaxResults((int) numItems);
+iterator = q.getResultList().iterator();</pre>
+
+          <p>The <code>BillProcessor</code> artifact iterates over the list of call records in a bill and calculates the tax and total amount due for each bill.</p>
+
+          <p>The <code>BillWriter</code> artifact writes each bill to a plain text file.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3020"></a>
+
+          <h3 class="sect3"><span class="secnum">55.9.1.5</span> The JavaServer Faces Pages</h3>
+
+          <p>The <code>index.xhtml</code> page contains a text area that shows the log file of call records. The page provides a button for the user to submit the batch job and navigate to the next page:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;body&gt;
+    &lt;h1&gt;The Phone Billing Example Application&lt;/h1&gt;
+    &lt;h2&gt;Log file&lt;/h2&gt;
+    &lt;p&gt;The batch job analyzes the following log file:&lt;/p&gt;
+    &lt;textarea cols="90" rows="25" 
+              readonly="true"&gt;#{jsfBean.createAndShowLog()}&lt;/textarea&gt;
+    &lt;p&gt; &lt;/p&gt;
+    &lt;h:form&gt;
+        &lt;h:commandButton value="Start Batch Job" 
+                         action="#{jsfBean.startBatchJob()}" /&gt;
+    &lt;/h:form&gt;
+&lt;/body&gt;</pre>
+
+          <p>This page calls the methods of the managed bean to show the log file and submit the batch job.</p>
+
+          <p>The <code>jobstarted.xhtml</code> page provides a button to check the current status of the batch job and displays the bills when the job finishes:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;p&gt;Current Status of the Job: &lt;b&gt;#{jsfBean.jobStatus}&lt;/b&gt;&lt;/p&gt;
+&lt;h:dataTable var="_row" value="#{jsfBean.rowList}" 
+             border="1" rendered="#{jsfBean.completed}"&gt;
+    &lt;!-- ... show results from jsfBean.rowList ... --&gt;
+&lt;/h:dataTable&gt;
+&lt;!-- Render the check status button if the job has not finished --&gt;
+&lt;h:form&gt;
+    &lt;h:commandButton value="Check Status" 
+                     rendered="#{jsfBean.completed==false}"
+                     action="jobstarted" /&gt;
+&lt;/h:form&gt;</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3021"></a>
+
+          <h3 class="sect3"><span class="secnum">55.9.1.6</span> The Managed Bean</h3>
+
+          <p>The <code>JsfBean</code> managed bean submits the job to the batch runtime, checks on the status of the job, and reads the text files for each bill.</p>
+
+          <p>The <code>startBatchJob</code> method of the bean submits the job to the batch runtime:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">/* Submit the batch job to the batch runtime.
+ * JSF Navigation method (return the name of the next page) */
+public String startBatchJob() {
+    jobOperator = BatchRuntime.getJobOperator();
+    execID = jobOperator.start("phonebilling", null);
+    return "jobstarted";
+}</pre>
+
+          <p>The <code>getJobStatus</code> method of the bean checks the status of the job:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">/* Get the status of the job from the batch runtime */
+public String getJobStatus() {
+    return jobOperator.getJobExecution(execID).getBatchStatus().toString();
+}</pre>
+
+          <p>The <code>getRowList</code> method of the bean creates a list of bills to be displayed on the <code>jobstarted.xhtml</code> JSF page using a table.</p>
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref3022"></a>
+
+        <h2 class="sect2"><span class="secnum">55.9.2</span> Running the phonebilling Example Application</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>phonebilling</code> example application.</p>
+
+        <div class="sect3">
+          <a id="sthref3023"></a>
+
+          <h3 class="sect3"><span class="secnum">55.9.2.1</span> To Run the phonebilling Example Application Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the Open Project dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/batch</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>phonebilling</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>phonebilling</code> project and select <span class="gui-object-action">Run</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>phonebilling.war</code>, located in the <code>target/</code> directory; deploys it to the server; and launches a web browser window at the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/phonebilling/</pre>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref3024"></a>
+
+          <h3 class="sect3"><span class="secnum">55.9.2.2</span> To Run the phonebilling Example Application Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/batch/phonebilling/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+            </li>
+
+            <li>
+              <p>Open a web browser window at the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/phonebilling/</pre>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BCGHCHAJ"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">55.10</span> Further Information about Batch Processing</h1>
+
+      <p>For more information on batch processing in Java EE, see the Batch Applications for the Java Platform specification:</p>
+
+      <p><code><a href="../Text/batch-processing.xhtml#http%3A//www.jcp.org/en/jsr/detail%3Fid%3D352">http://www.jcp.org/en/jsr/detail?id=352</a></code></p>
+    </div>
+  </div>
+</body>
+</html>

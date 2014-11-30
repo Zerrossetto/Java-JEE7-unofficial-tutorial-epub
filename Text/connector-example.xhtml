@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GLODB"></a><a id="JEETT00109"></a>
+
+    <h1 class="chapter"><span class="secnum">53</span> <a id="sthref2891"></a><a id="sthref2892"></a><a id="sthref2893"></a><a id="sthref2894"></a><a id="sthref2895"></a>The Resource Adapter Examples</h1>
+
+    <p>This chapter describes two examples that demonstrate how to use resource adapters in Java EE applications and how to implement simple resource adapters. The <code>trading</code> example shows how to use a simple custom client interface to connect to an EIS from a web application. The resource adapter in this example implements the outbound contract and the custom client interface. The <code>traffic</code> example shows how to use a message-driven bean (MDB) to process traffic information updates from an EIS. The resource adapter in this example implements the inbound and work management contracts.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/connector-example.xhtml#CHDFHAID">The trading Example</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/connector-example.xhtml#CHDJEADB">The traffic Example</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="CHDFHAID"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">53.1</span> The trading Example</h1>
+
+      <p>The <code>trading</code> example demonstrates how to implement and use a simple outbound resource adapter that submits requests to a legacy EIS using a TCP socket. The example demonstrates the scenario in <a href="../Text/connector-example.xhtml#CHDHADIG">Figure 53-1</a> and consists of the following modules:</p>
+
+      <ul>
+        <li>
+          <p><code>trading-eis</code>: A Java SE program that simulates a legacy EIS</p>
+        </li>
+
+        <li>
+          <p><code>trading-rar</code>: The outbound resource adapter implementation</p>
+        </li>
+
+        <li>
+          <p><code>trading-war</code>: A web application that uses the resource adapter</p>
+        </li>
+
+        <li>
+          <p><code>trading-ear</code>: An enterprise archive that contains the resource adapter and the web application</p>
+        </li>
+      </ul>
+
+      <div class="figure">
+        <a id="CHDHADIG"></a>
+
+        <p class="titleinfigure">Figure 53-1 The trading Example</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 53-1 follows" longdesc="img_text/jeett_dt_054.htm" src="../Images/jeett_dt_054.png" style="line-height: 1.6em;" title="Description of Figure 53-1 follows" /></div>
+      </div>
+
+      <div class="figure">
+        Description of "Figure 53-1 The trading Example"<br />
+        <br />
+      </div>
+
+      <p>The <code>trading-eis</code> module is an auxiliary project that resembles a legacy stock trading execution platform. It contains a Java SE program that listens for trading requests in plain text on a TCP socket. The program replies to trading requests with a status value, a confirmation number, and the dollar amounts for the requested shares and fees. For example, a request-response pair would look like this:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&gt;&gt; BUY 1000 ZZZZ MARKET
+&lt;&lt; EXECUTED #1234567 TOTAL 50400.00 FEE 252.00</pre>
+
+      <p>The <code>trading-rar</code> module implements the outbound contract of the Java EE Connector Architecture to submit requests and obtain responses from the legacy stock trading execution platform. The <code>trading-rar</code> module provides and implements a custom client interface for Java EE applications to use. This interface is simpler than the Common Client Interface (CCI).</p>
+
+      <p>The <code>trading-war</code> module is a web application with a JavaServer Faces interface and a managed bean. This application enables clients to submit trades to the EIS using the resource adapter provided by the <code>trading-rar</code> module. The <code>trading-war</code> module uses the custom client interface provided by the resource adapter to obtain connections to the EIS.</p><a id="CHDFADJD"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">53.1.1</span> Using the Outbound Resource Adapter</h2>
+
+        <p>In most cases, Java EE application developers use outbound resource adapters developed by a third party. Outbound resource adapters either implement the Common Client Interface (CCI) or provide a custom interface for applications to interact with the EIS. Outbound resource adapters provide Java EE applications with the following elements:</p>
+
+        <ul>
+          <li>
+            <p>Connection factories</p>
+          </li>
+
+          <li>
+            <p>Connection handles</p>
+          </li>
+
+          <li>
+            <p>Other interfaces and objects specific to the EIS domain</p>
+          </li>
+        </ul>
+
+        <p>Java EE applications obtain an instance of the connection factory via resource injection and then use the factory object to obtain connection handles to the EIS. The connection handles enable the application to make requests and obtain information from the EIS.</p>
+
+        <p>The <code>trading-rar</code> module provides a custom client interface that consists of the classes listed in <a href="../Text/connector-example.xhtml#CHDCHJAC">Table 53-1</a>.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref2897"></a><a id="CHDCHJAC"></a>
+
+          <p class="titleintable">Table 53-1 Classes and Interfaces in the javaeetutorial.trading.rar.api Package</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="Describes the client interface provided by the trading-rar resource adapter." title="Classes and Interfaces in the javaeetutorial.trading.rar.api Package" width="100%">
+            <col width="32%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t2" valign="bottom">API Component</th>
+
+                <th align="left" id="r1c2-t2" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                  <p><code>TradeOrder</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t2 r1c2-t2">
+                  <p>Represents a trade order for the EIS</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                  <p><code>TradeResponse</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t2 r1c2-t2">
+                  <p>Represents a response from the EIS to a trade request</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                  <p><code>TradeConnection</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t2 r1c2-t2">
+                  <p>Represents a connection handle to the EIS</p>
+
+                  <p>Provides a method for applications to submit trades to the EIS</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                  <p><code>TradeConnectionFactory</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t2 r1c2-t2">
+                  <p>Enables applications to obtain connection handles to the EIS</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                  <p><code>TradeProcessingException</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t2 r1c2-t2">
+                  <p>Indicates that a problem occurred processing a trade request</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>The <code>ResourceAccessBean</code> managed bean in the <code>trading-war</code> module configures a connection factory for the <code>trading-rar</code> resource adapter by using the <code>@ConnectionFactoryDefinition</code> annotation as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named
+@SessionScoped
+@ConnectionFactoryDefinition(
+    name = "java:comp/env/eis/TradeConnectionFactory",
+    interfaceName = "javaeetutorial.trading.rar.api.TradeConnectionFactory",
+    resourceAdapter = "#trading-rar",
+    minPoolSize = 5,
+    transactionSupport = 
+            TransactionSupport.TransactionSupportLevel.NoTransaction
+)
+public class ResourceAccessBean implements Serializable { ... }</pre>
+
+        <p>The <code>name</code> parameter specifies the JNDI name for the connection factory. This example registers the connection factory in the <code>java:comp</code> scope. You can use the <code>ConnectionFactoryDefinition</code> annotation to specify a different scope, such as <code>java:global</code>, <code>java:app</code>, or <code>java:module</code>. The <code>AdministeredObjectDefinition</code> annotation also enables you to register administered connector objects in the JNDI namespace.</p>
+
+        <p>The <code>interfaceName</code> parameter specifies the interface implemented by the connection factory included in the resource adapter. In this example, this is a custom interface.</p>
+
+        <p>The <code>resourceAdapter</code> parameter specifies the name of the resource adapter that contains the connection factory implementation. The <code>#</code> prefix in <code>#trading-rar</code> indicates that <code>trading-rar</code> is an embedded resource adapter that is bundled in the same EAR as this web application.</p>
+
+        <div align="center">
+          <div class="inftblnote">
+            <br />
+
+            <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+              <tbody>
+                <tr>
+                  <td align="left">
+                    <p class="notep1">Note:</p>
+
+                    <p>You can also configure a connection factory for a previously deployed outbound resource adapter using the administration commands from your application server. However, this is a vendor-specific procedure.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+        </div>
+
+        <p>The managed bean obtains a connection factory object using resource injection as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">...
+public class ResourceAccessBean implements Serializable {
+    @Resource(lookup = "java:comp/env/eis/TradeConnectionFactory")
+    private TradeConnectionFactory connectionFactory;
+    ...
+}</pre>
+
+        <p>The managed bean uses the connection factory to obtain connection handles as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">TradeConnection connection = connectionFactory.getConnection();</pre>
+
+        <p>The resource adapter returns a connection handle associated with a physical connection to the EIS. Once a connection handle is available, the managed bean submits a trade and obtains the response as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">TradeOrder order = new TradeOrder();
+order.setNShares(1000);
+order.setTicker(TradeOrder.Ticker.YYYY);
+order.setOrderType(TradeOrder.OrderType.BUY);
+order.setOrderClass(TradeOrder.OrderClass.MARKET);
+...
+try {
+    TradeResponse response = connection.submitOrder(order);
+    ...
+} catch (TradeProcessingException ex) { ... }</pre>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2898"></a>
+
+        <h2 class="sect2"><span class="secnum">53.1.2</span> Implementing the Outbound Resource Adapter</h2>
+
+        <p>The <code>trading-rar</code> module implements the outbound contract and a custom client interface for the simple legacy stock trading platform EIS used in this example. The architecture of the outbound resource adapter is shown in <a href="../Text/connector-example.xhtml#CHDIGAJE">Figure 53-2</a>.</p>
+
+        <div class="figure">
+          <a id="CHDIGAJE"></a>
+
+          <p class="titleinfigure">Figure 53-2 Architecture of the trading Example</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 53-2 follows" longdesc="img_text/jeett_dt_055.htm" src="../Images/jeett_dt_055.png" style="line-height: 1.6em;" title="Description of Figure 53-2 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 53-2 Architecture of the trading Example"<br />
+          <br />
+        </div>
+
+        <p>The <code>trading-rar</code> module implements the interfaces listed in <a href="../Text/connector-example.xhtml#CHDIBBIC">Table 53-2</a>.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref2900"></a><a id="CHDIBBIC"></a>
+
+          <p class="titleintable">Table 53-2 Interfaces Implemented in the trading-rar Module</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="Lists the interfaces implemented in the tradeconnector module." title="Interfaces Implemented in the trading-rar Module" width="100%">
+            <col width="26%" />
+            <col width="32%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t4" valign="bottom">Package</th>
+
+                <th align="left" id="r1c2-t4" valign="bottom">Interface</th>
+
+                <th align="left" id="r1c3-t4" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t4" id="r2c1-t4">
+                  <p><code>javax.resource.spi</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t4 r1c2-t4">
+                  <p><code>ResourceAdapter</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t4 r1c3-t4">
+                  <p>Defines the lifecycle methods of the resource adapter</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t4" id="r3c1-t4">
+                  <p><code>javax.resource.spi</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t4 r1c2-t4">
+                  <p><code>ManagedConnectionFactory</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t4 r1c3-t4">
+                  <p>Defines a connection factory that the connection manager from the application server uses to obtain physical connections to the EIS</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t4" id="r4c1-t4">
+                  <p><code>javax.resource.spi</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t4 r1c2-t4">
+                  <p><code>ManagedConnection</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t4 r1c3-t4">
+                  <p>Defines a physical connection to the EIS that can be managed by the connection manager</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t4" id="r5c1-t4">
+                  <p><code>trading.rar.api</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t4 r1c2-t4">
+                  <p><code>TradeConnectionFactory</code></p>
+                </td>
+
+                <td align="left" headers="r5c1-t4 r1c3-t4">
+                  <p>Defines a connection factory that applications use to obtain connection handles</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t4" id="r6c1-t4">
+                  <p><code>trading.rar.api</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t4 r1c2-t4">
+                  <p><code>TradeConnection</code></p>
+                </td>
+
+                <td align="left" headers="r6c1-t4 r1c3-t4">
+                  <p>Defines a connection handle that applications use to interact with the EIS</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>When the <code>trading-ear</code> archive is deployed and a connection pool resource is configured as described in <a href="../Text/connector-example.xhtml#CHDFADJD">Using the Outbound Resource Adapter</a>, the application server creates <code>TradeConnectionFactory</code> objects that applications can obtain using resource injection. The <code>TradeConnectionFactory</code> implementation delegates creating connections to the connection manager provided by the application server.</p>
+
+        <p>The connection manager uses the <code>ManagedConnectionFactory</code> implementation to obtain physical connections to the EIS and maintains a pool of active physical connections. When an application requests a connection handle, the connection manager associates a connection from the pool with a new connection handle that the application can use. Connection pooling improves application performance and simplifies resource adapter development.</p>
+
+        <p>For more details, see the code and the comments in the <code>trading-rar</code> module.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2901"></a>
+
+        <h2 class="sect2"><span class="secnum">53.1.3</span> Running the trading Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>trading</code> example.</p>
+
+        <div class="sect3">
+          <a id="sthref2902"></a>
+
+          <h3 class="sect3"><span class="secnum">53.1.3.1</span> To Run the trading Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="bold">File</span> menu, choose <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the Open Project dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/connectors</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>trading</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="bold">Projects</span> tab, expand the <code>trading</code> node.</p>
+            </li>
+
+            <li>
+              <p>Right-click the <code>trading-eis</code> module and select <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>Right-click the <code>trading-eis</code> project and select <span class="bold">Run</span>.</p>
+
+              <p>The messages from the EIS appear in the <span class="gui-object-action">Output</span> tab:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Trade execution server listening on port 4004.</pre>
+            </li>
+
+            <li>
+              <p>Right-click the <code>trading-ear</code> project and select <span class="bold">Build</span>.</p>
+
+              <p>This command packages the resource adapter and the web application in an EAR file and deploys it to GlassFish Server.</p>
+            </li>
+
+            <li>
+              <p>Open the following URL in a web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/trading/</pre>
+
+              <p>The web interface enables you to connect to the EIS and submit trades. The server log shows the requests from the web application and the call sequence that provides connection handles from the resource adapter.</p>
+            </li>
+
+            <li>
+              <p>Before undeploying the <code>trading-ear</code> application, close the <code>trading-eis</code> application from the status bar.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref2903"></a>
+
+          <h3 class="sect3"><span class="secnum">53.1.3.2</span> To Run the trading Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/connectors/trading/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the resource adapter and the web application into an EAR archive and deploys it to GlassFish Server.</p>
+            </li>
+
+            <li>
+              <p>In the same terminal window, go to the <code>trading-eis</code> directory:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd trading-eis</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to run the trade execution platform:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn exec:java</pre>
+
+              <p>The messages from the EIS appear in the terminal window:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Trade execution server listening on port 4004.</pre>
+            </li>
+
+            <li>
+              <p>Open the following URL in a web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/trading/</pre>
+
+              <p>The web interface enables you to connect to the EIS and submit trades. The server log shows the requests from the web application and the call sequence that provides connection handles from the resource adapter.</p>
+            </li>
+
+            <li>
+              <p>Before undeploying the <code>trading-ear</code> application, press <span class="bold">Ctrl+C</span> on the terminal window to close the <code>trading-eis</code> application.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="CHDJEADB"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">53.2</span> The traffic Example</h1>
+
+      <p>The <code>traffic</code> example demonstrates how to implement and use a simple inbound resource adapter that receives data from a legacy EIS using a TCP socket.</p>
+
+      <p>The example is in the <span class="italic">tut-install</span><code>/examples/connectors/traffic</code> directory. See <a href="../Text/usingexamples.xhtml#GFIUD">Chapter 2, "Using the Tutorial Examples,"</a> for basic information on building and running sample applications.</p>
+
+      <p>The example demonstrates the scenario in <a href="../Text/connector-example.xhtml#CHDGFGHB">Figure 53-3</a> and consists of the following modules:</p>
+
+      <ul>
+        <li>
+          <p><code>traffic-eis</code>: A Java SE program that simulates an EIS</p>
+        </li>
+
+        <li>
+          <p><code>traffic-rar</code>: The inbound resource adapter implementation</p>
+        </li>
+
+        <li>
+          <p><code>traffic-ejb</code>: A message-driven bean that is the endpoint for incoming messages</p>
+        </li>
+
+        <li>
+          <p><code>traffic-war</code>: A web application that displays information from the message-driven bean</p>
+        </li>
+
+        <li>
+          <p><code>traffic-ear</code>: An enterprise archive that contains the resource adapter, the message-driven bean, and the web application</p>
+        </li>
+      </ul>
+
+      <div class="figure">
+        <a id="CHDGFGHB"></a>
+
+        <p class="titleinfigure">Figure 53-3 The traffic Example</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 53-3 follows" longdesc="img_text/jeett_dt_056.htm" src="../Images/jeett_dt_056.png" style="line-height: 1.6em;" title="Description of Figure 53-3 follows" /></div>
+      </div>
+
+      <div class="figure">
+        Description of "Figure 53-3 The traffic Example"<br />
+        <br />
+      </div>
+
+      <p>The <code>traffic-eis</code> module is an auxiliary project that resembles a legacy traffic information system. It contains a Java SE program that sends traffic status updates for several cities to any subscribed client. The program sends the updates in JSON format over a TCP socket. For example, a traffic update looks like this:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">{"report":[
+    {"city":"City1", "access":"AccessA", "status":"GOOD"},
+    {"city":"City1", "access":"AccessB", "status":"CONGESTED"},
+    ...
+    {"city":"City5", "access":"AccessE", "status":"SLOW"}
+ ]}</pre>
+
+      <p>The <code>traffic-rar</code> module implements the inbound contract of the Java EE Connector Architecture. This module subscribes to the traffic information system using the TCP port indicated by the configuration provided by the MDB and invokes the methods of the MDB to process traffic information updates.</p>
+
+      <p>The <code>traffic-ejb</code> module contains a message-driven bean that activates the resource adapter with a configuration parameter (the TCP port to subscribe to the traffic information system). The MDB contains a method to process the traffic information updates. This method filters the updates for a particular city and publishes the results to a Java Message Service (JMS) topic.</p>
+
+      <p>The <code>traffic-war</code> module contains a message-driven bean that receives filtered traffic information updates from the JMS topic asynchronously and sends them to the clients using a WebSocket endpoint.</p>
+
+      <div class="sect2">
+        <a id="sthref2905"></a>
+
+        <h2 class="sect2"><span class="secnum">53.2.1</span> Using the Inbound Resource Adapter</h2>
+
+        <p>In most cases, Java EE application developers use inbound resource adapters developed by a third party. To use an inbound resource adapter, a Java EE application includes a message-driven bean with the following characteristics.</p>
+
+        <ul>
+          <li>
+            <p>The MDB implements the business interface defined by the resource adapter.</p>
+          </li>
+
+          <li>
+            <p>The MDB specifies configuration parameters to activate the resource adapter.</p>
+          </li>
+        </ul>
+
+        <p>The business interface defined by the resource adapter is not specified in the Java EE Connector Architecture; it is specific to the EIS.</p>
+
+        <p>The MDB in this example is defined as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@MessageDriven(
+    activationConfig = {
+      @ActivationConfigProperty(propertyName = "port", 
+                                propertyValue = "4008")
+    }
+)
+public class TrafficMdb implements TrafficListener { ... }</pre>
+
+        <p>The <code>TrafficListener</code> interface is defined in the API package of the resource adapter. The resource adapter requires the MDB to provide the <code>port</code> property.</p>
+
+        <p>When the MDB is deployed, it activates the <code>traffic-rar</code> resource adapter, which invokes the methods of the MDB to process traffic information updates. Then the MDB filters the updates for a particular city and publishes the results to a JMS topic.</p>
+
+        <p>In this particular example, the <code>TrafficListener</code> interface is empty. In addition to this interface, the resource adapter provides the <code>TrafficCommand</code> annotation and uses reflection to discover which methods in the MDB are decorated with this annotation:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@MessageDriven(...)
+public class TrafficMdb implements TrafficListener {
+
+    @TrafficCommand(name="report", info="Process report")
+    public void processReport(String jsonReport) { ... }
+    ...
+}</pre>
+
+        <p>This approach enables you to adapt the MDB to support new features in the EIS without having to modify the <code>TrafficListener</code> interface or the resource adapter module.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2906"></a>
+
+        <h2 class="sect2"><span class="secnum">53.2.2</span> Implementing the Inbound Resource Adapter</h2>
+
+        <p>The <code>traffic-rar</code> module implements the inbound resource adapter contract from the Java EE Connector Architecture for the simple traffic information system (EIS) used in this example. The architecture of the inbound resource adapter is shown in <a href="../Text/connector-example.xhtml#CHDHADDC">Figure 53-4</a>.</p>
+
+        <div class="figure">
+          <a id="CHDHADDC"></a>
+
+          <p class="titleinfigure">Figure 53-4 Architecture of the traffic Example</p>
+
+          <div style="text-align: center;"><img alt="Description of Figure 53-4 follows" longdesc="img_text/jeett_dt_057.htm" src="../Images/jeett_dt_057.png" style="line-height: 1.6em;" title="Description of Figure 53-4 follows" /></div>
+        </div>
+
+        <div class="figure">
+          Description of "Figure 53-4 Architecture of the traffic Example"<br />
+          <br />
+        </div>
+
+        <p>The <code>traffic-rar</code> module implements the interfaces listed in <a href="../Text/connector-example.xhtml#CHDEDEAF">Table 53-3</a>.</p>
+
+        <div class="tblhruleformal">
+          <a id="sthref2908"></a><a id="CHDEDEAF"></a>
+
+          <p class="titleintable">Table 53-3 Interfaces Implemented in the traffic-rar Module</p>
+
+          <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="Lists the interfaces implemented in the tradeconnector module." title="Interfaces Implemented in the traffic-rar Module" width="100%">
+            <col width="26%" />
+            <col width="23%" />
+            <col width="*" />
+
+            <thead>
+              <tr align="left" valign="top">
+                <th align="left" id="r1c1-t5" valign="bottom">Package</th>
+
+                <th align="left" id="r1c2-t5" valign="bottom">Interface</th>
+
+                <th align="left" id="r1c3-t5" valign="bottom">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r2c1-t5">
+                  <p><code>javax.resource.spi</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t5 r1c2-t5">
+                  <p><code>ResourceAdapter</code></p>
+                </td>
+
+                <td align="left" headers="r2c1-t5 r1c3-t5">
+                  <p>Defines the lifecycle methods of the resource adapter.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r3c1-t5">
+                  <p><code>javax.resource.spi</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t5 r1c2-t5">
+                  <p><code>ActivationSpec</code></p>
+                </td>
+
+                <td align="left" headers="r3c1-t5 r1c3-t5">
+                  <p>Defines the configuration parameters that the MDB provides to activate the inbound resource adapter.</p>
+                </td>
+              </tr>
+
+              <tr align="left" valign="top">
+                <td align="left" headers="r1c1-t5" id="r4c1-t5">
+                  <p><code>javax.resource.spi</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t5 r1c2-t5">
+                  <p><code>Work</code></p>
+                </td>
+
+                <td align="left" headers="r4c1-t5 r1c3-t5">
+                  <p>The traffic service subscriber implements this interface from the work management contract to wait for traffic updates on a separate thread.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+
+        <p>When an MDB activates the inbound resource adapter, the container invokes the <code>endpointActivation</code> method in the <code>TrafficResourceAdapter</code> class:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Connector(...)
+public class TrafficResourceAdapter implements ResourceAdapter, Serializable {
+    ...
+    @Override
+    public void endpointActivation(MessageEndpointFactory endpointFactory, 
+                                   ActivationSpec spec) 
+                                   throws ResourceException {
+        Class endpointClass = endpointFactory.getEndpointClass();
+        /* this method is called from a new thread in the example: 
+        MessageEndpoint endpoint = endpointFactory.createEndpoint(null); */
+    }
+}</pre>
+
+        <p>The <code>getEndpointClass</code> method returns the <code>Class</code> type of the MDB performing the activation, which enables the resource adapter to use reflection to find methods annotated with <code>@TrafficCommand</code> in the MDB.</p>
+
+        <p>The <code>createEndpoint</code> method returns an instance of the MDB. The resource adapter uses this instance to invoke the methods of the MDB when it receives requests from the EIS.</p>
+
+        <p>After obtaining the message endpoint instance (MDB), the resource adapter uses the work management contract to create the traffic service subscriber thread that receives traffic updates from the EIS. The resource adapter obtains the <code>WorkManager</code> instance from the bootstrap context as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">WorkManager workManager;
+...
+@Override
+public void start(BootstrapContext ctx) ... {
+    workManager = ctx.getWorkManager();
+}</pre>
+
+        <p>The resource adapter schedules the traffic service subscriber thread using the work manager:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">tSubscriber = new TrafficServiceSubscriber(tSpec, endpoint);
+workManager.scheduleWork(tSubscriber);</pre>
+
+        <p>The <code>TrafficServiceSubscriber</code> class implements the <code>javax.resource.spi.Work</code> interface from the work management contract.</p>
+
+        <p>The traffic service subscriber thread uses reflection to invoke the methods in the MDB:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private String callMdb(MessageEndpoint mdb, Method command, 
+                       String... params) ... {
+    String resp;
+    /* this code contains proper exception handling in the sources */
+    mdb.beforeDelivery(command);
+    Object ret = command.invoke(mdb, (Object[]) params);
+    resp = (String) ret;
+    mdb.afterDelivery();
+    return resp;
+}</pre>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span style="font-family: Verdana, Arial, Helvetica, sans-serif; white-space: normal;">For more details, see the code and the comments in the&nbsp;</span><span style="line-height: 1.6em;">traffic-rar</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; white-space: normal; line-height: 1.6em;">&nbsp;module.&nbsp;</span></pre>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref2909"></a>
+
+        <h2 class="sect2"><span class="secnum">53.2.3</span> Running the traffic Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>traffic</code> example.</p>
+
+        <div class="sect3">
+          <a id="sthref2910"></a>
+
+          <h3 class="sect3"><span class="secnum">53.2.3.1</span> To Run the traffic Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="bold">File</span> menu, choose <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the Open Project dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/connectors</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>traffic</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="bold">Projects</span> tab, expand the <code>traffic</code> node.</p>
+            </li>
+
+            <li>
+              <p>Right-click the <code>traffic-eis</code> module and select <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>Right-click the <code>traffic-eis</code> project and select <span class="bold">Run</span>.</p>
+
+              <p>The messages from the EIS appear on the Output tab:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Traffic EIS accepting connections on port 4008</pre>
+            </li>
+
+            <li>
+              <p>In the <span class="bold">Projects</span> tab, right-click the <code>traffic</code> project and select <span class="bold">Clean and Build</span>.</p>
+
+              <p>This command builds and packages the resource adapter, the MDB, and the web application into an EAR archive and deploys it. The server log shows the call sequence that activates the resource adapter and the filtered traffic updates for City1.</p>
+            </li>
+
+            <li>
+              <p>Open the following URL in a web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/traffic/</pre>
+
+              <p>The web interface shows filtered traffic updates for City1 every few seconds.</p>
+            </li>
+
+            <li>
+              <p>After undeploying the <code>traffic-ear</code> application, close the <code>traffic-eis</code> application from the status bar.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref2911"></a>
+
+          <h3 class="sect3"><span class="secnum">53.2.3.2</span> To Run the traffic Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/connectors/traffic/traffic-eis/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command in the terminal window:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the traffic EIS.</p>
+            </li>
+
+            <li>
+              <p>Enter the following command in the terminal window:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn exec:java</pre>
+
+              <p>The messages from the EIS appear in the terminal window:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Traffic EIS accepting connections on port 4008</pre>
+
+              <p>Leave this terminal window open.</p>
+            </li>
+
+            <li>
+              <p>Open a new terminal window and go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/connectors/traffic/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the resource adapter, the MDB, and the web application into an EAR archive and deploys it. The server log shows the call sequence that activates the resource adapter and the filtered traffic updates for City1.</p>
+            </li>
+
+            <li>
+              <p>Open the following URL in a web browser:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/traffic/</pre>
+
+              <p>The web interface shows the filtered traffic updates for City1 every few seconds.</p>
+            </li>
+
+            <li>
+              <p>After undeploying the <code>traffic-ear</code> application, press <span class="bold">Ctrl+C</span> in the first terminal window to close the <code>traffic-eis</code> application.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

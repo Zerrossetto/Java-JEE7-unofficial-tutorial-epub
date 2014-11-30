@@ -1,0 +1,1302 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GJJXE"></a><a id="JEETT00084"></a>
+
+    <h1 class="chapter"><span class="secnum">31</span> <a id="sthref1581"></a>JAX-RS: Advanced Topics and an Example</h1>
+
+    <p>The Java API for RESTful Web Services (JAX-RS, defined in JSR 339) is designed to make it easy to develop applications that use the REST architecture. This chapter describes advanced features of JAX-RS. If you are new to JAX-RS, see <a href="../Text/jaxrs.xhtml#GIEPU">Chapter 29, "Building RESTful Web Services with JAX-RS"</a> before you proceed with this chapter.</p>
+
+    <p>JAX-RS is integrated with Contexts and Dependency Injection for Java EE (CDI), Enterprise JavaBeans (EJB) technology, and Java Servlet technology.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/jaxrs-advanced.xhtml#GKKRB">Annotations for Field and Bean Properties of Resource Classes</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jaxrs-advanced.xhtml#BABCJEDF">Validating Resource Data with Bean Validation</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jaxrs-advanced.xhtml#GKNAV">Subresources and Runtime Resource Resolution</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jaxrs-advanced.xhtml#GKNCY">Integrating JAX-RS with EJB Technology and CDI</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jaxrs-advanced.xhtml#GKQDA">Conditional HTTP Requests</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jaxrs-advanced.xhtml#GKQBQ">Runtime Content Negotiation</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jaxrs-advanced.xhtml#GKKNJ">Using JAX-RS with JAXB</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/jaxrs-advanced.xhtml#GKOIB">The customer Example Application</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GKKRB"></a><a id="JEETT00431"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">31.1</span> <a id="sthref1582"></a><a id="sthref1583"></a><a id="sthref1584"></a><a id="sthref1585"></a><a id="sthref1586"></a><a id="sthref1587"></a><a id="sthref1588"></a><a id="sthref1589"></a><a id="sthref1590"></a><a id="sthref1591"></a><a id="sthref1592"></a><a id="sthref1593"></a>Annotations for Field and Bean Properties of Resource Classes</h1>
+
+      <p>JAX-RS annotations for resource classes let you extract specific parts or values from a Uniform Resource Identifier (URI) or request header.</p>
+
+      <p>JAX-RS provides the annotations listed in <a href="../Text/jaxrs-advanced.xhtml#GKOBO">Table 31-1</a>.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref1594"></a><a id="GKOBO"></a>
+
+        <p class="titleintable">Table 31-1 Advanced JAX-RS Annotations</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes JAX-RS annotations for.resource classes." title="Advanced JAX-RS Annotations" width="100%">
+          <col width="22%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t2" valign="bottom">Annotation</th>
+
+              <th align="left" id="r1c2-t2" valign="bottom">Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                <p><code>@Context</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c2-t2">
+                <p>Injects information into a class field, bean property, or method parameter</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                <p><code>@CookieParam</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c2-t2">
+                <p>Extracts information from cookies declared in the cookie request header</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                <p><code>@FormParam</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c2-t2">
+                <p>Extracts information from a request representation whose content type is <code>application/x-www-form-urlencoded</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                <p><code>@HeaderParam</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c2-t2">
+                <p>Extracts the value of a header</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                <p><code>@MatrixParam</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c2-t2">
+                <p>Extracts the value of a URI matrix parameter</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r7c1-t2">
+                <p><code>@PathParam</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c2-t2">
+                <p>Extracts the value of a URI template parameter</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r8c1-t2">
+                <p><code>@QueryParam</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c2-t2">
+                <p>Extracts the value of a URI query parameter</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div><a id="GKKYA"></a><a id="JEETT01061"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.1.1</span> <a id="sthref1595"></a><a id="sthref1596"></a><a id="sthref1597"></a>Extracting Path Parameters</h2>
+
+        <p>URI path templates are URIs with variables embedded within the URI syntax. The <code>@PathParam</code> annotation lets you use variable URI path fragments when you call a method.</p>
+
+        <p>The following code snippet shows how to extract the last name of an employee when the employee's email address is provided:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/employees/{firstname}.{lastname}@{domain}.com")
+public class EmpResource {
+
+    @GET
+    @Produces("text/xml")
+    public String getEmployeelastname(@PathParam("lastname") String lastName) {
+      ...
+    }
+}</pre>
+
+        <p>In this example, the <code>@Path</code> annotation defines the URI variables (or path parameters) <code>{firstname}</code>, <code>{lastname}</code>, and <code>{domain}</code>. The <code>@PathParam</code> in the method parameter of the request method extracts the last name from the email address.</p>
+
+        <p>If your HTTP request is <code>GET</code> <code>/employees/john.doe@example.com</code>, the value "<code>doe</code>" is injected into <code>{lastname}</code>.</p>
+
+        <p>You can specify several path parameters in one URI.</p>
+
+        <p>You can declare a regular expression with a URI variable. For example, if it is required that the last name must consist only of lowercase and uppercase characters, you can declare the following regular expression:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/employees/{firstname}.{lastname[a-zA-Z]*}@{domain}.com")</pre>
+
+        <p>If the last name does not match the regular expression, a 404 response is returned.</p>
+      </div><a id="GKKXJ"></a><a id="JEETT01062"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.1.2</span> <a id="sthref1598"></a><a id="sthref1599"></a><a id="sthref1600"></a>Extracting Query Parameters</h2>
+
+        <p>Use the <code>@QueryParam</code> annotation to extract query parameters from the query component of the request URI.</p>
+
+        <p>For instance, to query all employees who have joined within a specific range of years, use a method signature like the following:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/employees/")
+@GET
+public Response getEmployees(
+        @DefaultValue("2003") @QueryParam("minyear") int minyear,
+        @DefaultValue("2013") @QueryParam("maxyear") int maxyear)
+    {...}</pre>
+
+        <p>This code snippet defines two query parameters, <code>minyear</code> and <code>maxyear</code>. The following HTTP request would query for all employees who have joined between 2003 and 2013:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">GET /employees?maxyear=2013minyear=2003</pre>
+
+        <p>The <code>@DefaultValue</code> annotation defines a default value, which is to be used if no values are provided for the query parameters. By default, JAX-RS assigns a null value for <code>Object</code> values and zero for primitive data types. You can use the <code>@DefaultValue</code> annotation to eliminate null or zero values and define your own default values for a parameter.</p>
+      </div><a id="GKKYC"></a><a id="JEETT01063"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.1.3</span> <a id="sthref1601"></a><a id="sthref1602"></a><a id="sthref1603"></a>Extracting Form Data</h2>
+
+        <p>Use the <code>@FormParam</code> annotation to extract form parameters from HTML forms. For example, the following form accepts the name, address, and manager's name of an employee:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;form action="http://example.com/employees/" method="post"&gt;
+  &lt;p&gt;
+    &lt;fieldset&gt;
+      Employee name: &lt;INPUT type="text" name="empname" tabindex="1"&gt;  
+      Employee address: &lt;INPUT type="text" name="empaddress" tabindex="2"&gt; 
+      Manager name: &lt;INPUT type="text" name="managername" tabindex="3"&gt; 
+    &lt;/fieldset&gt;
+  &lt;/p&gt;
+&lt;/form&gt;</pre>
+
+        <p>Use the following code snippet to extract the manager name from this HTML form:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@POST
+@Consumes("application/x-www-form-urlencoded")
+public void post(@FormParam("managername") String managername) {
+    // Store the value
+    ...
+}</pre>
+
+        <p>To obtain a map of form parameter names to values, use a code snippet like the following:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@POST
+@Consumes("application/x-www-form-urlencoded")
+public void post(MultivaluedMap&lt;String, String&gt; formParams) {
+    // Store the message
+}</pre>
+      </div><a id="GKLCQ"></a><a id="JEETT01064"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.1.4</span> <a id="sthref1604"></a>Extracting the Java Type of a Request or Response</h2>
+
+        <p>The <code>javax.ws.rs.core.Context</code> annotation retrieves the Java types related to a request or response.</p>
+
+        <p>The <code>javax.ws.rs.core.UriInfo</code> interface provides information about the components of a request URI. The following code snippet shows how to obtain a map of query and path parameter names to values:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GET
+public String getParams(@Context UriInfo ui) {
+    MultivaluedMap&lt;String, String&gt; queryParams = ui.getQueryParameters();
+    MultivaluedMap&lt;String, String&gt; pathParams = ui.getPathParameters();
+}</pre>
+
+        <p>The <code>javax.ws.rs.core.HttpHeaders</code> interface provides information about request headers and cookies. The following code snippet shows how to obtain a map of header and cookie parameter names to values:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GET
+public String getHeaders(@Context HttpHeaders hh) {
+    MultivaluedMap&lt;String, String&gt; headerParams = hh.getRequestHeaders();
+    MultivaluedMap&lt;String, Cookie&gt; pathParams = hh.getCookies();
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABCJEDF"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">31.2</span> Validating Resource Data with Bean Validation</h1>
+
+      <p>JAX-RS supports the Bean Validation to verify JAX-RS resource classes. This support consists of:</p>
+
+      <ul>
+        <li>
+          <p>Adding constraint annotations to resource method parameters</p>
+        </li>
+
+        <li>
+          <p>Ensuring entity data is valid when the entity is passed in as a parameter</p>
+        </li>
+      </ul>
+
+      <div class="sect2">
+        <a id="sthref1605"></a>
+
+        <h2 class="sect2"><span class="secnum">31.2.1</span> Using Constraint Annotations on Resource Methods</h2>
+
+        <p>Bean Validation constraint annotations may be applied to parameters for a resource. The server will validate the parameters and either pass or throw a <code>javax.validation.ValidationException</code>.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@POST
+@Path("/createUser")
+@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+public void createUser(@NotNull @FormParam("username") String username,
+                       @NotNull @FormParam("firstName") String firstName,
+                       @NotNull @FormParam("lastName") String lastName,
+                       @Email @FormParam("email") String email) {
+    ...
+}</pre>
+
+        <p>In the preceding example, the built-in constraint <code>@NotNull</code> is applied to the <code>username</code>, <code>firstName</code>, and <code>lastName</code> form fields. The user-defined <code>@Email</code> constraint validates that the email address supplied by the <code>email</code> form field is correctly formatted.</p>
+
+        <p>The constraints may also be applied to fields within a resource class.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/createUser")
+public class CreateUserResource {
+  @NotNull
+  @FormParam("username")
+  private String username;
+
+  @NotNull
+  @FormParam("firstName")
+  private String firstName;
+
+  @NotNull
+  @FormParam("lastName")
+  private String lastName;
+
+  @Email
+  @FormParam("email")
+  private String email;
+
+  ...
+}</pre>
+
+        <p>In the preceding example, the same constraints that were applied to the method parameters in the previous example are applied to the class fields. The behavior is the same in both examples.</p>
+
+        <p>Constraints may also be applied to a resource class's JavaBeans properties by adding the constraint annotations to the getter method.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/createuser")
+public class CreateUserResource {
+  private String username;
+
+  @FormParam("username")
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  @NotNull
+  public String getUsername() {
+    return username;
+  }
+  ...
+}</pre>
+
+        <p>Constraints may also be applied at the resource class level. In the following example, <code>@PhoneRequired</code> is a user-defined constraint that ensures that a user enters at least one phone number. That is, either <code>homePhone</code> or <code>mobilePhone</code> can be null, but not both.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/createUser")
+@PhoneRequired
+public class CreateUserResource {
+  @FormParam("homePhone")
+  private Phone homePhone;
+
+  @FormParam("mobilePhone")
+  private Phone mobilePhone;
+  ...
+}</pre>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1606"></a>
+
+        <h2 class="sect2"><span class="secnum">31.2.2</span> Validating Entity Data</h2>
+
+        <p>Classes that contain validation constraint annotations may be used in method parameters in a resource class. To validate these entity classes, use the <code>@Valid</code> annotation on the method parameter. For example, the following class is a user-defined class containing both standard and user-defined validation constraints.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PhoneRequired
+public class User {
+  @NotNull
+  private String username;
+
+  private Phone homePhone;
+
+  private Phone mobilePhone;
+  ...
+}</pre>
+
+        <p>This entity class is used as a parameter to a resource method.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/createUser")
+public class CreateUserResource {
+  ...
+  @POST
+  @Consumers(MediaType.APPLICATION_XML)
+  public void createUser(@Valid User user) {
+    ...
+  }
+  ...
+}</pre>
+
+        <p>The <code>@Valid</code> annotation ensures that the entity class is validated at runtime. Additional user-defined constraints can also trigger validation of an entity.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/createUser")
+public class CreateUserResource {
+  ...
+  @POST
+  @Consumers(MediaType.APPLICATION_XML)
+  public void createUser(@ActiveUser User user) {
+    ...
+  }
+  ...
+}</pre>
+
+        <p>In the preceding example, the user-defined <code>@ActiveUser</code> constraint is applied to the <code>User</code> class in addition to the <code>@PhoneRequired</code> and <code>@NotNull</code> constraints defined within the entity class.</p>
+
+        <p>If a resource method returns an entity class, validation may be triggered by applying the <code>@Valid</code> or any other user-defined constraint annotation to the resource method.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/getUser")
+public class GetUserResource {
+  ...
+  @GET
+  @Path("{username}")
+  @Produces(MediaType.APPLICATION_XML)
+  @ActiveUser
+  @Valid
+  public User getUser(@PathParam("username") String username) {
+    // find the User
+    return user;
+  }
+  ...
+}</pre>
+
+        <p>As in the previous example, the <code>@ActiveUser</code> constraint is applied to the returned entity class as well as the <code>@PhoneRequired</code> and <code>@NotNull</code> constraints defined within the entity class.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1607"></a>
+
+        <h2 class="sect2"><span class="secnum">31.2.3</span> Validation Exception Handling and Response Codes</h2>
+
+        <p>If a <code>javax.validation.ValidationException</code> or any subclass of <code>ValidationException</code> except <code>ConstraintValidationException</code> is thrown, the JAX-RS runtime will respond to the client request with a 500 (Internal Server Error) HTTP status code.</p>
+
+        <p>If a <code>ConstraintValidationException</code> is thrown, the JAX-RS runtime will respond to the client with one of the following HTTP status codes:</p>
+
+        <ul>
+          <li>
+            <p>500 (Internal Server Error) if the exception was thrown while validating a method return type</p>
+          </li>
+
+          <li>
+            <p>400 (Bad Request) in all other cases</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKNAV"></a><a id="JEETT00432"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">31.3</span> <a id="sthref1608"></a><a id="sthref1609"></a><a id="sthref1610"></a><a id="sthref1611"></a>Subresources and Runtime Resource Resolution</h1>
+
+      <p>You can use a resource class to process only a part of the URI request. A root resource can then implement subresources that can process the remainder of the URI path.</p>
+
+      <p>A resource class method that is annotated with <code>@Path</code> is either a subresource method or a subresource locator.</p>
+
+      <ul>
+        <li>
+          <p><a id="sthref1612"></a>A subresource method is used to handle requests on a subresource of the corresponding resource.</p>
+        </li>
+
+        <li>
+          <p><a id="sthref1613"></a>A subresource locator is used to locate subresources of the corresponding resource.</p>
+        </li>
+      </ul><a id="GKLAG"></a><a id="JEETT01065"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.3.1</span> <a id="sthref1614"></a>Subresource Methods</h2>
+
+        <p>A <span class="glossaryterm">subresource method</span> handles an HTTP request directly. The method must be annotated with a request method designator, such as <code>@GET</code> or <code>@POST</code>, in addition to <code>@Path</code>. The method is invoked for request URIs that match a URI template created by concatenating the URI template of the resource class with the URI template of the method.</p>
+
+        <p>The following code snippet shows how a subresource method can be used to extract the last name of an employee when the employee's email address is provided:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/employeeinfo")
+public class EmployeeInfo {
+
+    public employeeinfo() {}
+
+    @GET
+    @Path("/employees/{firstname}.{lastname}@{domain}.com")
+    @Produces("text/xml")
+    public String getEmployeeLastName(@PathParam("lastname") String lastName) {
+       ...
+    }
+}</pre>
+
+        <p>The <code>getEmployeeLastName</code> method returns <code>doe</code> for the following <code>GET</code> request:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">GET /employeeinfo/employees/john.doe@example.com</pre>
+      </div><a id="GKRHR"></a><a id="JEETT01066"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.3.2</span> <a id="sthref1615"></a>Subresource Locators</h2>
+
+        <p>A <span class="glossaryterm">subresource locator</span> returns an object that will handle an HTTP request. The method must not be annotated with a request method designator. You must declare a subresource locator within a subresource class, and only subresource locators are used for runtime resource resolution.</p>
+
+        <p>The following code snippet shows a subresource locator:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">// Root resource class
+@Path("/employeeinfo")
+public class EmployeeInfo {
+
+    // Subresource locator: obtains the subresource Employee
+    // from the path /employeeinfo/employees/{empid}
+    @Path("/employees/{empid}")
+    public Employee getEmployee(@PathParam("empid") String id) {
+        // Find the Employee based on the id path parameter
+        Employee emp = ...;
+        ...
+        return emp;
+    }
+}
+
+// Subresource class
+public class Employee {
+
+    // Subresource method: returns the employee's last name
+    @GET
+    @Path("/lastname")
+    public String getEmployeeLastName() {
+        ...
+        return lastName;
+    }
+}</pre>
+
+        <p>In this code snippet, the <code>getEmployee</code> method is the subresource locator that provides the <code>Employee</code> object, which services requests for <code>lastname</code>.</p>
+
+        <p>If your HTTP request is <code>GET /employeeinfo/employees/as209/</code>, the <code>getEmployee</code> method returns an <code>Employee</code> object whose id is <code>as209</code>. At runtime, JAX-RS sends a <code>GET /employeeinfo/employees/as209/lastname</code> request to the <code>getEmployeeLastName</code> method. The <code>getEmployeeLastName</code> method retrieves and returns the last name of the employee whose id is <code>as209</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKNCY"></a><a id="JEETT00433"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">31.4</span> <a id="sthref1616"></a><a id="sthref1617"></a><a id="sthref1618"></a><a id="sthref1619"></a><a id="sthref1620"></a><a id="sthref1621"></a>Integrating JAX-RS with EJB Technology and CDI</h1>
+
+      <p>JAX-RS works with Enterprise JavaBeans technology (enterprise beans) and Contexts and Dependency Injection for Java EE (CDI).</p>
+
+      <p>In general, for JAX-RS to work with enterprise beans, you need to annotate the class of a bean with <code>@Path</code> to convert it to a root resource class. You can use the <code>@Path</code> annotation with stateless session beans and singleton POJO beans.</p>
+
+      <p>The following code snippet shows a stateless session bean and a singleton bean that have been converted to JAX-RS root resource classes.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Stateless
+@Path("stateless-bean")
+public class StatelessResource {...}
+
+@Singleton
+@Path("singleton-bean")
+public class SingletonResource {...}</pre>
+
+      <p>Session beans can also be used for subresources.</p>
+
+      <p><a id="sthref1622"></a><a id="sthref1623"></a>JAX-RS and CDI have slightly different component models. By default, JAX-RS root resource classes are managed in the request scope, and no annotations are required for specifying the scope. CDI managed beans annotated with <code>@RequestScoped</code> or <code>@ApplicationScoped</code> can be converted to JAX-RS resource classes.</p>
+
+      <p>The following code snippet shows a JAX-RS resource class.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/employee/{id}")
+public class Employee {
+    public Employee(@PathParam("id") String id) {...}
+}
+
+@Path("{lastname}")
+public final class EmpDetails {...}</pre>
+
+      <p>The following code snippet shows this JAX-RS resource class converted to a CDI bean. The beans must be proxyable, so the <code>Employee</code> class requires a nonprivate constructor with no parameters, and the <code>EmpDetails</code> class must not be <code>final</code>.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Path("/employee/{id}")
+@RequestScoped
+public class Employee {
+    public Employee() {...}
+
+    @Inject
+    public Employee(@PathParam("id") String id) {...}
+}
+
+@Path("{lastname}")
+@RequestScoped
+public class EmpDetails {...}</pre>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKQDA"></a><a id="JEETT00434"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">31.5</span> <a id="sthref1624"></a><a id="sthref1625"></a>Conditional HTTP Requests</h1>
+
+      <p>JAX-RS provides support for conditional <code>GET</code> and <code>PUT</code> HTTP requests. Conditional <code>GET</code> requests help save bandwidth by improving the efficiency of client processing.</p>
+
+      <p>A <code>GET</code> request can return a Not Modified (304) response if the representation has not changed since the previous request. For example, a website can return 304 responses for all its static images that have not changed since the previous request.</p>
+
+      <p>A <code>PUT</code> request can return a Precondition Failed (412) response if the representation has been modified since the last request. The conditional <code>PUT</code> can help avoid the lost update problem.</p>
+
+      <p>Conditional HTTP requests can be used with the <code>Last-Modified</code> and <code>ETag</code> headers. The <code>Last-Modified</code> header can represent dates with granularity of one second.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/employee/{joiningdate}")
+public class Employee {
+
+    Date joiningdate;
+    
+    @GET
+    @Produces("application/xml")    
+    public Employee(@PathParam("joiningdate") Date joiningdate, 
+                    @Context Request req, 
+                    @Context UriInfo ui) {
+
+        this.joiningdate = joiningdate;
+        ...
+        this.tag = computeEntityTag(ui.getRequestUri());
+        if (req.getMethod().equals("GET")) {
+            Response.ResponseBuilder rb = req.evaluatePreconditions(tag);
+            if (rb != null) {
+                throw new WebApplicationException(rb.build());
+            }
+        }
+    }
+}</pre>
+
+      <p>In this code snippet, the constructor of the <code>Employee</code> class computes the entity tag from the request URI and calls the <code>request.evaluatePreconditions</code> method with that tag. If a client request returns an <code>If-none-match</code> header with a value that has the same entity tag that was computed, <code>evaluate.Preconditions</code> returns a pre-filled-out response with a 304 status code and an entity tag set that may be built and returned.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKQBQ"></a><a id="JEETT00435"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">31.6</span> <a id="sthref1626"></a><a id="sthref1627"></a>Runtime Content Negotiation</h1>
+
+      <p>The <code>@Produces</code> and <code>@Consumes</code> annotations handle static content negotiation in JAX-RS. These annotations specify the content preferences of the server. HTTP headers such as <code>Accept</code>, <code>Content-Type</code>, and <code>Accept-Language</code> define the content negotiation preferences of the client.</p>
+
+      <p>For more details on the HTTP headers for content negotiation, see HTTP /1.1 - Content Negotiation (<code><a href="../Text/jaxrs-advanced.xhtml#http%3A//www.w3.org/Protocols/rfc2616/rfc2616-sec12.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec12.html</a></code>).</p>
+
+      <p>The following code snippet shows the server content preferences:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Produces("text/plain")
+@Path("/employee")
+public class Employee {
+
+    @GET
+    public String getEmployeeAddressText(String address) {...}
+
+    @Produces("text/xml")
+    @GET
+    public String getEmployeeAddressXml(Address address) {...}
+}</pre>
+
+      <p>The <code>getEmployeeAddressText</code> method is called for an HTTP request that looks like the following:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">GET /employee
+Accept: text/plain</pre>
+
+      <p>This will produce the following response:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">500 Oracle Parkway, Redwood Shores, CA</pre>
+
+      <p>The <code>getEmployeeAddressXml</code> method is called for an HTTP request that looks like the following:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">GET /employee
+Accept: text/xml</pre>
+
+      <p>This will produce the following response:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;address street="500 Oracle Parkway, Redwood Shores, CA" country="USA"/&gt;</pre>
+
+      <p>With static content negotiation, you can also define multiple content and media types for the client and server.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Produces("text/plain", "text/xml")</pre>
+
+      <p><a id="sthref1628"></a><a id="sthref1629"></a>In addition to supporting static content negotiation, JAX-RS also supports runtime content negotiation using the <code>javax.ws.rs.core.Variant</code> class and <code>Request</code> objects. The <code>Variant</code> class specifies the resource representation of content negotiation. Each instance of the <code>Variant</code> class may contain a media type, a language, and an encoding. The <code>Variant</code> object defines the resource representation that is supported by the server. The <code>Variant.VariantListBuilder</code> class is used to build a list of representation variants.</p>
+
+      <p>The following code snippet shows how to create a list of resource representation variants:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">List&lt;Variant&gt; vs = Variant.mediatypes("application/xml", "application/json")
+        .languages("en", "fr").build();</pre>
+
+      <p>This code snippet calls the <code>build</code> method of the <code>VariantListBuilder</code> class. The <code>VariantListBuilder</code> class is invoked when you call the <code>mediatypes</code>, <code>languages</code>, or <code>encodings</code> methods. The <code>build</code> method builds a series of resource representations. The <code>Variant</code> list created by the <code>build</code> method has all possible combinations of items specified in the <code>mediatypes</code>, <code>languages</code>, and <code>encodings</code> methods.</p>
+
+      <p>In this example, the size of the <code>vs</code> object as defined in this code snippet is 4, and the contents are as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">[["application/xml","en"], ["application/json","en"],
+    ["application/xml","fr"],["application/json","fr"]]</pre>
+
+      <p>The <code>javax.ws.rs.core.Request.selectVariant</code> method accepts a list of <code>Variant</code> objects and chooses the <code>Variant</code> object that matches the HTTP request. This method compares its list of <code>Variant</code> objects with the <code>Accept</code>, <code>Accept-Encoding</code>, <code>Accept-Language</code>, and <code>Accept-Charset</code> headers of the HTTP request.</p>
+
+      <p>The following code snippet shows how to use the <code>selectVariant</code> method to select the most acceptable <code>Variant</code> from the values in the client request:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GET
+public Response get(@Context Request r) { 
+    List&lt;Variant&gt; vs = ...;
+    Variant v = r.selectVariant(vs);
+    if (v == null) {
+        return Response.notAcceptable(vs).build();
+    } else {
+        Object rep = selectRepresentation(v);
+        return Response.ok(rep, v);
+    }
+}</pre>
+
+      <p>The <code>selectVariant</code> method returns the <code>Variant</code> object that matches the request or null if no matches are found. In this code snippet, if the method returns null, a <code>Response</code> object for a nonacceptable response is built. Otherwise, a <code>Response</code> object with an OK status and containing a representation in the form of an <code>Object</code> entity and a <code>Variant</code> is returned.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKKNJ"></a><a id="JEETT00436"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">31.7</span> <a id="sthref1630"></a><a id="sthref1631"></a><a id="sthref1632"></a><a id="sthref1633"></a>Using JAX-RS with JAXB</h1>
+
+      <p>Java Architecture for XML Binding (JAXB) is an XML-to-Java binding technology that simplifies the development of web services by enabling transformations between schema and Java objects and between XML instance documents and Java object instances. An XML schema defines the data elements and structure of an XML document. You can use JAXB APIs and tools to establish mappings between Java classes and XML schema. JAXB technology provides the tools that enable you to convert your XML documents to and from Java objects.</p>
+
+      <p>By using JAXB, you can manipulate data objects in the following ways.</p>
+
+      <ul>
+        <li>
+          <p>You can start with an XML schema definition (XSD) and use <code>xjc</code>, the JAXB schema compiler tool, to create a set of JAXB-annotated Java classes that map to the elements and types defined in the XSD schema.</p>
+        </li>
+
+        <li>
+          <p>You can start with a set of Java classes and use <code>schemagen</code>, the JAXB schema generator tool, to generate an XML schema.</p>
+        </li>
+
+        <li>
+          <p>Once a mapping between the XML schema and the Java classes exists, you can use the JAXB binding runtime to marshal and unmarshal your XML documents to and from Java objects and use the resulting Java classes to assemble a web services application.</p>
+        </li>
+      </ul>
+
+      <p>XML is a common media format that RESTful services consume and produce. To deserialize and serialize XML, you can represent requests and responses by JAXB annotated objects. Your JAX-RS application can use the JAXB objects to manipulate XML data. JAXB objects can be used as request entity parameters and response entities. The JAX-RS runtime environment includes standard <code>MessageBodyReader</code> and <code>MessageBodyWriter</code> provider interfaces for reading and writing JAXB objects as entities.</p>
+
+      <p>With JAX-RS, you enable access to your services by publishing resources. Resources are just simple Java classes with some additional JAX-RS annotations. These annotations express the following:</p>
+
+      <ul>
+        <li>
+          <p>The path of the resource (the URL you use to access it)</p>
+        </li>
+
+        <li>
+          <p>The HTTP method you use to call a certain method (for example, the <code>GET</code> or <code>POST</code> method)</p>
+        </li>
+
+        <li>
+          <p>The MIME type with which a method accepts or responds</p>
+        </li>
+      </ul>
+
+      <p>As you define the resources for your application, consider the type of data you want to expose. You may already have a relational database that contains information you want to expose to users, or you may have static content that does not reside in a database but does need to be distributed as resources. Using JAX-RS, you can distribute content from multiple sources. RESTful web services can use various types of input/output formats for request and response. The <code>customer</code> example, described in <a href="../Text/jaxrs-advanced.xhtml#GKOIB">The customer Example Application</a>, uses XML.</p>
+
+      <p>Resources have representations. A resource representation is the content in the HTTP message that is sent to, or returned from, the resource using the URI. Each representation a resource supports has a corresponding media type. For example, if a resource is going to return content formatted as XML, you can use <code>application/xml</code> as the associated media type in the HTTP message.Depending on the requirements of your application, resources can return representations in a preferred single format or in multiple formats. JAX-RS provides <code>@Consumes</code> and <code>@Produces</code> annotations to declare the media types that are acceptable for a resource method to read and write.</p>
+
+      <p>JAX-RS also maps Java types to and from resource representations using entity providers. A <code>MessageBodyReader</code> entity provider reads a request entity and deserializes the request entity into a Java type. A <code>MessageBodyWriter</code> entity provider serializes from a Java type into a response entity. For example, if a <code>String</code> value is used as the request entity parameter, the <code>MessageBodyReader</code> entity provider deserializes the request body into a new <code>String</code>. If a JAXB type is used as the return type on a resource method, the <code>MessageBodyWriter</code> serializes the JAXB object into a response body.</p>
+
+      <p>By default, the JAX-RS runtime environment attempts to create and use a default <code>JAXBContext</code> class for JAXB classes.However, if the default <code>JAXBContext</code> class is not suitable, then you can supply a <code>JAXBContext</code> class for the application using a JAX-RS <code>ContextResolver</code> provider interface.</p>
+
+      <p>The following sections explain how to use JAXB with JAX-RS resource methods.</p>
+
+      <div class="sect2">
+        <a id="sthref1634"></a>
+
+        <h2 class="sect2"><span class="secnum">31.7.1</span> Using Java Objects to Model Your Data</h2>
+
+        <p>If you do not have an XML schema definition for the data you want to expose, you can model your data as Java classes, add JAXB annotations to these classes, and use JAXB to generate an XML schema for your data. For example, if the data you want to expose is a collection of products and each product has an ID, a name, a description, and a price, you can model it as a Java class as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@XmlRootElement(name="product")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Product {
+
+    @XmlElement(required=true)
+    protected int id;
+    @XmlElement(required=true)
+    protected String name;
+    @XmlElement(required=true)
+    protected String description;
+    @XmlElement(required=true)
+    protected int price;
+
+    public Product() {}
+
+    // Getter and setter methods
+    // ...
+}</pre>
+
+        <p>Run the JAXB schema generator on the command line to generate the corresponding XML schema definition:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">schemagen Product.java</pre>
+
+        <p>This command produces the XML schema as an <code>.xsd</code> file:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+    &lt;xs:element name="product" type="product"/&gt;
+
+    &lt;xs:complexType name="product"&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="id" type="xs:int"/&gt;
+        &lt;xs:element name="name" type="xs:string"/&gt;
+        &lt;xs:element name="description" type="xs:string"/&gt;
+        &lt;xs:element name="price" type="xs:int"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;xs:complexType&gt;
+&lt;/xs:schema&gt;</pre>
+
+        <p>Once you have this mapping, you can create <code>Product</code> objects in your application, return them, and use them as parameters in JAX-RS resource methods. The JAX-RS runtime uses JAXB to convert the XML data from the request into a <code>Product</code> object and to convert a <code>Product</code> object into XML data for the response. The following resource class provides a simple example:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/product")
+public class ProductService {
+    @GET
+    @Path("/get")
+    @Produces("application/xml")
+    public Product getProduct() {
+        Product prod = new Product();
+        prod.setId(1);
+        prod.setName("Mattress");
+        prod.setDescription("Queen size mattress");
+        prod.setPrice(500);
+        return prod;
+    }
+
+    @POST
+    @Path("/create")
+    @Consumes("application/xml")
+    public Response createProduct(Product prod) {
+        // Process or store the product and return a response
+        // ...
+    }
+}</pre>
+
+        <p>Some IDEs, such as NetBeans IDE, will run the schema generator tool automatically during the build process if you add Java classes that have JAXB annotations to your project. For a detailed example, see <a href="../Text/jaxrs-advanced.xhtml#GKOIB">The customer Example Application</a>. The <code>customer</code> example contains a more complex relationship between the Java classes that model the data, which results in a more hierarchical XML representation.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1635"></a>
+
+        <h2 class="sect2"><span class="secnum">31.7.2</span> Starting from an Existing XML Schema Definition</h2>
+
+        <p>If you already have an XML schema definition in an <code>.xsd</code> file for the data you want to expose, use the JAXB schema compiler tool. Consider this simple example of an <code>.xsd</code> file:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;xs:schema targetNamespace="http://xml.product"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           xmlns:myco="http://xml.product"&gt;
+  &lt;xs:element name="product" type="myco:Product"/&gt;
+  &lt;xs:complexType name="Product"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="id" type="xs:int"/&gt;
+      &lt;xs:element name="name" type="xs:string"/&gt;
+      &lt;xs:element name="description" type="xs:string"/&gt;
+      &lt;xs:element name="price" type="xs:int"/&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:schema&gt;</pre>
+
+        <p>Run the schema compiler tool on the command line as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">xjc Product.xsd</pre>
+
+        <p>This command generates the source code for Java classes that correspond to the types defined in the <code>.xsd</code> file. The schema compiler tool generates a Java class for each <code>complexType</code> defined in the <code>.xsd</code> file. The fields of each generated Java class are the same as the elements inside the corresponding <code>complexType</code>, and the class contains getter and setter methods for these fields.</p>
+
+        <p>In this case, the schema compiler tool generates the classes <code>product.xml.Product</code> and <code>product.xml.ObjectFactory</code>. The <code>Product</code> class contains JAXB annotations, and its fields correspond to those in the <code>.xsd</code> definition:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Product", propOrder = {
+    "id",
+    "name",
+    "description",
+    "price"
+})
+public class Product {
+    protected int id;
+    @XmlElement(required = true)
+    protected String name;
+    @XmlElement(required = true)
+    protected String description;
+    protected int price;
+
+    // Setter and getter methods
+    // ...
+}</pre>
+
+        <p>You can create instances of the <code>Product</code> class from your application (for example, from a database). The generated class <code>product.xml.ObjectFactory</code> contains a method that allows you to convert these objects to JAXB elements that can be returned as XML inside JAX-RS resource methods:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@XmlElementDecl(namespace = "http://xml.product", name = "product")
+public JAXBElement&lt;Product&gt; createProduct(Product value) {
+    return new JAXBElement&lt;Product&gt;(_Product_QNAME, Product.class, null, value);
+}</pre>
+
+        <p>The following code shows how to use the generated classes to return a JAXB element as XML in a JAX-RS resource method:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/product")
+public class ProductService {
+    @GET
+    @Path("/get")
+    @Produces("application/xml")
+    public JAXBElement&lt;Product&gt; getProduct() {
+        Product prod = new Product();
+        prod.setId(1);
+        prod.setName("Mattress");
+        prod.setDescription("Queen size mattress");
+        prod.setPrice(500);
+        return new ObjectFactory().createProduct(prod);
+    }
+}</pre>
+
+        <p>For <code>@POST</code> and <code>@PUT</code> resource methods, you can use a <code>Product</code> object directly as a parameter. JAX-RS maps the XML data from the request into a <code>Product</code> object.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/product")
+public class ProductService {
+    @GET
+    // ...
+
+    @POST
+    @Path("/create")
+    @Consumes("application/xml")
+    public Response createProduct(Product prod) {
+        // Process or store the product and return a response
+        // ...
+    }
+}</pre>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1636"></a>
+
+        <h2 class="sect2"><span class="secnum">31.7.3</span> <a id="sthref1637"></a><a id="sthref1638"></a>Using JSON with JAX-RS and JAXB</h2>
+
+        <p>JAX-RS can automatically read and write XML using JAXB, but it can also work with JSON data. JSON is a simple text-based format for data exchange derived from JavaScript. For the preceding examples, the XML representation of a product is</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;product&gt;
+  &lt;id&gt;1&lt;/id&gt;
+  &lt;name&gt;Mattress&lt;/name&gt;
+  &lt;description&gt;Queen size mattress&lt;/description&gt;
+  &lt;price&gt;500&lt;/price&gt;
+&lt;/product&gt;</pre>
+
+        <p>The equivalent JSON representation is</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">{
+    "id":"1",
+    "name":"Mattress",
+    "description":"Queen size mattress",
+    "price":500
+}</pre>
+
+        <p>You can add the format <code>application/json</code> or <code>MediaType.APPLICATION_JSON</code> to the <code>@Produces</code> annotation in resource methods to produce responses with JSON data:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GET
+@Path("/get")
+@Produces({"application/xml","application/json"})
+public Product getProduct() { ... }</pre>
+
+        <p>In this example, the default response is XML, but the response is a JSON object if the client makes a <code>GET</code> request that includes this header:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Accept: application/json</pre>
+
+        <p>The resource methods can also accept JSON data for JAXB annotated classes:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@POST
+@Path("/create")
+@Consumes({"application/xml","application/json"})
+public Response createProduct(Product prod) { ... }</pre>
+
+        <p>The client should include the following header when submitting JSON data with a <code>POST</code> request:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Content-Type: application/json</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKOIB"></a><a id="JEETT00437"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">31.8</span> <a id="sthref1639"></a><a id="sthref1640"></a>The customer Example Application</h1>
+
+      <p>This section describes how to build and run the <code>customer</code> example application. This application is a RESTful web service that uses JAXB to perform the create, read, update, delete (CRUD) operations for a specific entity.</p>
+
+      <p>The <code>customer</code> sample application is in the <span class="variable">tut-install</span><code>/examples/jaxrs/customer/</code> directory. See <a href="../Text/usingexamples.xhtml#GFIUD">Chapter 2, "Using the Tutorial Examples,"</a> for basic information on building and running sample applications.</p><a id="GKOFO"></a><a id="JEETT01067"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.8.1</span> Overview of the customer Example Application</h2>
+
+        <p>The source files of this application are at <span class="variable">tut-install</span><code>/examples/jaxrs/customer/src/main/java/</code>. The application has three parts.</p>
+
+        <ul>
+          <li>
+            <p>The <code>Customer</code> and <code>Address</code> entity classes. These classes model the data of the application and contain JAXB annotations.</p>
+          </li>
+
+          <li>
+            <p>The <code>CustomerService</code> resource class. This class contains JAX-RS resource methods that perform operations on <code>Customer</code> instances represented as XML or JSON data using JAXB. See <a href="../Text/jaxrs-advanced.xhtml#GKLGT">The CustomerService Class</a> for details.</p>
+          </li>
+
+          <li>
+            <p>The <code>CustomerBean</code> session bean that acts as a backing bean for the web client. <code>CustomerBean</code> uses the JAX-RS client API to call the methods of <code>CustomerService</code>.</p>
+          </li>
+        </ul>
+
+        <p>The <code>customer</code> example application shows you how to model your data entities as Java classes with JAXB annotations.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1641"></a>
+
+        <h2 class="sect2"><span class="secnum">31.8.2</span> The Customer and Address Entity Classes</h2>
+
+        <p>The following class represents a customer's address:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+@Table(name="CUSTOMER_ADDRESS")
+@XmlRootElement(name="address")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+    @XmlElement(required=true) 
+    protected int number;
+    
+    @XmlElement(required=true)  
+    protected String street;
+    
+    @XmlElement(required=true)  
+    protected String city;
+    
+    @XmlElement(required=true) 
+    protected String province;
+    
+    @XmlElement(required=true)  
+    protected String zip;
+    
+    @XmlElement(required=true)
+    protected String country;
+    
+    public Address() { }
+    
+    // Getter and setter methods
+    // ...
+}</pre>
+
+        <p>The <code>@XmlRootElement(name="address")</code> annotation maps this class to the <code>address</code> XML element. The <code>@XmlAccessorType(XmlAccessType.FIELD)</code> annotation specifies that all the fields of this class are bound to XML by default. The <code>@XmlElement(required=true)</code> annotation specifies that an element must be present in the XML representation.</p>
+
+        <p>The following class represents a customer:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+@Table(name="CUSTOMER_CUSTOMER")
+@NamedQuery(
+    name="findAllCustomers",
+    query="SELECT c FROM Customer c " +
+          "ORDER BY c.id"
+)
+@XmlRootElement(name="customer")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @XmlAttribute(required=true) 
+    protected int id;
+    
+    @XmlElement(required=true) 
+    protected String firstname;
+    
+    @XmlElement(required=true) 
+    protected String lastname;
+    
+    @XmlElement(required=true)
+    @OneToOne
+    protected Address address;
+    
+    @XmlElement(required=true)
+    protected String email;
+    
+    @XmlElement (required=true)
+    protected String phone;
+    
+    public Customer() {...}
+    
+    // Getter and setter methods
+    // ...
+}</pre>
+
+        <p>The <code>Customer</code> class contains the same JAXB annotations as the previous class, except for the <code>@XmlAttribute(required=true)</code> annotation, which maps a property to an attribute of the XML element representing the class.</p>
+
+        <p>The <code>Customer</code> class contains a property whose type is another entity, the <code>Address</code> class. This mechanism allows you to define in Java code the hierarchical relationships between entities without having to write an <code>.xsd</code> file yourself.</p>
+
+        <p>JAXB generates the following XML schema definition for the two preceding classes:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+  &lt;xs:element name="address" type="address"/&gt;
+  &lt;xs:element name="customer" type="customer"/&gt;
+
+  &lt;xs:complexType name="address"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="id" type="xs:long" minOccurs="0"/&gt;
+      &lt;xs:element name="number" type="xs:int"/&gt;
+      &lt;xs:element name="street" type="xs:string"/&gt;
+      &lt;xs:element name="city" type="xs:string"/&gt;
+      &lt;xs:element name="province" type="xs:string"/&gt;
+      &lt;xs:element name="zip" type="xs:string"/&gt;
+      &lt;xs:element name="country" type="xs:string"/&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="customer"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="firstname" type="xs:string"/&gt;
+      &lt;xs:element name="lastname" type="xs:string"/&gt;
+      &lt;xs:element ref="address"/&gt;
+      &lt;xs:element name="email" type="xs:string"/&gt;
+      &lt;xs:element name="phone" type="xs:string"/&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attribute name="id" type="xs:int" use="required"/&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:schema&gt;</pre>
+      </div><a id="GKLGT"></a><a id="JEETT01068"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.8.3</span> The CustomerService Class</h2>
+
+        <p>The <code>CustomerService</code> class has a <code>createCustomer</code> method that creates a customer resource based on the <code>Customer</code> class and returns a URI for the new resource.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Stateless
+@Path("/Customer")
+public class CustomerService {
+    public static final Logger logger =
+            Logger.getLogger(CustomerService.class.getCanonicalName());
+    @PersistenceContext
+    private EntityManager em;
+    private CriteriaBuilder cb;
+
+    @PostConstruct
+    private void init() {
+        cb = em.getCriteriaBuilder();
+    }
+    ...
+    @POST
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response createCustomer(Customer customer) {
+ 
+        try {
+            long customerId = persist(customer);
+            return Response.created(URI.create("/" + customerId)).build();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE,
+                    "Error creating customer for customerId {0}. {1}",
+                    new Object[]{customer.getId(), e.getMessage()});
+            throw new WebApplicationException(e,
+                    Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+    ...
+    private long persist(Customer customer) {
+        try {
+            Address address = customer.getAddress();
+            em.persist(address);
+            em.persist(customer);
+        } catch (Exception ex) {
+            logger.warning("Something went wrong when persisting the customer");
+        }
+        return customer.getId();
+    }</pre>
+
+        <p>The response returned to the client has a URI to the newly created resource. The return type is an entity body mapped from the property of the response with the status code specified by the status property of the response. The <code>WebApplicationException</code> is a <code>RuntimeException</code> that is used to wrap the appropriate HTTP error status code, such as 404, 406, 415, or 500.</p>
+
+        <p>The <code>@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})</code> and <code>@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})</code> annotations set the request and response media types to use the appropriate MIME client. These annotations can be applied to a resource method, a resource class, or even an entity provider. If you do not use these annotations, JAX-RS allows the use of any media type (<code>"*/*"</code>).</p>
+
+        <p>The following code snippet shows the implementation of the <code>getCustomer</code> and <code>findbyId</code> methods. The <code>getCustomer</code> method uses the <code>@Produces</code> annotation and returns a <code>Customer</code> object, which is converted to an XML or JSON representation depending on the <code>Accept:</code> header specified by the client.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Customer getCustomer(@PathParam("id") String customerId) {
+        Customer customer = null;
+ 
+        try {
+            customer = findById(customerId);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE,
+                    "Error calling findCustomer() for customerId {0}. {1}",
+                    new Object[]{customerId, ex.getMessage()});
+        }
+        return customer;
+    }
+    ...
+    private Customer findById(String customerId) {
+        Customer customer = null;
+        try {
+            customer = em.find(Customer.class, customerId);
+            return customer;
+        } catch (Exception ex) {
+            logger.log(Level.WARNING,
+                    "Couldn't find customer with ID of {0}", customerId);
+        }
+        return customer;
+    }</pre>
+      </div><a id="GKQJQ"></a><a id="JEETT01070"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.8.4</span> Using the JAX-RS Client in the CustomerBean Classes</h2>
+
+        <p>Use the JAX-RS Client API to write a client for the <code>customer</code> example application.</p>
+
+        <p>The <code>CustomerBean</code> enterprise bean class calls the JAX-RS Client API to test the <code>CustomerService</code> web service:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named
+@Stateless
+public class CustomerBean {
+    protected Client client;
+    private static final Logger logger = 
+            Logger.getLogger(CustomerBean.class.getName());
+    
+    @PostConstruct
+    private void init() {
+        client = ClientBuilder.newClient();
+    }
+ 
+    @PreDestroy
+    private void clean() {
+        client.close();
+    }
+
+    public String createCustomer(Customer customer) {
+        if (customer == null) {
+            logger.log(Level.WARNING, "customer is null.");
+            return "customerError";
+        }
+        String navigation;
+        Response response =
+                client.target("http://localhost:8080/customer/webapi/Customer")
+                .request(MediaType.APPLICATION_XML)
+                .post(Entity.entity(customer, MediaType.APPLICATION_XML),
+                        Response.class);
+        if (response.getStatus() == Status.CREATED.getStatusCode()) {
+            navigation = "customerCreated";
+        } else {
+            logger.log(Level.WARNING, "couldn''t create customer with " +
+                    "id {0}. Status returned was {1}", 
+                    new Object[]{customer.getId(), response.getStatus()});
+            navigation = "customerError";
+        }
+        return navigation;
+    }
+ 
+    public String retrieveCustomer(String id) {
+        String navigation;
+        Customer customer =
+                client.target("http://localhost:8080/customer/webapi/Customer")
+                .path(id)
+                .request(MediaType.APPLICATION_XML)
+                .get(Customer.class);
+        if (customer == null) {
+            navigation = "customerError";
+        } else {
+            navigation = "customerRetrieved";
+        }
+        return navigation;
+    }
+    
+    public List&lt;Customer&gt; retrieveAllCustomers() {
+        List&lt;Customer&gt; customers =
+                client.target("http://localhost:8080/customer/webapi/Customer")
+                .path("all")
+                .request(MediaType.APPLICATION_XML)
+                .get(new GenericType&lt;List&lt;Customer&gt;&gt;() {});
+        return customers;
+    }
+}</pre>
+
+        <p>This client uses the <code>POST</code> and <code>GET</code> methods.</p>
+
+        <p>All of these HTTP status codes indicate success: 201 for <code>POST</code>, 200 for <code>GET</code>, and 204 for <code>DELETE</code>. For details about the meanings of HTTP status codes, see <code><a href="../Text/jaxrs-advanced.xhtml#http%3A//www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></code>.</p>
+      </div><a id="GKQKV"></a><a id="JEETT01071"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">31.8.5</span> Running the customer Example</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>customer</code> application.</p><a id="GKQLY"></a><a id="JEETT00189"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">31.8.5.1</span> To Build, Package, and Deploy the customer Example Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jaxrs</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>customer</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>customer</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>customer.war</code>, located in the <code>target</code> directory. Then, the WAR file is deployed to GlassFish Server.</p>
+            </li>
+
+            <li>
+              <p>Open the web client in a browser at the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/customer/</pre>
+
+              <p>The web client allows you to create and view customers.</p>
+            </li>
+          </ol>
+        </div><a id="GKQJV"></a><a id="JEETT00190"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">31.8.5.2</span> To Build, Package, and Deploy the customer Example Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jaxrs/customer/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command builds and packages the application into a WAR file, <code>customer.war</code>, located in the <code>target</code> directory. Then, the WAR file is deployed to GlassFish Server.</p>
+            </li>
+
+            <li>
+              <p>Open the web client in a browser at the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/customer/</pre>
+
+              <p>The web client allows you to create and view customers.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

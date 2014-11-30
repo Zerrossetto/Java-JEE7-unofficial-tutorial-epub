@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKJJF"></a><a id="JEETT00100"></a>
+
+    <h1 class="chapter"><span class="secnum">42</span> <a id="sthref2156"></a><a id="sthref2157"></a>Controlling Concurrent Access to Entity Data with Locking</h1>
+
+    <p>This chapter details how to handle concurrent access to entity data, and the locking strategies available to Java Persistence API application developers.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/persistence-locking.xhtml#GKJHZ">Overview of Entity Locking and Concurrency</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/persistence-locking.xhtml#GKJIU">Lock Modes</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GKJHZ"></a><a id="JEETT00505"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">42.1</span> <a id="sthref2158"></a>Overview of Entity Locking and Concurrency</h1>
+
+      <p>Entity data is <span class="glossaryterm">concurrently accessed</span> if the data in a data source is accessed at the same time by multiple applications. Ensure that the underlying data's integrity is preserved when it is accessed concurrently.</p>
+
+      <p>When data is updated in the database tables in a transaction, the persistence provider assumes the database management system will hold short-term read locks and long-term write locks to maintain data integrity. Most persistence providers will delay database writes until the end of the transaction, except when the application explicitly calls for a flush (that is, the application calls the <code>EntityManager.flush</code> method or executes queries with the flush mode set to <code>AUTO</code>).</p>
+
+      <p><a id="sthref2159"></a>By default, persistence providers use <span class="glossaryterm">optimistic locking</span>, where, before committing changes to the data, the persistence provider checks that no other transaction has modified or deleted the data since the data was read. This is accomplished by a version column in the database table, with a corresponding version attribute in the entity class. When a row is modified, the version value is incremented. The original transaction checks the version attribute, and if the data has been modified by another transaction, a <code>javax.persistence.OptimisticLockException</code> will be thrown, and the original transaction will be rolled back. When the application specifies optimistic lock modes, the persistence provider verifies that a particular entity has not changed since it was read from the database even if the entity data was not modified.</p>
+
+      <p><a id="sthref2160"></a><span class="glossaryterm">Pessimistic locking</span> goes further than optimistic locking. With pessimistic locking, the persistence provider creates a transaction that obtains a long-term lock on the data until the transaction is completed, which prevents other transactions from modifying or deleting the data until the lock has ended. Pessimistic locking is a better strategy than optimistic locking when the underlying data is frequently accessed and modified by many transactions.</p>
+
+      <div align="center">
+        <div class="inftblnote">
+          <br />
+
+          <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+            <tbody>
+              <tr>
+                <td align="left">
+                  <p class="notep1">Note:</p>
+
+                  <p>Using pessimistic locks on entities that are not subject to frequent modification may result in decreased application performance.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div><a id="GKJJC"></a><a id="JEETT01206"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">42.1.1</span> <a id="sthref2161"></a>Using Optimistic Locking</h2>
+
+        <p>Use the <code>javax.persistence.Version</code> annotation to mark a persistent field or property as a version attribute of an entity. The version attribute enables the entity for optimistic concurrency control. The persistence provider reads and updates the version attribute when an entity instance is modified during a transaction. The application may read the version attribute, but <span class="italic">must not</span> modify the value.</p>
+
+        <div align="center">
+          <div class="inftblnote">
+            <br />
+
+            <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+              <tbody>
+                <tr>
+                  <td align="left">
+                    <p class="notep1">Note:</p>
+
+                    <p>Although some persistence providers may support optimistic locking for entities that do not have version attributes, portable applications should always use entities with version attributes when using optimistic locking. If the application attempts to lock an entity that does not have a version attribute, and the persistence provider does not support optimistic locking for non-versioned entities, a <code>PersistenceException</code> will be thrown.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table><br />
+          </div>
+        </div>
+
+        <p>The <code>@Version</code> annotation has the following requirements.</p>
+
+        <ul>
+          <li>
+            <p>Only a single <code>@Version</code> attribute may be defined per entity.</p>
+          </li>
+
+          <li>
+            <p>The <code>@Version</code> attribute must be in the primary table for an entity mapped to multiple tables.</p>
+          </li>
+
+          <li>
+            <p>The type of the <code>@Version</code> attribute must be one of the following: <code>int</code>, <code>Integer</code>, <code>long</code>, <code>Long</code>, <code>short</code>, <code>Short</code>, or <code>java.sql.Timestamp</code>.</p>
+          </li>
+        </ul>
+
+        <p>The following code snippet shows how to define a version attribute in an entity with persistent fields:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Version
+protected int version;</pre>
+
+        <p>The following code snippet shows how to define a version attribute in an entity with persistent properties:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Version
+protected Short getVersion() { ... }</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKJIU"></a><a id="JEETT00506"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">42.2</span> <a id="sthref2162"></a>Lock Modes</h1>
+
+      <p>The application may increase the level of locking for an entity by specifying the use of lock modes. Lock modes may be specified to increase the level of optimistic locking or to request the use of pessimistic locks.</p>
+
+      <p>The use of optimistic lock modes causes the persistence provider to check the version attributes for entities that were read (but not modified) during a transaction as well as for entities that were updated.</p>
+
+      <p>The use of pessimistic lock modes specifies that the persistence provider is to immediately acquire long-term read or write locks for the database data corresponding to entity state.</p>
+
+      <p>You can set the lock mode for an entity operation by specifying one of the lock modes defined in the <code>javax.persistence.LockModeType</code> enumerated type, listed in <a href="../Text/persistence-locking.xhtml#GKJIE">Table 42-1</a>.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref2163"></a><a id="GKJIE"></a>
+
+        <p class="titleintable">Table 42-1 Lock Modes for Concurrent Entity Access</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists and describes the lock modes for concurrent entity access." title="Lock Modes for Concurrent Entity Access" width="100%">
+          <col width="38%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t4" valign="bottom">Lock Mode</th>
+
+              <th align="left" id="r1c2-t4" valign="bottom">Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r2c1-t4">
+                <p><code>OPTIMISTIC</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t4 r1c2-t4">
+                <p>Obtain an optimistic read lock for all entities with version attributes.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r3c1-t4">
+                <p><code>OPTIMISTIC_FORCE_INCREMENT</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t4 r1c2-t4">
+                <p>Obtain an optimistic read lock for all entities with version attributes, and increment the version attribute value.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r4c1-t4">
+                <p><code>PESSIMISTIC_READ</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t4 r1c2-t4">
+                <p>Immediately obtain a long-term read lock on the data to prevent the data from being modified or deleted. Other transactions may read the data while the lock is maintained, but may not modify or delete the data.</p>
+
+                <p>The persistence provider is permitted to obtain a database write lock when a read lock was requested, but not vice versa.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r5c1-t4">
+                <p><code>PESSIMISTIC_WRITE</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t4 r1c2-t4">
+                <p>Immediately obtain a long-term write lock on the data to prevent the data from being read, modified, or deleted.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r6c1-t4">
+                <p><code>PESSIMISTIC_FORCE_INCREMENT</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t4 r1c2-t4">
+                <p>Immediately obtain a long-term lock on the data to prevent the data from being modified or deleted, and increment the version attribute of versioned entities.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r7c1-t4">
+                <p><code>READ</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t4 r1c2-t4">
+                <p>A synonym for <code>OPTIMISTIC</code>. Use of <code>LockModeType.OPTIMISTIC</code> is to be preferred for new applications.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r8c1-t4">
+                <p><code>WRITE</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t4 r1c2-t4">
+                <p>A synonym for <code>OPTIMISTIC_FORCE_INCREMENT</code>. Use of <code>LockModeType.OPTIMISTIC_FORCE_INCREMENT</code> is to be preferred for new applications.</p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r9c1-t4">
+                <p><code>NONE</code></p>
+              </td>
+
+              <td align="left" headers="r9c1-t4 r1c2-t4">
+                <p>No additional locking will occur on the data in the database.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div><a id="GKJIK"></a><a id="JEETT01207"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">42.2.1</span> Setting the Lock Mode</h2>
+
+        <p>To specify the lock mode, use one of the following techniques.</p>
+
+        <ul>
+          <li>
+            <p>Call the <code>EntityManager.lock</code> method, passing in one of the lock modes:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+Person person = ...;
+em.lock(person, LockModeType.OPTIMISTIC);</pre>
+          </li>
+
+          <li>
+            <p>Call one of the <code>EntityManager.find</code> methods that take the lock mode as a parameter:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+String personPK = ...;
+Person person = em.find(Person.class, personPK, 
+    LockModeType.PESSIMISTIC_WRITE);</pre>
+          </li>
+
+          <li>
+            <p>Call one of the <code>EntityManager.refresh</code> methods that take the lock mode as a parameter:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+String personPK = ...;
+Person person = em.find(Person.class, personPK);
+...
+em.refresh(person, LockModeType.OPTIMISTIC_FORCE_INCREMENT);</pre>
+          </li>
+
+          <li>
+            <p>Call the <code>Query.setLockMode</code> or <code>TypedQuery.setLockMode</code> method, passing the lock mode as the parameter:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Query q = em.createQuery(...);
+q.setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT);</pre>
+          </li>
+
+          <li>
+            <p>Add a <code>lockMode</code> element to the <code>@NamedQuery</code> annotation:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NamedQuery(name="lockPersonQuery",  query="SELECT p FROM Person p WHERE p.name LIKE :name",  lockMode=PESSIMISTIC_READ)</pre>
+          </li>
+        </ul>
+      </div><a id="GKJIL"></a><a id="JEETT01208"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">42.2.2</span> <a id="sthref2164"></a>Using Pessimistic Locking</h2>
+
+        <p>Versioned entities, as well as entities that do not have version attributes, can be locked pessimistically.</p>
+
+        <p>To lock entities pessimistically, set the lock mode to <code>PESSIMISTIC_READ</code>, <code>PESSIMISTIC_WRITE</code>, or <code>PESSIMISTIC_FORCE_INCREMENT</code>.</p>
+
+        <p>If a pessimistic lock cannot be obtained on the database rows, and the failure to lock the data results in a transaction rollback, a <code>PessimisticLockException</code> is thrown. If a pessimistic lock cannot be obtained, but the locking failure doesn't result in a transaction rollback, a <code>LockTimeoutException</code> is thrown.</p>
+
+        <p>Pessimistically locking a versioned entity with <code>PESSIMISTIC_FORCE_INCREMENT</code> results in the version attribute being incremented even if the entity data is unmodified. When pessimistically locking a versioned entity, the persistence provider will perform the version checks that occur during optimistic locking, and if the version check fails, an <code>OptimisticLockException</code> will be thrown. An attempt to lock a non-versioned entity with <code>PESSIMISTIC_FORCE_INCREMENT</code> is not portable and may result in a <code>PersistenceException</code> if the persistence provider does not support optimistic locks for non-versioned entities. Locking a versioned entity with <code>PESSIMISTIC_WRITE</code> results in the version attribute being incremented if the transaction was successfully committed.</p><a id="GKJLQ"></a><a id="JEETT00753"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">42.2.2.1</span> Pessimistic Locking Timeouts</h3>
+
+          <p>Use the <code>javax.persistence.lock.timeout</code> property to specify the length of time in milliseconds the persistence provider should wait to obtain a lock on the database tables. If the time it takes to obtain a lock exceeds the value of this property, a <code>LockTimeoutException</code> will be thrown, but the current transaction will not be marked for rollback. If you set this property to <code>0</code>, the persistence provider should throw a <code>LockTimeoutException</code> if it cannot immediately obtain a lock.</p>
+
+          <div align="center">
+            <div class="inftblnote">
+              <br />
+
+              <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+                <tbody>
+                  <tr>
+                    <td align="left">
+                      <p class="notep1">Note:</p>
+
+                      <p>Portable applications should not rely on the setting of <code>javax.persistence.lock.timeout</code>, because the locking strategy and underlying database may mean that the timeout value cannot be used. The value of <code>javax.persistence.lock.timeout</code> is a hint, not a contract.</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table><br />
+            </div>
+          </div>
+
+          <p>This property may be set programmatically by passing it to the <code>EntityManager</code> methods that allow lock modes to be specified, the <code>Query.setLockMode</code> and <code>TypedQuery.setLockMode</code> methods, the <code>@NamedQuery</code> annotation, and the <code>Persistence.createEntityManagerFactory</code> method. It may also be set as a property in the <code>persistence.xml</code> deployment descriptor.</p>
+
+          <p>If <code>javax.persistence.lock.timeout</code> is set in multiple places, the value will be determined in the following order:</p>
+
+          <ol>
+            <li>
+              <p>The argument to one of the <code>EntityManager</code> or <code>Query</code> methods</p>
+            </li>
+
+            <li>
+              <p>The setting in the <code>@NamedQuery</code> annotation</p>
+            </li>
+
+            <li>
+              <p>The argument to the <code>Persistence.createEntityManagerFactory</code> method</p>
+            </li>
+
+            <li>
+              <p>The value in the <code>persistence.xml</code> deployment descriptor</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

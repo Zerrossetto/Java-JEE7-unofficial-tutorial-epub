@@ -1,0 +1,1368 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKJIQ5"></a>
+
+    <h1 class="chapter"><span class="secnum">18</span> <a id="sthref1260"></a>Java API for WebSocket</h1>
+
+    <p>This chapter describes the Java API for WebSocket (JSR 356), which provides support for creating WebSocket applications. WebSocket is an application protocol that provides full-duplex communications between two peers over the TCP protocol.</p>
+
+    <p>In the traditional request-response model used in HTTP, the client requests resources, and the server provides responses. The exchange is always initiated by the client; the server cannot send any data without the client requesting it first. This model worked well for the World Wide Web when clients made occasional requests for documents that changed infrequently, but the limitations of this approach are increasingly relevant as content changes quickly and users expect a more interactive experience on the Web. The WebSocket protocol addresses these limitations by providing a full-duplex communication channel between the client and the server. Combined with other client technologies, such as JavaScript and HTML5, WebSocket enables web applications to deliver a richer user experience.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABDABHF">Introduction to WebSocket</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABEAEFC">Creating WebSocket Applications in the Java EE Platform</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABGJEIG">Programmatic Endpoints</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABFEBGA">Annotated Endpoints</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABFCGBJ">Sending and Receiving Messages</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABGJCAD">Maintaining Client State</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABGADFG">Using Encoders and Decoders</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABEJIJI">Path Parameters</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABDEJHB">Handling Errors</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABJAIGH">Specifying an Endpoint Configurator Class</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABGCEHE">The dukeetf2 Example Application</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABCDBBC">The websocketbot Example Application</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/websocket.xhtml#BABDFIFD">Further Information about WebSocket</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BABDABHF"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.1</span> Introduction to WebSocket<a id="sthref1261"></a></h1>
+
+      <p><a id="sthref1262"></a>In a WebSocket application, the server publishes a WebSocket <span class="glossaryterm">endpoint</span>, and the client uses the endpoint's URI to connect to the server. The WebSocket protocol is symmetrical after the connection has been established; the client and the server can send messages to each other at any time while the connection is open, and they can close the connection at any time. Clients usually connect only to one server, and servers accept connections from multiple clients.</p>
+
+      <p>The WebSocket protocol has two parts: handshake and data transfer. The client initiates the handshake by sending a request to a WebSocket endpoint using its URI. The handshake is compatible with existing HTTP-based infrastructure: web servers interpret it as an HTTP connection upgrade request. An example handshake from a client looks like this:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">GET /path/to/websocket/endpoint HTTP/1.1
+Host: localhost
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: xqBt3ImNzJbYqRINxEFlkg==
+Origin: http://localhost
+Sec-WebSocket-Version: 13</pre>
+
+      <p>An example handshake from the server in response to the client looks like this:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: K7DJLdLooIwIG/MOpvWFB3y3FE8=</pre>
+
+      <p>The server applies a known operation to the value of the <code>Sec-WebSocket-Key</code> header to generate the value of the <code>Sec-WebSocket-Accept</code> header. The client applies the same operation to the value of the <code>Sec-WebSocket-Key</code> header, and the connection is established successfully if the result matches the value received from the server. The client and the server can send messages to each other after a successful handshake.</p>
+
+      <p>WebSocket supports text messages (encoded as UTF-8) and binary messages. The control frames in WebSocket are <span class="italic">close</span>, <span class="italic">ping</span>, and <span class="italic">pong</span> (a response to a <span class="italic">ping</span> frame). Ping and pong frames may also contain application data.</p>
+
+      <p>WebSocket endpoints are represented by URIs that have the following form:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ws://host:port/path?query
+wss://host:port/path?query</pre>
+
+      <p>The <code>ws</code> scheme represents an unencrypted WebSocket connection, and the <code>wss</code> scheme represents an encrypted connection. The <code>port</code> component is optional; the default port number is 80 for unencrypted connections and 443 for encrypted connections. The <code>path</code> component indicates the location of an endpoint within a server. The <code>query</code> component is optional.</p>
+
+      <p>Modern web browsers implement the WebSocket protocol and provide a JavaScript API to connect to endpoints, send messages, and assign callback methods for WebSocket events (such as opened connections, received messages, and closed connections).</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABEAEFC"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.2</span> Creating WebSocket Applications in the Java EE Platform<a id="sthref1263"></a></h1>
+
+      <p>The Java EE platform includes the Java API for WebSocket (JSR 356), which enables you to create, configure, and deploy WebSocket endpoints in web applications. The WebSocket client API specified in JSR 356 also enables you to access remote WebSocket endpoints from any Java application.</p>
+
+      <p>The Java API for WebSocket consists of the following packages.</p>
+
+      <ul>
+        <li>
+          <p>The <code>javax.websocket.server</code> package contains annotations, classes, and interfaces to create and configure server endpoints.</p>
+        </li>
+
+        <li>
+          <p>The <code>javax.websocket</code> package contains annotations, classes, interfaces, and exceptions that are common to client and server endpoints.</p>
+        </li>
+      </ul>
+
+      <p>WebSocket endpoints are instances of the <code>javax.websocket.Endpoint</code> class. The Java API for WebSocket enables you to create two kinds of endpoints: programmatic endpoints and annotated endpoints. To create a <span class="glossaryterm">programmatic endpoint</span>, you extend the <code>Endpoint</code> class and override its lifecycle methods. To create an <span class="glossaryterm">annotated endpoint</span>, you decorate a Java class and some of its methods with the annotations provided by the packages mentioned previously. After you have created an endpoint, you deploy it to an specific URI in the application so that remote clients can connect to it.</p>
+
+      <div align="center">
+        <div class="inftblnote">
+          <br />
+
+          <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+            <tbody>
+              <tr>
+                <td align="left">
+                  <p class="notep1">Note:</p>
+
+                  <p>In most cases, it is easier to create and deploy an annotated endpoint than a programmatic endpoint. This chapter provides a simple example of a programmatic endpoint, but it focuses on annotated endpoints.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div>
+
+      <p>The process for creating and deploying a WebSocket endpoint follows.</p>
+
+      <ol>
+        <li>
+          <p>Create an endpoint class.</p>
+        </li>
+
+        <li>
+          <p>Implement the lifecycle methods of the endpoint.</p>
+        </li>
+
+        <li>
+          <p>Add your business logic to the endpoint.</p>
+        </li>
+
+        <li>
+          <p>Deploy the endpoint inside a web application.</p>
+        </li>
+      </ol>
+
+      <p>The process is slightly different for programmatic endpoints and annotated endpoints, and it is covered in detail in the following sections.</p>
+
+      <div align="center">
+        <div class="inftblnote">
+          <br />
+
+          <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+            <tbody>
+              <tr>
+                <td align="left">
+                  <p class="notep1">Note:</p>
+
+                  <p>As opposed to servlets, WebSocket endpoints are instantiated multiple times. The container creates an instance of an endpoint per connection to its deployment URI. Each instance is associated with one and only one connection. This facilitates keeping user state for each connection and makes development easier, because there is only one thread executing the code of an endpoint instance at any given time.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table><br />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABGJEIG"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.3</span> Programmatic Endpoints<a id="sthref1264"></a></h1>
+
+      <p>The following example shows how to create an endpoint by extending the <code>Endpoint</code> class:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class EchoEndpoint extends Endpoint {
+   @Override
+   public void onOpen(final Session session, EndpointConfig config) {
+      session.addMessageHandler(new MessageHandler.Whole&lt;String&gt;() {
+         @Override
+         public void onMessage(String msg) {
+            try {
+               session.getBasicRemote().sendText(msg);
+            } catch (IOException e) { ... }
+         }
+      });
+   }
+}</pre>
+
+      <p>This endpoint echoes every message received. The <code>Endpoint</code> class defines three lifecycle methods: <code>onOpen</code>, <code>onClose</code>, and <code>onError</code>. The <code>EchoEndpoint</code> class implements the <code>onOpen</code> method, which is the only abstract method in the <code>Endpoint</code> class.</p>
+
+      <p>The <code>Session</code> parameter represents a conversation between this endpoint and the remote endpoint. The <code>addMessageHandler</code> method registers message handlers, and the <code>getBasicRemote</code> method returns an object that represents the remote endpoint. The <code>Session</code> interface is covered in detail in the rest of this chapter.</p>
+
+      <p>The message handler is implemented as an anonymous inner class. The <code>onMessage</code> method of the message handler is invoked when the endpoint receives a text message.</p>
+
+      <p>To deploy this programmatic endpoint, use the following code in your Java EE application:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ServerEndpointConfig.Builder.create(EchoEndpoint.class, "/echo").build();</pre>
+
+      <p>When you deploy your application, the endpoint is available at <code>ws://host:port/application/echo</code>; for example, <code>ws://localhost:8080/echoapp/echo</code>.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABFEBGA"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.4</span> Annotated Endpoints<a id="sthref1265"></a></h1>
+
+      <p>The following example shows how to create the same endpoint from <a href="../Text/websocket.xhtml#BABGJEIG">Programmatic Endpoints</a> using annotations instead:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/echo")
+public class EchoEndpoint {
+   @OnMessage
+   public void onMessage(Session session, String msg) {
+      try {
+         session.getBasicRemote().sendText(msg);
+      } catch (IOException e) { ... }
+   }
+}</pre>
+
+      <p>The annotated endpoint is simpler than the equivalent programmatic endpoint, and it is deployed automatically with the application to the relative path defined in the <code>ServerEndpoint</code> annotation. Instead of having to create an additional class for the message handler, this example uses the <code>OnMessage</code> annotation to designate the method invoked to handle messages.</p>
+
+      <p><a href="../Text/websocket.xhtml#BABDGEJH">Table 18-1</a> lists the annotations available in the <code>javax.websocket</code> package to designate the methods that handle lifecycle events. The examples in the table show the most common parameters for these methods. See the API reference for details on what combinations of parameters are allowed in each case.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref1266"></a><a id="BABDGEJH"></a>
+
+        <p class="titleintable">Table 18-1 WebSocket Endpoint Lifecycle Annotations</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="This table lists the annotations for methods that are invoked when an endpoint lifecyle event occurs." title="WebSocket Endpoint Lifecycle Annotations" width="100%">
+          <col width="19%" />
+          <col width="27%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t4" valign="bottom">Annotation</th>
+
+              <th align="left" id="r1c2-t4" valign="bottom">Event</th>
+
+              <th align="left" id="r1c3-t4" valign="bottom">Example</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r2c1-t4">
+                <p><code>OnOpen</code><a id="sthref1267"></a></p>
+              </td>
+
+              <td align="left" headers="r2c1-t4 r1c2-t4">
+                <p>Connection opened</p>
+              </td>
+
+              <td align="left" headers="r2c1-t4 r1c3-t4">
+                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OnOpenpublic void open(Session session,                  EndpointConfig conf) { }</pre>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r3c1-t4">
+                <p><code>OnMessage</code><a id="sthref1268"></a></p>
+              </td>
+
+              <td align="left" headers="r3c1-t4 r1c2-t4">
+                <p>Message received</p>
+              </td>
+
+              <td align="left" headers="r3c1-t4 r1c3-t4">
+                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OnMessagepublic void message(Session session,                     String msg) { }</pre>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r4c1-t4">
+                <p><code>OnError</code><a id="sthref1269"></a></p>
+              </td>
+
+              <td align="left" headers="r4c1-t4 r1c2-t4">
+                <p>Connection error</p>
+              </td>
+
+              <td align="left" headers="r4c1-t4 r1c3-t4">
+                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OnErrorpublic void error(Session session,                   Throwable error) { }</pre>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t4" id="r5c1-t4">
+                <p><code>OnClose</code><a id="sthref1270"></a></p>
+              </td>
+
+              <td align="left" headers="r5c1-t4 r1c2-t4">
+                <p>Connection closed</p>
+              </td>
+
+              <td align="left" headers="r5c1-t4 r1c3-t4">
+                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OnClosepublic void close(Session session,                   CloseReason reason) { }</pre>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABFCGBJ"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.5</span> Sending and Receiving Messages</h1>
+
+      <p>WebSocket endpoints can send and receive text and binary messages. In addition, they can also send ping frames and receive pong frames. This section describes how to use the <code>Session</code> and <code>RemoteEndpoint</code> interfaces to send messages to the connected peer and how to use the <code>OnMessage</code> annotation to receive messages from it.</p>
+
+      <div class="sect2">
+        <a id="sthref1271"></a>
+
+        <h2 class="sect2"><span class="secnum">18.5.1</span> Sending Messages<a id="sthref1272"></a></h2>
+
+        <p>Follow these steps to send messages in an endpoint.</p>
+
+        <ol>
+          <li>
+            <p>Obtain the <code>Session</code> object from the connection.</p>
+
+            <p>The <code>Session</code> object is available as a parameter in the annotated lifecycle methods of the endpoint, like those in <a href="../Text/websocket.xhtml#BABDGEJH">Table 18-1</a>. When your message is a response to a message from the peer, you have the <code>Session</code> object available inside the method that received the message (the method annotated with <code>@OnMessage</code>). If you have to send messages that are not responses, store the <code>Session</code> object as an instance variable of the endpoint class in the method annotated with <code>@OnOpen</code> so that you can access it from other methods.</p>
+          </li>
+
+          <li>
+            <p>Use the <code>Session</code> object to obtain a <code>RemoteEndpoint</code> object.</p>
+
+            <p>The <code>Session.getBasicRemote</code> method and the <code>Session.getAsyncRemote</code> method return <code>RemoteEndpoint.Basic</code> and <code>RemoteEndpoint.Async</code> objects respectively. The <code>RemoteEndpoint.Basic</code> interface provides blocking methods to send messages; the <code>RemoteEndpoint.Async</code> interface provides nonblocking methods.</p>
+          </li>
+
+          <li>
+            <p>Use the <code>RemoteEndpoint</code> object to send messages to the peer.</p>
+
+            <p>The following list shows some of the methods you can use to send messages to the peer.</p>
+
+            <ul>
+              <li>
+                <p><code>void RemoteEndpoint.Basic.sendText(String text)</code></p>
+
+                <p>Send a text message to the peer. This method blocks until the whole message has been transmitted.</p>
+              </li>
+
+              <li>
+                <p><code>void RemoteEndpoint.Basic.sendBinary(ByteBuffer data)</code></p>
+
+                <p>Send a binary message to the peer. This method blocks until the whole message has been transmitted.</p>
+              </li>
+
+              <li>
+                <p><code>void RemoteEndpoint.sendPing(ByteBuffer appData)</code></p>
+
+                <p>Send a ping frame to the peer.</p>
+              </li>
+
+              <li>
+                <p><code>void RemoteEndpoint.sendPong(ByteBuffer appData)</code></p>
+
+                <p>Send a pong frame to the peer.</p>
+              </li>
+            </ul>
+          </li>
+        </ol>
+
+        <p>The example in <a href="../Text/websocket.xhtml#BABFEBGA">Annotated Endpoints</a> demonstrates how to use this procedure to reply to every incoming text message.</p><a id="BABIFBCG"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">18.5.1.1</span> Sending Messages to All Peers Connected to an Endpoint</h3>
+
+          <p>Each instance of an endpoint class is associated with one and only one connection and peer; however, there are cases in which an endpoint instance needs to send messages to all connected peers. Examples include chat applications and online auctions. The <code>Session</code> interface provides the <code>getOpenSessions</code> method for this purpose. The following example demonstrates how to use this method to forward incoming text messages to all connected peers:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/echoall")
+public class EchoAllEndpoint {
+   @OnMessage
+   public void onMessage(Session session, String msg) {
+      try {
+         for (Session sess : session.getOpenSessions()) {
+            if (sess.isOpen())
+               sess.getBasicRemote().sendText(msg);
+         }
+      } catch (IOException e) { ... }
+   }
+}</pre>
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1273"></a>
+
+        <h2 class="sect2"><span class="secnum">18.5.2</span> Receiving Messages<a id="sthref1274"></a></h2>
+
+        <p>The <code>OnMessage</code> annotation designates methods that handle incoming messages. You can have at most three methods annotated with <code>@OnMessage</code> in an endpoint, one for each message type: text, binary, and pong. The following example demonstrates how to designate methods to receive all three types of messages:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/receive")
+public class ReceiveEndpoint {
+   @OnMessage
+   public void textMessage(Session session, String msg) {
+      System.out.println("Text message: " + msg);
+   }
+   @OnMessage
+   public void binaryMessage(Session session, ByteBuffer msg) {
+      System.out.println("Binary message: " + msg.toString());
+   }
+   @OnMessage
+   public void pongMessage(Session session, PongMessage msg) {
+      System.out.println("Pong message: " + 
+                          msg.getApplicationData().toString());
+   }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABGJCAD"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.6</span> Maintaining Client State<a id="sthref1275"></a></h1>
+
+      <p>Because the container creates an instance of the endpoint class for every connection, you can define and use instance variables to store client state information. In addition, the <code>Session.getUserProperties</code> method provides a modifiable map to store user properties. For example, the following endpoint replies to incoming text messages with the contents of the previous message from each client:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/delayedecho")
+public class DelayedEchoEndpoint {
+   @OnOpen
+   public void open(Session session) {
+      session.getUserProperties().put("previousMsg", " ");
+   }
+   @OnMessage
+   public void message(Session session, String msg) {
+      String prev = (String) session.getUserProperties()
+                                    .get("previousMsg");
+      session.getUserProperties().put("previousMsg", msg);
+      try {
+         session.getBasicRemote().sendText(prev);
+      } catch (IOException e) { ... }
+   }
+}</pre>
+
+      <p>To store information common to all connected clients, you can use class (static) variables; however, you are responsible for ensuring thread-safe access to them.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABGADFG"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.7</span> Using Encoders and Decoders</h1>
+
+      <p>The Java API for WebSocket provides support for converting between WebSocket messages and custom Java types using encoders and decoders. An encoder takes a Java object and produces a representation that can be transmitted as a WebSocket message; for example, encoders typically produce JSON, XML, or binary representations. A decoder performs the reverse function; it reads a WebSocket message and creates a Java object.</p>
+
+      <p>This mechanism simplifies WebSocket applications, because it decouples the business logic from the serialization and deserialization of objects.</p>
+
+      <div class="sect2">
+        <a id="sthref1276"></a>
+
+        <h2 class="sect2"><span class="secnum">18.7.1</span> Implementing Encoders to Convert Java Objects into WebSocket Messages<a id="sthref1277"></a></h2>
+
+        <p>The procedure to implement and use encoders in endpoints follows.</p>
+
+        <ol>
+          <li>
+            <p>Implement one of the following interfaces:</p>
+
+            <ul>
+              <li>
+                <p><code>Encoder.TextT</code> for text messages</p>
+              </li>
+
+              <li>
+                <p><code>Encoder.BinaryT</code> for binary messages</p>
+              </li>
+            </ul>
+
+            <p>These interfaces specify the <code>encode</code> method. Implement an encoder class for each custom Java type that you want to send as a WebSocket message.</p>
+          </li>
+
+          <li>
+            <p>Add the names of your encoder implementations to the <code>encoders</code> optional parameter of the <code>ServerEndpoint</code> annotation.</p>
+          </li>
+
+          <li>
+            <p>Use the <code>sendObject(Object data)</code> method of the <code>RemoteEndpoint.Basic</code> or <code>RemoteEndpoint.Async</code> interfaces to send your objects as messages. The container looks for an encoder that matches your type and uses it to convert the object to a WebSocket message.</p>
+          </li>
+        </ol>
+
+        <p>For example, if you have two Java types (<code>MessageA</code> and <code>MessageB</code>) that you want to send as text messages, implement the <code>Encoder.TextMessageA</code> and <code>Encoder.TextMessageB</code> interfaces as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class MessageATextEncoder implements Encoder.Text&lt;MessageA&gt; {
+   @Override
+   public void init(EndpointConfig ec) { }
+   @Override
+   public void destroy() { }
+   @Override
+   public String encode(MessageA msgA) throws EncodeException {
+      // Access msgA's properties and convert to JSON text...
+      return msgAJsonString;
+   }
+}</pre>
+
+        <p>Implement <code>Encoder.TextMessageB</code> similarly. Then, add the <code>encoders</code> parameter to the <code>ServerEndpoint</code> annotation as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint(
+   value = "/myendpoint",
+   encoders = { MessageATextEncoder.class, MessageBTextEncoder.class }
+)
+public class EncEndpoint { ... }</pre>
+
+        <p>Now, you can send <code>MessageA</code> and <code>MessageB</code> objects as WebSocket messages using the <code>sendObject</code> method as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">MessageA msgA = new MessageA(...);
+MessageB msgB = new MessageB(...);
+session.getBasicRemote.sendObject(msgA);
+session.getBasicRemote.sendObject(msgB);</pre>
+
+        <p>As in this example, you can have more than one encoder for text messages and more than one encoder for binary messages. Like endpoints, encoder instances are associated with one and only one WebSocket connection and peer, so there is only one thread executing the code of an encoder instance at any given time.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1278"></a>
+
+        <h2 class="sect2"><span class="secnum">18.7.2</span> Implementing Decoders to Convert WebSocket Messages into Java Objects<a id="sthref1279"></a></h2>
+
+        <p>The procedure to implement and use decoders in endpoints follows.</p>
+
+        <ol>
+          <li>
+            <p>Implement one of the following interfaces:</p>
+
+            <ul>
+              <li>
+                <p><code>Decoder.TextT</code> for text messages</p>
+              </li>
+
+              <li>
+                <p><code>Decoder.BinaryT</code> for binary messages</p>
+              </li>
+            </ul>
+
+            <p>These interfaces specify the <code>willDecode</code> and <code>decode</code> methods.</p>
+
+            <div align="center">
+              <div class="inftblnote">
+                <br />
+
+                <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+                  <tbody>
+                    <tr>
+                      <td align="left">
+                        <p class="notep1">Note:</p>
+
+                        <p>Unlike with encoders, you can specify at most <span class="italic">one</span> decoder for binary messages and <span class="italic">one</span> decoder for text messages.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table><br />
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <p>Add the names of your decoder implementations to the <code>decoders</code> optional parameter of the <code>ServerEndpoint</code> annotation.</p>
+          </li>
+
+          <li>
+            <p>Use the <code>OnMessage</code> annotation in the endpoint to designate a method that takes your custom Java type as a parameter. When the endpoint receives a message that can be decoded by one of the decoders you specified, the container calls the method annotated with <code>@OnMessage</code> that takes your custom Java type as a parameter if this method exists.</p>
+          </li>
+        </ol>
+
+        <p>For example, if you have two Java types (<code>MessageA</code> and <code>MessageB</code>) that you want to send and receive as text messages, define them so that they extend a common class (<code>Message</code>). Because you can only define one decoder for text messages, implement a decoder for the <code>Message</code> class as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class MessageTextDecoder implements Decoder.Text&lt;Message&gt; {
+   @Override
+   public void init(EndpointConfig ec) { }
+   @Override
+   public void destroy() { }
+   @Override
+   public Message decode(String string) throws DecodeException {
+      // Read message...
+      if ( /* message is an A message */ )
+         return new MessageA(...);
+      else if ( /* message is a B message */ )
+         return new MessageB(...);
+   }
+   @Override
+   public boolean willDecode(String string) {
+      // Determine if the message can be converted into either a
+      // MessageA object or a MessageB object...
+      return canDecode;
+   }
+}</pre>
+
+        <p>Then, add the <code>decoder</code> parameter to the <code>ServerEndpoint</code> annotation as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint(
+   value = "/myendpoint",
+   encoders = { MessageATextEncoder.class, MessageBTextEncoder.class },
+   decoders = { MessageTextDecoder.class }
+)
+public class EncDecEndpoint { ... }</pre>
+
+        <p>Now, define a method in the endpoint class that receives <code>MessageA</code> and <code>MessageB</code> objects as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OnMessage
+public void message(Session session, Message msg) {
+   if (msg instanceof MessageA) {
+      // We received a MessageA object...
+   } else if (msg instanceof MessageB) {
+      // We received a MessageB object...
+   }
+}</pre>
+
+        <p>Like endpoints, decoder instances are associated with one and only one WebSocket connection and peer, so there is only one thread executing the code of a decoder instance at any given time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABEJIJI"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.8</span> Path Parameters<a id="sthref1280"></a></h1>
+
+      <p>The <code>ServerEndpoint</code> annotation enables you to use URI templates to specify parts of an endpoint deployment URI as application parameters. For example, consider this endpoint:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/chatrooms/{room-name}")
+public class ChatEndpoint {
+   ...
+}</pre>
+
+      <p>If the endpoint is deployed inside a web application called <code>chatapp</code> at a local Java EE server in port 8080, clients can connect to the endpoint using any of the following URIs:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/chatapp/chatrooms/currentnews
+http://localhost:8080/chatapp/chatrooms/music
+http://localhost:8080/chatapp/chatrooms/cars
+http://localhost:8080/chatapp/chatrooms/technology</pre>
+
+      <p>Annotated endpoints can receive path parameters as arguments in methods annotated with <code>@OnOpen</code>, <code>@OnMessage</code>, and <code>@OnClose</code>. In this example, the endpoint uses the parameter in the <code>@OnOpen</code> method to determine which chat room the client wants to join:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/chatrooms/{room-name}")
+public class ChatEndpoint {
+   @OnOpen
+   public void open(Session session, 
+                    EndpointConfig c, 
+                    @PathParam("room-name") String roomName) {
+      // Add the client to the chat room of their choice ...
+   }
+}</pre>
+
+      <p>The path parameters used as arguments in these methods can be strings, primitive types, or the corresponding wrapper types.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABDEJHB"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.9</span> Handling Errors<a id="sthref1281"></a></h1>
+
+      <p>To designate a method that handles errors in an annotated WebSocket endpoint, decorate it with <code>@OnError</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/testendpoint")
+public class TestEndpoint {
+   ...
+   @OnError
+   public void error(Session session, Throwable t) {
+      t.printStackTrace();
+      ...
+   }
+}</pre>
+
+      <p>This method is invoked when there are connection problems, runtime errors from message handlers, or conversion errors when decoding messages.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABJAIGH"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.10</span> Specifying an Endpoint Configurator Class<a id="sthref1282"></a></h1>
+
+      <p>The Java API for WebSocket enables you to configure how the container creates server endpoint instances. You can provide custom endpoint configuration logic to:</p>
+
+      <ul>
+        <li>
+          <p>Access the details of the initial HTTP request for a WebSocket connection</p>
+        </li>
+
+        <li>
+          <p>Perform custom checks on the <code>Origin</code> HTTP header</p>
+        </li>
+
+        <li>
+          <p>Modify the WebSocket handshake response</p>
+        </li>
+
+        <li>
+          <p>Choose a WebSocket subprotocol from those requested by the client</p>
+        </li>
+
+        <li>
+          <p>Control the instantiation and initialization of endpoint instances</p>
+        </li>
+      </ul>
+
+      <p>To provide custom endpoint configuration logic, you extend the <code>ServerEndpointConfig.Configurator</code> class and override some of its methods. In the endpoint class, you specify the configurator class using the <code>configurator</code> parameter of the <code>ServerEndpoint</code> annotation.</p>
+
+      <p>For example, the following configurator class makes the handshake request object available to endpoint instances:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class CustomConfigurator extends ServerEndpointConfig.Configurator {
+
+    @Override
+    public void modifyHandshake(ServerEndpointConfig conf,
+                                HandshakeRequest req,
+                                HandshakeResponse resp) {
+
+        conf.getUserProperties().put("handshakereq", req);
+    }
+
+}</pre>
+
+      <p>The following endpoint class configures endpoint instances with the custom configurator, which enables them to access the handshake request object:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint(
+    value = "/myendpoint",
+    configurator = CustomConfigurator.class
+)
+public class MyEndpoint {
+
+    @OnOpen
+    public void open(Session s, EndpointConfig conf) {
+        HandshakeRequest req = (HandshakeRequest) conf.getUserProperties()
+                                                      .get("handshakereq");
+        Map&lt;String,List&lt;String&gt;&gt; headers = req.getHeaders();
+        ...
+    }
+}</pre>
+
+      <p>The endpoint class can use the handshake request object to access the details of the initial HTTP request, such as its headers or the <code>HttpSession</code> object.</p>
+
+      <p>For more information on endpoint configuration, see the API reference for the <code>ServerEndpointConfig.Configurator</code> class.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABGCEHE"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.11</span> The dukeetf2 Example Application<a id="sthref1283"></a><a id="sthref1284"></a></h1>
+
+      <p>The <code>dukeetf2</code> example application, located in the <span class="variable">tut-install</span><code>/examples/web/websocket/dukeetf2/</code> directory, demonstrates how to use a WebSocket endpoint to provide data updates to web clients. The example resembles a service that provides periodic updates on the price and trading volume of an electronically traded fund (ETF).</p>
+
+      <div class="sect2">
+        <a id="sthref1285"></a>
+
+        <h2 class="sect2"><span class="secnum">18.11.1</span> Architecture of the dukeetf2 Sample Application</h2>
+
+        <p>The <code>dukeetf2</code> example application consists of a WebSocket endpoint, an enterprise bean, and an HTML page.</p>
+
+        <ul>
+          <li>
+            <p>The endpoint accepts connections from clients and sends them updates when new data for price and trading volume becomes available.</p>
+          </li>
+
+          <li>
+            <p>The enterprise bean updates the price and volume information once every second.</p>
+          </li>
+
+          <li>
+            <p>The HTML page uses JavaScript code to connect to the WebSocket endpoint, parse incoming messages, and update the price and volume information without reloading the page.</p>
+          </li>
+        </ul>
+
+        <div class="sect3">
+          <a id="sthref1286"></a>
+
+          <h3 class="sect3"><span class="secnum">18.11.1.1</span> The Endpoint</h3>
+
+          <p>The WebSocket endpoint is implemented in the <code>ETFEndpoint</code> class, which stores all connected sessions in a queue and provides a method that the enterprise bean calls when there is new information available to send:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/dukeetf")
+public class ETFEndpoint {
+   private static final Logger logger = Logger.getLogger("ETFEndpoint");
+   /* Queue for all open WebSocket sessions */
+   static Queue&lt;Session&gt; queue = new ConcurrentLinkedQueue&lt;&gt;();
+
+   /* PriceVolumeBean calls this method to send updates */
+   public static void send(double price, int volume) {
+      String msg = String.format("%.2f / %d", price, volume);
+      try {
+         /* Send updates to all open WebSocket sessions */
+         for (Session session : queue) {
+            session.getBasicRemote().sendText(msg);
+            logger.log(Level.INFO, "Sent: {0}", msg);
+         }
+      } catch (IOException e) {
+         logger.log(Level.INFO, e.toString());
+      }
+    }
+    ...
+}</pre>
+
+          <p>The lifecycle methods of the endpoint add and remove sessions to and from the queue:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint("/dukeetf")
+public class ETFEndpoint {
+   ...
+   @OnOpen
+   public void openConnection(Session session) {
+      /* Register this connection in the queue */
+      queue.add(session);
+      logger.log(Level.INFO, "Connection opened.");
+   }
+
+   @OnClose
+   public void closedConnection(Session session) {
+      /* Remove this connection from the queue */
+      queue.remove(session);
+      logger.log(Level.INFO, "Connection closed.");
+   }
+
+   @OnError
+   public void error(Session session, Throwable t) {
+      /* Remove this connection from the queue */
+      queue.remove(session);
+      logger.log(Level.INFO, t.toString());
+      logger.log(Level.INFO, "Connection error.");
+   }
+}</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1287"></a>
+
+          <h3 class="sect3"><span class="secnum">18.11.1.2</span> The Enterprise Bean</h3>
+
+          <p>The enterprise bean uses the timer service to generate new price and volume information every second:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Startup
+@Singleton
+public class PriceVolumeBean {
+   /* Use the container's timer service */
+   @Resource TimerService tservice;
+   private Random random;
+   private volatile double price = 100.0;
+   private volatile int volume = 300000;
+   private static final Logger logger = Logger.getLogger("PriceVolumeBean");
+   
+   @PostConstruct
+   public void init() {
+       /* Initialize the EJB and create a timer */
+       logger.log(Level.INFO, "Initializing EJB.");
+       random = new Random();
+       tservice.createIntervalTimer(1000, 1000, new TimerConfig());
+   }
+   
+   @Timeout
+   public void timeout() {
+       /* Adjust price and volume and send updates */
+       price += 1.0*(random.nextInt(100)-50)/100.0;
+       volume += random.nextInt(5000) - 2500;
+       ETFEndpoint.send(price, volume);
+   }
+}</pre>
+
+          <p>The enterprise bean calls the <code>send</code> method of the <code>ETFEndpoint</code> class in the timeout method. See <a href="../Text/ejb-basic-examples.xhtml#BNBOY">Using the Timer Service</a> in <a href="../Text/ejb-basic-examples.xhtml#GIJRB">Chapter 34, "Running the Enterprise Bean Examples"</a> for more information on the timer service.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1288"></a>
+
+          <h3 class="sect3"><span class="secnum">18.11.1.3</span> The HTML Page</h3>
+
+          <p>The HTML page consists of a table and some JavaScript code. The table contains two fields referenced from JavaScript code:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;...&lt;/head&gt;
+&lt;body&gt;
+  ...
+  &lt;table&gt;
+    ...
+    &lt;td id="price"&gt;--.--&lt;/td&gt;
+    ...
+    &lt;td id="volume"&gt;--&lt;/td&gt;
+    ...
+  &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+          <p>The JavaScript code uses the WebSocket API to connect to the server endpoint and to designate a callback method for incoming messages. The callback method updates the page with the new information.</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">var wsocket;
+function connect() {
+   wsocket = new WebSocket("ws://localhost:8080/dukeetf2/dukeetf");
+   wsocket.onmessage = onMessage;
+}
+function onMessage(evt) {
+   var arraypv = evt.data.split("/");
+   document.getElementById("price").innerHTML = arraypv[0];
+   document.getElementById("volume").innerHTML = arraypv[1];
+}
+window.addEventListener("load", connect, false);</pre>
+
+          <p>The WebSocket API is supported by most modern browsers, and it is widely used in HTML5 web client development.</p>
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1289"></a>
+
+        <h2 class="sect2"><span class="secnum">18.11.2</span> Running the dukeetf2 Example Application</h2>
+
+        <p>This section describes how to run the <code>dukeetf2</code> example application using NetBeans IDE and from the command line.</p>
+
+        <div class="sect3">
+          <a id="sthref1290"></a>
+
+          <h3 class="sect3"><span class="secnum">18.11.2.1</span> To Run the dukeetf2 Example Application Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="bold">File</span> menu, choose <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the Open Project dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/web/websocket</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>dukeetf2</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="bold">Projects</span> tab, right-click the <code>dukeetf2</code> project and select <span class="bold">Run</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file (<code>dukeetf2.war</code>) located in the <code>target/</code> directory, deploys it to the server, and launches a web browser window with the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/dukeetf2/</pre>
+
+              <p>Open the same URL on a different web browser tab or window to see how both pages get price and volume updates simultaneously.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1291"></a>
+
+          <h3 class="sect3"><span class="secnum">18.11.2.2</span> To Run the dukeetf2 Example Application Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/web/websocket/dukeetf2/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+            </li>
+
+            <li>
+              <p>Open a web browser window and enter the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/dukeetf2/</pre>
+
+              <p>Open the same URL on a different web browser tab or window to see how both pages get price and volume updates simultaneously.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABCDBBC"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.12</span> The websocketbot Example Application<a id="sthref1292"></a><a id="sthref1293"></a></h1>
+
+      <p>The <code>websocketbot</code> example application, located in the <span class="variable">tut-install</span><code>/examples/web/websocket/websocketbot/</code> directory, demonstrates how to use a WebSocket endpoint to implement a chat. The example resembles a chat room in which many users can join and have a conversation. Users can ask simple questions to a bot agent that is always available in the chat room.</p>
+
+      <div class="sect2">
+        <a id="sthref1294"></a>
+
+        <h2 class="sect2"><span class="secnum">18.12.1</span> Architecture of the websocketbot Example Application</h2>
+
+        <p>The <code>websocketbot</code> example application consists of the following elements:</p>
+
+        <ul>
+          <li>
+            <p>A CDI bean (<code>BotBean</code>) that contains the logic for the bot agent to reply to messages</p>
+          </li>
+
+          <li>
+            <p>A WebSocket endpoint (<code>BotEndpoint</code>) that implements the chat room</p>
+          </li>
+
+          <li>
+            <p>A set of classes (<code>Message</code>, <code>ChatMessage</code>, <code>InfoMessage</code>, <code>JoinMessage</code>, and <code>UsersMessage</code>) that represent application messages</p>
+          </li>
+
+          <li>
+            <p>A set of classes (<code>ChatMessageEncoder</code>, <code>InfoMessageEncoder</code>, <code>JoinMessageEncoder</code>, and <code>UsersMessageEncoder</code>) that encode application messages into WebSocket text messages as JSON data</p>
+          </li>
+
+          <li>
+            <p>A class (<code>MessageDecoder</code>) the parses WebSocket text messages as JSON data and decodes them into <code>JoinMessage</code> or <code>ChatMessage</code> objects</p>
+          </li>
+
+          <li>
+            <p>An HTML page (<code>index.html</code>) that uses JavaScript code to implement the client for the chat room</p>
+          </li>
+        </ul>
+
+        <div class="sect3">
+          <a id="sthref1295"></a>
+
+          <h3 class="sect3"><span class="secnum">18.12.1.1</span> The CDI Bean</h3>
+
+          <p>The CDI bean (<code>BotBean</code>) is a Java class that contains the <code>respond</code> method. This method compares the incoming chat message with a set of predefined questions and returns a chat response.</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named
+public class BotBean {
+    public String respond(String msg) { ... }
+}</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1296"></a>
+
+          <h3 class="sect3"><span class="secnum">18.12.1.2</span> The WebSocket Endpoint</h3>
+
+          <p>The WebSocket endpoint (<code>BotEndpoint</code>) is an annotated endpoint that performs the following functions:</p>
+
+          <ul>
+            <li>
+              <p>Receives messages from clients</p>
+            </li>
+
+            <li>
+              <p>Forwards messages to clients</p>
+            </li>
+
+            <li>
+              <p>Maintains a list of connected clients</p>
+            </li>
+
+            <li>
+              <p>Invokes the bot agent functionality</p>
+            </li>
+          </ul>
+
+          <p>The endpoint specifies its deployment URI and the message encoders and decoders using the <code>ServerEndpoint</code> annotation. The endpoint obtains an instance of the <code>BotBean</code> class and a managed executor service resource through dependency injection:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ServerEndpoint(
+   value = "/websocketbot",
+   decoders = { MessageDecoder.class }, 
+   encoders = { JoinMessageEncoder.class, ChatMessageEncoder.class, 
+                InfoMessageEncoder.class, UsersMessageEncoder.class }
+)
+/* There is a BotEndpoint instance per connection */
+public class BotEndpoint {
+   private static final Logger logger = Logger.getLogger("BotEndpoint");
+   /* Bot functionality bean */
+   @Inject private BotBean botbean;
+   /* Executor service for asynchronous processing */
+   @Resource(name="comp/DefaultManagedExecutorService")
+   private ManagedExecutorService mes;
+   
+   @OnOpen
+   public void openConnection(Session session) {
+       logger.log(Level.INFO, "Connection opened.");
+   }
+   ...
+}</pre>
+
+          <p>The <code>message</code> method processes incoming messages from clients. The decoder converts incoming text messages into <code>JoinMessage</code> or <code>ChatMessage</code> objects, which inherit from the <code>Message</code> class. The <code>message</code> method receives a <code>Message</code> object as a parameter:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OnMessage
+public void message(Session session, Message msg) {
+   logger.log(Level.INFO, "Received: {0}", msg.toString());
+   
+   if (msg instanceof JoinMessage) {
+      /* Add the new user and notify everybody */
+      JoinMessage jmsg = (JoinMessage) msg;
+      session.getUserProperties().put("name", jmsg.getName());
+      session.getUserProperties().put("active", true);
+      logger.log(Level.INFO, "Received: {0}", jmsg.toString());
+      sendAll(session, new InfoMessage(jmsg.getName() + 
+              " has joined the chat"));
+      sendAll(session, new ChatMessage("Duke", jmsg.getName(), 
+              "Hi there!!"));
+      sendAll(session, new UsersMessage(this.getUserList(session)));
+      
+   } else if (msg instanceof ChatMessage) {
+      /* Forward the message to everybody */
+      ChatMessage cmsg = (ChatMessage) msg;
+      logger.log(Level.INFO, "Received: {0}", cmsg.toString());
+      sendAll(session, cmsg);
+      if (cmsg.getTarget().compareTo("Duke") == 0) {
+         /* The bot replies to the message */
+         mes.submit(new Runnable() {
+            @Override
+            public void run() {
+               String resp = botbean.respond(cmsg.getMessage());
+               sendAll(session, new ChatMessage("Duke",
+                       cmsg.getName(), resp));
+            }
+         });
+      }
+   }
+}</pre>
+
+          <p>If the message is a join message, the endpoint adds the new user to the list and notifies all connected clients. If the message is a chat message, the endpoint forwards it to all connected clients.</p>
+
+          <p>If a chat message is for the bot agent, the endpoint obtains a response using the <code>BotBean</code> instance and sends it to all connected clients. The <code>sendAll</code> method is similar to the example in <a href="../Text/websocket.xhtml#BABIFBCG">Sending Messages to All Peers Connected to an Endpoint</a>.</p>
+
+          <p><span class="bold">Asynchronous Processing and Concurrency Considerations</span></p>
+
+          <p>The WebSocket endpoint calls the <code>BotBean.respond</code> method to obtain a response from the bot. In this example, this is a blocking operation; the user that sent the associated message would not be able to send or receive other chat messages until the operation completes. To avoid this problem, the endpoint obtains an executor service from the container and executes the blocking operation in a different thread using the <code>ManagedExecutorService.submit</code> method from Concurrency Utilities for Java EE.</p>
+
+          <p>The Java API for WebSocket specification requires that Java EE implementations instantiate endpoint classes once per connection. This facilitates the development of WebSocket endpoints, because you are guaranteed that only one thread is executing the code in a WebSocket endpoint class at any given time. When you introduce a new thread in an endpoint, as in this example, you must ensure that variables and methods accessed by more than one thread are thread safe. In this example, the code in <code>BotBean</code> is thread safe, and the <code>BotEndpoint.sendAll</code> method has been declared <code>synchronized</code>.</p>
+
+          <p>Refer to <a href="../Text/concurrency-utilities.xhtml#GKJIQ8">Chapter 56, "Concurrency Utilities for Java EE"</a> for more information on the managed executor service and Concurrency Utilities for Java EE.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1297"></a>
+
+          <h3 class="sect3"><span class="secnum">18.12.1.3</span> The Application Messages</h3>
+
+          <p>The classes that represent application messages (<code>Message</code>, <code>ChatMessage</code>, <code>InfoMessage</code>, <code>JoinMessage</code>, and <code>UsersMessage</code>) contain only properties and getter and setter methods. For example, the <code>ChatMessage</code> class looks like this:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class ChatMessage extends Message {
+    private String name;
+    private String target;
+    private String message;
+    /* ... Constructor, getters, and setters ... */
+}</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1298"></a>
+
+          <h3 class="sect3"><span class="secnum">18.12.1.4</span> The Encoder Classes</h3>
+
+          <p>The encoder classes convert application message objects into JSON text using the Java API for JSON Processing. For example, the <code>ChatMessageEncoder</code> class is implemented as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">/* Encode a ChatMessage as JSON.
+ * For example, (new ChatMessage("Peter","Duke","How are you?"))
+ * is encoded as follows:
+ * {"type":"chat","target":"Duke","message":"How are you?"}
+ */
+public class ChatMessageEncoder implements Encoder.Text&lt;ChatMessage&gt; {
+   @Override
+   public void init(EndpointConfig ec) { }
+   @Override
+   public void destroy() { }
+   @Override
+   public String encode(ChatMessage chatMessage) throws EncodeException {
+      // Access properties in chatMessage and write JSON text...
+   }
+}</pre>
+
+          <p>See <a href="../Text/websocket.xhtml#GLRBB">Chapter 19</a>, <a href="../Text/jsonp.xhtml#GLRBB">JSON Processing</a> for more information on the Java API for JSON Processing.</p>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1299"></a>
+
+          <h3 class="sect3"><span class="secnum">18.12.1.5</span> The Message Decoder</h3>
+
+          <p>The message decoder (<code>MessageDecoder</code>) class converts WebSocket text messages into application messages by parsing JSON text. It is implemented as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">/* Decode a JSON message into a JoinMessage or a ChatMessage.
+ * For example, the incoming message
+ * {"type":"chat","name":"Peter","target":"Duke","message":"How are you?"}
+ * is decoded as (new ChatMessage("Peter", "Duke", "How are you?"))
+ */
+public class MessageDecoder implements Decoder.Text&lt;Message&gt; {
+    /* Stores the name-value pairs from a JSON message as a Map */
+    private Map&lt;String,String&gt; messageMap;
+
+    @Override
+    public void init(EndpointConfig ec) { }
+    @Override
+    public void destroy() { }
+
+    /* Create a new Message object if the message can be decoded */
+    @Override
+    public Message decode(String string) throws DecodeException {
+       Message msg = null;
+       if (willDecode(string)) {
+          switch (messageMap.get("type")) {
+             case "join":
+                msg = new JoinMessage(messageMap.get("name"));
+                break;
+             case "chat":
+                msg = new ChatMessage(messageMap.get("name"),
+                                      messageMap.get("target"),
+                                      messageMap.get("message"));
+          }
+       } else {
+          throw new DecodeException(string, "[Message] Can't decode.");
+       }
+       return msg;
+   }
+   
+   /* Decode a JSON message into a Map and check if it contains
+    * all the required fields according to its type. */
+   @Override
+   public boolean willDecode(String string) {
+      // Convert JSON data from the message into a name-value map...
+      // Check if the message has all the fields for its message type...
+   }
+}</pre>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1300"></a>
+
+          <h3 class="sect3"><span class="secnum">18.12.1.6</span> The HTML Page</h3>
+
+          <p>The HTML page (<code>index.html</code>) contains a field for the user name. After the user types a name and clicks <span class="bold">Join</span>, three text areas are available: one to type and send messages, one for the chat room, and one with the list of users. The page also contains a WebSocket console that shows the messages sent and received as JSON text.</p>
+
+          <p>The JavaScript code on the page uses the WebSocket API to connect to the endpoint, send messages, and designate callback methods. The WebSocket API is supported by most modern browsers and is widely used for web client development with HTML5.</p>
+        </div>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1301"></a>
+
+        <h2 class="sect2"><span class="secnum">18.12.2</span> Running the websocketbot Example Application</h2>
+
+        <p>This section describes how to run the <code>websocketbot</code> example application using NetBeans IDE and from the command line.</p>
+
+        <div class="sect3">
+          <a id="sthref1302"></a>
+
+          <h3 class="sect3"><span class="secnum">18.12.2.1</span> To Run the websocketbot Example Application Using NetBeans IDE</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>From the <span class="bold">File</span> menu, choose <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the Open Project dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/web/websocket</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>websocketbot</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="bold">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="bold">Projects</span> tab, right-click the <code>websocketbot</code> project and select <span class="bold">Run</span>.</p>
+
+              <p>This command builds and packages the application into a WAR file, <code>websocketbot.war</code>, located in the <code>target/</code> directory; deploys it to the server; and launches a web browser window with the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/websocketbot/</pre>
+
+              <p>See <a href="../Text/websocket.xhtml#BABDDAAG">To Test the websocketbot Example Application</a> for more information.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sect3">
+          <a id="sthref1303"></a>
+
+          <h3 class="sect3"><span class="secnum">18.12.2.2</span> To Run the websocketbot Example Application Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/web/websocket/websocketbot/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command to deploy the application:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+            </li>
+
+            <li>
+              <p>Open a web browser window and type the following address:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/websocketbot/</pre>
+
+              <p>See <a href="../Text/websocket.xhtml#BABDDAAG">To Test the websocketbot Example Application</a> for more information.</p>
+            </li>
+          </ol>
+        </div><a id="BABDDAAG"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">18.12.2.3</span> To Test the websocketbot Example Application</h3>
+
+          <ol>
+            <li>
+              <p>On the main page, type your name on the first text field and press the Enter key.</p>
+
+              <p>The list of connected users appears on the text area on the right. The text area on the left is the chat room.</p>
+            </li>
+
+            <li>
+              <p>Type a message on the text area below the login button. For example, type the messages in bold and press enter to obtain responses similar to the following:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">[--Peter has joined the chat--]
+Duke: @Peter Hi there!!
+Peter: <b>@Duke how are you?</b>
+Duke: @Peter I'm doing great, thank you!
+Peter: <b>@Duke when is your birthday?</b>
+Duke: @Peter My birthday is on May 23rd. Thanks for asking!<br /></pre>
+            </li>
+
+            <li>
+              <p>Join the chat from another browser window by copying and pasting the URI on the address bar and joining with a different name.</p>
+
+              <p>The new user name appears in the list of users in both browser windows. You can send messages from either window and see how they appear in the other.</p>
+            </li>
+
+            <li>
+              <p>Click <span class="bold">Show WebSocket Console</span>.</p>
+
+              <p>The console shows the messages sent and received as JSON text.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BABDFIFD"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">18.13</span> Further Information about WebSocket</h1>
+
+      <p>For more information on WebSocket in Java EE, see the Java API for WebSocket specification:</p>
+
+      <p><code><a href="../Text/websocket.xhtml#http%3A//www.jcp.org/en/jsr/detail%3Fid%3D356">http://www.jcp.org/en/jsr/detail?id=356</a></code></p>
+    </div>
+  </div>
+</body>
+</html>

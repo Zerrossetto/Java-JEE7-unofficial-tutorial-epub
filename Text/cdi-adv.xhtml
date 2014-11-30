@@ -1,0 +1,749 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GJEHI"></a><a id="JEETT00093"></a>
+
+    <h1 class="chapter"><span class="secnum">25</span> <a id="sthref1408"></a>Contexts and Dependency Injection for Java EE: Advanced Topics</h1>
+
+    <p>This chapter describes more advanced features of Contexts and Dependency Injection for Java EE (CDI). Specifically, it covers additional features CDI provides to enable loose coupling of components with strong typing, in addition to those described in <a href="../Text/cdi-basic.xhtml#GIWHL">Overview of CDI</a>.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/cdi-adv.xhtml#CACDCFDE">Packaging CDI Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv.xhtml#GJSDF">Using Alternatives in CDI Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv.xhtml#GKGKV">Using Producer Methods, Producer Fields, and Disposer Methods in CDI Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv.xhtml#CJGHGDBA">Using Predefined Beans in CDI Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv.xhtml#GKHIC">Using Events in CDI Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv.xhtml#GKHJX">Using Interceptors in CDI Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv.xhtml#GKHQF">Using Decorators in CDI Applications</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/cdi-adv.xhtml#GKHQC">Using Stereotypes in CDI Applications</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="CACDCFDE"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">25.1</span> Packaging CDI Applications</h1>
+
+      <p>When you deploy a Java EE application, CDI looks for beans inside bean archives. A <span class="bold">bean archive</span> is any module that contains beans that the CDI runtime can manage and inject. There are two kinds of bean archives: explicit bean archives and implicit bean archives.</p>
+
+      <p>An <span class="bold">explicit bean archive</span> is an archive that contains a <code>beans.xml</code> deployment descriptor, which can be an empty file, contain no version number, or contain the version number 1.1 with the <code>bean-discovery-mode</code> attribute set to <code>all</code>. For example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+                           http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
+       version="1.1" bean-discovery-mode="all"&gt;
+    ...
+&lt;/beans&gt;</pre>
+
+      <p>CDI can manage and inject any bean in an explicit archive, except those annotated with <code>@Vetoed</code>.</p>
+
+      <p>An <span class="bold">implicit bean archive</span> is an archive that contains some beans annotated with a scope type, contains no <code>beans.xml</code> deployment descriptor, or contains a <code>beans.xml</code> deployment descriptor with the <code>bean-discovery-mode</code> attribute set to <code>annotated</code>.</p>
+
+      <p>In an implicit archive, CDI can only manage and inject beans annotated with a scope type.</p>
+
+      <p>For a web application, the <code>beans.xml</code> deployment descriptor, if present, must be in the <code>WEB-INF</code> directory. For EJB modules or JAR files, the <code>beans.xml</code> deployment descriptor, if present, must be in the <code>META-INF</code> directory.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GJSDF"></a><a id="JEETT00477"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">25.2</span> <a id="sthref1409"></a><a id="sthref1410"></a><a id="sthref1411"></a>Using Alternatives in CDI Applications</h1>
+
+      <p>When you have more than one version of a bean that you use for different purposes, you can choose between them during the development phase by injecting one qualifier or another, as shown in <a href="../Text/cdi-basic-examples.xhtml#GJBJU">The simplegreeting CDI Example</a>.</p>
+
+      <p>Instead of having to change the source code of your application, however, you can make the choice at deployment time by using <span class="glossaryterm">alternatives</span>.</p>
+
+      <p>Alternatives are commonly used for purposes such as the following:</p>
+
+      <ul>
+        <li>
+          <p>To handle client-specific business logic that is determined at runtime</p>
+        </li>
+
+        <li>
+          <p>To specify beans that are valid for a particular deployment scenario (for example, when country-specific sales tax laws require country-specific sales tax business logic)</p>
+        </li>
+
+        <li>
+          <p>To create dummy (mock) versions of beans to be used for testing</p>
+        </li>
+      </ul>
+
+      <p>To make a bean available for lookup, injection, or EL resolution using this mechanism, give it a <code>javax.enterprise.inject.Alternative</code> annotation and then use the <code>alternatives</code> element to specify it in the <code>beans.xml</code> file.</p>
+
+      <p>For example, you might want to create a full version of a bean and also a simpler version that you use only for certain kinds of testing. The example described in <a href="../Text/cdi-adv.xhtml#GKHPU">The encoder Example: Using Alternatives</a> contains two such beans, <code>CoderImpl</code> and <code>TestCoderImpl</code>. The test bean is annotated as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Alternative
+public class TestCoderImpl implements Coder { ... }</pre>
+
+      <p>The full version is not annotated:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class CoderImpl implements Coder { ... }</pre>
+
+      <p>The managed bean injects an instance of the <code>Coder</code> interface:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject
+Coder coder;</pre>
+
+      <p>The alternative version of the bean is used by the application only if that version is declared as follows in the <code>beans.xml</code> file:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;beans ...&gt;
+    &lt;alternatives&gt;
+        &lt;class&gt;javaeetutorial.encoder.TestCoderImpl&lt;/class&gt;
+    &lt;/alternatives&gt;
+&lt;/beans&gt;</pre>
+
+      <p>If the <code>alternatives</code> element is commented out in the <code>beans.xml</code> file, the <code>CoderImpl</code> class is used.</p>
+
+      <p>You can also have several beans that implement the same interface, all annotated <code>@Alternative</code>. In this case, you must specify in the <code>beans.xml</code> file which of these alternative beans you want to use. If <code>CoderImpl</code> were also annotated <code>@Alternative</code>, one of the two beans would always have to be specified in the <code>beans.xml</code> file.</p>
+
+      <p>The alternatives that you specify in the <code>beans.xml</code> file apply only to classes in the same archive. Use the <code>@Priority</code> annotation to specify alternatives globally for an application that consists of multiple modules, as in the following example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Alternative
+@Priority(Interceptor.Priority.APPLICATION+10)
+public class TestCoderImpl implements Coder { ... }</pre>
+
+      <p>The alternative with higher priority value is selected if several alternative beans that implement the same interface are annotated with <code>@Priority</code>. You do not need to specify the alternative in the <code>beans.xml</code> file when you use the <code>@Priority</code> annotation.</p><a id="GKHPO"></a><a id="JEETT01130"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">25.2.1</span> <a id="sthref1412"></a><a id="sthref1413"></a>Using Specialization</h2>
+
+        <p>Specialization has a function similar to that of alternatives in that it allows you to substitute one bean for another. However, you might want to make one bean override the other in all cases. Suppose you defined the following two beans:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Default @Asynchronous
+public class AsynchronousService implements Service { ... }
+
+@Alternative
+public class MockAsynchronousService extends AsynchronousService { ... }</pre>
+
+        <p>If you then declared <code>MockAsynchronousService</code> as an alternative in your <code>beans.xml</code> file, the following injection point would resolve to <code>MockAsynchronousService</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject Service service;</pre>
+
+        <p>The following, however, would resolve to <code>AsynchronousService</code> rather than <code>MockAsynchronousService</code>, because <code>MockAsynchronousService</code> does not have the <code>@Asynchronous</code> qualifier:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject @Asynchronous Service service;</pre>
+
+        <p>To make sure that <code>MockAsynchronousService</code> was always injected, you would have to implement all bean types and bean qualifiers of <code>AsynchronousService</code>. However, if <code>AsynchronousService</code> declared a producer method or observer method, even this cumbersome mechanism would not ensure that the other bean was never invoked. Specialization provides a simpler mechanism.</p>
+
+        <p><span class="glossaryterm">Specialization</span> happens at development time as well as at runtime. If you declare that one bean specializes another, it extends the other bean class, and at runtime the specialized bean completely replaces the other bean. If the first bean is produced by means of a producer method, you must also override the producer method.</p>
+
+        <p>You specialize a bean by giving it the <code>javax.enterprise.inject.Specializes</code> annotation. For example, you might declare a bean as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Specializes
+public class MockAsynchronousService extends AsynchronousService { ... }</pre>
+
+        <p>In this case, the <code>MockAsynchronousService</code> class will always be invoked instead of the <code>AsynchronousService</code> class.</p>
+
+        <p>Usually, a bean marked with the <code>@Specializes</code> annotation is also an alternative and is declared as an alternative in the <code>beans.xml</code> file. Such a bean is meant to stand in as a replacement for the default implementation, and the alternative implementation automatically inherits all qualifiers of the default implementation as well as its EL name, if it has one.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKGKV"></a><a id="JEETT00478"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">25.3</span> <a id="sthref1414"></a><a id="sthref1415"></a><a id="sthref1416"></a><a id="sthref1417"></a><a id="sthref1418"></a>Using Producer Methods, Producer Fields, and Disposer Methods in CDI Applications</h1>
+
+      <p>A <span class="glossaryterm">producer method</span> generates an object that can then be injected. Typically, you use producer methods in the following situations:</p>
+
+      <ul>
+        <li>
+          <p>When you want to inject an object that is not itself a bean</p>
+        </li>
+
+        <li>
+          <p>When the concrete type of the object to be injected may vary at runtime</p>
+        </li>
+
+        <li>
+          <p>When the object requires some custom initialization that the bean constructor does not perform</p>
+        </li>
+      </ul>
+
+      <p>For more information on producer methods, see <a href="../Text/cdi-basic.xhtml#GJDID">Injecting Objects by Using Producer Methods</a>.</p>
+
+      <p>A <span class="glossaryterm">producer field</span> is a simpler alternative to a producer method; it is a field of a bean that generates an object. It can be used instead of a simple getter method. Producer fields are particularly useful for declaring Java EE resources such as data sources, JMS resources, and web service references.</p>
+
+      <p>A producer method or field is annotated with the <code>javax.enterprise.inject.Produces</code> annotation.</p>
+
+      <div class="sect2">
+        <a id="sthref1419"></a>
+
+        <h2 class="sect2"><span class="secnum">25.3.1</span> Using Producer Methods</h2>
+
+        <p>A producer method can allow you to select a bean implementation at runtime instead of at development time or deployment time. For example, in the example described in <a href="../Text/cdi-adv-examples.xhtml#GKHPY">The producermethods Example: Using a Producer Method to Choose a Bean Implementation</a>, the managed bean defines the following producer method:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Produces
+@Chosen
+@RequestScoped
+public Coder getCoder() {
+
+    switch (coderType) {
+        case TEST:
+            return new TestCoderImpl();
+        case SHIFT:
+            return new CoderImpl();
+        default:
+            return null;
+    }
+}</pre>
+
+        <p>Here, <code>getCoder</code> becomes in effect a getter method, and when the <code>coder</code> property is injected with the same qualifier and other annotations as the method, the selected version of the interface is used.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject
+@Chosen
+@RequestScoped
+Coder coder;</pre>
+
+        <p>Specifying the qualifier is essential: It tells CDI which <code>Coder</code> to inject. Without it, the CDI implementation would not be able to choose between <code>CoderImpl</code>, <code>TestCoderImpl</code>, and the one returned by <code>getCoder</code> and would cancel deployment, informing the user of the ambiguous dependency.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1420"></a>
+
+        <h2 class="sect2"><span class="secnum">25.3.2</span> Using Producer Fields to Generate Resources</h2>
+
+        <p>A common use of a producer field is to generate an object such as a JDBC <code>DataSource</code> or a Java Persistence API <code>EntityManager</code> (see <a href="../Text/cdi-adv.xhtml#BNBPZ">Chapter 37, "Introduction to the Java Persistence API,"</a> for more information). The object can then be managed by the container. For example, you could create a <code>@UserDatabase</code> qualifier and then declare a producer field for an entity manager as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Produces
+@UserDatabase
+@PersistenceContext
+private EntityManager em;</pre>
+
+        <p>The <code>@UserDatabase</code> qualifier can be used when you inject the object into another bean, <code>RequestBean</code>, elsewhere in the application:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    @Inject
+    @UserDatabase
+    EntityManager em;
+    ...</pre>
+
+        <p><a href="../Text/cdi-adv-examples.xhtml#GKHRG">The producerfields Example: Using Producer Fields to Generate Resources</a> shows how to use producer fields to generate an entity manager. You can use a similar mechanism to inject <code>@Resource</code>, <code>@EJB</code>, or <code>@WebServiceRef</code> objects.</p>
+
+        <p>To minimize the reliance on resource injection, specify the producer field for the resource in one place in the application, and then inject the object wherever in the application you need it.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref1421"></a>
+
+        <h2 class="sect2"><span class="secnum">25.3.3</span> Using a Disposer Method</h2>
+
+        <p><a id="sthref1422"></a><a id="sthref1423"></a><a id="sthref1424"></a>You can use a producer method or a producer field to generate an object that needs to be removed when its work is completed. If you do, you need a corresponding <span class="glossaryterm">disposer method</span>, annotated with a <code>@Disposes</code> annotation. For example, you can close the entity manager as follows:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void close(@Disposes @UserDatabase EntityManager em) {
+    em.close();
+}</pre>
+
+        <p>The disposer method is called automatically when the context ends (in this case, at the end of the conversation, because <code>RequestBean</code> has conversation scope), and the parameter in the <code>close</code> method receives the object produced by the producer field.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="CJGHGDBA"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">25.4</span> Using Predefined Beans in CDI Applications</h1>
+
+      <p>Java EE provides predefined beans that implement the following interfaces.</p>
+
+      <ul>
+        <li>
+          <p><code>javax.transaction.UserTransaction</code>: A Java Transaction API (JTA) user transaction.</p>
+        </li>
+
+        <li>
+          <p><code>java.security.Principal</code>: The abstract notion of a principal, which represents any entity, such as an individual, a corporation, or a login ID. Whenever the injected principal is accessed, it always represents the identity of the current caller. For example, a principal is injected into a field at initialization. Later, a method that uses the injected principal is called on the object into which the principal was injected. In this situation, the injected principal represents the identity of the current caller when the method is run.</p>
+        </li>
+
+        <li>
+          <p><code>javax.validation.Validator</code>: A validator for bean instances. The bean that implements this interface enables a <code>Validator</code> object for the default bean validation object <code>ValidatorFactory</code> to be injected.</p>
+        </li>
+
+        <li>
+          <p><code>javax.validation.ValidatorFactory</code>: A factory class for returning initialized <code>Validator</code> instances. The bean that implements this interface enables the default bean validation <code>ValidatorFactory</code> object to be injected.</p>
+        </li>
+
+        <li>
+          <p><code>javax.servlet.http.HttpServletRequest</code>: An HTTP request from a client. The bean that implements this interface enables a servlet to obtain all the details of a request.</p>
+        </li>
+
+        <li>
+          <p><code>javax.servlet.http.HttpSession</code>: An HTTP session between a client and a server. The bean that implements this interface enables a servlet to access information about a session and to bind objects to a session.</p>
+        </li>
+
+        <li>
+          <p><code>javax.servlet.ServletContext</code>: A context object that servlets can use to communicate with the servlet container.</p>
+        </li>
+      </ul>
+
+      <p><a id="sthref1425"></a><a id="sthref1426"></a>To inject a predefined bean, create an injection point to obtain an instance of the bean by using the <code>javax.annotation.Resource</code> annotation for resources or the <code>javax.inject.Inject</code> annotation for CDI beans. For the bean type, specify the class name of the interface the bean implements.</p>
+
+      <div class="tblhruleformal">
+        <a id="sthref1427"></a><a id="sthref1428"></a>
+
+        <p class="titleintable">Table 25-1 Injection of Predefined Beans</p>
+
+        <table border="1" cellpadding="3" cellspacing="0" class="HRuleFormal" dir="ltr" frame="hsides" rules="rows" summary="The table lists the predefined beans and provides an injection example for each." title="Injection of Predefined Beans" width="100%">
+          <col width="24%" />
+          <col width="27%" />
+          <col width="*" />
+
+          <thead>
+            <tr align="left" valign="top">
+              <th align="left" id="r1c1-t2" valign="bottom">Predefined Bean</th>
+
+              <th align="left" id="r1c2-t2" valign="bottom">Resource or CDI Bean</th>
+
+              <th align="left" id="r1c3-t2" valign="bottom">Injection Example</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r2c1-t2">
+                <p><code>UserTransaction</code></p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c2-t2">
+                <p>Resource</p>
+              </td>
+
+              <td align="left" headers="r2c1-t2 r1c3-t2">
+                <p><code>@Resource UserTransaction transaction;</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r3c1-t2">
+                <p><code>Principal</code></p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c2-t2">
+                <p>Resource</p>
+              </td>
+
+              <td align="left" headers="r3c1-t2 r1c3-t2">
+                <p><code>@Resource Principal principal;</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r4c1-t2">
+                <p><code>Validator</code></p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c2-t2">
+                <p>Resource</p>
+              </td>
+
+              <td align="left" headers="r4c1-t2 r1c3-t2">
+                <p><code>@Resource Validator validator;</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r5c1-t2">
+                <p><code>ValidatorFactory</code></p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c2-t2">
+                <p>Resource</p>
+              </td>
+
+              <td align="left" headers="r5c1-t2 r1c3-t2">
+                <p><code>@Resource ValidatorFactory factory;</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r6c1-t2">
+                <p><code>HttpServletRequest</code></p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c2-t2">
+                <p>CDI bean</p>
+              </td>
+
+              <td align="left" headers="r6c1-t2 r1c3-t2">
+                <p><code>@Inject HttpServletRequest req;</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r7c1-t2">
+                <p><code>HttpSession</code></p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c2-t2">
+                <p>CDI bean</p>
+              </td>
+
+              <td align="left" headers="r7c1-t2 r1c3-t2">
+                <p><code>@Inject HttpSession session;</code></p>
+              </td>
+            </tr>
+
+            <tr align="left" valign="top">
+              <td align="left" headers="r1c1-t2" id="r8c1-t2">
+                <p><code>ServletContext</code></p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c2-t2">
+                <p>CDI bean</p>
+              </td>
+
+              <td align="left" headers="r8c1-t2 r1c3-t2">
+                <p><code>@Inject ServletContext context;</code></p>
+              </td>
+            </tr>
+          </tbody>
+        </table><br />
+      </div>
+
+      <p>Predefined beans are injected with dependent scope and the predefined default qualifier <code>@Default</code>.</p>
+
+      <p>For more information about injecting resources, see <a href="../Text/injection.xhtml#BABHDCAI">Resource Injection</a>.</p>
+
+      <p>The following code snippet shows how to use the <code>@Resource</code> and <code>@Inject</code> annotations to inject predefined beans. This code snippet injects a user transaction and a context object into the servlet class <code>TransactionServlet</code>. The user transaction is an instance of the predefined bean that implements the <code>javax.transaction.UserTransaction</code> interface. The context object is an instance of the predefined bean that implements the <code>javax.servlet.ServletContext</code> interface.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServlet;
+import javax.transaction.UserTransaction;
+...
+public class TransactionServlet extends HttpServlet {
+    @Resource UserTransaction transaction;
+    @Inject ServletContext context;
+    ...
+}</pre>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKHIC"></a><a id="JEETT00479"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">25.5</span> <a id="sthref1429"></a><a id="sthref1430"></a>Using Events in CDI Applications</h1>
+
+      <p>Events allow beans to communicate without any compile-time dependency. One bean can define an event, another bean can fire the event, and yet another bean can handle the event. The beans can be in separate packages and even in separate tiers of the application.</p><a id="GKHHY"></a><a id="JEETT01131"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">25.5.1</span> Defining Events</h2>
+
+        <p>An event consists of the following:</p>
+
+        <ul>
+          <li>
+            <p>The event object, a Java object</p>
+          </li>
+
+          <li>
+            <p>Zero or more qualifier types, the event qualifiers</p>
+          </li>
+        </ul>
+
+        <p>For example, in the <code>billpayment</code> example described in <a href="../Text/cdi-adv-examples.xhtml#GKHPA">The billpayment Example: Using Events and Interceptors</a>, a <code>PaymentEvent</code> bean defines an event using three properties, which have setter and getter methods:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    public String paymentType;
+    public BigDecimal value;
+    public Date datetime;
+
+    public PaymentEvent() {
+    }</pre>
+
+        <p>The example also defines qualifiers that distinguish between two kinds of <code>PaymentEvent</code>. Every event also has the default qualifier <code>@Any</code>.</p>
+      </div><a id="GKHNF"></a><a id="JEETT01132"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">25.5.2</span> <a id="sthref1431"></a><a id="sthref1432"></a><a id="sthref1433"></a>Using Observer Methods to Handle Events</h2>
+
+        <p>An event handler uses an <span class="glossaryterm">observer method</span> to consume events.</p>
+
+        <p>Each observer method takes as a parameter an event of a specific event type that is annotated with the <code>@Observes</code> annotation and with any qualifiers for that event type. The observer method is notified of an event if the event object matches the event type and if all the qualifiers of the event match the observer method event qualifiers.</p>
+
+        <p>The observer method can take other parameters in addition to the event parameter. The additional parameters are injection points and can declare qualifiers.</p>
+
+        <p>The event handler for the <code>billpayment</code> example, <code>PaymentHandler</code>, defines two observer methods, one for each type of <code>PaymentEvent</code>:</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void creditPayment(@Observes @Credit PaymentEvent event) {
+    ...
+}
+
+public void debitPayment(@Observes @Debit PaymentEvent event) {
+    ...
+}</pre>
+
+        <p>Observer methods can also be conditional or transactional:</p>
+
+        <ul>
+          <li>
+            <p>A conditional observer method is notified of an event only if an instance of the bean that defines the observer method already exists in the current context. To declare a conditional observer method, specify <code>notifyObserver=IF_EXISTS</code> as an argument to <code>@Observes</code>:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Observes(notifyObserver=IF_EXISTS)</pre>
+
+            <p>To obtain the default unconditional behavior, you can specify <code>@Observes(notifyObserver=ALWAYS)</code>.</p>
+          </li>
+
+          <li>
+            <p>A transactional observer method is notified of an event during the before-completion or after-completion phase of the transaction in which the event was fired. You can also specify that the notification is to occur only after the transaction has completed successfully or unsuccessfully. To specify a transactional observer method, use any of the following arguments to <code>@Observes</code>:</p>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Observes(during=BEFORE_COMPLETION)</pre>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Observes(during=AFTER_COMPLETION)</pre>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span style="line-height: 1.6em;">@Observes(during=AFTER_SUCCESS)</span></pre>
+            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span style="line-height: 1.6em;">@Observes(during=AFTER_FAILURE))</span></pre>
+
+            <p>To obtain the default nontransactional behavior, specify <code>@Observes(during=IN_PROGRESS)</code>.</p>
+
+            <p>An observer method that is called before completion of a transaction may call the <code>setRollbackOnly</code> method on the transaction instance to force a transaction rollback.</p>
+          </li>
+        </ul>
+
+        <p>Observer methods may throw exceptions. If a transactional observer method throws an exception, the exception is caught by the container. If the observer method is nontransactional, the exception terminates processing of the event, and no other observer methods for the event are called.</p>
+      </div><a id="GKHIH"></a><a id="JEETT01133"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">25.5.3</span> Firing Events</h2>
+
+        <p>To activate an event, call the <code>javax.enterprise.event.Event.fire</code> method. This method fires an event and notifies any observer methods.</p>
+
+        <p>In the <code>billpayment</code> example, a managed bean called <code>PaymentBean</code> fires the appropriate event by using information it receives from the user interface. There are actually four event beans, two for the event object and two for the payload. The managed bean injects the two event beans. The <code>pay</code> method uses a <code>switch</code> statement to choose which event to fire, using <code>new</code> to create the payload.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    @Inject
+    @Credit
+    Event&lt;PaymentEvent&gt; creditEvent;
+
+    @Inject
+    @Debit
+    Event&lt;PaymentEvent&gt; debitEvent;
+
+    private static final int DEBIT = 1;
+    private static final int CREDIT = 2;
+    private int paymentOption = DEBIT;
+    ...
+
+    @Logged
+    public String pay() {
+        ...
+        switch (paymentOption) {
+            case DEBIT:
+                PaymentEvent debitPayload = new PaymentEvent();
+                // populate payload ... 
+                debitEvent.fire(debitPayload);
+                break;
+            case CREDIT:
+                PaymentEvent creditPayload = new PaymentEvent();
+                // populate payload ... 
+                creditEvent.fire(creditPayload);
+                break;
+            default:
+                logger.severe("Invalid payment option!");
+        }
+        ...
+    }</pre>
+
+        <p>The argument to the <code>fire</code> method is a <code>PaymentEvent</code> that contains the payload. The fired event is then consumed by the observer methods.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKHJX"></a><a id="JEETT00480"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">25.6</span> <a id="sthref1434"></a><a id="sthref1435"></a>Using Interceptors in CDI Applications</h1>
+
+      <p>An <span class="glossaryterm">interceptor</span> is a class used to interpose in method invocations or lifecycle events that occur in an associated target class. The interceptor performs tasks, such as logging or auditing, that are separate from the business logic of the application and are repeated often within an application. Such tasks are often called <span class="bold">cross-cutting</span> tasks. Interceptors allow you to specify the code for these tasks in one place for easy maintenance. When interceptors were first introduced to the Java EE platform, they were specific to enterprise beans. On the Java EE 7 platform, you can use them with Java EE managed objects of all kinds, including managed beans.</p>
+
+      <p>For information on Java EE interceptors, see <a href="../Text/interceptors.xhtml#GKEED">Chapter 54, "Using Java EE Interceptors"</a>.</p>
+
+      <p>An interceptor class often contains a method annotated <code>@AroundInvoke</code>, which specifies the tasks the interceptor will perform when intercepted methods are invoked. It can also contain a method annotated <code>@PostConstruct</code>, <code>@PreDestroy</code>, <code>@PrePassivate</code>, or <code>@PostActivate</code>, to specify lifecycle callback interceptors, and a method annotated <code>@AroundTimeout</code>, to specify EJB timeout interceptors. An interceptor class can contain more than one interceptor method, but it must have no more than one method of each type.</p>
+
+      <p>Along with an interceptor, an application defines one or more <span class="glossaryterm">interceptor binding types</span>, which are annotations that associate an interceptor with target beans or methods. For example, the <code>billpayment</code> example contains an interceptor binding type named <code>@Logged</code> and an interceptor named <code>LoggedInterceptor</code>. The interceptor binding type declaration looks something like a qualifier declaration, but it is annotated with <code>javax.interceptor.InterceptorBinding</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inherited
+@InterceptorBinding
+@Retention(RUNTIME)
+@Target({METHOD, TYPE})
+public @interface Logged {
+}</pre>
+
+      <p>An interceptor binding also has the <code>java.lang.annotation.Inherited</code> annotation, to specify that the annotation can be inherited from superclasses. The <code>@Inherited</code> annotation also applies to custom scopes (not discussed in this tutorial) but does not apply to qualifiers.</p>
+
+      <p>An interceptor binding type may declare other interceptor bindings.</p>
+
+      <p>The interceptor class is annotated with the interceptor binding as well as with the <code>@Interceptor</code> annotation. For an example, see <a href="../Text/cdi-adv-examples.xhtml#GKHRQ">The LoggedInterceptor Interceptor Class</a>.</p>
+
+      <p>Every <code>@AroundInvoke</code> method takes a <code>javax.interceptor.InvocationContext</code> argument, returns a <code>java.lang.Object</code>, and throws an <code>Exception</code>. It can call <code>InvocationContext</code> methods. The <code>@AroundInvoke</code> method must call the <code>proceed</code> method, which causes the target class method to be invoked.</p>
+
+      <p>Once an interceptor and binding type are defined, you can annotate beans and individual methods with the binding type to specify that the interceptor is to be invoked either on all methods of the bean or on specific methods. For example, in the <code>billpayment</code> example, the <code>PaymentHandler</code> bean is annotated <code>@Logged</code>, which means that any invocation of its business methods will cause the interceptor's <code>@AroundInvoke</code> method to be invoked:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Logged
+@SessionScoped
+public class PaymentHandler implements Serializable {...}</pre>
+
+      <p>However, in the <code>PaymentBean</code> bean, only the <code>pay</code> and <code>reset</code> methods have the <code>@Logged</code> annotation, so the interceptor is invoked only when these methods are invoked:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Logged
+public String pay() {...}
+
+@Logged
+public void reset() {...}</pre>
+
+      <p>In order for an interceptor to be invoked in a CDI application, it must, like an alternative, be specified in the <code>beans.xml</code> file. For example, the <code>LoggedInterceptor</code> class is specified as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;interceptors&gt;
+    &lt;class&gt;javaeetutorial.billpayment.interceptors.LoggedInterceptor&lt;/class&gt;
+&lt;/interceptors&gt;</pre>
+
+      <p>If an application uses more than one interceptor, the interceptors are invoked in the order specified in the <code>beans.xml</code> file.</p>
+
+      <p>The interceptors that you specify in the <code>beans.xml</code> file apply only to classes in the same archive. Use the <code>@Priority</code> annotation to specify interceptors globally for an application that consists of multiple modules, as in the following example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Logged
+@Interceptor
+@Priority(Interceptor.Priority.APPLICATION)
+public class LoggedInterceptor implements Serializable { ... }</pre>
+
+      <p>Interceptors with lower priority values are called first. You do not need to specify the interceptor in the <code>beans.xml</code> file when you use the <code>@Priority</code> annotation.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKHQF"></a><a id="JEETT00481"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">25.7</span> <a id="sthref1436"></a><a id="sthref1437"></a><a id="sthref1438"></a><a id="sthref1439"></a>Using Decorators in CDI Applications</h1>
+
+      <p>A <span class="glossaryterm">decorator</span> is a Java class that is annotated <code>javax.decorator.Decorator</code> and that has a corresponding <code>decorators</code> element in the <code>beans.xml</code> file.</p>
+
+      <p>A decorator bean class must also have a delegate injection point, which is annotated <code>javax.decorator.Delegate</code>. This injection point can be a field, a constructor parameter, or an initializer method parameter of the decorator class.</p>
+
+      <p>Decorators are outwardly similar to interceptors. However, they actually perform tasks complementary to those performed by interceptors. Interceptors perform cross-cutting tasks associated with method invocation and with the lifecycles of beans, but cannot perform any business logic. Decorators, on the other hand, do perform business logic by intercepting business methods of beans. This means that instead of being reusable for different kinds of applications, as are interceptors, their logic is specific to a particular application.</p>
+
+      <p>For example, instead of using an alternative <code>TestCoderImpl</code> class for the <code>encoder</code> example, you could create a decorator as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Decorator
+public abstract class CoderDecorator implements Coder {
+    
+    @Inject
+    @Delegate
+    @Any
+    Coder coder;
+    
+    public String codeString(String s, int tval) {
+        int len = s.length();
+
+        return "\"" + s + "\" becomes " + "\"" + coder.codeString(s, tval)
+                + "\", " + len + " characters in length";
+    }
+}</pre>
+
+      <p>See <a href="../Text/cdi-adv-examples.xhtml#GKPAX">The decorators Example: Decorating a Bean</a> for an example that uses this decorator.</p>
+
+      <p>This simple decorator returns more detailed output than the encoded string returned by the <code>CoderImpl.codeString</code> method. A more complex decorator could store information in a database or perform some other business logic.</p>
+
+      <p>A decorator can be declared as an abstract class so that it does not have to implement all the business methods of the interface.</p>
+
+      <p>In order for a decorator to be invoked in a CDI application, it must, like an interceptor or an alternative, be specified in the <code>beans.xml</code> file. For example, the <code>CoderDecorator</code> class is specified as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;decorators&gt;
+    &lt;class&gt;javaeetutorial.decorators.CoderDecorator&lt;/class&gt;
+&lt;/decorators&gt;</pre>
+
+      <p>If an application uses more than one decorator, the decorators are invoked in the order in which they are specified in the <code>beans.xml</code> file.</p>
+
+      <p>If an application has both interceptors and decorators, the interceptors are invoked first. This means, in effect, that you cannot intercept a decorator.</p>
+
+      <p>The decorators that you specify in the <code>beans.xml</code> file apply only to classes in the same archive. Use the <code>@Priority</code> annotation to specify decorators globally for an application that consists of multiple modules, as in the following example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Decorator
+@Priority(Interceptor.Priority.APPLICATION)
+public abstract class CoderDecorator implements Coder { ... }</pre>
+
+      <p>Decorators with lower priority values are called first. You do not need to specify the decorator in the <code>beans.xml</code> when you use the <code>@Priority</code> annotation.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKHQC"></a><a id="JEETT00482"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">25.8</span> <a id="sthref1440"></a><a id="sthref1441"></a>Using Stereotypes in CDI Applications</h1>
+
+      <p>A <span class="glossaryterm">stereotype</span> is a kind of annotation, applied to a bean, that incorporates other annotations. Stereotypes can be particularly useful in large applications in which you have a number of beans that perform similar functions. A stereotype is a kind of annotation that specifies the following:</p>
+
+      <ul>
+        <li>
+          <p>A default scope</p>
+        </li>
+
+        <li>
+          <p>Zero or more interceptor bindings</p>
+        </li>
+
+        <li>
+          <p>Optionally, a <code>@Named</code> annotation, guaranteeing default EL naming</p>
+        </li>
+
+        <li>
+          <p>Optionally, an <code>@Alternative</code> annotation, specifying that all beans with this stereotype are alternatives</p>
+        </li>
+      </ul>
+
+      <p>A bean annotated with a particular stereotype will always use the specified annotations, so you do not have to apply the same annotations to many beans.</p>
+
+      <p>For example, you might create a stereotype named <code>Action</code>, using the <code>javax.enterprise.inject.Stereotype</code> annotation:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@RequestScoped
+@Secure
+@Transactional
+@Named
+@Stereotype
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface Action {}</pre>
+
+      <p>All beans annotated <code>@Action</code> will have request scope, use default EL naming, and have the interceptor bindings <code>@Transactional</code> and <code>@Secure</code>.</p>
+
+      <p>You could also create a stereotype named <code>Mock</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Alternative
+@Stereotype
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface Mock {}</pre>
+
+      <p>All beans with this annotation are alternatives.</p>
+
+      <p>It is possible to apply multiple stereotypes to the same bean, so you can annotate a bean as follows:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Action
+@Mock
+public class MockLoginAction extends LoginAction { ... }</pre>
+
+      <p>It is also possible to override the scope specified by a stereotype, simply by specifying a different scope for the bean. The following declaration gives the <code>MockLoginAction</code> bean session scope instead of request scope:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@SessionScoped
+@Action
+@Mock
+public class MockLoginAction extends LoginAction { ... }</pre>
+
+      <p>CDI makes available a built-in stereotype called <code>Model</code>, which is intended for use with beans that define the model layer of a model-view-controller application architecture. This stereotype specifies that a bean is both <code>@Named</code> and <code>@RequestScoped</code>:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named
+@RequestScoped
+@Stereotype
+@Target({TYPE, METHOD, FIELD})
+@Retention(RUNTIME)
+public @interface Model {}</pre>
+    </div>
+  </div>
+</body>
+</html>

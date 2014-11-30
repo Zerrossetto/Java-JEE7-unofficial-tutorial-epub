@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKAEE"></a><a id="JEETT00115"></a>
+
+    <h1 class="chapter"><span class="secnum">58</span> <a id="sthref3054"></a>Duke's Tutoring Case Study Example</h1>
+
+    <p>The Duke's Tutoring example application is a tracking system for a tutoring center for students. Students can be checked in and out and can visit the park. The tutoring center can track attendance and status updates and can store contact information for guardians and students. Administrators can maintain the tutoring center system.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/dukes-tutoring.xhtml#GKAEI">Design and Architecture of Duke's Tutoring</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/dukes-tutoring.xhtml#GKAFH">Main Interface</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/dukes-tutoring.xhtml#GKAFW">Administration Interface</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/dukes-tutoring.xhtml#GKJNN">Running the Duke's Tutoring Case Study Application</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GKAEI"></a><a id="JEETT00569"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">58.1</span> Design and Architecture of Duke's Tutoring</h1>
+
+      <p>Duke's Tutoring is a web application that incorporates several Java EE technologies. It exposes both a main interface (for students, guardians, and tutoring center staff) and an administration interface (for staff to maintain the system). The business logic for both interfaces is provided by enterprise beans. The enterprise beans use the Java Persistence API to create and store the application's data in the database. <a href="../Text/dukes-tutoring.xhtml#CHDDJDCH">Figure 58-1</a> illustrates the architecture of the application.</p>
+
+      <div class="figure">
+        <a id="CHDDJDCH"></a>
+
+        <p class="titleinfigure">Figure 58-1 Architecture of the Duke's Tutoring Example Application</p>
+
+        <div style="text-align: center;"><img alt="Description of Figure 58-1 follows" longdesc="img_text/jeett_dt_061.htm" src="../Images/jeett_dt_061.png" style="line-height: 1.6em;" title="Description of Figure 58-1 follows" /></div>
+      </div>
+
+      <div class="figure">
+        Description of "Figure 58-1 Architecture of the Duke's Tutoring Example Application"<br />
+        <br />
+      </div>
+
+      <p>The Duke's Tutoring application is organized into two main projects: the <code>dukes-tutoring-common</code> library and the <code>dukes-tutoring-war</code> web application. The <code>dukes-tutoring-common</code> library project contains the entity classes and helper classes used by the <code>dukes-tutoring-war</code> web application, and <code>dukes-tutoring-common</code> is packaged and deployed with <code>dukes-tutoring-war</code>. The library JAR file is useful for allowing the entity classes and helper classes to be reused by other applications, such as a JavaFX client application.</p>
+
+      <p>Duke's Tutoring uses the following Java EE 7 platform features:</p>
+
+      <ul>
+        <li>
+          <p>Java Persistence API entities</p>
+
+          <ul>
+            <li>
+              <p><a id="sthref3056"></a>A custom Bean Validation annotation, <code>@Email</code>, for validating email addresses</p>
+            </li>
+
+            <li>
+              <p><a id="sthref3057"></a>A standard <code>jta-data-source</code> definition that will create the JDBC resource on deployment</p>
+            </li>
+
+            <li>
+              <p><a id="sthref3058"></a>A standard property in the <code>persistence.xml</code> deployment descriptor to automatically and portably create and delete the tables in the <code>jta-data-source</code></p>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <p>Enterprise beans</p>
+
+          <ul>
+            <li>
+              <p>Local, no-interface view session and singleton beans</p>
+            </li>
+
+            <li>
+              <p>JAX-RS resources in a session bean</p>
+            </li>
+
+            <li>
+              <p>Java EE security constraints on the administrative interface business methods</p>
+            </li>
+
+            <li>
+              <p>All enterprise beans packaged within the WAR</p>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <p>WebSocket</p>
+
+          <ul>
+            <li>
+              <p><a id="sthref3059"></a>A WebSocket server endpoint that automatically publishes the status of students to client endpoints</p>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <p>Contexts and Dependency Injection</p>
+
+          <ul>
+            <li>
+              <p><a id="sthref3060"></a>A CDI event that is fired when the status of a student changes</p>
+            </li>
+
+            <li>
+              <p>Handler methods for updating the application once the status event is fired</p>
+            </li>
+
+            <li>
+              <p>CDI managed beans for Facelets pages</p>
+            </li>
+
+            <li>
+              <p>Bean Validation annotations in the CDI managed beans</p>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <p>JavaServer Faces technology, using Facelets for the web front end</p>
+
+          <ul>
+            <li>
+              <p>Templating</p>
+            </li>
+
+            <li>
+              <p>Composite components</p>
+            </li>
+
+            <li>
+              <p>A custom formatter, <code>PhoneNumberFormatter</code></p>
+            </li>
+
+            <li>
+              <p>Security constraints on the administrative interface</p>
+            </li>
+
+            <li>
+              <p><a id="sthref3061"></a>Ajax-enabled Facelets components</p>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <p>The Duke's Tutoring application has two main user interfaces, both packaged within a single WAR file:</p>
+
+      <ul>
+        <li>
+          <p>The main interface, for students, guardians, and staff</p>
+        </li>
+
+        <li>
+          <p>The administrative interface used by the staff to manage the students and guardians, and to generate attendance reports</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKAFH"></a><a id="JEETT00570"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">58.2</span> Main Interface</h1>
+
+      <p>The main interface allows students and staff to check students in and out, and record when students are outside at the playground.</p><a id="GKAFJ"></a><a id="JEETT01326"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.2.1</span> Java Persistence API Entities Used in the Main Interface</h2>
+
+        <p>The following entities used in the main interface encapsulate data stored and manipulated by Duke's Tutoring, and are located in the <code>dukestutoring.entity</code> package in the <code>dukes-tutoring-common</code> project.</p>
+
+        <ul>
+          <li>
+            <p><code>Person</code>: The <code>Person</code> entity defines attributes common to students and guardians tracked by the application. These attributes are the person's name and contact information, including phone numbers and email address. This entity has two subclasses, <code>Student</code> and <code>Guardian</code>.</p>
+          </li>
+
+          <li>
+            <p><code>PersonDetails</code>: The <code>PersonDetails</code> entity is used to store additional data common to all people, such as attributes like pictures and the person's birthday, which aren't included in the <code>Person</code> entity for performance reasons.</p>
+          </li>
+
+          <li>
+            <p><code>Student</code> and <code>Guardian</code>: The <code>Student</code> entity stores attributes specific to the students who come to tutoring. This includes information like the student's grade level and school. The <code>Guardian</code> entity's attributes are specific to the parents or guardians of a <code>Student</code>. Students and guardians have a many-to-many relationship. That is, a student may have one or more guardians, and a guardian may have one or more students.</p>
+          </li>
+
+          <li>
+            <p><code>Address</code>: The <code>Address</code> entity represents a mailing address and is associated with <code>Person</code> entities. Addresses and people have a many-to-one relationship. That is, one person may have many addresses.</p>
+          </li>
+
+          <li>
+            <p><code>TutoringSession</code>: The <code>TutoringSession</code> entity represents a particular day at the tutoring center. A particular tutoring session tracks which students attended that day, and which students went to the park.</p>
+          </li>
+
+          <li>
+            <p><code>StatusEntry</code>: The <code>StatusEntry</code> entity, which logs when a student's status changes, is associated with the <code>TutoringSession</code> entity. Students' statuses change when they check in to a tutoring session, when they go to the park, and when they check out. The status entry allows the tutoring center staff to track exactly which students attended a tutoring session, when they checked in and out, which students went to the park while they were at the tutoring center, and when they went to and came back from the park.</p>
+          </li>
+        </ul>
+
+        <p>For information on creating Java Persistence API entities, see <a href="../Text/persistence-intro.xhtml#BNBPZ">Chapter 37, "Introduction to the Java Persistence API."</a> For information on validating entity data, see <a href="../Text/persistence-intro.xhtml#GKAHQ">Validating Persistent Fields and Properties</a> and <a href="../Text/bean-validation-advanced.xhtml#GKAHP">Chapter 22, "Bean Validation: Advanced Topics."</a></p>
+      </div><a id="GKAFC"></a><a id="JEETT01327"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.2.2</span> Enterprise Beans Used in the Main Interface</h2>
+
+        <p>The following enterprise beans used in the main interface provide the business logic for Duke's Tutoring, and are located in the <code>dukestutoring.ejb</code> package in the <code>dukes-tutoring-war</code> project:</p>
+
+        <ul>
+          <li>
+            <p><code>ConfigBean</code> is a singleton session bean used to create the default students when the application is initially deployed, and to create an automatic EJB timer that creates tutoring session entities every weekday.</p>
+          </li>
+
+          <li>
+            <p><code>RequestBean</code> is a stateless session bean containing the business methods for the main interface. The bean also has business methods for retrieving lists of students. These business methods use strongly typed Criteria API queries to retrieve data from the database. <code>RequestBean</code> also injects a CDI event instance, <code>StatusEvent</code>. This event is fired from the business methods when the status of a student changes.</p>
+          </li>
+        </ul>
+
+        <p>For information on creating and using enterprise beans, see <a href="../Text/partentbeans.xhtml#BNBLR">Enterprise Beans</a>. For information on creating strongly typed Criteria API queries, see <a href="../Text/persistence-criteria.xhtml#GJITV">Chapter 40, "Using the Criteria API to Create Queries."</a> For information on CDI events, see <a href="../Text/cdi-adv.xhtml#GKHIC">Using Events in CDI Applications</a>.</p>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref3062"></a>
+
+        <h2 class="sect2"><span class="secnum">58.2.3</span> <a id="sthref3063"></a>WebSocket Endpoint Used in the Main Interface</h2>
+
+        <p>The <code>javaeetutorial.dukestutoring.web.websocket.StatusEndpoint</code> class is a WebSocket server endpoint that returns students and their status to client endpoints. The <code>StatusEndpoint.updateStatus</code> method is a <a id="sthref3064"></a><a id="sthref3065"></a>CDI observer method for the <code>StatusEvent</code> event. When a student's status changes in the main interface, a <code>StatusEvent</code> is fired. The <code>updateStatus</code> observer method is called by the container, and pushes out the status change to all the client endpoints registered with <code>StatusEndpoint</code>.</p>
+
+        <p>The <code>index.xhtml</code> JavaServer Faces page contains JavaScript code to connect to the WebSocket endpoint. The <code>onMessage</code> method on this page clicks a JavaServer Faces button, which makes an Ajax request to refresh the table that shows the current status of the students.</p>
+
+        <p>For more information on WebSocket endpoints, see <a href="../Text/websocket.xhtml#GKJIQ5">Chapter 18, "Java API for WebSocket."</a> For information on CDI events, see <a href="../Text/cdi-adv.xhtml#GKHIC">Using Events in CDI Applications</a>.</p>
+      </div><a id="GKAET"></a><a id="JEETT01328"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.2.4</span> Facelets Files Used in the Main Interface</h2>
+
+        <p>The Duke's Tutoring application uses Facelets to display the user interface, making extensive use of the templating features of Facelets. Facelets, the default display technology for JavaServer Faces technology, consists of XHTML files located in the <span class="variable">tut-install</span><code>/examples/case-studies/dukes-tutoring-war/src/main/webapp/</code> directory.</p>
+
+        <p>The following Facelets files are used in the main interface:</p>
+
+        <ul>
+          <li>
+            <p><code>template.xhtml</code>: Template file for the main interface</p>
+          </li>
+
+          <li>
+            <p><code>error.xhtml</code>: Error file if something goes wrong</p>
+          </li>
+
+          <li>
+            <p><code>index.xhtml</code>: Landing page for the main interface</p>
+          </li>
+
+          <li>
+            <p><code>park.xhtml</code>: Page showing who is currently at the park</p>
+          </li>
+
+          <li>
+            <p><code>current.xhtml</code>: Page showing who is currently in today's tutoring session</p>
+          </li>
+
+          <li>
+            <p><code>statusEntries.xhtml</code>: Page showing the detailed status entry log for today's session</p>
+          </li>
+
+          <li>
+            <p><code>resources/components/allStudentsTable.xhtml</code>: A composite component for a table displaying all active students</p>
+          </li>
+
+          <li>
+            <p><code>resources/components/allInactiveStudentsTable.xhtml</code>: A composite component for a table displaying all inactive students</p>
+          </li>
+
+          <li>
+            <p><code>resources/components/currentSessionTable.xhtml</code>: A composite component for a table displaying all students in today's session</p>
+          </li>
+
+          <li>
+            <p><code>resources/components/parkTable.xhtml</code>: A composite component for a table displaying all students currently at the park</p>
+          </li>
+
+          <li>
+            <p><code>WEB-INF/includes/mainNav.xhtml</code>: XHTML fragment for the main interface's navigation bar</p>
+          </li>
+        </ul>
+
+        <p>For information on using Facelets, see <a href="../Text/jsf-facelets.xhtml#GIEPX">Chapter 8, "Introduction to Facelets."</a></p>
+      </div><a id="GKADH"></a><a id="JEETT01329"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.2.5</span> Helper Classes Used in the Main Interface</h2>
+
+        <p>The following helper classes, found in the <code>dukes-tutoring-common</code> project's <code>dukestutoring.util</code> package, are used in the main interface.</p>
+
+        <ul>
+          <li>
+            <p><code>CalendarUtil</code>: A class that provides a method to strip the unnecessary time data from <code>java.util.Calendar</code> instances.</p>
+          </li>
+
+          <li>
+            <p><code>Email</code>: A custom Bean Validation annotation class for validating email addresses in the <code>Person</code> entity.</p>
+          </li>
+
+          <li>
+            <p><code>StatusType</code>: An enumerated type defining the different statuses that a student can have. Possible values are <code>IN</code>, <code>OUT</code>, and <code>PARK</code>. <code>StatusType</code> is used throughout the application, including in the <code>StatusEntry</code> entity, and throughout the main interface. <code>StatusType</code> also defines a <code>toString</code> method that returns a localized translation of the status based on the locale.</p>
+          </li>
+        </ul>
+      </div><a id="GKADA"></a><a id="JEETT01330"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.2.6</span> Properties Files</h2>
+
+        <p>The strings used in the main interface are encapsulated into resource bundles to allow the display of localized strings in multiple locales. Each of the properties files has locale-specific files appended with locale codes, containing the translated strings for each locale. For example, <code>Messages_es.properties</code> contains the localized strings for Spanish locales.</p>
+
+        <p>The <code>dukes-tutoring-common</code> project has the following resource bundle under <code>src/main/resources/</code>.</p>
+
+        <ul>
+          <li>
+            <p><code>javaeetutorial/dukestutoring/util/StatusMessages.properties</code>: Strings for each of the status types defined in the <code>StatusType</code> enumerated type for the default locale. Each supported locale has a property file of the form <code>StatusMessages_</code><span class="italic">locale prefix</span><code>.properties</code> containing the localized strings. For example, the strings for Spanish-speaking locales are located in <code>StatusMessages_es.properties</code>.</p>
+          </li>
+        </ul>
+
+        <p>The <code>dukes-tutoring-war</code> project has the following resource bundles under <code>src/main/resources/</code>.</p>
+
+        <ul>
+          <li>
+            <p><code>ValidationMessages.properties</code>: Strings for the default locale used by the Bean Validation runtime to display validation messages. This file must be named <code>ValidationMessages.properties</code> and located in the default package as required by the Bean Validation specification. Each supported locale has a property file of the form <code>ValidationMessages_</code><span class="italic">locale prefix</span><code>.properties</code> containing the localized strings. For example, the strings for German-speaking locales are located in <code>ValidationMessages_de.properties</code>.</p>
+          </li>
+
+          <li>
+            <p><code>javaeetutorial/dukestutoring/web/messages/Messages.properties</code>: Strings for the default locale for the main and administration Facelets interface. Each supported locale has a property file of the form <code>Messages_</code><span class="italic">locale prefix</span><code>.properties</code> containing the localized strings. For example, the strings for simplified Chinese-speaking locales are located in <code>Messages_zh.properties</code>.</p>
+          </li>
+        </ul>
+
+        <p>For information on localizing web applications, see <a href="../Text/jsf-configure.xhtml#BNAXB">Registering Application Messages</a>.</p>
+      </div><a id="GKAEV"></a><a id="JEETT01331"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.2.7</span> Deployment Descriptors Used in Duke's Tutoring</h2>
+
+        <p>Duke's Tutoring uses these deployment descriptors in the <code>src/main/webapp/WEB-INF</code> directory of the <code>dukes-tutoring-war</code> project:</p>
+
+        <ul>
+          <li>
+            <p><code>faces-config.xml</code>: The JavaServer Faces configuration file</p>
+          </li>
+
+          <li>
+            <p><code>glassfish-web.xml</code>: The configuration file specific to GlassFish Server, which defines security role mapping</p>
+          </li>
+
+          <li>
+            <p><code>web.xml</code>: The web application configuration file</p>
+          </li>
+        </ul>
+
+        <p>Duke's Tutoring also uses the following deployment descriptor in the <code>src/main/resources/META-INF</code> directory of the <code>dukes-tutoring-common</code> project:</p>
+
+        <ul>
+          <li>
+            <p><code>persistence.xml</code>: The Java Persistence API configuration file</p>
+          </li>
+        </ul>
+
+        <p>No enterprise bean deployment descriptor is used in Duke's Tutoring. Annotations in the enterprise bean class files are used for the configuration of enterprise beans in this application.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKAFW"></a><a id="JEETT00571"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">58.3</span> Administration Interface</h1>
+
+      <p>The administration interface of Duke's Tutoring is used by the tutoring center staff to manage the data employed by the main interface: the students, the students' guardians, and the addresses. The administration interface uses many of the same components as the main interface. Additional components that are only used in the administration interface are described here.</p><a id="GKAEN"></a><a id="JEETT01332"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.3.1</span> Enterprise Beans Used in the Administration Interface</h2>
+
+        <p>The following enterprise bean, in the <code>dukestutoring.ejb</code> package of the <code>dukes-tutoring-war</code> project, is used in the administration interface.</p>
+
+        <ul>
+          <li>
+            <p><code>AdminBean</code>: A stateless session bean for all the business logic used in the administration interface. Calls security methods to allow invocation of the business methods only by authorized users.</p>
+          </li>
+        </ul>
+      </div><a id="GKACB"></a><a id="JEETT01333"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.3.2</span> Facelets Files Used in the Administration Interface</h2>
+
+        <p>The following Facelets files, under <code>src/main/webapp/</code>, are used in the administration interface:</p>
+
+        <ul>
+          <li>
+            <p><code>admin/adminTemplate.xhtml</code>: Template for the administration interface</p>
+          </li>
+
+          <li>
+            <p><code>admin/index.xhtml</code>: Landing page for the administration interface</p>
+          </li>
+
+          <li>
+            <p><code>login.xhtml</code>: Login page for the security-constrained administration interface</p>
+          </li>
+
+          <li>
+            <p><code>loginError.xhtml</code>: Page displayed if there are errors authenticating the administration user</p>
+          </li>
+
+          <li>
+            <p><code>admin/address</code> directory: Pages that allow you to create, edit, and delete <code>Address</code> entities</p>
+          </li>
+
+          <li>
+            <p><code>admin/guardian</code> directory: Pages that allow you to create, edit, and delete <code>Guardian</code> entities</p>
+          </li>
+
+          <li>
+            <p><code>admin/student</code> directory: Pages that allow you to create, edit, and delete <code>Student</code> entities</p>
+          </li>
+
+          <li>
+            <p><code>resources/components/formLogin.xhtml</code>: Composite component for a login form using Java EE security</p>
+          </li>
+
+          <li>
+            <p><code>WEB-INF/includes/adminNav.xhtml</code>: XHTML fragment for the administration interface's navigation bar</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref3066"></a>
+
+        <h2 class="sect2"><span class="secnum">58.3.3</span> CDI Managed Beans Used in the Administration Interface</h2>
+
+        <p>The CDI managed beans used in the administration interface are located in the <code>dukestutoring.web</code> package in the <code>dukes-tutoring-war</code> project.</p>
+
+        <ul>
+          <li>
+            <p><code>StudentBean.java</code>: A managed bean for the Facelets pages used to create and edit students. The first and last names have Bean Validation annotations that require the fields to be filled in. The phone numbers have Bean Validation annotations to ensure that the submitted data is well-formed.</p>
+          </li>
+
+          <li>
+            <p><code>GuardianBean.java</code>: A managed bean for the Facelets pages used to create guardians for and assign guardians to students. The first and last names have Bean Validation annotations that require the fields to be filled in. The phone numbers have Bean Validation annotations to ensure that the submitted data is well-formed.</p>
+          </li>
+
+          <li>
+            <p><code>AddressBean.java</code>: A managed bean for the Facelets pages used to create addresses for students. The street, city, province, and postal code attributes have Bean Validation annotations that require the fields to be filled in, and the postal code attribute has an additional annotation to ensure that the data is properly formed.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sect2">
+        <a id="sthref3067"></a>
+
+        <h2 class="sect2"><span class="secnum">58.3.4</span> Helper Classes Used in the Administration Interface</h2>
+
+        <p>The following helper classes, found in the <code>dukes-tutoring-war</code> project's <code>dukestutoring.web.util</code> package, are used in the administration interface.</p>
+
+        <ul>
+          <li>
+            <p><code>EntityConverter</code>: A parent class to <code>StudentConverter</code> and <code>GuardianConverter</code> that defines a cache to store the entity classes when converting the entities for use in JavaServer Faces user interface components. The cache helps increase performance. The cache is stored in the JavaServer Faces context.</p>
+          </li>
+
+          <li>
+            <p><code>StudentConverter</code>: A JavaServer Faces converter for the <code>Student</code> entity class. This class contains methods to convert <code>Student</code> instances to strings and back again, so they can be used in the user interface components of the application.</p>
+          </li>
+
+          <li>
+            <p><code>GuardianConverter</code>: Similar to <code>StudentConverter</code>, this class is a converter for the <code>Guardian</code> entity class.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKJNN"></a><a id="JEETT00572"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">58.4</span> Running the Duke's Tutoring Case Study Application</h1>
+
+      <p>This section describes how to build, package, deploy, and run the Duke's Tutoring application.</p><a id="GKJOA"></a><a id="JEETT01335"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">58.4.1</span> Running Duke's Tutoring</h2>
+
+        <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run Duke's Tutoring.</p><a id="GKJNR"></a><a id="JEETT00297"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">58.4.1.1</span> To Build and Deploy Duke's Tutoring Using NetBeans IDE</h3><a id="sthref3068"></a>
+
+          <p class="subhead2">Before You Begin</p>
+
+          <p>You must have already configured GlassFish Server as a Java EE server in NetBeans IDE, as described in <a href="../Text/usingexamples.xhtml#GIQZL">To Add GlassFish Server as a Server Using NetBeans IDE</a>.</p>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>If the database server is not already running, start it as described in <a href="../Text/usingexamples.xhtml#BNADK">Starting and Stopping the Java DB Server</a>.</p>
+            </li>
+
+            <li>
+              <p>From the <span class="gui-object-action">File</span> menu, choose <span class="gui-object-action">Open Project</span>.</p>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/case-studies</pre>
+            </li>
+
+            <li>
+              <p>Select the <code>dukes-tutoring</code> folder.</p>
+            </li>
+
+            <li>
+              <p>Select the <span class="gui-object-action">Open Required Projects</span> check box and click <span class="gui-object-action">Open Project</span>.</p>
+
+              <div align="center">
+                <div class="inftblnote">
+                  <br />
+
+                  <table border="1" cellpadding="3" cellspacing="0" class="Note oac_no_warn" frame="hsides" rules="groups" summary="" width="80%">
+                    <tbody>
+                      <tr>
+                        <td align="left">
+                          <p class="notep1">Note:</p>
+
+                          <p>The first time you open Duke's Tutoring in NetBeans, you will see error glyphs in the <span class="gui-object-action">Projects</span> tab. This is expected, as the metamodel files used by the enterprise beans for Criteria API queries have not yet been generated.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table><br />
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>dukes-tutoring</code> project and select <span class="gui-object-action">Build</span>.</p>
+
+              <p>This command creates a JDBC security realm named tutoringRealm, builds and packages the <code>dukes-tutoring-common</code> and <code>dukes-tutoring-war</code> projects, and deploys <code>dukes-tutoring-war</code> to GlassFish Server, starting the Java DB database and GlassFish Server if they have not already been started.</p>
+            </li>
+          </ol>
+        </div><a id="GKJOG"></a><a id="JEETT00298"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">58.4.1.2</span> To Build and Deploy Duke's Tutoring Using Maven</h3>
+
+          <ol>
+            <li>
+              <p>Make sure that GlassFish Server has started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
+            </li>
+
+            <li>
+              <p>If the database server is not already running, start it as described in <a href="../Text/usingexamples.xhtml#BNADK">Starting and Stopping the Java DB Server</a>.</p>
+            </li>
+
+            <li>
+              <p>In a terminal window, go to:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/case-studies/dukes-tutoring/</pre>
+            </li>
+
+            <li>
+              <p>Enter the following command:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+
+              <p>This command creates a JDBC security realm named tutoringRealm, builds and packages the <code>dukes-tutoring-common</code> and <code>dukes-tutoring-war</code> projects, and deploys <code>dukes-tutoring-war</code> to GlassFish Server.</p>
+            </li>
+          </ol>
+        </div><a id="GKJOC"></a><a id="JEETT00842"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">58.4.1.3</span> Using Duke's Tutoring</h3>
+
+          <p>Once Duke's Tutoring is running on GlassFish Server, use the main interface to experiment with checking students in and out or sending them to the park.</p>
+
+          <p><span class="bold">To Use the Main Interface of Duke's Tutoring</span></p>
+
+          <ol>
+            <li>
+              <p>In a web browser, open the main interface at the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/dukes-tutoring-war/</pre>
+            </li>
+
+            <li>
+              <p>Use the main interface to check students in and out, and to log when the students go to the park.</p>
+            </li>
+          </ol>
+
+          <p><span class="bold">To Use the Administration Interface of Duke's Tutoring</span></p>
+
+          <p>Follow these instructions to log in to the administration interface of Duke's Tutoring and add new students, guardians, and addresses.</p>
+
+          <ol>
+            <li>
+              <p>From the main interface, open the administration interface by clicking <span class="gui-object-action">Administration main page</span> in the left menu.</p>
+
+              <p>This redirects you to the login page at the following URL:</p>
+              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/dukes-tutoring-war/admin/index.xhtml</pre>
+            </li>
+
+            <li>
+              <p>On the login page, enter <code>admin@example.com</code> in the <span class="gui-object-action">User name</span> field, and enter <code>javaee</code> in the <span class="gui-object-action">Password</span> field.</p>
+            </li>
+
+            <li>
+              <p>Use the administration interface to add or modify students, add guardians, or add addresses.</p>
+
+              <ul>
+                <li>
+                  <p>To add a new student, click <span class="gui-object-action">Create new student</span> in the left menu, fill in the fields (two are required) in the form that opens, and click <span class="gui-object-action">Submit</span>. The <span class="gui-object-action">Email</span>, <span class="gui-object-action">Home phone</span>, and <span class="gui-object-action">Mobile phone</span> fields have formatting requirements enforced by HTML5 pass-through or by Bean Validation constraints.</p>
+                </li>
+
+                <li>
+                  <p>To modify a student, click <span class="gui-object-action">Edit</span> next to the student's name, modify the fields in the form that opens, and click <span class="gui-object-action">Submit</span>. To edit another student, choose the student from the drop-down menu at the top of the page and click <span class="gui-object-action">Change student</span>.</p>
+                </li>
+
+                <li>
+                  <p>To remove a student, click <span class="gui-object-action">Remove</span> next to the student's name, then click <span class="gui-object-action">Confirm</span> in the page that appears. This action removes the student from the tutoring session but does not remove the student from the database. To add the student to the tutoring session again, click <span class="gui-object-action">Activate student</span> in the left menu, then click <span class="gui-object-action">Activate</span> next to the student's name in the page that appears.</p>
+                </li>
+
+                <li>
+                  <p>To add a guardian for a student, click <span class="gui-object-action">Add guardian</span> next to the student's name. The page that appears shows the student's name, the available guardians, and the current guardians for the student, if any. To add an existing guardian for that student, select the guardian from the list and click <span class="gui-object-action">Add guardian</span>. To create a new guardian for the student, fill in the fields and click <span class="gui-object-action">Submit</span>. To remove a guardian from a student, select one of the student's current guardians from the list and click <span class="gui-object-action">Remove guardian</span>.</p>
+                </li>
+
+                <li>
+                  <p>To add an address for a student, click <span class="gui-object-action">Add address</span> next to the student's name. In the page that appears, fill in the appropriate fields in the form that appears, and click <span class="gui-object-action">Submit</span>. Four fields are required.</p>
+                </li>
+              </ul>
+            </li>
+          </ol>
+
+          <p>The administration interface is not fully implemented. It is not possible to edit a guardian or to view or edit an address, although Facelets pages exist for these features. The application also makes no use of the properties in the <code>PersonDetails</code> entity. Feel free to modify the application to add these features.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

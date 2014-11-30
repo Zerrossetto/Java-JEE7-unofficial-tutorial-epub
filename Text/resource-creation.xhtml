@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKJIQ2"></a>
+
+    <h1 class="chapter"><span class="secnum">3</span> Resource Creation</h1>
+
+    <p>A resource is a program object that provides connections to such systems as database servers and messaging systems. Java EE components can access a wide variety of resources, including databases, mail sessions, Java Message Service objects, and URLs. The Java EE 7 platform provides mechanisms that allow you to access all these resources in a similar manner. This chapter examines several types of resources and explains how to create them.</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/resource-creation.xhtml#BNCJI">Resources and JNDI Naming</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/resource-creation.xhtml#BNCJJ">DataSource Objects and Connection Pools</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/resource-creation.xhtml#CACFBGBE">Creating Resources Administratively</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="BNCJI"></a><a id="JEETT00537"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">3.1</span> Resources and JNDI Naming</h1>
+
+      <p><a id="sthref148"></a>In a distributed application, components need to access other components and resources, such as databases. For example, a servlet might invoke remote methods on an enterprise bean that retrieves information from a database. In the Java EE platform, the Java Naming and Directory Interface (JNDI) naming service enables components to locate other components and resources.</p>
+
+      <p>A <span class="glossaryterm">resource</span> is a program object that provides connections to systems, such as database servers and messaging systems. (A Java Database Connectivity resource is sometimes referred to as a data source.) Each resource object is identified by a unique, people-friendly name, called the JNDI name. For example, the JNDI name of the preconfigured JDBC resource for the Java DB database that is shipped with GlassFish Server is <code>java:comp/DefaultDataSource</code>.</p>
+
+      <p>An administrator creates resources in a JNDI namespace. In GlassFish Server, you can use either the Administration Console or the <code>asadmin</code> command to create resources. Applications then use annotations to inject the resources. If an application uses resource injection, GlassFish Server invokes the JNDI API, and the application is not required to do so. However, it is also possible for an application to locate resources by making direct calls to the JNDI API.</p>
+
+      <p>A resource object and its JNDI name are bound together by the naming and directory service. To create a new resource, a new name/object binding is entered into the JNDI namespace. <a id="sthref149"></a>You inject resources by using the <code>@Resource</code> annotation in an application.</p>
+
+      <p>You can use a deployment descriptor to override the resource mapping that you specify in an annotation. Using a deployment descriptor allows you to change an application by repackaging it rather than by both recompiling the source files and repackaging. However, for most applications a deployment descriptor is not necessary.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="BNCJJ"></a><a id="JEETT00538"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">3.2</span> DataSource Objects and Connection Pools</h1>
+
+      <p><a id="sthref150"></a>To store, organize, and retrieve data, most applications use a relational database. Java EE 7 components may access relational databases through the JDBC API. For information on this API, see <code><a href="../Text/resource-creation.xhtml#http%3A//docs.oracle.com/javase/7/docs/technotes/guides/jdbc/">http://docs.oracle.com/javase/7/docs/technotes/guides/jdbc/</a></code>.</p>
+
+      <p><a id="sthref151"></a><a id="sthref152"></a>In the JDBC API, databases are accessed by using <code>DataSource</code> objects. A <code>DataSource</code> has a set of properties that identify and describe the real-world data source that it represents. These properties include such information as the location of the database server, the name of the database, the network protocol to use to communicate with the server, and so on. In GlassFish Server, a data source is called a JDBC resource.</p>
+
+      <p><a id="sthref153"></a>Applications access a data source by using a connection, and a <code>DataSource</code> object can be thought of as a factory for connections to the particular data source that the <code>DataSource</code> instance represents. In a basic <code>DataSource</code> implementation, a call to the <code>getConnection</code> method returns a connection object that is a physical connection to the data source.</p>
+
+      <p>A <code>DataSource</code> object may be registered with a JNDI naming service. If so, an application can use the JNDI API to access that <code>DataSource</code> object, which can then be used to connect to the data source it represents.</p>
+
+      <p><a id="sthref154"></a><code>DataSource</code> objects that implement connection pooling also produce a connection to the particular data source that the <code>DataSource</code> class represents. The connection object that the <code>getConnection</code> method returns is a handle to a <code>PooledConnection</code> object rather than a physical connection. An application uses the connection object in the same way that it uses a connection. Connection pooling has no effect on application code except that a pooled connection, like all connections, should always be explicitly closed. When an application closes a connection that is pooled, the connection is returned to a pool of reusable connections. The next time <code>getConnection</code> is called, a handle to one of these pooled connections will be returned if one is available. Because connection pooling avoids creating a new physical connection every time one is requested, applications can run significantly faster.</p>
+
+      <p>A JDBC connection pool is a group of reusable connections for a particular database. Because creating each new physical connection is time consuming, the server maintains a pool of available connections to increase performance. When it requests a connection, an application obtains one from the pool. When an application closes a connection, the connection is returned to the pool.</p>
+
+      <p>Applications that use the Persistence API specify the <code>DataSource</code> object they are using in the <code>jta-data-source</code> element of the <code>persistence.xml</code> file:</p>
+      <pre class="oac_no_warn" xml:space="preserve">jta-data-sourcejdbc/MyOrderDB/jta-data-source</pre>
+
+      <p>This is typically the only reference to a JDBC object for a persistence unit. The application code does not refer to any JDBC objects.</p>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="CACFBGBE"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">3.3</span> Creating Resources Administratively</h1>
+
+      <p>Before you deploy or run many applications, you may need to create resources for them. An application can include a <code>glassfish-resources.xml</code> file that can be used to define resources for that application and others. You can then use the <code>asadmin</code> command, specifying as the argument a file named <code>glassfish-resources.xml</code>, to create the resources administratively, as shown.</p>
+      <pre class="oac_no_warn" xml:space="preserve">asadmin add-resources glassfish-resources.xml</pre>
+
+      <p>The <code>glassfish-resources.xml</code> file can be created in any project using NetBeans IDE or by hand. Some of the JMS examples use this approach to resource creation. A file for creating the resources needed for the JMS simple producer example can be found in the <code>jms/simple/producer/src/main/setup</code> directory.</p>
+
+      <p>You could also use the <code>asadmin create-jms-resource</code> command to create the resources for this example. When you are done using the resources, you would use the <code>asadmin list-jms-resources</code> command to display their names, and the <code>asadmin delete-jms-resource</code> command to remove them, regardless of the way you created the resources.</p>
+    </div>
+  </div>
+</body>
+</html>

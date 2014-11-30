@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <link href="../Styles/javaee-darb.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="ind">
+    <a id="GKAHP"></a><a id="JEETT00112"></a>
+
+    <h1 class="chapter"><span class="secnum">22</span> <a id="sthref1354"></a>Bean Validation: Advanced Topics</h1>
+
+    <p>This chapter describes how to create custom constraints, custom validator messages, and constraint groups using the Java API for JavaBeans Validation (Bean Validation).</p>
+
+    <p>The following topics are addressed here:</p>
+
+    <ul>
+      <li>
+        <p><a href="../Text/bean-validation-advanced.xhtml#GKFGX">Creating Custom Constraints</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/bean-validation-advanced.xhtml#GKAHI">Customizing Validator Messages</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/bean-validation-advanced.xhtml#GKAGV">Grouping Constraints</a></p>
+      </li>
+
+      <li>
+        <p><a href="../Text/bean-validation-advanced.xhtml#CIHGJBGI">Using Method Constraints in Type Hierarchies</a></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ind">
+    <a id="GKFGX"></a><a id="JEETT00560"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">22.1</span> <a id="sthref1355"></a><a id="sthref1356"></a>Creating Custom Constraints</h1>
+
+      <p>Bean Validation defines annotations, interfaces, and classes to allow developers to create custom constraints.</p><a id="GKAIA"></a><a id="JEETT01311"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">22.1.1</span> Using the Built-In Constraints to Make a New Constraint</h2>
+
+        <p>Bean Validation includes several built-in constraints that can be combined to create new, reusable constraints. This can simplify constraint definition by allowing developers to define a custom constraint made up of several built-in constraints that may then be applied to component attributes with a single annotation.</p><a id="GKAJU"></a>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Pattern.List({
+  @Pattern(regexp = "[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\\."
+    +"[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*"
+    +"@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+})
+@Constraint(validatedBy = {})
+@Documented
+@Target({ElementType.METHOD,
+    ElementType.FIELD,
+    ElementType.ANNOTATION_TYPE,
+    ElementType.CONSTRUCTOR,
+    ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Email {
+
+    String message() default "{invalid.email}";
+
+    Class&lt;?&gt;[] groups() default {};
+
+    Class&lt;? extends Payload&gt;[] payload() default {};
+
+    @Target({ElementType.METHOD,
+        ElementType.FIELD,
+        ElementType.ANNOTATION_TYPE,
+        ElementType.CONSTRUCTOR,
+        ElementType.PARAMETER})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @interface List {
+        Email[] value();
+    }
+}</pre>
+
+        <p>This custom constraint can then be applied to an attribute.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">...
+@Email
+protected String email;
+...</pre>
+      </div><a id="CIHCICAI"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">22.1.2</span> Removing Ambiguity in Constraint Targets</h2>
+
+        <p>Custom constraints that can be applied to both return values and method parameters require a <code>validationAppliesTo</code> element to identify the target of the constraint.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Constraint(validatedBy=MyConstraintValidator.class)
+@Target({ METHOD, FIELD, TYPE, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
+@Retention(RUNTIME)
+public @interface MyConstraint {
+  String message() default "{com.example.constraint.MyConstraint.message}";
+  Class&lt;?&gt;[] groups() default {};
+  ConstraintTarget validationAppliesTo() default ConstraintTarget.PARAMETERS;
+...
+}</pre>
+
+        <p>This constraint sets the <code>validationAppliesTo</code> target by default to the method parameters.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@MyConstraint(validationAppliesTo=ConstraintTarget.RETURN_TYPE)
+public String doSomething(String param1, String param2) { ... }</pre>
+
+        <p>In the preceding example, the target is set to the return value of the method.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKAHI"></a><a id="JEETT00561"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">22.2</span> <a id="sthref1357"></a><a id="sthref1358"></a>Customizing Validator Messages</h1>
+
+      <p>Bean Validation includes a resource bundle of default messages for the built-in constraints. These messages can be customized and can be localized for non-English-speaking locales.</p><a id="GKAGY"></a><a id="JEETT01312"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">22.2.1</span> <a id="sthref1359"></a><a id="sthref1360"></a>The ValidationMessages Resource Bundle</h2>
+
+        <p>The <code>ValidationMessages</code> resource bundle and the locale variants of this resource bundle contain strings that override the default validation messages. The <code>ValidationMessages</code> resource bundle is typically a properties file, <code>ValidationMessages.properties</code>, in the default package of an application.</p><a id="GKAIQ"></a><a id="JEETT00837"></a>
+
+        <div class="sect3">
+          <h3 class="sect3"><span class="secnum">22.2.1.1</span> <a id="sthref1361"></a><a id="sthref1362"></a><a id="sthref1363"></a>Localizing Validation Messages</h3>
+
+          <p>Locale variants of <code>ValidationMessages.properties</code> are added by appending an underscore and the locale prefix to the base name of the file. For example, the Spanish locale variant resource bundle would be <code>ValidationMessages_es.properties</code>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="GKAGV"></a><a id="JEETT00562"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">22.3</span> <a id="sthref1364"></a>Grouping Constraints</h1>
+
+      <p>Constraints may be added to one or more groups. Constraint groups are used to create subsets of constraints so that only certain constraints will be validated for a particular object. By default, all constraints are included in the <code>Default</code> constraint group.</p>
+
+      <p>Constraint groups are represented by interfaces.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public interface Employee {}
+
+public interface Contractor {}</pre>
+
+      <p>Constraint groups can inherit from other groups.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public interface Manager extends Employee {}</pre>
+
+      <p>When a constraint is added to an element, the constraint declares the groups to which that constraint belongs by specifying the class name of the group interface name in the <code>groups</code> element of the constraint.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NotNull(groups=Employee.class)
+Phone workPhone;</pre>
+
+      <p>Multiple groups can be declared by surrounding the groups with braces (<code>{</code> and <code>}</code>) and separating the groups' class names with commas.</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NotNull(groups={ Employee.class, Contractor.class })
+Phone workPhone;</pre>
+
+      <p>If a group inherits from another group, validating that group results in validating all constraints declared as part of the supergroup. For example, validating the <code>Manager</code> group results in the <code>workPhone</code> field being validated, because <code>Employee</code> is a superinterface of <code>Manager</code>.</p><a id="GKAGU"></a><a id="JEETT01313"></a>
+
+      <div class="sect2">
+        <h2 class="sect2"><span class="secnum">22.3.1</span> <a id="sthref1365"></a><a id="sthref1366"></a><a id="sthref1367"></a>Customizing Group Validation Order</h2>
+
+        <p>By default, constraint groups are validated in no particular order. There are cases in which some groups should be validated before others. For example, in a particular class, basic data should be validated before more advanced data.</p>
+
+        <p>To set the validation order for a group, add a <code>javax.validation.GroupSequence</code> annotation to the interface definition, listing the order in which the validation should occur.</p>
+        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GroupSequence({Default.class, ExpensiveValidationGroup.class})
+public interface FullValidationGroup {}</pre>
+
+        <p>When validating <code>FullValidationGroup</code>, first the <code>Default</code> group is validated. If all the data passes validation, then the <code>ExpensiveValidationGroup</code> group is validated. If a constraint is part of both the <code>Default</code> and the <code>ExpensiveValidationGroup</code> groups, the constraint is validated as part of the <code>Default</code> group and will not be validated on the subsequent <code>ExpensiveValidationGroup</code> pass.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ind">
+    <a id="CIHGJBGI"></a>
+
+    <div class="sect1">
+      <h1 class="sect1"><span class="secnum">22.4</span> <a id="sthref1368"></a><a id="sthref1369"></a>Using Method Constraints in Type Hierarchies</h1>
+
+      <p>If you add validation constraints to objects in an inheritance hierarchy, take special care to avoid unintended errors when using subtypes.</p>
+
+      <p>For a given type, subtypes should be able to be substituted without encountering errors. For example, if you have a <code>Person</code> class and an <code>Employee</code> subclass that extends <code>Person</code>, you should be able to use <code>Employee</code> instances wherever you might use <code>Person</code> instances. If <code>Employee</code> overrides a method in <code>Person</code> by adding method parameter constraints, code that works correctly with <code>Person</code> objects may throw validation exceptions with <code>Employee</code> objects.</p>
+
+      <p>The following code shows an <span class="italic">incorrect</span> use of method parameter constraints within a class hierarchy:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class Person {
+...
+  public void setEmail(String email) { ... }
+}
+
+public class Employee extends Person {
+...
+  @Override
+  public void setEmail(@Verified String email) { ... }
+}</pre>
+
+      <p>By adding the <code>@Verified</code> constraint to <code>Employee.setEmail</code>, parameters that were valid with <code>Person.setEmail</code> will not be valid with <code>Employee.setEmail</code>. This is called <span class="glossaryterm">strengthening the preconditions</span> (that is, the method parameters) of a subtype's method. You may not strengthen the preconditions of subtype method calls.</p>
+
+      <p>Similarly, the return values from method calls should not be weakened in subtypes. The following code shows an <span class="italic">incorrect</span> use of constraints on method return values in a class hierarchy:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class Person {
+...
+  @Verified
+  public Email getEmail() { ... }
+}
+
+public class Employee extends Person {
+...
+  @Override
+  public Email getEmail() { ... }
+}</pre>
+
+      <p>In this example, the <code>Employee.getEmail</code> method removes the <code>@Verified</code> constraint on the return value. Return values that would be not pass validation when calling <code>Person.getEmail</code> are allowed when calling <code>Employee.getEmail</code>. This is called <span class="glossaryterm">weakening the postconditions</span> (that is, return values) of a subtype. You may not weaken the postconditions of a subtype method call.</p>
+
+      <p>If your type hierarchy strengthens the preconditions or weakens the postconditions of subtype method calls, a <code>javax.validation.ConstraintDeclarationException</code> will be thrown by the Bean Validation runtime.</p>
+
+      <p>Classes that implement several interfaces that each have the same method signature, known as parallel types, need to be aware of the constraints applied to the interfaces that they implement to avoid strengthening the preconditions. For example:</p>
+      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public interface PaymentService {
+  void processOrder(Order order, double amount);
+...
+}
+
+public interface CreditCardPaymentService {
+  void processOrder(@NotNull Order order, @NotNull double amount);
+...
+}
+
+public class MyPaymentService implements PaymentService,
+        CreditCardPaymentService {
+
+  @Override
+  public void processOrder(Order order, double amount) { ... }
+...
+}</pre>
+
+      <p>In this case, <code>MyPaymentService</code> has the constraints from the <code>processOrder</code> method in <code>CreditCardPaymentService</code>, but client code that calls <code>PaymentService.processOrder</code> doesn't expect these constraints. This is another example of strengthening the preconditions of a subtype and will result in a <code>ConstraintDeclarationException</code>.</p>
+
+      <div class="sect2">
+        <a id="sthref1370"></a>
+
+        <h2 class="sect2"><span class="secnum">22.4.1</span> Rules for Using Method Constraints in Type Hierarchies</h2>
+
+        <p>The following rules define how method validation constraints should be used in type hierarchies.</p>
+
+        <ul>
+          <li>
+            <p>Do not add method parameter constraints to overridden or implemented methods in a subtype.</p>
+          </li>
+
+          <li>
+            <p>Do not add method parameter constraints to overridden or implemented methods in a subtype that was originally declared in several parallel types.</p>
+          </li>
+
+          <li>
+            <p>You may add return value constraints to an overridden or implemented method in a subtype.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
