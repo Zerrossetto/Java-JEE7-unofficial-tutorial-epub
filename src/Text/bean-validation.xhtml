@@ -43,7 +43,7 @@
     <a id="GIRCZ"></a><a id="JEETT00357"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">21.1</span> <a id="sthref1336"></a><a id="sthref1337"></a>Using Bean Validation Constraints</h1>
+      <h1 class="sect1" id="sigil_toc_id_47"><span class="secnum">21.1</span> <a id="sthref1336"></a><a id="sthref1337"></a>Using Bean Validation Constraints</h1>
 
       <p>The Bean Validation model is supported by constraints in the form of annotations placed on a field, method, or class of a JavaBeans component, such as a managed bean.</p>
 
@@ -80,7 +80,10 @@
               </td>
 
               <td align="left" headers="r2c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@AssertFalseboolean isUnsupported;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@AssertFalse
+boolean isUnsupported;
+</pre>
               </td>
             </tr>
 
@@ -94,7 +97,10 @@
               </td>
 
               <td align="left" headers="r3c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@AssertTrueboolean isActive;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@AssertTrue
+boolean isActive;
+</pre>
               </td>
             </tr>
 
@@ -108,7 +114,10 @@
               </td>
 
               <td align="left" headers="r4c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@DecimalMax("30.00")BigDecimal discount;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@DecimalMax("30.00")
+BigDecimal discount;
+</pre>
               </td>
             </tr>
 
@@ -122,7 +131,10 @@
               </td>
 
               <td align="left" headers="r5c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@DecimalMin("5.00")BigDecimal discount;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@DecimalMin("5.00")
+BigDecimal discount;
+</pre>
               </td>
             </tr>
 
@@ -136,7 +148,10 @@
               </td>
 
               <td align="left" headers="r6c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Digits(integer=6, fraction=2)BigDecimal price;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@Digits(integer=6, fraction=2)
+BigDecimal price;
+</pre>
               </td>
             </tr>
 
@@ -150,7 +165,10 @@
               </td>
 
               <td align="left" headers="r7c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@FutureDate eventDate;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@Future
+Date eventDate;
+</pre>
               </td>
             </tr>
 
@@ -164,7 +182,10 @@
               </td>
 
               <td align="left" headers="r8c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Max(10)int quantity;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@Max(10)
+int quantity;
+</pre>
               </td>
             </tr>
 
@@ -178,7 +199,10 @@
               </td>
 
               <td align="left" headers="r9c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Min(5)int quantity;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@Min(5)
+int quantity;
+</pre>
               </td>
             </tr>
 
@@ -192,7 +216,10 @@
               </td>
 
               <td align="left" headers="r10c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NotNullString username;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@NotNull
+String username;
+</pre>
               </td>
             </tr>
 
@@ -206,7 +233,10 @@
               </td>
 
               <td align="left" headers="r11c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NullString unusedString;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@Null
+String unusedString;
+</pre>
               </td>
             </tr>
 
@@ -220,7 +250,10 @@
               </td>
 
               <td align="left" headers="r12c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PastDate birthday;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@Past
+Date birthday;
+</pre>
               </td>
             </tr>
 
@@ -234,7 +267,10 @@
               </td>
 
               <td align="left" headers="r13c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Pattern(regexp="\\(\\d{3}\\)\\d{3}-\\d{4}")String phoneNumber;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@Pattern(regexp="\\(\\d{3}\\)\\d{3}-\\d{4}")
+String phoneNumber;
+</pre>
               </td>
             </tr>
 
@@ -248,7 +284,10 @@
               </td>
 
               <td align="left" headers="r14c1-t2 r1c3-t2">
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Size(min=2, max=240)String briefMessage;</pre>
+                <pre class="oac_no_warn" xml:space="preserve">
+@Size(min=2, max=240)
+String briefMessage;
+</pre>
               </td>
             </tr>
           </tbody>
@@ -256,17 +295,20 @@
       </div>
 
       <p>In the following example, a constraint is placed on a field using the built-in <code>@NotNull</code> constraint:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class Name {
+      <pre class="oac_no_warn" xml:space="preserve">
+public class Name {
     @NotNull 
     private String firstname;
 
     @NotNull 
     private String lastname;
     ...
-}</pre>
+}
+</pre>
 
       <p>You can also place more than one constraint on a single JavaBeans component object. For example, you can place an additional constraint for size of field on the <code>firstname</code> and the <code>lastname</code> fields:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class Name {
+      <pre class="oac_no_warn" xml:space="preserve">
+public class Name {
     @NotNull
     @Size(min=1, max=16)
     private String firstname;
@@ -275,13 +317,16 @@
     @Size(min=1, max=16)
     private String lastname;
     ...
-}</pre>
+}
+</pre>
 
       <p>The following example shows a method with a user-defined constraint that checks for a predefined email address pattern, such as a corporate email account:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ValidEmail 
+      <pre class="oac_no_warn" xml:space="preserve">
+@ValidEmail 
 public String getEmailAddress() {
     return emailAddress;
-}</pre>
+}
+</pre>
 
       <p>For a built-in constraint, a default implementation is available. A user-defined or custom constraint needs a validation implementation. In the preceding example, the <code>@ValidEmail</code> custom constraint needs an implementation class.</p>
 
@@ -311,28 +356,32 @@ public String getEmailAddress() {
     <a id="GKCRG"></a><a id="JEETT00951"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">21.2</span> <a id="sthref1339"></a><a id="sthref1340"></a>Validating Null and Empty Strings</h1>
+      <h1 class="sect1" id="sigil_toc_id_48"><span class="secnum">21.2</span> <a id="sthref1339"></a><a id="sthref1340"></a>Validating Null and Empty Strings</h1>
 
       <p>The Java programming language distinguishes between null and empty strings. An empty string is a string instance of zero length, whereas a null string has no value at all.</p>
 
       <p>An empty string is represented as <code>""</code>. It is a character sequence of zero characters. A null string is represented by <code>null</code>. It can be described as the absence of a string instance.</p>
 
       <p>Managed bean elements represented as a JavaServer Faces text component such as <code>inputText</code> are initialized with the value of the empty string by the JavaServer Faces implementation. Validating these strings can be an issue when user input for such fields is not required. Consider the following example, in which the string <code>testString</code> is a bean variable that will be set using input entered by the user. In this case, the user input for the field is not required.</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">if (testString==null) {
+      <pre class="oac_no_warn" xml:space="preserve">
+if (testString==null) {
     doSomething();
 } else {
     doAnotherThing();
-}</pre>
+}
+</pre>
 
       <p>By default, the <code>doAnotherThing</code> method is called even when the user enters no data, because the <code>testString</code> element has been initialized with the value of an empty string.</p>
 
       <p>In order for the Bean Validation model to work as intended, you must set the context parameter <code>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</code> to <code>true</code> in the web deployment descriptor file, <code>web.xml</code>:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;context-param&gt;
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;context-param&gt;
     &lt;param-name&gt;
         javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL
     &lt;/param-name&gt;
     &lt;param-value&gt;true&lt;/param-value&gt;
-&lt;/context-param&gt;</pre>
+&lt;/context-param&gt;
+</pre>
 
       <p>This parameter enables the JavaServer Faces implementation to treat empty strings as null.</p>
 
@@ -344,10 +393,11 @@ public String getEmailAddress() {
     <a id="CACJIBEJ"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">21.3</span> <a id="sthref1341"></a><a id="sthref1342"></a>Validating Constructors and Methods</h1>
+      <h1 class="sect1" id="sigil_toc_id_49"><span class="secnum">21.3</span> <a id="sthref1341"></a><a id="sthref1342"></a>Validating Constructors and Methods</h1>
 
       <p>Bean Validation constraints may be placed on the <a id="sthref1343"></a>parameters of nonstatic methods and constructors and on the return values of nonstatic methods. <a id="sthref1344"></a>Static methods and <a id="sthref1345"></a>constructors will not be validated.</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class Employee {
+      <pre class="oac_no_warn" xml:space="preserve">
+public class Employee {
 ...
   public Employee (@NotNull String name) { ... }
 
@@ -360,7 +410,8 @@ public String getEmailAddress() {
     ...
   }
 ...
-}</pre>
+}
+</pre>
 
       <p>In this example, the <code>Employee</code> class has a constructor constraint requiring a name and has two sets of method parameter constraints. The amount of the salary for the employee must not be null, cannot be greater than six digits to the left of the decimal point, and cannot have more than two digits to the right of the decimal place. The currency type must not be null and is validated using a custom constraint.</p>
 
@@ -369,14 +420,16 @@ public String getEmailAddress() {
       <div class="sect2">
         <a id="sthref1346"></a>
 
-        <h2 class="sect2"><span class="secnum">21.3.1</span> <a id="sthref1347"></a>Cross-Parameter Constraints</h2>
+        <h2 class="sect2" id="sigil_toc_id_50"><span class="secnum">21.3.1</span> <a id="sthref1347"></a>Cross-Parameter Constraints</h2>
 
         <p>Constraints that apply to multiple parameters are called <span class="glossaryterm">cross-parameter constraints</span>, and may be applied at the method or constructor level.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ConsistentPhoneParameters
+        <pre class="oac_no_warn" xml:space="preserve">
+@ConsistentPhoneParameters
 @NotNull
 public Employee (String name, String officePhone, String mobilePhone) {
   ...
-}</pre>
+}
+</pre>
 
         <p>In this example, a custom cross-parameter constraint, <code>@ConsistentPhoneParameters</code>, validates that the format of the phone numbers passed into the constructor match. The <code>@NotNull</code> constraint applies to all the parameters in the constructor.</p>
 
@@ -404,7 +457,7 @@ public Employee (String name, String officePhone, String mobilePhone) {
       <div class="sect2">
         <a id="sthref1348"></a>
 
-        <h2 class="sect2"><span class="secnum">21.3.2</span> Identifying Parameter Constraint Violations</h2>
+        <h2 class="sect2" id="sigil_toc_id_51"><span class="secnum">21.3.2</span> Identifying Parameter Constraint Violations</h2>
 
         <p>If a <a id="sthref1349"></a><a id="sthref1350"></a><a id="sthref1351"></a><code>ConstraintViolationException</code> occurs during a method call, the Bean Validation runtime returns a parameter index to identify which parameter caused the constraint violation. The parameter index is in the form <code>arg</code><span class="variable">PARAMETER_INDEX</span>, where <span class="variable">PARAMETER_INDEX</span> is an integer that starts at 0 for the first parameter of the method or constructor.</p>
       </div>
@@ -412,15 +465,19 @@ public Employee (String name, String officePhone, String mobilePhone) {
       <div class="sect2">
         <a id="sthref1352"></a>
 
-        <h2 class="sect2"><span class="secnum">21.3.3</span> <a id="sthref1353"></a>Adding Constraints to Method Return Values</h2>
+        <h2 class="sect2" id="sigil_toc_id_52"><span class="secnum">21.3.3</span> <a id="sthref1353"></a>Adding Constraints to Method Return Values</h2>
 
         <p>To validate the return value for a method, you can apply constraints directly to the method or constructor declaration.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NotNull
-public Employee getEmployee() { ... }</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@NotNull
+public Employee getEmployee() { ... }
+</pre>
 
         <p>Cross-parameter constraints are also applied at the method level. Custom constraints that could be applied to both the return value and the method parameters have an ambiguous constraint target. To avoid this ambiguity, add a <code>validationAppliesTo</code> element to the constraint annotation definition with the default set to either <code>ConstraintTarget.RETURN_VALUE</code> or <code>ConstraintTarget.PARAMETERS</code> to explicitly set the target of the validation constraint.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Manager(validationAppliesTo=ConstraintTarget.RETURN_VALUE)
-public Employee getManager(Employee employee) { ... }</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@Manager(validationAppliesTo=ConstraintTarget.RETURN_VALUE)
+public Employee getManager(Employee employee) { ... }
+</pre>
 
         <p>See <a href="../Text/bean-validation-advanced.xhtml#CIHCICAI">Removing Ambiguity in Constraint Targets</a> for more information.</p>
       </div>
@@ -431,7 +488,7 @@ public Employee getManager(Employee employee) { ... }</pre>
     <a id="CACDECFE"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">21.4</span> Further Information about Bean Validation</h1>
+      <h1 class="sect1" id="sigil_toc_id_53"><span class="secnum">21.4</span> Further Information about Bean Validation</h1>
 
       <p>For more information on Bean Validation, see</p>
 
@@ -439,13 +496,13 @@ public Employee getManager(Employee employee) { ... }</pre>
         <li>
           <p>Bean Validation 1.1 Specification:</p>
 
-          <p><code><a href="../Text/bean-validation.xhtml#http%3A//www.jcp.org/en/jsr/detail%3Fid%3D349">http://www.jcp.org/en/jsr/detail?id=349</a></code></p>
+          <p><code><a href="../Text/http://www.jcp.org/en/jsr/detail?id=.xhtml#http://www.jcp.org/en/jsr/detail?id=349">http://www.jcp.org/en/jsr/detail?id=349</a></code></p>
         </li>
 
         <li>
           <p>Bean Validation Specification website:</p>
 
-          <p><code><a href="../Text/bean-validation.xhtml#http%3A//beanvalidation.org/">http://beanvalidation.org/</a></code></p>
+          <p><code><a href="../Text/http://beanvalidation.org/.xhtml#http://beanvalidation.org/">http://beanvalidation.org/</a></code></p>
         </li>
       </ul>
     </div>

@@ -1,99 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId" version="2.0">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:identifier id="BookId" opf:scheme="UUID">urn:uuid:11741814-c9c2-43a5-8df6-fccd9c95683e</dc:identifier>
     <dc:title>The Java EE 7 Tutorial</dc:title>
-    <dc:creator opf:file-as="Jendrock E, Cervera-Navarro R, Evans I, Haase K, Markito K" opf:role="aut">Jendrock E, Cervera-Navarro R, Evans I, Haase K, Markito K</dc:creator>
-    <dc:identifier id="BookId" opf:scheme="UUID">urn:uuid:3271b708-3d6c-4a33-95a4-c76568b16441</dc:identifier>
-    <dc:date>2014-08-31T22:00:00+00:00</dc:date>
-    <dc:publisher>Oracle Corporation</dc:publisher>
-    <dc:subject>Java</dc:subject>
-    <dc:subject>JEE</dc:subject>
-    <dc:subject>Computers</dc:subject>
-    <dc:subject>Programming</dc:subject>
-    <dc:identifier opf:scheme="calibre">178b3203-aac0-48e7-ac3c-3d71c442402e</dc:identifier>
-    <meta content="0.8.0" name="Sigil version" />
-    <meta name="cover" content="jeett-cover.png" />
-    <meta content="The Java EE 7 Tutorial" name="calibre:title_sort" />
-    <meta content="{&quot;Jendrock E, Cervera-Navarro R, Evans I, Haase K, Markito K&quot;: &quot;&quot;}" name="calibre:author_link_map" />
+    <dc:creator opf:role="aut">Jendrock E, Cervera-Navarro R, Evans I, Ha.epub</dc:creator>
+    <dc:language>en</dc:language>
     <dc:date opf:event="modification">2014-11-30</dc:date>
+    <dc:language />
+    <dc:date opf:event="creation">2014-08-01</dc:date>
+    <dc:rights>Oracle and/or affiliates</dc:rights>
+    <dc:date opf:event="publication">2014-11-30</dc:date>
+    <meta content="0.8.0" name="Sigil version" />
   </metadata>
   <manifest>
-    <item href="Text/cover.xhtml" id="cover.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/home.xhtml" id="home.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/preface.xhtml" id="preface.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partintro.xhtml" id="partintro.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/overview.xhtml" id="overview.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/usingexamples.xhtml" id="usingexamples.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partplatform.xhtml" id="partplatform.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/resource-creation.xhtml" id="resource-creation.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/injection.xhtml" id="injection.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/packaging.xhtml" id="packaging.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partwebtier.xhtml" id="partwebtier.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/webapp.xhtml" id="webapp.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-intro.xhtml" id="jsf-intro.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-facelets.xhtml" id="jsf-facelets.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-el.xhtml" id="jsf-el.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-page.xhtml" id="jsf-page.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-page-core.xhtml" id="jsf-page-core.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-develop.xhtml" id="jsf-develop.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-ajax.xhtml" id="jsf-ajax.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-advanced-cc.xhtml" id="jsf-advanced-cc.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-custom.xhtml" id="jsf-custom.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/servlets.xhtml" id="servlets.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/websocket.xhtml" id="websocket.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsonp.xhtml" id="jsonp.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/webi18n.xhtml" id="webi18n.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partbeanvalidation.xhtml" id="partbeanvalidation.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/bean-validation.xhtml" id="bean-validation.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/bean-validation-advanced.xhtml" id="bean-validation-advanced.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partcdi.xhtml" id="partcdi.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/cdi-basic.xhtml" id="cdi-basic.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/cdi-basic-examples.xhtml" id="cdi-basic-examples.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/cdi-adv.xhtml" id="cdi-adv.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/cdi-adv-examples.xhtml" id="cdi-adv-examples.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partwebsvcs.xhtml" id="partwebsvcs.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/webservices-intro.xhtml" id="webservices-intro.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jaxws.xhtml" id="jaxws.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jaxrs.xhtml" id="jaxrs.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jaxrs-client.xhtml" id="jaxrs-client.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jaxrs-advanced.xhtml" id="jaxrs-advanced.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partentbeans.xhtml" id="partentbeans.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/ejb-intro.xhtml" id="ejb-intro.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/ejb-gettingstarted.xhtml" id="ejb-gettingstarted.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/ejb-basic-examples.xhtml" id="ejb-basic-examples.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/ejb-embedded.xhtml" id="ejb-embedded.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/ejb-async.xhtml" id="ejb-async.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partpersist.xhtml" id="partpersist.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/persistence-intro.xhtml" id="persistence-intro.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/persistence-basic-examples.xhtml" id="persistence-basic-examples.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/persistence-querylanguage.xhtml" id="persistence-querylanguage.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/persistence-criteria.xhtml" id="persistence-criteria.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/persistence-string-queries.xhtml" id="persistence-string-queries.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/persistence-locking.xhtml" id="persistence-locking.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/persistence-entitygraphs.xhtml" id="persistence-entitygraphs.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/persistence-cache.xhtml" id="persistence-cache.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partmessaging.xhtml" id="partmessaging.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jms-concepts.xhtml" id="jms-concepts.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jms-examples.xhtml" id="jms-examples.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partsecurity.xhtml" id="partsecurity.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/security-intro.xhtml" id="security-intro.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/security-webtier.xhtml" id="security-webtier.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/security-javaee.xhtml" id="security-javaee.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/security-advanced.xhtml" id="security-advanced.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partsupporttechs.xhtml" id="partsupporttechs.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/transactions.xhtml" id="transactions.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/resources.xhtml" id="resources.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/connector-example.xhtml" id="connector-example.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/batch-processing.xhtml" id="batch-processing.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/concurrency-utilities.xhtml" id="concurrency-utilities.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/partcasestudies.xhtml" id="partcasestudies.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/dukes-bookstore.xhtml" id="dukes-bookstore.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/dukes-forest.xhtml" id="dukes-forest.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/dukes-tutoring.xhtml" id="dukes-tutoring.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/interceptors.xhtml" id="interceptors.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/index.xhtml" id="index.xhtml" media-type="application/xhtml+xml" />
-    <item href="Text/jsf-configure.xhtml" id="jsf-configure.xhtml" media-type="application/xhtml+xml" />
     <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml" />
+    <item href="Fonts/Consolas.ttf" id="Consolas.ttf" media-type="application/x-font-ttf" />
+    <item href="Fonts/OpenSans-Bold.ttf" id="OpenSans-Bold.ttf" media-type="application/x-font-ttf" />
+    <item href="Fonts/OpenSans-BoldItalic.ttf" id="OpenSans-BoldItalic.ttf" media-type="application/x-font-ttf" />
+    <item href="Fonts/OpenSans-Italic.ttf" id="OpenSans-Italic.ttf" media-type="application/x-font-ttf" />
+    <item href="Fonts/OpenSans-Regular.ttf" id="OpenSans-Regular.ttf" media-type="application/x-font-ttf" />
     <item href="Styles/javaee-darb.css" id="javaee-darb.css" media-type="text/css" />
     <item href="Images/jeett_dt_001.png" id="jeett_dt_001.png" media-type="image/png" />
     <item href="Images/jeett_dt_002.png" id="jeett_dt_002.png" media-type="image/png" />
@@ -166,90 +91,159 @@
     <item href="Images/jeett-cover.png" id="jeett-cover.png" media-type="image/png" />
     <item href="Images/nextpage.gif" id="nextpage.gif" media-type="image/gif" />
     <item href="Images/previouspage.gif" id="previouspage.gif" media-type="image/gif" />
-    <item href="Fonts/Consolas.ttf" id="Consolas.ttf" media-type="application/x-font-ttf" />
-    <item href="Fonts/OpenSans-Bold.ttf" id="OpenSans-Bold.ttf" media-type="application/x-font-ttf" />
-    <item href="Fonts/OpenSans-BoldItalic.ttf" id="OpenSans-BoldItalic.ttf" media-type="application/x-font-ttf" />
-    <item href="Fonts/OpenSans-Italic.ttf" id="OpenSans-Italic.ttf" media-type="application/x-font-ttf" />
-    <item href="Fonts/OpenSans-Regular.ttf" id="OpenSans-Regular.ttf" media-type="application/x-font-ttf" />
+    <item href="Text/cover.xhtml" id="cover.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/batch-processing.xhtml" id="batch-processing.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/bean-validation-advanced.xhtml" id="bean-validation-advanced.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/bean-validation.xhtml" id="bean-validation.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/cdi-adv-examples.xhtml" id="cdi-adv-examples.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/cdi-adv.xhtml" id="cdi-adv.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/cdi-basic.xhtml" id="cdi-basic.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/cdi-basicexamples.xhtml" id="cdi-basicexamples.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/concurrency-utilities.xhtml" id="concurrency-utilities.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/connectorexample.xhtml" id="connectorexample.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/dukes-bookstore.xhtml" id="dukes-bookstore.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/dukes-forest.xhtml" id="dukes-forest.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/dukes-tutoring.xhtml" id="dukes-tutoring.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/ejb-async.xhtml" id="ejb-async.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/ejb-basicexamples.xhtml" id="ejb-basicexamples.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/ejb-embedded.xhtml" id="ejb-embedded.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/ejb-gettingstarted.xhtml" id="ejb-gettingstarted.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/ejb-intro.xhtml" id="ejb-intro.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/home.xhtml" id="home.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/index.xhtml" id="index.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/injection.xhtml" id="injection.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/interceptors.xhtml" id="interceptors.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jaxrs-advanced.xhtml" id="jaxrs-advanced.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jaxrs-client.xhtml" id="jaxrs-client.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jaxrs.xhtml" id="jaxrs.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jaxws.xhtml" id="jaxws.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jms-concepts.xhtml" id="jms-concepts.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jms-examples.xhtml" id="jms-examples.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-advanced-cc.xhtml" id="jsf-advanced-cc.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-ajax.xhtml" id="jsf-ajax.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-configure.xhtml" id="jsf-configure.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-custom.xhtml" id="jsf-custom.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-develop.xhtml" id="jsf-develop.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-el.xhtml" id="jsf-el.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-facelets.xhtml" id="jsf-facelets.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-intro.xhtml" id="jsf-intro.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-page-core.xhtml" id="jsf-page-core.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsf-page.xhtml" id="jsf-page.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/jsonp.xhtml" id="jsonp.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/overview.xhtml" id="overview.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/packaging.xhtml" id="packaging.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partbeanvalidation.xhtml" id="partbeanvalidation.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partcasestudies.xhtml" id="partcasestudies.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partcdi.xhtml" id="partcdi.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partentbeans.xhtml" id="partentbeans.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partintro.xhtml" id="partintro.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partmessaging.xhtml" id="partmessaging.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partpersist.xhtml" id="partpersist.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partplatform.xhtml" id="partplatform.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partsecurity.xhtml" id="partsecurity.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partsupporttechs.xhtml" id="partsupporttechs.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partwebsvcs.xhtml" id="partwebsvcs.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/partwebtier.xhtml" id="partwebtier.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/persistence-basicexamples.xhtml" id="persistence-basicexamples.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/persistence-cache.xhtml" id="persistence-cache.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/persistence-criteria.xhtml" id="persistence-criteria.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/persistence-entitygraphs.xhtml" id="persistence-entitygraphs.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/persistence-intro.xhtml" id="persistence-intro.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/persistence-locking.xhtml" id="persistence-locking.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/persistence-querylanguage.xhtml" id="persistence-querylanguage.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/persistence-string-queries.xhtml" id="persistence-string-queries.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/preface.xhtml" id="preface.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/resource-creation.xhtml" id="resource-creation.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/resources.xhtml" id="resources.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/security-advanced.xhtml" id="security-advanced.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/security-intro.xhtml" id="security-intro.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/security-javaee.xhtml" id="security-javaee.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/security-webtier.xhtml" id="security-webtier.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/servlets.xhtml" id="servlets.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/transactions.xhtml" id="transactions.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/usingexamples.xhtml" id="usingexamples.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/webapp.xhtml" id="webapp.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/webi18n.xhtml" id="webi18n.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/webservices-intro.xhtml" id="webservices-intro.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/websocket.xhtml" id="websocket.xhtml" media-type="application/xhtml+xml" />
+    <item href="Styles/sgc-toc.css" id="sgc-toc.css" media-type="text/css" />
   </manifest>
   <spine toc="ncx">
     <itemref idref="cover.xhtml" />
-    <itemref idref="home.xhtml" />
-    <itemref idref="preface.xhtml" />
-    <itemref idref="partintro.xhtml" />
-    <itemref idref="overview.xhtml" />
-    <itemref idref="usingexamples.xhtml" />
-    <itemref idref="partplatform.xhtml" />
-    <itemref idref="resource-creation.xhtml" />
-    <itemref idref="injection.xhtml" />
-    <itemref idref="packaging.xhtml" />
-    <itemref idref="partwebtier.xhtml" />
-    <itemref idref="webapp.xhtml" />
-    <itemref idref="jsf-intro.xhtml" />
-    <itemref idref="jsf-facelets.xhtml" />
-    <itemref idref="jsf-el.xhtml" />
-    <itemref idref="jsf-page.xhtml" />
-    <itemref idref="jsf-page-core.xhtml" />
-    <itemref idref="jsf-develop.xhtml" />
-    <itemref idref="jsf-ajax.xhtml" />
-    <itemref idref="jsf-advanced-cc.xhtml" />
-    <itemref idref="jsf-custom.xhtml" />
-    <itemref idref="servlets.xhtml" />
-    <itemref idref="websocket.xhtml" />
-    <itemref idref="jsonp.xhtml" />
-    <itemref idref="webi18n.xhtml" />
-    <itemref idref="partbeanvalidation.xhtml" />
-    <itemref idref="bean-validation.xhtml" />
-    <itemref idref="bean-validation-advanced.xhtml" />
-    <itemref idref="partcdi.xhtml" />
-    <itemref idref="cdi-basic.xhtml" />
-    <itemref idref="cdi-basic-examples.xhtml" />
-    <itemref idref="cdi-adv.xhtml" />
-    <itemref idref="cdi-adv-examples.xhtml" />
-    <itemref idref="partwebsvcs.xhtml" />
-    <itemref idref="webservices-intro.xhtml" />
-    <itemref idref="jaxws.xhtml" />
-    <itemref idref="jaxrs.xhtml" />
-    <itemref idref="jaxrs-client.xhtml" />
-    <itemref idref="jaxrs-advanced.xhtml" />
-    <itemref idref="partentbeans.xhtml" />
-    <itemref idref="ejb-intro.xhtml" />
-    <itemref idref="ejb-gettingstarted.xhtml" />
-    <itemref idref="ejb-basic-examples.xhtml" />
-    <itemref idref="ejb-embedded.xhtml" />
-    <itemref idref="ejb-async.xhtml" />
-    <itemref idref="partpersist.xhtml" />
-    <itemref idref="persistence-intro.xhtml" />
-    <itemref idref="persistence-basic-examples.xhtml" />
-    <itemref idref="persistence-querylanguage.xhtml" />
-    <itemref idref="persistence-criteria.xhtml" />
-    <itemref idref="persistence-string-queries.xhtml" />
-    <itemref idref="persistence-locking.xhtml" />
-    <itemref idref="persistence-entitygraphs.xhtml" />
-    <itemref idref="persistence-cache.xhtml" />
-    <itemref idref="partmessaging.xhtml" />
-    <itemref idref="jms-concepts.xhtml" />
-    <itemref idref="jms-examples.xhtml" />
-    <itemref idref="partsecurity.xhtml" />
-    <itemref idref="security-intro.xhtml" />
-    <itemref idref="security-webtier.xhtml" />
-    <itemref idref="security-javaee.xhtml" />
-    <itemref idref="security-advanced.xhtml" />
-    <itemref idref="partsupporttechs.xhtml" />
-    <itemref idref="transactions.xhtml" />
-    <itemref idref="resources.xhtml" />
-    <itemref idref="connector-example.xhtml" />
     <itemref idref="batch-processing.xhtml" />
+    <itemref idref="bean-validation-advanced.xhtml" />
+    <itemref idref="bean-validation.xhtml" />
+    <itemref idref="cdi-adv-examples.xhtml" />
+    <itemref idref="cdi-adv.xhtml" />
+    <itemref idref="cdi-basic.xhtml" />
+    <itemref idref="cdi-basicexamples.xhtml" />
     <itemref idref="concurrency-utilities.xhtml" />
-    <itemref idref="partcasestudies.xhtml" />
+    <itemref idref="connectorexample.xhtml" />
     <itemref idref="dukes-bookstore.xhtml" />
     <itemref idref="dukes-forest.xhtml" />
     <itemref idref="dukes-tutoring.xhtml" />
-    <itemref idref="interceptors.xhtml" />
+    <itemref idref="ejb-async.xhtml" />
+    <itemref idref="ejb-basicexamples.xhtml" />
+    <itemref idref="ejb-embedded.xhtml" />
+    <itemref idref="ejb-gettingstarted.xhtml" />
+    <itemref idref="ejb-intro.xhtml" />
+    <itemref idref="home.xhtml" />
     <itemref idref="index.xhtml" />
+    <itemref idref="injection.xhtml" />
+    <itemref idref="interceptors.xhtml" />
+    <itemref idref="jaxrs-advanced.xhtml" />
+    <itemref idref="jaxrs-client.xhtml" />
+    <itemref idref="jaxrs.xhtml" />
+    <itemref idref="jaxws.xhtml" />
+    <itemref idref="jms-concepts.xhtml" />
+    <itemref idref="jms-examples.xhtml" />
+    <itemref idref="jsf-advanced-cc.xhtml" />
+    <itemref idref="jsf-ajax.xhtml" />
     <itemref idref="jsf-configure.xhtml" />
+    <itemref idref="jsf-custom.xhtml" />
+    <itemref idref="jsf-develop.xhtml" />
+    <itemref idref="jsf-el.xhtml" />
+    <itemref idref="jsf-facelets.xhtml" />
+    <itemref idref="jsf-intro.xhtml" />
+    <itemref idref="jsf-page-core.xhtml" />
+    <itemref idref="jsf-page.xhtml" />
+    <itemref idref="jsonp.xhtml" />
+    <itemref idref="overview.xhtml" />
+    <itemref idref="packaging.xhtml" />
+    <itemref idref="partbeanvalidation.xhtml" />
+    <itemref idref="partcasestudies.xhtml" />
+    <itemref idref="partcdi.xhtml" />
+    <itemref idref="partentbeans.xhtml" />
+    <itemref idref="partintro.xhtml" />
+    <itemref idref="partmessaging.xhtml" />
+    <itemref idref="partpersist.xhtml" />
+    <itemref idref="partplatform.xhtml" />
+    <itemref idref="partsecurity.xhtml" />
+    <itemref idref="partsupporttechs.xhtml" />
+    <itemref idref="partwebsvcs.xhtml" />
+    <itemref idref="partwebtier.xhtml" />
+    <itemref idref="persistence-basicexamples.xhtml" />
+    <itemref idref="persistence-cache.xhtml" />
+    <itemref idref="persistence-criteria.xhtml" />
+    <itemref idref="persistence-entitygraphs.xhtml" />
+    <itemref idref="persistence-intro.xhtml" />
+    <itemref idref="persistence-locking.xhtml" />
+    <itemref idref="persistence-querylanguage.xhtml" />
+    <itemref idref="persistence-string-queries.xhtml" />
+    <itemref idref="preface.xhtml" />
+    <itemref idref="resource-creation.xhtml" />
+    <itemref idref="resources.xhtml" />
+    <itemref idref="security-advanced.xhtml" />
+    <itemref idref="security-intro.xhtml" />
+    <itemref idref="security-javaee.xhtml" />
+    <itemref idref="security-webtier.xhtml" />
+    <itemref idref="servlets.xhtml" />
+    <itemref idref="transactions.xhtml" />
+    <itemref idref="usingexamples.xhtml" />
+    <itemref idref="webapp.xhtml" />
+    <itemref idref="webi18n.xhtml" />
+    <itemref idref="webservices-intro.xhtml" />
+    <itemref idref="websocket.xhtml" />
   </spine>
-  <guide>
-    <reference href="Text/cover.xhtml" title="Copertina" type="cover" />
-  </guide>
+  <guide />
 </package>

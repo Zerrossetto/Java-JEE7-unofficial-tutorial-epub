@@ -59,15 +59,16 @@
     <a id="GEYSJ"></a><a id="JEETT00325"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">6.1</span> <a id="sthref191"></a>Web Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_953"><span class="secnum">6.1</span> <a id="sthref191"></a>Web Applications</h1>
 
       <p>In the Java EE platform, <span class="glossaryterm">web components</span> provide the dynamic extension capabilities for a web server. Web components can be Java servlets, web pages implemented with JavaServer Faces technology, web service endpoints, or JSP pages. <a href="../Text/webapp.xhtml#BNADS">Figure 6-1</a> illustrates the interaction between a web client and a web application that uses a servlet. The client sends an HTTP request to the web server. A web server that implements Java Servlet and JavaServer Pages technology converts the request into an <code>HTTPServletRequest</code> object. This object is delivered to a web component, which can interact with JavaBeans components or a database to generate dynamic content. The web component can then generate an <code>HTTPServletResponse</code> or can pass the request to another web component. A web component eventually generates a <code>HTTPServletResponse</code> object. The web server converts this object to an HTTP response and returns it to the client.</p>
 
       <div class="figure">
         <a id="BNADS"></a><a id="JEETT00011"></a>
 
-        <p class="titleinfigure">Figure 6-1 Java Web Application Request Handling</p><img alt="Description of Figure 6-1 follows" longdesc="img_text/jeett_dt_013.htm" src="../Images/jeett_dt_013.png" title="Description of Figure 6-1 follows" /><br />
-        Description of "Figure 6-1 Java Web Application Request Handling"<br />
+        <p class="titleinfigure">Figure 6-1 Java Web Application Request Handling</p><br />
+        <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_013.htm" id="sthref192">Description of "Figure 6-1 Java Web Application Request Handling"</a><br />
+        <br />
       </div>
 
       <p>Servlets are Java programming language classes that dynamically process requests and construct responses. Java technologies, such as JavaServer Faces and Facelets, are used for building interactive web applications. (Frameworks can also be used for this purpose.) Although servlets and JavaServer Faces and Facelets pages can be used to accomplish similar things, each has its own strengths. Servlets are best suited for service-oriented applications (web service endpoints can be implemented as servlets) and the control functions of a presentation-oriented application, such as dispatching requests and handling nontextual data. JavaServer Faces and Facelets pages are more appropriate for generating text-based markup, such as XHTML, and are generally used for presentation-oriented applications.</p>
@@ -84,7 +85,7 @@
     <a id="BNADU"></a><a id="JEETT00326"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">6.2</span> Web Application Lifecycle</h1>
+      <h1 class="sect1" id="sigil_toc_id_954"><span class="secnum">6.2</span> Web Application Lifecycle</h1>
 
       <p>A web application consists of web components; static resource files, such as images and cascading style sheets (CSS); and helper classes and libraries. The web container provides many supporting services that enhance the capabilities of web components and make them easier to develop. However, because a web application must take these services into account, the process for creating and running a web application is different from that of traditional stand-alone Java classes.</p>
 
@@ -116,13 +117,13 @@
         </li>
       </ol>
 
-      <p>Developing web component code is covered in the later chapters. Steps 2 through 4 are expanded on in the following sections and illustrated with a Hello, Worldstyle, presentation-oriented application. This application allows a user to enter a name into an HTML form and then displays a greeting after the name is submitted.</p>
+      <p>Developing web component code is covered in the later chapters. Steps 2 through 4 are expanded on in the following sections and illustrated with a Hello, World&ndash;style, presentation-oriented application. This application allows a user to enter a name into an HTML form and then displays a greeting after the name is submitted.</p>
 
       <p>The Hello application contains two web components that generate the greeting and the response. This chapter discusses the following simple applications:</p>
 
       <ul>
         <li>
-          <p><code>hello1</code>, a JavaServer Faces technologybased application that uses two XHTML pages and a managed bean</p>
+          <p><code>hello1</code>, a JavaServer Faces technology&ndash;based application that uses two XHTML pages and a managed bean</p>
         </li>
 
         <li>
@@ -138,14 +139,14 @@
     <a id="BNADX"></a><a id="JEETT00327"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">6.3</span> A Web Module That Uses JavaServer Faces Technology: The hello1 Example</h1>
+      <h1 class="sect1" id="sigil_toc_id_955"><span class="secnum">6.3</span> A Web Module That Uses JavaServer Faces Technology: The hello1 Example</h1>
 
       <p>The <code>hello1</code> application is a web module that uses JavaServer Faces technology to display a greeting and response. You can use a text editor to view the application files, or you can use NetBeans IDE.</p>
 
       <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/jsf/hello1/</code> directory.</p><a id="GJWTV"></a><a id="JEETT00145"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.3.1</span> To View the hello1 Web Module Using NetBeans IDE</h2>
+        <h2 class="sect2" id="sigil_toc_id_956"><span class="secnum">6.3.1</span> To View the hello1 Web Module Using NetBeans IDE</h2>
 
         <ol>
           <li>
@@ -154,7 +155,9 @@
 
           <li>
             <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/jsf
+</pre>
           </li>
 
           <li>
@@ -165,8 +168,8 @@
             <p>Expand the <span class="gui-object-action">Web Pages</span> node and double-click the <code>index.xhtml</code> file to view it in the editor.</p>
 
             <p>The <code>index.xhtml</code> file is the default landing page for a Facelets application. In a typical Facelets application, web pages are created in XHTML. For this application, the page uses simple tag markup to display a form with a graphic image, a header, a field, and two command buttons:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-            <pre class="oac_no_warn" xml:space="preserve">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            <pre class="oac_no_warn" xml:space="preserve">
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
 &lt;html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
@@ -193,7 +196,8 @@
         &lt;/h:form&gt;
         ...
     &lt;/h:body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
 
             <p>The most complex element on the page is the <code>inputText</code> field. The <code>maxlength</code> attribute specifies the maximum length of the field. The <code>required</code> attribute specifies that the field must be filled out; the <code>requiredMessage</code> attribute provides the error message to be displayed if the field is left empty. The <code>title</code> attribute provides the text to be used by screen readers for the visually disabled. Finally, the <code>value</code> attribute contains an expression that will be provided by the <code>Hello</code> managed bean.</p>
 
@@ -206,8 +210,8 @@
             <p>Double-click the <code>response.xhtml</code> file to view it.</p>
 
             <p>The response page appears. Even simpler than the greeting page, the response page contains a graphic image, a header that displays the expression provided by the managed bean, and a single button whose <code>action</code> element transfers you back to the <code>index.xhtml</code> page:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-            <pre class="oac_no_warn" xml:space="preserve">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            <pre class="oac_no_warn" xml:space="preserve">
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
 &lt;html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
@@ -224,7 +228,8 @@
             &lt;h:commandButton id="back" value="Back" action="index" /&gt;
         &lt;/h:form&gt;
     &lt;/h:body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
           </li>
 
           <li>
@@ -237,8 +242,8 @@
             <p>Double-click the <code>Hello.java</code> file to view it.</p>
 
             <p>The <code>Hello</code> class, called a managed bean class, provides getter and setter methods for the <code>name</code> property used in the Facelets page expressions. By default, the expression language refers to the class name, with the first letter in lowercase (<code>hello.name</code>).</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-            <pre class="oac_no_warn" xml:space="preserve">package javaeetutorial.hello1;
+            <pre class="oac_no_warn" xml:space="preserve">
+package javaeetutorial.hello1;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -259,7 +264,8 @@ public class Hello {
     public void setName(String user_name) {
         this.name = user_name;
     }
-}</pre>
+}
+</pre>
 
             <p>If you use the default name for the bean class, you can specify <code>@Model</code> as the annotation instead of having to specify both <code>@Named</code> and <code>@RequestScoped</code>. The <code>@Model</code> annotation is called a <span class="glossaryterm">stereotype</span>, a term for an annotation that encapsulates other annotations. It is described later in <a href="../Text/cdi-adv.xhtml#GKHQC">Using Stereotypes in CDI Applications</a>. Some examples will use <code>@Model</code> where it is appropriate.</p>
           </li>
@@ -272,19 +278,20 @@ public class Hello {
             <ul>
               <li>
                 <p>A context parameter specifying the project stage:</p>
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-                <pre class="oac_no_warn" xml:space="preserve">    &lt;context-param&gt;
+                <pre class="oac_no_warn" xml:space="preserve">
+    &lt;context-param&gt;
         &lt;param-name&gt;javax.faces.PROJECT_STAGE&lt;/param-name&gt;
         &lt;param-value&gt;Development&lt;/param-value&gt;
-    &lt;/context-param&gt;</pre>
+    &lt;/context-param&gt;
+</pre>
 
                 <p><a id="sthref198"></a>A context parameter provides configuration information needed by a web application. An application can define its own context parameters. In addition, JavaServer Faces technology and Java Servlet technology define context parameters that an application can use.</p>
               </li>
 
               <li>
                 <p>A <code>servlet</code> element and its <code>servlet-mapping</code> element specifying the <code>FacesServlet</code>. All files with the <code>.xhtml</code> suffix will be matched:</p>
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-                <pre class="oac_no_warn" xml:space="preserve">    &lt;servlet&gt;
+                <pre class="oac_no_warn" xml:space="preserve">
+    &lt;servlet&gt;
         &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
         &lt;servlet-class&gt;javax.faces.webapp.FacesServlet&lt;/servlet-class&gt;
         &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
@@ -292,21 +299,24 @@ public class Hello {
     &lt;servlet-mapping&gt;
         &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
         &lt;url-pattern&gt;*.xhtml&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;</pre>
+    &lt;/servlet-mapping&gt;
+</pre>
               </li>
 
               <li>
                 <p>A <code>welcome-file-list</code> element specifying the location of the landing page:</p>
-                <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;welcome-file-list&gt;
+                <pre class="oac_no_warn" xml:space="preserve">
+    &lt;welcome-file-list&gt;
         &lt;welcome-file&gt;index.xhtml&lt;/welcome-file&gt;
-    &lt;/welcome-file-list&gt;</pre>
+    &lt;/welcome-file-list&gt;
+</pre>
               </li>
             </ul>
           </li>
         </ol><a id="GLQLK"></a><a id="JEETT00585"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.3.1.1</span> <a id="sthref199"></a>Introduction to Scopes</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.1.1</span> <a id="sthref199"></a>Introduction to Scopes</h3>
 
           <p>In the <code>Hello.java</code> class, the annotations <code>javax.inject.Named</code> and <code>javax.enterprise.context.RequestScoped</code> identify the class as a managed bean using request scope. Scope defines how application data persists and is shared.</p>
 
@@ -331,7 +341,7 @@ public class Hello {
       </div><a id="BNADZ"></a><a id="JEETT00892"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.3.2</span> <a id="sthref203"></a>Packaging and Deploying the hello1 Web Module</h2>
+        <h2 class="sect2" id="sigil_toc_id_957"><span class="secnum">6.3.2</span> <a id="sthref203"></a>Packaging and Deploying the hello1 Web Module</h2>
 
         <p>A web module must be packaged into a WAR in certain deployment scenarios and whenever you want to distribute the web module. You can package a web module into a WAR file by using Maven or by using the IDE tool of your choice. This tutorial shows you how to use NetBeans IDE or Maven to build, package, and deploy the <code>hello1</code> sample application.</p>
 
@@ -358,7 +368,7 @@ public class Hello {
         <p>Throughout the tutorial, you will use NetBeans IDE or Maven for packaging and deploying.</p><a id="GJRGN"></a><a id="JEETT00147"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.3.2.1</span> To Build and Package the hello1 Web Module Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.2.1</span> To Build and Package the hello1 Web Module Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -371,7 +381,9 @@ public class Hello {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/jsf
+</pre>
             </li>
 
             <li>
@@ -389,7 +401,7 @@ public class Hello {
         </div><a id="GJRKN"></a><a id="JEETT00148"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.3.2.2</span> To Build and Package the hello1 Web Module Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.2.2</span> To Build and Package the hello1 Web Module Using Maven</h3>
 
           <ol>
             <li>
@@ -398,12 +410,16 @@ public class Hello {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/hello1/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/jsf/hello1/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command spawns any necessary compilations and creates the WAR file in <span class="variable">tut-install</span><code>/examples/web/jsf/hello1/target/</code>. It then deploys the project to the server.</p>
             </li>
@@ -412,12 +428,12 @@ public class Hello {
       </div><a id="BNAEI"></a><a id="JEETT00894"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.3.3</span> <a id="sthref204"></a>Viewing Deployed Web Modules</h2>
+        <h2 class="sect2" id="sigil_toc_id_958"><span class="secnum">6.3.3</span> <a id="sthref204"></a>Viewing Deployed Web Modules</h2>
 
         <p>GlassFish Server provides two ways to view the deployed web modules: the Administration Console and the <code>asadmin</code> command. You can also use NetBeans IDE to view deployed modules.</p><a id="GJSGR"></a><a id="JEETT00152"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.3.3.1</span> To View Deployed Web Modules Using the Administration Console</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.3.1</span> To View Deployed Web Modules Using the Administration Console</h3>
 
           <ol>
             <li>
@@ -433,16 +449,18 @@ public class Hello {
         </div><a id="GJSEW"></a><a id="JEETT00153"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.3.3.2</span> To View Deployed Web Modules Using the asadmin Command</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.3.2</span> To View Deployed Web Modules Using the asadmin Command</h3>
 
           <p>Enter the following command:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">asadmin list-applications</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+asadmin list-applications
+</pre>
         </div>
 
         <div class="sect3">
           <a id="sthref205"></a>
 
-          <h3 class="sect3"><span class="secnum">6.3.3.3</span> To View Deployed Web Modules Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.3.3</span> To View Deployed Web Modules Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -459,7 +477,7 @@ public class Hello {
       <div class="sect2">
         <a id="sthref206"></a>
 
-        <h2 class="sect2"><span class="secnum">6.3.4</span> Running the Deployed hello1 Web Module</h2>
+        <h2 class="sect2" id="sigil_toc_id_959"><span class="secnum">6.3.4</span> Running the Deployed hello1 Web Module</h2>
 
         <p>Now that the web module is deployed, you can view it by opening the application in a web browser. By default, the application is deployed to host <code>localhost</code> on port 8080. The context root of the web application is <code>hello1</code>.</p>
 
@@ -470,7 +488,9 @@ public class Hello {
 
           <li>
             <p>Enter the following URL:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/hello1/</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/hello1/
+</pre>
           </li>
 
           <li>
@@ -481,7 +501,7 @@ public class Hello {
         </ol><a id="BNAEM"></a><a id="JEETT00896"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.3.4.1</span> Dynamic Reloading of Deployed Modules</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.4.1</span> Dynamic Reloading of Deployed Modules</h3>
 
           <p><a id="sthref207"></a>If dynamic reloading is enabled, you do not have to redeploy an application or module when you change its code or deployment descriptors. All you have to do is copy the changed pages or class files into the deployment directory for the application or module. The deployment directory for a web module named <span class="variable">context-root</span> is <span class="variable">domain-dir</span><code>/applications/</code><span class="variable">context-root</span>. The server checks for changes periodically and redeploys the application, automatically and dynamically, with the changes.</p>
 
@@ -492,12 +512,12 @@ public class Hello {
       </div><a id="BNAEN"></a><a id="JEETT00897"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.3.5</span> <a id="sthref208"></a><a id="sthref209"></a><a id="sthref210"></a>Undeploying the hello1 Web Module</h2>
+        <h2 class="sect2" id="sigil_toc_id_960"><span class="secnum">6.3.5</span> <a id="sthref208"></a><a id="sthref209"></a><a id="sthref210"></a>Undeploying the hello1 Web Module</h2>
 
         <p>You can undeploy web modules and other types of enterprise applications by using either NetBeans IDE or Maven.</p><a id="GJSEJ"></a><a id="JEETT00156"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.3.5.1</span> To Undeploy the hello1 Web Module Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.5.1</span> To Undeploy the hello1 Web Module Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -519,22 +539,28 @@ public class Hello {
         </div><a id="GJSHH"></a><a id="JEETT00157"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.3.5.2</span> To Undeploy the hello1 Web Module Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.3.5.2</span> To Undeploy the hello1 Web Module Using Maven</h3>
 
           <ol>
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/hello1/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/jsf/hello1/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn cargo:undeploy</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn cargo:undeploy
+</pre>
             </li>
 
             <li>
               <p>To delete the class files and other build artifacts, enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn clean</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn clean
+</pre>
             </li>
           </ol>
         </div>
@@ -546,37 +572,42 @@ public class Hello {
     <a id="BNAEO"></a><a id="JEETT00328"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">6.4</span> <a id="sthref211"></a><a id="sthref212"></a>A Web Module That Uses Java Servlet Technology: The hello2 Example</h1>
+      <h1 class="sect1" id="sigil_toc_id_961"><span class="secnum">6.4</span> <a id="sthref211"></a><a id="sthref212"></a>A Web Module That Uses Java Servlet Technology: The hello2 Example</h1>
 
       <p>The <code>hello2</code> application is a web module that uses Java Servlet technology to display a greeting and response. You can use a text editor to view the application files, or you can use NetBeans IDE.</p>
 
       <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/servlet/hello2/</code> directory.</p><a id="BNAEP"></a><a id="JEETT00898"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.4.1</span> Mapping URLs to Web Components</h2>
+        <h2 class="sect2" id="sigil_toc_id_962"><span class="secnum">6.4.1</span> Mapping URLs to Web Components</h2>
 
         <p><a id="sthref213"></a><a id="sthref214"></a>When it receives a request, the web container must determine which web component should handle the request. The web container does so by mapping the <span class="bold">URL path</span> contained in the request to a web application and a web component. A URL path contains the context root and, optionally, a URL pattern:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://<span class="variable">host</span>:<span class="variable">port</span>/<span class="variable">context-root</span>[/<span class="variable">url-pattern</span>]</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+http://<span class="variable">host</span>:<span class="variable">port</span>/<span class="variable">context-root</span>[/<span class="variable">url-pattern</span>]
+</pre>
 
         <p><a id="sthref215"></a>You set the URL pattern for a servlet by using the <code>@WebServlet</code> annotation in the servlet source file. For example, the <code>GreetingServlet.java</code> file in the <code>hello2</code> application contains the following annotation, specifying the URL pattern as <code>/greeting</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-        <pre class="oac_no_warn" xml:space="preserve">@WebServlet("/greeting")
+        <pre class="oac_no_warn" xml:space="preserve">
+@WebServlet("/greeting")
 public class GreetingServlet extends HttpServlet {
-    ...</pre>
+    ...
+</pre>
 
         <p>This annotation indicates that the URL pattern <code>/greeting</code> follows the context root. Therefore, when the servlet is deployed locally, it is accessed with the following URL:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/hello2/greeting</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/hello2/greeting
+</pre>
 
         <p>To access the servlet by using only the context root, specify <code>"/"</code> as the URL pattern.</p>
       </div><a id="GJWWG"></a><a id="JEETT00899"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.4.2</span> Examining the hello2 Web Module</h2>
+        <h2 class="sect2" id="sigil_toc_id_963"><span class="secnum">6.4.2</span> Examining the hello2 Web Module</h2>
 
         <p>The <code>hello2</code> application behaves almost identically to the <code>hello1</code> application, but it is implemented using Java Servlet technology instead of JavaServer Faces technology. You can use a text editor to view the application files, or you can use NetBeans IDE.</p><a id="GJWWA"></a><a id="JEETT00158"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.4.2.1</span> To View the hello2 Web Module Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.4.2.1</span> To View the hello2 Web Module Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -585,7 +616,9 @@ public class GreetingServlet extends HttpServlet {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/servlet</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/servlet
+</pre>
             </li>
 
             <li>
@@ -600,8 +633,8 @@ public class GreetingServlet extends HttpServlet {
               <p>Double-click the <code>GreetingServlet.java</code> file to view it.</p>
 
               <p>This servlet overrides the <code>doGet</code> method, implementing the <code>GET</code> method of HTTP. The servlet displays a simple HTML greeting form whose <span class="gui-object-action">Submit</span> button, like that of <code>hello1</code>, specifies a response page for its action. The following excerpt begins with the <code>@WebServlet</code> annotation, which specifies the URL pattern relative to the context root:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-              <pre class="oac_no_warn" xml:space="preserve">@WebServlet("/greeting")
+              <pre class="oac_no_warn" xml:space="preserve">
+@WebServlet("/greeting")
 public class GreetingServlet extends HttpServlet {
 
     @Override
@@ -640,15 +673,16 @@ public class GreetingServlet extends HttpServlet {
             out.println("&lt;/body&gt;&lt;/html&gt;");
         }
     }
-    ...</pre>
+    ...
+</pre>
             </li>
 
             <li>
               <p>Double-click the <code>ResponseServlet.java</code> file to view it.</p>
 
               <p>This servlet also overrides the <code>doGet</code> method, displaying only the response. The following excerpt begins with the <code>@WebServlet</code> annotation, which specifies the URL pattern relative to the context root:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-              <pre class="oac_no_warn" xml:space="preserve">@WebServlet("/response")
+              <pre class="oac_no_warn" xml:space="preserve">
+@WebServlet("/response")
 public class ResponseServlet extends HttpServlet {
 
     @Override
@@ -664,19 +698,20 @@ public class ResponseServlet extends HttpServlet {
             }
         }
     }
-    ...</pre>
+    ...
+</pre>
             </li>
           </ol>
         </div>
       </div><a id="GKBLH"></a><a id="JEETT00900"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.4.3</span> Running the hello2 Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_964"><span class="secnum">6.4.3</span> Running the hello2 Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>hello2</code> example.</p><a id="GJSED"></a><a id="JEETT00159"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.4.3.1</span> To Run the hello2 Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.4.3.1</span> To Run the hello2 Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -689,7 +724,9 @@ public class ResponseServlet extends HttpServlet {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/servlet</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/servlet
+</pre>
             </li>
 
             <li>
@@ -706,7 +743,9 @@ public class ResponseServlet extends HttpServlet {
 
             <li>
               <p>In a web browser, open the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/hello2/greeting</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/hello2/greeting
+</pre>
 
               <p>The URL specifies the context root, followed by the URL pattern.</p>
 
@@ -716,7 +755,7 @@ public class ResponseServlet extends HttpServlet {
         </div><a id="GJSHX"></a><a id="JEETT00160"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.4.3.2</span> To Run the hello2 Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.4.3.2</span> To Run the hello2 Example Using Maven</h3>
 
           <ol>
             <li>
@@ -725,19 +764,25 @@ public class ResponseServlet extends HttpServlet {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/servlet/hello2/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/servlet/hello2/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This target builds the WAR file, copies it to the <span class="variable">tut-install</span><code>/examples/web/hello2/target/</code> directory, and deploys it.</p>
             </li>
 
             <li>
               <p>In a web browser, open the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/hello2/greeting</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/hello2/greeting
+</pre>
 
               <p>The URL specifies the context root, followed by the URL pattern.</p>
 
@@ -753,7 +798,7 @@ public class ResponseServlet extends HttpServlet {
     <a id="CHDHGJIA"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">6.5</span> Configuring Web Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_965"><span class="secnum">6.5</span> Configuring Web Applications</h1>
 
       <p>This section describes the following tasks involved with configuring web applications:</p>
 
@@ -776,12 +821,12 @@ public class ResponseServlet extends HttpServlet {
       </ul><a id="BNAES"></a><a id="JEETT00902"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.5.1</span> Setting Context Parameters</h2>
+        <h2 class="sect2" id="sigil_toc_id_966"><span class="secnum">6.5.1</span> Setting Context Parameters</h2>
 
         <p>The web components in a web module share an object that represents their application context. You can pass context parameters to the context, or you can pass initialization parameters to a servlet. Context parameters are available to the entire application. For information on initialization parameters, see <a href="../Text/servlets.xhtml#BNAFU">Creating and Initializing a Servlet</a>.</p><a id="GJSFJ"></a><a id="JEETT00161"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.5.1.1</span> <a id="sthref216"></a><a id="sthref217"></a>To Add a Context Parameter Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.5.1.1</span> <a id="sthref216"></a><a id="sthref217"></a>To Add a Context Parameter Using NetBeans IDE</h3>
 
           <p>These steps apply generally to web applications but do not apply specifically to the examples in this chapter.</p>
 
@@ -831,7 +876,7 @@ public class ResponseServlet extends HttpServlet {
         </div><a id="GKIHH"></a><a id="JEETT00162"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.5.1.2</span> To Create a web.xml File Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.5.1.2</span> To Create a web.xml File Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -856,7 +901,7 @@ public class ResponseServlet extends HttpServlet {
       </div><a id="BNAER"></a><a id="JEETT00901"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.5.2</span> Declaring Welcome Files</h2>
+        <h2 class="sect2" id="sigil_toc_id_967"><span class="secnum">6.5.2</span> Declaring Welcome Files</h2>
 
         <p><a id="sthref218"></a><a id="sthref219"></a>The <span class="glossaryterm">welcome files</span> mechanism allows you to specify a list of files that the web container can append to a request for a URL (called a valid partial request) that is not mapped to a web component. For example, suppose that you define a welcome file <code>welcome.html</code>. When a client requests a URL such as <span class="variable">host</span><code>:</code><span class="variable">port</span><code>/</code><span class="variable">webapp</span><code>/</code><span class="variable">directory</span>, where <span class="variable">directory</span> is not mapped to a servlet or XHTML page, the file <span class="variable">host</span><code>:</code><span class="variable">port</span><code>/</code><span class="variable">webapp</span><code>/</code><span class="variable">directory</span><code>/welcome.html</code> is returned to the client.</p>
 
@@ -865,7 +910,11 @@ public class ResponseServlet extends HttpServlet {
         <p>If no welcome file is specified, GlassFish Server will use a file named <code>index.html</code> as the default welcome file. If there is no welcome file and no file named <code>index.html</code>, GlassFish Server returns a directory listing.</p>
 
         <p>You specify welcome files in the <code>web.xml</code> file. The welcome file specification for the <code>hello1</code> example looks like this:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">welcome-file-list    welcome-fileindex.xhtml/welcome-file/welcome-file-list</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.xhtml&lt;/welcome-file&gt;
+&lt;/welcome-file-list&gt;
+</pre>
 
         <p>A specified welcome file must not have a leading or trailing slash (<code>/</code>).</p>
 
@@ -873,14 +922,14 @@ public class ResponseServlet extends HttpServlet {
       </div><a id="GKBKW"></a><a id="JEETT00903"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.5.3</span> <a id="sthref220"></a><a id="sthref221"></a><a id="sthref222"></a>Mapping Errors to Error Screens</h2>
+        <h2 class="sect2" id="sigil_toc_id_968"><span class="secnum">6.5.3</span> <a id="sthref220"></a><a id="sthref221"></a><a id="sthref222"></a>Mapping Errors to Error Screens</h2>
 
         <p>When an error occurs during execution of a web application, you can have the application display a specific error screen according to the type of error. In particular, you can specify a mapping between the status code returned in an HTTP response or a Java programming language exception returned by any web component and any type of error screen.</p>
 
         <p>You can have multiple <code>error-page</code> elements in your deployment descriptor. Each element identifies a different error that causes an error page to open. This error page can be the same for any number of <code>error-page</code> elements.</p><a id="BNAET"></a><a id="JEETT00164"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.5.3.1</span> To Set Up Error Mapping Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.5.3.1</span> To Set Up Error Mapping Using NetBeans IDE</h3>
 
           <p>These steps apply generally to web applications but do not apply specifically to the examples in this chapter.</p>
 
@@ -941,7 +990,7 @@ public class ResponseServlet extends HttpServlet {
       </div><a id="BNAEU"></a><a id="JEETT00904"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">6.5.4</span> Declaring Resource References</h2>
+        <h2 class="sect2" id="sigil_toc_id_969"><span class="secnum">6.5.4</span> Declaring Resource References</h2>
 
         <p>If your web component uses such objects as enterprise beans, data sources, or web services, you use Java EE annotations to inject these resources into your application. Annotations eliminate a lot of the boilerplate lookup code and configuration elements that previous versions of Java EE required.</p>
 
@@ -949,7 +998,7 @@ public class ResponseServlet extends HttpServlet {
 
         <p>Components that can accept resource injections are listed in <a href="../Text/webapp.xhtml#BNAEV">Table 6-1</a>.</p>
 
-        <p>This section explains how to use a couple of the annotations supported by a web container to inject resources. <a href="../Text/persistence-basic-examples.xhtml#GIJST">Chapter 38, "Running the Persistence Examples"</a>, explains how web applications use annotations supported by the Java Persistence API. <a href="../Text/security-webtier.xhtml#BNCAS">Chapter 48, "Getting Started Securing Web Applications"</a>, explains how to use annotations to specify information about securing web applications. See <a href="../Text/resources.xhtml#BNCJH">Chapter 52, "Resource Adapters and Contracts"</a>, for more information on resources.</p>
+        <p>This section explains how to use a couple of the annotations supported by a web container to inject resources. <a href="../Text/persistence-basicexamples.xhtml#GIJST">Chapter 38, "Running the Persistence Examples"</a>, explains how web applications use annotations supported by the Java Persistence API. <a href="../Text/security-webtier.xhtml#BNCAS">Chapter 48, "Getting Started Securing Web Applications"</a>, explains how to use annotations to specify information about securing web applications. See <a href="../Text/resources.xhtml#BNCJH">Chapter 52, "Resource Adapters and Contracts"</a>, for more information on resources.</p>
 
         <div class="tblhruleformal">
           <a id="sthref223"></a><a id="BNAEV"></a>
@@ -1025,44 +1074,47 @@ public class ResponseServlet extends HttpServlet {
         </div><a id="BNAEW"></a><a id="JEETT00586"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.5.4.1</span> <a id="sthref224"></a>Declaring a Reference to a Resource</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.5.4.1</span> <a id="sthref224"></a>Declaring a Reference to a Resource</h3>
 
           <p>The <code>@Resource</code> annotation is used to declare a reference to a resource, such as a data source, an enterprise bean, or an environment entry.</p>
 
           <p>The <code>@Resource</code> annotation is specified on a class, a method, or a field. The container is responsible for injecting references to resources declared by the <code>@Resource</code> annotation and mapping it to the proper JNDI resources.</p>
 
           <p>In the following example, the <code>@Resource</code> annotation is used to inject a data source into a component that needs to make a connection to the data source, as is done when using JDBC technology to access a relational database:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-          <pre class="oac_no_warn" xml:space="preserve">@Resource javax.sql.DataSource catalogDS;
+          <pre class="oac_no_warn" xml:space="preserve">
+@Resource javax.sql.DataSource catalogDS;
 public getProductsByCategory() {
     // get a connection and execute the query
     Connection conn = catalogDS.getConnection();
     ...
-}</pre>
+}
+</pre>
 
           <p>The container injects this data source prior to the component's being made available to the application. The data source JNDI mapping is inferred from the field name, <code>catalogDS</code>, and the type, <code>javax.sql.DataSource</code>.</p>
 
           <p>If you have multiple resources that you need to inject into one component, you need to use the <code>@Resources</code> annotation to contain them, as shown by the following example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-          <pre class="oac_no_warn" xml:space="preserve">@Resources ({
+          <pre class="oac_no_warn" xml:space="preserve">
+@Resources ({
     @Resource(name="myDB" type=javax.sql.DataSource.class),
     @Resource(name="myMQ" type=javax.jms.ConnectionFactory.class)
-})</pre>
+})
+</pre>
 
-          <p>The web application examples in this tutorial use the Java Persistence API to access relational databases. This API does not require you to explicitly create a connection to a data source. Therefore, the examples do not use the <code>@Resource</code> annotation to inject a data source. However, this API supports the <code>@PersistenceUnit</code> and <code>@PersistenceContext</code> annotations for injecting <code>EntityManagerFactory</code> and <code>EntityManager</code> instances, respectively. <a href="../Text/persistence-basic-examples.xhtml#GIJST">Chapter 38, "Running the Persistence Examples"</a> describes these annotations and the use of the Java Persistence API in web applications.</p>
+          <p>The web application examples in this tutorial use the Java Persistence API to access relational databases. This API does not require you to explicitly create a connection to a data source. Therefore, the examples do not use the <code>@Resource</code> annotation to inject a data source. However, this API supports the <code>@PersistenceUnit</code> and <code>@PersistenceContext</code> annotations for injecting <code>EntityManagerFactory</code> and <code>EntityManager</code> instances, respectively. <a href="../Text/persistence-basicexamples.xhtml#GIJST">Chapter 38, "Running the Persistence Examples"</a> describes these annotations and the use of the Java Persistence API in web applications.</p>
         </div><a id="BNAEX"></a><a id="JEETT00587"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">6.5.4.2</span> <a id="sthref225"></a><a id="sthref226"></a>Declaring a Reference to a Web Service</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">6.5.4.2</span> <a id="sthref225"></a><a id="sthref226"></a>Declaring a Reference to a Web Service</h3>
 
           <p>The <code>@WebServiceRef</code> annotation provides a reference to a web service. The following example shows uses the <code>@WebServiceRef</code> annotation to declare a reference to a web service. <code>WebServiceRef</code> uses the <code>wsdlLocation</code> element to specify the URI of the deployed service's WSDL file:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-          <pre class="oac_no_warn" xml:space="preserve">...
+          <pre class="oac_no_warn" xml:space="preserve">
+...
 import javax.xml.ws.WebServiceRef;
 ...
 public class ResponseServlet extends HTTPServlet {
 @WebServiceRef(wsdlLocation="http://localhost:8080/helloservice/hello?wsdl")
-static HelloService service;</pre>
+static HelloService service;
+</pre>
         </div>
       </div>
     </div>
@@ -1072,7 +1124,7 @@ static HelloService service;</pre>
     <a id="BNAFC"></a><a id="JEETT00329"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">6.6</span> Further Information about Web Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_970"><span class="secnum">6.6</span> Further Information about Web Applications</h1>
 
       <p>For more information on web applications, see</p>
 
@@ -1080,13 +1132,13 @@ static HelloService service;</pre>
         <li>
           <p>JavaServer Faces 2.2 specification:</p>
 
-          <p><code><a href="../Text/webapp.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D344">http://jcp.org/en/jsr/detail?id=344</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=344">http://jcp.org/en/jsr/detail?id=344</a></code></p>
         </li>
 
         <li>
           <p>Java Servlet 3.1 specification:</p>
 
-          <p><code><a href="../Text/webapp.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D340">http://jcp.org/en/jsr/detail?id=340</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=340">http://jcp.org/en/jsr/detail?id=340</a></code></p>
         </li>
       </ul>
     </div>

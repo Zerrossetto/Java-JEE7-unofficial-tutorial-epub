@@ -205,7 +205,7 @@
   <navLabel>
     <text>24. Running the Basic Contexts and Dependency Injection Examples</text>
   </navLabel>
-  <content src="Text/cdi-basic-examples.xhtml"/>
+  <content src="Text/cdi-basicexamples.xhtml"/>
 </navPoint>
 <navPoint id="navPoint-32" playOrder="32">
   <navLabel>
@@ -281,7 +281,7 @@
   <navLabel>
     <text>34. Running the Enterprise Bean Examples</text>
   </navLabel>
-  <content src="Text/ejb-basic-examples.xhtml"/>
+  <content src="Text/ejb-basicexamples.xhtml"/>
 </navPoint>
 <navPoint id="navPoint-44" playOrder="44">
   <navLabel>
@@ -313,7 +313,7 @@
   <navLabel>
     <text>38. Running the Persistence Examples</text>
   </navLabel>
-  <content src="Text/persistence-basic-examples.xhtml"/>
+  <content src="Text/persistence-basicexamples.xhtml"/>
 </navPoint>
 <navPoint id="navPoint-49" playOrder="49">
   <navLabel>
@@ -427,7 +427,7 @@
   <navLabel>
     <text>53. The Resource Adapter Examples</text>
   </navLabel>
-  <content src="Text/connector-example.xhtml"/>
+  <content src="Text/connectorexample.xhtml"/>
 </navPoint>
 <navPoint id="navPoint-68" playOrder="68">
   <navLabel>
@@ -474,11 +474,157 @@
   <content src="Text/dukes-forest.xhtml"/>
 </navPoint>
 </navPoint>
+
+<!-- Index -->
 <navPoint id="navPoint-75" playOrder="75">
   <navLabel>
     <text>iii. Index</text>
   </navLabel>
   <content src="Text/index.xhtml"/>
+<navPoint id="navPoint-76" playOrder="76">
+  <navLabel>
+    <text>A</text>
+  </navLabel>
+  <content src="Text/index.xhtml#A"/>
+</navPoint>
+<navPoint id="navPoint-77" playOrder="77">
+  <navLabel>
+    <text>B</text>
+  </navLabel>
+  <content src="Text/index.xhtml#B"/>
+</navPoint>
+<navPoint id="navPoint-78" playOrder="78">
+  <navLabel>
+    <text>C</text>
+  </navLabel>
+  <content src="Text/index.xhtml#C"/>
+</navPoint>
+<navPoint id="navPoint-79" playOrder="79">
+  <navLabel>
+    <text>D</text>
+  </navLabel>
+  <content src="Text/index.xhtml#D"/>
+</navPoint>
+<navPoint id="navPoint-80" playOrder="80">
+  <navLabel>
+    <text>E</text>
+  </navLabel>
+  <content src="Text/index.xhtml#E"/>
+</navPoint>
+<navPoint id="navPoint-81" playOrder="81">
+  <navLabel>
+    <text>F</text>
+  </navLabel>
+  <content src="Text/index.xhtml#F"/>
+</navPoint>
+<navPoint id="navPoint-82" playOrder="82">
+  <navLabel>
+    <text>G</text>
+  </navLabel>
+  <content src="Text/index.xhtml#G"/>
+</navPoint>
+<navPoint id="navPoint-83" playOrder="83">
+  <navLabel>
+    <text>H</text>
+  </navLabel>
+  <content src="Text/index.xhtml#H"/>
+</navPoint>
+<navPoint id="navPoint-84" playOrder="84">
+  <navLabel>
+    <text>I</text>
+  </navLabel>
+  <content src="Text/index.xhtml#I"/>
+</navPoint>
+<navPoint id="navPoint-85" playOrder="85">
+  <navLabel>
+    <text>J</text>
+  </navLabel>
+  <content src="Text/index.xhtml#J"/>
+</navPoint>
+<navPoint id="navPoint-86" playOrder="86">
+  <navLabel>
+    <text>K</text>
+  </navLabel>
+  <content src="Text/index.xhtml#K"/>
+</navPoint>
+<navPoint id="navPoint-87" playOrder="87">
+  <navLabel>
+    <text>L</text>
+  </navLabel>
+  <content src="Text/index.xhtml#L"/>
+</navPoint>
+<navPoint id="navPoint-88" playOrder="88">
+  <navLabel>
+    <text>M</text>
+  </navLabel>
+  <content src="Text/index.xhtml#M"/>
+</navPoint>
+<navPoint id="navPoint-89" playOrder="89">
+  <navLabel>
+    <text>N</text>
+  </navLabel>
+  <content src="Text/index.xhtml#N"/>
+</navPoint>
+<navPoint id="navPoint-90" playOrder="90">
+  <navLabel>
+    <text>O</text>
+  </navLabel>
+  <content src="Text/index.xhtml#O"/>
+</navPoint>
+<navPoint id="navPoint-91" playOrder="91">
+  <navLabel>
+    <text>P</text>
+  </navLabel>
+  <content src="Text/index.xhtml#P"/>
+</navPoint>
+<navPoint id="navPoint-92" playOrder="92">
+  <navLabel>
+    <text>Q</text>
+  </navLabel>
+  <content src="Text/index.xhtml#Q"/>
+</navPoint>
+<navPoint id="navPoint-93" playOrder="93">
+  <navLabel>
+    <text>R</text>
+  </navLabel>
+  <content src="Text/index.xhtml#R"/>
+</navPoint>
+<navPoint id="navPoint-94" playOrder="94">
+  <navLabel>
+    <text>S</text>
+  </navLabel>
+  <content src="Text/index.xhtml#S"/>
+</navPoint>
+<navPoint id="navPoint-95" playOrder="95">
+  <navLabel>
+    <text>T</text>
+  </navLabel>
+  <content src="Text/index.xhtml#T"/>
+</navPoint>
+<navPoint id="navPoint-96" playOrder="96">
+  <navLabel>
+    <text>U</text>
+  </navLabel>
+  <content src="Text/index.xhtml#U"/>
+</navPoint>
+<navPoint id="navPoint-97" playOrder="97">
+  <navLabel>
+    <text>V</text>
+  </navLabel>
+  <content src="Text/index.xhtml#V"/>
+</navPoint>
+<navPoint id="navPoint-98" playOrder="98">
+  <navLabel>
+    <text>W</text>
+  </navLabel>
+  <content src="Text/index.xhtml#W"/>
+</navPoint>
+<navPoint id="navPoint-99" playOrder="99">
+  <navLabel>
+    <text>X</text>
+  </navLabel>
+  <content src="Text/index.xhtml#X"/>
+</navPoint>
 </navPoint>
 </navMap>
 </ncx>

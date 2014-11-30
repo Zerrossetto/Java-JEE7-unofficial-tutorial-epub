@@ -37,7 +37,7 @@
     <a id="GLOAW"></a><a id="JEETT00566"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">57.1</span> Design and Architecture of Duke's Bookstore</h1>
+      <h1 class="sect1" id="sigil_toc_id_133"><span class="secnum">57.1</span> Design and Architecture of Duke's Bookstore</h1>
 
       <p>Duke's Bookstore is a simple web application that uses many features of JavaServer Faces technology, in addition to other Java EE 7 features:</p>
 
@@ -145,12 +145,12 @@
     <a id="GLQFD"></a><a id="JEETT00567"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">57.2</span> The Duke's Bookstore Interface</h1>
+      <h1 class="sect1" id="sigil_toc_id_134"><span class="secnum">57.2</span> The Duke's Bookstore Interface</h1>
 
       <p>This section provides additional detail regarding the components of the Duke's Bookstore example and how they interact.</p><a id="GLQER"></a><a id="JEETT01320"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">57.2.1</span> The Book Java Persistence API Entity</h2>
+        <h2 class="sect2" id="sigil_toc_id_135"><span class="secnum">57.2.1</span> The Book Java Persistence API Entity</h2>
 
         <p>The <code>Book</code> entity, located in the <code>dukesbookstore.entity</code> package, encapsulates the book data stored by Duke's Bookstore.</p>
 
@@ -198,7 +198,7 @@
       </div><a id="GLQEU"></a><a id="JEETT01321"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">57.2.2</span> Enterprise Beans Used in Duke's Bookstore</h2>
+        <h2 class="sect2" id="sigil_toc_id_136"><span class="secnum">57.2.2</span> Enterprise Beans Used in Duke's Bookstore</h2>
 
         <p>Two enterprise beans located in the <code>dukesbookstore.ejb</code> package provide the business logic for Duke's Bookstore.</p>
 
@@ -214,7 +214,7 @@
       </div><a id="GLQDP"></a><a id="JEETT01322"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">57.2.3</span> Facelets Pages and Managed Beans Used in Duke's Bookstore</h2>
+        <h2 class="sect2" id="sigil_toc_id_137"><span class="secnum">57.2.3</span> Facelets Pages and Managed Beans Used in Duke's Bookstore</h2>
 
         <p>The Duke's Bookstore application uses Facelets and its templating features to display the user interface. The Facelets pages interact with a set of CDI managed beans that act as backing beans, providing the underlying properties and methods for the user interface. The front page also interacts with the custom components used by the application.</p>
 
@@ -314,7 +314,7 @@
       </div><a id="GLQDX"></a><a id="JEETT01323"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">57.2.4</span> Custom Components and Other Custom Objects Used in Duke's Bookstore</h2>
+        <h2 class="sect2" id="sigil_toc_id_138"><span class="secnum">57.2.4</span> Custom Components and Other Custom Objects Used in Duke's Bookstore</h2>
 
         <p>The map and area custom components for Duke's Bookstore, along with associated renderer, listener, and model classes, are defined in the following packages in the <span class="variable">tut-install</span><code>/examples/case-studies/dukes-bookstore/src/main/java/javaeetutorial/dukesbookstore/</code> directory.</p>
 
@@ -344,13 +344,13 @@
           </li>
 
           <li>
-            <p><code>listeners</code>: Contains the <code>LinkBookChangeListener</code>, <code>MapBookChangeListener</code>, and <code>NameChanged</code> classes. See <a href="../Text/jsf-custom..xhtml#BNAUT">Implementing an Event Listener</a>.</p>
+            <p><code>listeners</code>: Contains the <code>LinkBookChangeListener</code>, <code>MapBookChangeListener</code>, and <code>NameChanged</code> classes. See <a href="../Text/jsf-custom.xhtml#BNAUT">Implementing an Event Listener</a>.</p>
           </li>
         </ul>
       </div><a id="GLQDG"></a><a id="JEETT01324"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">57.2.5</span> Properties Files Used in Duke's Bookstore</h2>
+        <h2 class="sect2" id="sigil_toc_id_139"><span class="secnum">57.2.5</span> Properties Files Used in Duke's Bookstore</h2>
 
         <p>The strings used in the Duke's Bookstore application are encapsulated into resource bundles to allow the display of localized strings in multiple locales. The properties files, located in the <span class="variable">tut-install</span><code>/examples/case-studies/dukes-bookstore/src/main/java/javaeetutorial/dukesbookstore/web/messages/</code> directory, consist of a default file containing English strings and three additional files for other locales. The files are as follows:</p>
 
@@ -373,13 +373,16 @@
         </ul>
 
         <p>The language setting in the user's web browser determines which locale is used. The <code>html</code> tag in <code>bookstoreTemplate.xhtml</code> retrieves the language setting from the <code>language</code> property of <code>LocaleBean</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html lang="#{localeBean.language}"
-...</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;html lang="#{localeBean.language}"
+...
+</pre>
 
         <p>For more information about resource bundles, see <a href="../Text/webi18n.xhtml#BNAXU">Chapter 20, "Internationalizing and Localizing Web Applications."</a></p>
 
         <p>The resource bundle is configured as follows in the <code>faces-config.xml</code> file:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;application&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;application&gt;
     &lt;resource-bundle&gt;
         &lt;base-name&gt;
             javaeetutorial.dukesbookstore.web.messages.Messages
@@ -392,18 +395,23 @@
         &lt;supported-locale&gt;es&lt;/supported-locale&gt;
         &lt;supported-locale&gt;fr&lt;/supported-locale&gt;
     &lt;/locale-config&gt;
-&lt;/application&gt;</pre>
+&lt;/application&gt;
+</pre>
 
         <p>This configuration means that in the Facelets pages, messages are retrieved using the prefix <code>bundle</code> with the key found in the <code>Messages_</code><span class="variable">locale</span><code>.properties</code> file, as in the following example from the <code>index.xhtml</code> page:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText style="font-weight:bold" 
-              value="#{bundle.ChooseBook}" /&gt;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:outputText style="font-weight:bold" 
+              value="#{bundle.ChooseBook}" /&gt;
+</pre>
 
         <p>In <code>Messages.properties</code>, the key string is defined as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ChooseBook=Choose a Book from our Catalog</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+ChooseBook=Choose a Book from our Catalog
+</pre>
       </div><a id="GLQED"></a><a id="JEETT01325"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">57.2.6</span> Deployment Descriptors Used in Duke's Bookstore</h2>
+        <h2 class="sect2" id="sigil_toc_id_140"><span class="secnum">57.2.6</span> Deployment Descriptors Used in Duke's Bookstore</h2>
 
         <p>The following deployment descriptors are used in Duke's Bookstore:</p>
 
@@ -432,12 +440,12 @@
     <a id="GLPPQ"></a><a id="JEETT00568"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">57.3</span> Running the Duke's Bookstore Case Study Application</h1>
+      <h1 class="sect1" id="sigil_toc_id_141"><span class="secnum">57.3</span> Running the Duke's Bookstore Case Study Application</h1>
 
       <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the Duke's Bookstore application.</p><a id="GLPQG"></a><a id="JEETT00294"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">57.3.1</span> To Build and Deploy Duke's Bookstore Using NetBeans IDE</h2>
+        <h2 class="sect2" id="sigil_toc_id_142"><span class="secnum">57.3.1</span> To Build and Deploy Duke's Bookstore Using NetBeans IDE</h2>
 
         <ol>
           <li>
@@ -450,7 +458,9 @@
 
           <li>
             <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/case-studies</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/case-studies
+</pre>
           </li>
 
           <li>
@@ -470,7 +480,7 @@
       </div><a id="GLPQN"></a><a id="JEETT00295"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">57.3.2</span> To Build and Deploy Duke's Bookstore Using Maven</h2>
+        <h2 class="sect2" id="sigil_toc_id_143"><span class="secnum">57.3.2</span> To Build and Deploy Duke's Bookstore Using Maven</h2>
 
         <ol>
           <li>
@@ -479,12 +489,16 @@
 
           <li>
             <p>In a terminal window, go to:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/case-studies/dukes-bookstore/</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/case-studies/dukes-bookstore/
+</pre>
           </li>
 
           <li>
             <p>Enter the following command:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
             <p>This command builds the application and packages it in a WAR file in the <span class="variable">tut-install</span><code>/examples/case-studies/dukes-bookstore/target/</code> directory. It then deploys the application to GlassFish Server.</p>
           </li>
@@ -494,12 +508,14 @@
       <div class="sect2">
         <a id="sthref3053"></a>
 
-        <h2 class="sect2"><span class="secnum">57.3.3</span> To Run Duke's Bookstore</h2>
+        <h2 class="sect2" id="sigil_toc_id_144"><span class="secnum">57.3.3</span> To Run Duke's Bookstore</h2>
 
         <ol>
           <li>
             <p>In a web browser, enter the following URL:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/dukes-bookstore/</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/dukes-bookstore/
+</pre>
           </li>
 
           <li>

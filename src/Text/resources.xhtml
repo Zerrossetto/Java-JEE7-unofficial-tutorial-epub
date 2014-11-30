@@ -45,20 +45,15 @@
     <a id="GIPGL"></a><a id="JEETT00540"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">52.1</span> <a id="sthref2885"></a><a id="sthref2886"></a>What Is a Resource Adapter?</h1>
+      <h1 class="sect1" id="sigil_toc_id_791"><span class="secnum">52.1</span> <a id="sthref2885"></a><a id="sthref2886"></a>What Is a Resource Adapter?</h1>
 
       <p>A resource adapter is a Java EE component that implements the Java EE Connector Architecture for a specific EIS. Examples of EISs include enterprise resource planning, mainframe transaction processing, and database systems. In a Java EE server, the Java Message Server and JavaMail also act as EISs that you access using resource adapters. As illustrated in <a href="../Text/resources.xhtml#GJTZO">Figure 52-1</a>, the resource adapter facilitates communication between a Java EE application and an EIS.</p>
 
       <div class="figure">
         <a id="GJTZO"></a><a id="JEETT00045"></a>
 
-        <p class="titleinfigure">Figure 52-1 Resource Adapters</p>
-
-        <div style="text-align: center;"><img alt="Description of Figure 52-1 follows" longdesc="img_text/jeett_dt_053.htm" src="../Images/jeett_dt_053.png" style="line-height: 1.6em;" title="Description of Figure 52-1 follows" /></div>
-      </div>
-
-      <div class="figure">
-        Description of "Figure 52-1 Resource Adapters"<br />
+        <p class="titleinfigure">Figure 52-1 Resource Adapters</p><br />
+        <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_053.htm" id="sthref2887">Description of "Figure 52-1 Resource Adapters"</a><br />
         <br />
       </div>
 
@@ -69,18 +64,18 @@
       <p>The resource adapter mediates communication between the Java EE server and the EIS by means of contracts. The application contract defines the API through which a Java EE component, such as an enterprise bean, accesses the EIS. This API is the only view that the component has of the EIS. The system contracts link the resource adapter to important services that are managed by the Java EE server. The resource adapter itself and its system contracts are transparent to the Java EE component.</p><a id="GIPGY"></a><a id="JEETT01266"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">52.1.1</span> Management Contracts</h2>
+        <h2 class="sect2" id="sigil_toc_id_792"><span class="secnum">52.1.1</span> Management Contracts</h2>
 
         <p>The Java EE Connector Architecture defines system contracts that enable resource adapter lifecycle and thread management.</p><a id="GIPHT"></a><a id="JEETT00801"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">52.1.1.1</span> Lifecycle Management</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">52.1.1.1</span> Lifecycle Management</h3>
 
           <p>The Connector Architecture specifies a lifecycle management contract that allows an application server to manage the lifecycle of a resource adapter. This contract provides a mechanism for the application server to bootstrap a resource adapter instance during the deployment or application server startup. This contract also provides a means for the application server to notify the resource adapter instance when it is undeployed or when an orderly shutdown of the application server takes place.</p>
         </div><a id="GIPIG"></a><a id="JEETT00802"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">52.1.1.2</span> Work Management Contract</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">52.1.1.2</span> Work Management Contract</h3>
 
           <p>The Connector Architecture work management contract ensures that resource adapters use threads in the proper, recommended manner. This contract also enables an application server to manage threads for resource adapters.</p>
 
@@ -109,7 +104,7 @@
       </div><a id="GIPMK"></a><a id="JEETT01267"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">52.1.2</span> Generic Work Context Contract</h2>
+        <h2 class="sect2" id="sigil_toc_id_793"><span class="secnum">52.1.2</span> Generic Work Context Contract</h2>
 
         <p>The work management contract between the application server and a resource adapter enables a resource adapter to do a task, such as communicating with the EIS or delivering messages, by delivering <code>Work</code> instances for execution.</p>
 
@@ -119,7 +114,7 @@
       </div><a id="GKCKI"></a><a id="JEETT01268"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">52.1.3</span> Outbound and Inbound Contracts</h2>
+        <h2 class="sect2" id="sigil_toc_id_794"><span class="secnum">52.1.3</span> Outbound and Inbound Contracts</h2>
 
         <p>The Connector Architecture defines the following outbound contracts, system-level contracts between an application server and an EIS that enable outbound connectivity to an EIS.</p>
 
@@ -150,14 +145,15 @@
     <a id="GIRDD"></a><a id="JEETT00541"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">52.2</span> <a id="sthref2888"></a><a id="sthref2889"></a>Metadata Annotations</h1>
+      <h1 class="sect1" id="sigil_toc_id_795"><span class="secnum">52.2</span> <a id="sthref2888"></a><a id="sthref2889"></a>Metadata Annotations</h1>
 
       <p>Java EE Connector Architecture provides a set of annotations to minimize the need for deployment descriptors.</p>
 
       <ul>
         <li>
           <p>The <code>@Connector</code> annotation can be used by the resource adapter developer to specify that the JavaBeans component is a resource adapter JavaBeans component. This annotation is used for providing metadata about the capabilities of the resource adapter. Optionally, you can provide a JavaBeans component implementing the <code>ResourceAdapter</code> interface, as in the following example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Connector(
+          <pre class="oac_no_warn" xml:space="preserve">
+@Connector(
     displayName = "TrafficResourceAdapter",
     vendorName = "Java EE Tutorial", 
     version = "7.0"
@@ -165,12 +161,14 @@
 public class TrafficResourceAdapter implements ResourceAdapter, 
                                                Serializable {
     ...
-}</pre>
+}
+</pre>
         </li>
 
         <li>
           <p>The <code>@ConnectionDefinition</code> annotation defines a set of connection interfaces and classes pertaining to a particular connection type, as in the following example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ConnectionDefinition(
+          <pre class="oac_no_warn" xml:space="preserve">
+@ConnectionDefinition(
     connectionFactory = ConnectionFactory.class,
     connectionFactoryImpl = TradeConnectionFactory.class,
     connection = Connection.class,
@@ -178,7 +176,8 @@ public class TrafficResourceAdapter implements ResourceAdapter,
 )
 public class TradeManagedConnectionFactory ... {
     ...
-}</pre>
+}
+</pre>
         </li>
 
         <li>
@@ -187,7 +186,8 @@ public class TradeManagedConnectionFactory ... {
 
         <li>
           <p>The <code>@Activation</code> annotation contains configuration information pertaining to inbound connectivity from an EIS instance, as in the following example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Activation(
+          <pre class="oac_no_warn" xml:space="preserve">
+@Activation(
         messageListeners = { TrafficListener.class }
 )
 public class TrafficActivationSpec implements ActivationSpec, 
@@ -197,7 +197,8 @@ public class TrafficActivationSpec implements ActivationSpec,
     /* port to listen to requests from the EIS */
     private String port;
     ...
-}</pre>
+}
+</pre>
         </li>
 
         <li>
@@ -229,7 +230,7 @@ public class TrafficActivationSpec implements ActivationSpec,
     <a id="GIPJU"></a><a id="JEETT00542"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">52.3</span> <a id="sthref2890"></a>Common Client Interface</h1>
+      <h1 class="sect1" id="sigil_toc_id_796"><span class="secnum">52.3</span> <a id="sthref2890"></a>Common Client Interface</h1>
 
       <p>This section explains how components use the Connector Architecture Common Client Interface (CCI) API and a resource adapter to access data from an EIS. The CCI API defines a set of interfaces and classes whose methods allow a client to perform typical data access operations. The CCI interfaces and classes are as follows.</p>
 
@@ -279,7 +280,7 @@ public class TrafficActivationSpec implements ActivationSpec,
     <a id="CHDJFIGB"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">52.4</span> Using Resource Adapters with Contexts and Dependency Injection for Java EE (CDI)</h1>
+      <h1 class="sect1" id="sigil_toc_id_797"><span class="secnum">52.4</span> Using Resource Adapters with Contexts and Dependency Injection for Java EE (CDI)</h1>
 
       <p>For details about CDI, see <a href="../Text/cdi-basic.xhtml#GIWHB">Chapter 23, "Introduction to Contexts and Dependency Injection for Java EE"</a> and <a href="../Text/cdi-adv.xhtml#GJEHI">Chapter 25, "Contexts and Dependency Injection for Java EE: Advanced Topics."</a></p>
 
@@ -311,7 +312,7 @@ public class TrafficActivationSpec implements ActivationSpec,
     <a id="BNCJW"></a><a id="JEETT00543"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">52.5</span> Further Information about Resource Adapters</h1>
+      <h1 class="sect1" id="sigil_toc_id_798"><span class="secnum">52.5</span> Further Information about Resource Adapters</h1>
 
       <p>For more information about resource adapters and annotations, see</p>
 
@@ -319,25 +320,25 @@ public class TrafficActivationSpec implements ActivationSpec,
         <li>
           <p>Java EE 7 Platform Specification (JSR 342):</p>
 
-          <p><code><a href="../Text/resources.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D342">http://jcp.org/en/jsr/detail?id=342</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=342">http://jcp.org/en/jsr/detail?id=342</a></code></p>
         </li>
 
         <li>
           <p>Java EE Connector Architecture 1.7 specification:</p>
 
-          <p><code><a href="../Text/resources.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D322">http://jcp.org/en/jsr/detail?id=322</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=322">http://jcp.org/en/jsr/detail?id=322</a></code></p>
         </li>
 
         <li>
           <p>EJB 3.2 specification:</p>
 
-          <p><code><a href="../Text/resources.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D345">http://jcp.org/en/jsr/detail?id=345</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=345">http://jcp.org/en/jsr/detail?id=345</a></code></p>
         </li>
 
         <li>
           <p>Common Annotations for the Java Platform:</p>
 
-          <p><code><a href="../Text/resources.xhtml#http%3A//www.jcp.org/en/jsr/detail%3Fid%3D250">http://www.jcp.org/en/jsr/detail?id=250</a></code></p>
+          <p><code><a href="../Text/http://www.jcp.org/en/jsr/detail?id=.xhtml#http://www.jcp.org/en/jsr/detail?id=250">http://www.jcp.org/en/jsr/detail?id=250</a></code></p>
         </li>
       </ul>
     </div>

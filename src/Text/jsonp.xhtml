@@ -57,17 +57,18 @@
     <a id="BABEECIB"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">19.1</span> Introduction to JSON</h1>
+      <h1 class="sect1" id="sigil_toc_id_601"><span class="secnum">19.1</span> Introduction to JSON</h1>
 
       <p>JSON is a text-based data exchange format derived from JavaScript that is used in web services and other connected applications. The following sections provide an introduction to JSON syntax, an overview of JSON uses, and a description of the most common approaches to generate and parse JSON.</p><a id="BABGHEHG"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">19.1.1</span> JSON Syntax</h2>
+        <h2 class="sect2" id="sigil_toc_id_602"><span class="secnum">19.1.1</span> JSON Syntax</h2>
 
         <p>JSON defines only two data structures: objects and arrays. An object is a set of name-value pairs, and an array is a list of values. JSON defines seven value types: <span class="italic">string</span>, <span class="italic">number</span>, <span class="italic">object</span>, <span class="italic">array</span>, <span class="italic">true</span>, <span class="italic">false</span>, and <span class="italic">null</span>.</p>
 
         <p>The following example shows JSON data for a sample object that contains name-value pairs. The value for the name <code>"phoneNumbers"</code> is an array whose elements are two objects.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">{
+        <pre class="oac_no_warn" xml:space="preserve">
+{
    "firstName": "Duke",
    "lastName": "Java",
    "age": 18,
@@ -79,7 +80,8 @@
       { "Mobile": "111-111-1111" },
       { "Home": "222-222-2222" }
    ]
-}</pre>
+}
+</pre>
 
         <p>JSON has the following syntax.</p>
 
@@ -101,18 +103,20 @@
       <div class="sect2">
         <a id="sthref1305"></a>
 
-        <h2 class="sect2"><span class="secnum">19.1.2</span> Uses of JSON</h2>
+        <h2 class="sect2" id="sigil_toc_id_603"><span class="secnum">19.1.2</span> Uses of JSON</h2>
 
         <p>JSON is often used as a common format to serialize and deserialize data in applications that communicate with each other over the Internet. These applications are created using different programming languages and run in very different environments. JSON is suited to this scenario because it is an open standard, it is easy to read and write, and it is more compact than other representations.</p>
 
         <p>RESTful web services use JSON extensively as the format for the data inside requests and responses. The HTTP header used to indicate that the content of a request or a response is JSON data is</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Content-Type: application/json</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+Content-Type: application/json
+</pre>
 
         <p>JSON representations are usually more compact than XML representations because JSON does not have closing tags. Unlike XML, JSON does not have a widely accepted schema for defining and validating the structure of JSON data.</p>
       </div><a id="BABJJACI"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">19.1.3</span> Generating and Parsing JSON Data</h2>
+        <h2 class="sect2" id="sigil_toc_id_604"><span class="secnum">19.1.3</span> Generating and Parsing JSON Data</h2>
 
         <p>For generating and parsing JSON data, there are two programming models, which are similar to those used for XML documents.</p>
 
@@ -135,7 +139,7 @@
     <a id="BABDFHHD"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">19.2</span> JSON Processing in the Java EE Platform</h1>
+      <h1 class="sect1" id="sigil_toc_id_605"><span class="secnum">19.2</span> JSON Processing in the Java EE Platform</h1>
 
       <p>Java EE includes support for JSR 353, which provides an API to parse, transform, and query JSON data using the object model or the streaming model described in <a href="../Text/jsonp.xhtml#BABJJACI">Generating and Parsing JSON Data</a>. The Java API for JSON Processing contains the following packages.</p>
 
@@ -313,30 +317,33 @@
     <a id="BABHAHIA"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">19.3</span> Using the Object Model API</h1>
+      <h1 class="sect1" id="sigil_toc_id_606"><span class="secnum">19.3</span> Using the Object Model API</h1>
 
       <p>This section describes four use cases of the object model API: creating an object model from JSON data, creating an object model from application code, navigating an object model, and writing an object model to a stream.</p><a id="BABBHEBA"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">19.3.1</span> Creating an Object Model from JSON Data</h2>
+        <h2 class="sect2" id="sigil_toc_id_607"><span class="secnum">19.3.1</span> Creating an Object Model from JSON Data</h2>
 
         <p>The following code demonstrates how to create an object model from JSON data in a text file:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import java.io.FileReader;
+        <pre class="oac_no_warn" xml:space="preserve">
+import java.io.FileReader;
 import javax.json.Json;
 import javax.json.JsonReader;
 import javax.json.JsonStructure;
 ...
 JsonReader reader = Json.createReader(new FileReader("jsondata.txt"));
-JsonStructure jsonst = reader.read();</pre>
+JsonStructure jsonst = reader.read();
+</pre>
 
         <p>The object reference <code>jsonst</code> can be either of type <code>JsonObject</code> or of type <code>JsonArray</code>, depending on the contents of the file. <code>JsonObject</code> and <code>JsonArray</code> are subtypes of <code>JsonStructure</code>. This reference represents the top of the tree and can be used to navigate the tree or to write it to a stream as JSON data.</p>
       </div><a id="BABIGIAF"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">19.3.2</span> Creating an Object Model from Application Code</h2>
+        <h2 class="sect2" id="sigil_toc_id_608"><span class="secnum">19.3.2</span> Creating an Object Model from Application Code</h2>
 
         <p>The following code demonstrates how to create an object model from application code:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.json.Json;
+        <pre class="oac_no_warn" xml:space="preserve">
+import javax.json.Json;
 import javax.json.JsonObject;
 ...
 JsonObject model = Json.createObjectBuilder()
@@ -354,10 +361,12 @@ JsonObject model = Json.createObjectBuilder()
       .add(Json.createObjectBuilder()
          .add("type", "home")
          .add("number", "222-222-2222")))
-   .build();</pre>
+   .build();
+</pre>
 
         <p>The object reference <code>model</code> represents the top of the tree, which is created by nesting calls to the <code>add</code> methods and built by calling the <code>build</code> method. The <code>JsonObjectBuilder</code> class contains the following <code>add</code> methods:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">JsonObjectBuilder add(String name, BigDecimal value)
+        <pre class="oac_no_warn" xml:space="preserve">
+JsonObjectBuilder add(String name, BigDecimal value)
 JsonObjectBuilder add(String name, BigInteger value)
 JsonObjectBuilder add(String name, boolean value)
 JsonObjectBuilder add(String name, double value)
@@ -367,7 +376,8 @@ JsonObjectBuilder add(String name, JsonObjectBuilder builder)
 JsonObjectBuilder add(String name, JsonValue value)
 JsonObjectBuilder add(String name, long value)
 JsonObjectBuilder add(String name, String value)
-JsonObjectBuilder addNull(String name)</pre>
+JsonObjectBuilder addNull(String name)
+</pre>
 
         <p>The <code>JsonArrayBuilder</code> class contains similar <code>add</code> methods that do not have a name (key) parameter. You can nest arrays and objects by passing a new <code>JsonArrayBuilder</code> object or a new <code>JsonObjectBuilder</code> object to the corresponding <code>add</code> method, as shown in this example.</p>
 
@@ -375,10 +385,11 @@ JsonObjectBuilder addNull(String name)</pre>
       </div><a id="BABJHEHG"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">19.3.3</span> Navigating an Object Model</h2>
+        <h2 class="sect2" id="sigil_toc_id_609"><span class="secnum">19.3.3</span> Navigating an Object Model</h2>
 
         <p>The following code demonstrates a simple approach to navigating an object model:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.json.JsonValue;
+        <pre class="oac_no_warn" xml:space="preserve">
+import javax.json.JsonValue;
 import javax.json.JsonObject;
 import javax.json.JsonArray;
 import javax.json.JsonNumber;
@@ -414,17 +425,21 @@ public static void navigateTree(JsonValue tree, String key) {
          System.out.println(tree.getValueType().toString());
          break;
    }
-}</pre>
+}
+</pre>
 
         <p>The method <code>navigateTree</code> can be used with the models built in <a href="../Text/jsonp.xhtml#BABBHEBA">Creating an Object Model from JSON Data</a> and <a href="../Text/jsonp.xhtml#BABIGIAF">Creating an Object Model from Application Code</a> as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">navigateTree(model, null);</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+navigateTree(model, null);
+</pre>
 
         <p>The <code>navigateTree</code> method takes two arguments: a JSON element and a key. The key is used only to help print the key-value pairs inside objects. Elements in a tree are represented by the <code>JsonValue</code> type. If the element is an object or an array, a new call to this method is made for every element contained in the object or array. If the element is a value, it is printed to the standard output.</p>
 
-        <p>The <code>JsonValue.getValueType</code> method identifies the element as an object, an array, or a value. For objects, the <code>JsonObject.keySet</code> method returns a set of strings that contains the keys in the object, and the <code>JsonObject.get(String name)</code> method returns the value of the element whose key is <code>name</code>. For arrays, <code>JsonArray</code> implements the <code>ListJsonValue</code> interface. You can use enhanced <code>for</code> loops with the <code>SetString</code> instance returned by <code>JsonObject.keySet</code> and with instances of <code>JsonArray</code>, as shown in this example.</p>
+        <p>The <code>JsonValue.getValueType</code> method identifies the element as an object, an array, or a value. For objects, the <code>JsonObject.keySet</code> method returns a set of strings that contains the keys in the object, and the <code>JsonObject.get(String name)</code> method returns the value of the element whose key is <code>name</code>. For arrays, <code>JsonArray</code> implements the <code>List&lt;JsonValue&gt;</code> interface. You can use enhanced <code>for</code> loops with the <code>Set&lt;String&gt;</code> instance returned by <code>JsonObject.keySet</code> and with instances of <code>JsonArray</code>, as shown in this example.</p>
 
         <p>The <code>navigateTree</code> method for the model built in <a href="../Text/jsonp.xhtml#BABIGIAF">Creating an Object Model from Application Code</a> produces the following output:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">OBJECT
+        <pre class="oac_no_warn" xml:space="preserve">
+OBJECT
 Key firstName: STRING Duke
 Key lastName: STRING Java
 Key age: NUMBER 18
@@ -438,14 +453,16 @@ Key type: STRING mobile
 Key number: STRING 111-111-1111
 OBJECT
 Key type: STRING home
-Key number: STRING 222-222-222</pre>
+Key number: STRING 222-222-2222
+</pre>
       </div><a id="BABHEJFF"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">19.3.4</span> Writing an Object Model to a Stream</h2>
+        <h2 class="sect2" id="sigil_toc_id_610"><span class="secnum">19.3.4</span> Writing an Object Model to a Stream</h2>
 
         <p>The object models created in <a href="../Text/jsonp.xhtml#BABBHEBA">Creating an Object Model from JSON Data</a> and <a href="../Text/jsonp.xhtml#BABIGIAF">Creating an Object Model from Application Code</a> can be written to a stream using the <code>JsonWriter</code> class as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import java.io.StringWriter;
+        <pre class="oac_no_warn" xml:space="preserve">
+import java.io.StringWriter;
 import javax.json.JsonWriter;
 ...
 StringWriter stWriter = new StringWriter();
@@ -454,18 +471,21 @@ jsonWriter.writeObject(model);
 jsonWriter.close();
 
 String jsonData = stWriter.toString();
-System.out.println(jsonData);</pre>
+System.out.println(jsonData);
+</pre>
 
         <p>The <code>Json.createWriter</code> method takes an output stream as a parameter. The <code>JsonWriter.writeObject</code> method writes the object to the stream. The <code>JsonWriter.close</code> method closes the underlying output stream.</p>
 
         <p>The following example uses <code>try</code>-with-resources to close the JSON writer automatically:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">StringWriter stWriter = new StringWriter();
+        <pre class="oac_no_warn" xml:space="preserve">
+StringWriter stWriter = new StringWriter();
 try (JsonWriter jsonWriter = Json.createWriter(stWriter)) {
    jsonWriter.writeObject(model);
 }
 
 String jsonData = stWriter.toString();
-System.out.println(jsonData);</pre>
+System.out.println(jsonData);
+</pre>
       </div>
     </div>
   </div>
@@ -474,7 +494,7 @@ System.out.println(jsonData);</pre>
     <a id="BABDBHIA"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">19.4</span> Using the Streaming API</h1>
+      <h1 class="sect1" id="sigil_toc_id_611"><span class="secnum">19.4</span> Using the Streaming API</h1>
 
       <p>This section describes two use cases of the streaming API:</p>
 
@@ -489,10 +509,11 @@ System.out.println(jsonData);</pre>
       </ul><a id="BABGCHIG"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">19.4.1</span> Reading JSON Data Using a Parser</h2>
+        <h2 class="sect2" id="sigil_toc_id_612"><span class="secnum">19.4.1</span> Reading JSON Data Using a Parser</h2>
 
         <p>The streaming API is the most efficient approach for parsing JSON text. The following code demonstrates how to create a <code>JsonParser</code> object and how to parse JSON data using events:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.json.Json;
+        <pre class="oac_no_warn" xml:space="preserve">
+import javax.json.Json;
 import javax.json.stream.JsonParser;
 ...
 JsonParser parser = Json.createParser(new StringReader(jsonData));
@@ -518,7 +539,8 @@ while (parser.hasNext()) {
                             parser.getString());
          break;
    }
-}</pre>
+}
+</pre>
 
         <p>This example consists of three steps.</p>
 
@@ -559,7 +581,8 @@ while (parser.hasNext()) {
         <p>See the Java EE 7 API reference for the <code>javax.json.stream.JsonParser</code> interface for more information.</p>
 
         <p>The output of this example is the following:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">START_OBJECT
+        <pre class="oac_no_warn" xml:space="preserve">
+START_OBJECT
 KEY_NAME firstName - VALUE_STRING Duke
 KEY_NAME lastName - VALUE_STRING Java
 KEY_NAME age - VALUE_NUMBER 18
@@ -577,14 +600,16 @@ KEY_NAME type - VALUE_STRING home
 KEY_NAME number - VALUE_STRING 222-222-2222
 END_OBJECT
 END_ARRAY
-END_OBJECT</pre>
+END_OBJECT
+</pre>
       </div><a id="BABGJEEF"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">19.4.2</span> Writing JSON Data Using a Generator</h2>
+        <h2 class="sect2" id="sigil_toc_id_613"><span class="secnum">19.4.2</span> Writing JSON Data Using a Generator</h2>
 
         <p>The following code demonstrates how to write JSON data to a file using the streaming API:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">FileWriter writer = new FileWriter("test.txt");
+        <pre class="oac_no_warn" xml:space="preserve">
+FileWriter writer = new FileWriter("test.txt");
 JsonGenerator gen = Json.createGenerator(writer);
 gen.writeStartObject()
    .write("firstName", "Duke")
@@ -605,7 +630,8 @@ gen.writeStartObject()
       .writeEnd()
    .writeEnd()
 .writeEnd();
-gen.close();</pre>
+gen.close();
+</pre>
 
         <p>This example obtains a JSON generator by calling the <code>Json.createGenerator</code> static method, which takes a writer or an output stream as a parameter. The example writes JSON data to the <code>test.txt</code> file by nesting calls to the <code>write</code>, <code>writeStartArray</code>, <code>writeStartObject</code>, and <code>writeEnd</code> methods. The <code>JsonGenerator.close</code> method closes the underlying writer or output stream.</p>
       </div>
@@ -616,7 +642,7 @@ gen.close();</pre>
     <a id="BABCFABH"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">19.5</span> JSON in Java EE RESTful Web Services</h1>
+      <h1 class="sect1" id="sigil_toc_id_614"><span class="secnum">19.5</span> JSON in Java EE RESTful Web Services</h1>
 
       <p>This section explains how the Java API for JSON Processing is related to other Java EE packages that provide JSON support for RESTful web services. See <a href="../Text/jaxrs.xhtml#GIEPU">Chapter 29, "Building RESTful Web Services with JAX-RS,"</a> for more information on RESTful web services.</p>
 
@@ -632,7 +658,7 @@ gen.close();</pre>
     <a id="BABEDFCG"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">19.6</span> The jsonpmodel Example Application</h1>
+      <h1 class="sect1" id="sigil_toc_id_615"><span class="secnum">19.6</span> The jsonpmodel Example Application</h1>
 
       <p>This section describes how to build and run the <code>jsonpmodel</code> example application. This example is a web application that demonstrates how to create an object model from form data, how to parse JSON data, and how write JSON data using the object model API.</p>
 
@@ -641,7 +667,7 @@ gen.close();</pre>
       <div class="sect2">
         <a id="sthref1308"></a>
 
-        <h2 class="sect2"><span class="secnum">19.6.1</span> Components of the jsonpmodel Example Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_616"><span class="secnum">19.6.1</span> Components of the jsonpmodel Example Application</h2>
 
         <p>The <code>jsonpmodel</code> example application contains the following files.</p>
 
@@ -675,14 +701,14 @@ gen.close();</pre>
       <div class="sect2">
         <a id="sthref1309"></a>
 
-        <h2 class="sect2"><span class="secnum">19.6.2</span> Running the jsonpmodel Example Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_617"><span class="secnum">19.6.2</span> Running the jsonpmodel Example Application</h2>
 
         <p>This section describes how to run the <code>jsonpmodel</code> example application using NetBeans IDE and from the command line.</p>
 
         <div class="sect3">
           <a id="sthref1310"></a>
 
-          <h3 class="sect3"><span class="secnum">19.6.2.1</span> To Run the jsonpmodel Example Application Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">19.6.2.1</span> To Run the jsonpmodel Example Application Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -695,7 +721,9 @@ gen.close();</pre>
 
             <li>
               <p>In the Open Project dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/web/jsonp</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="italic">tut-install</span>/examples/web/jsonp
+</pre>
             </li>
 
             <li>
@@ -710,7 +738,9 @@ gen.close();</pre>
               <p>In the <span class="bold">Projects</span> tab, right-click the <code>jsonpmodel</code> project and select <span class="bold">Run</span>.</p>
 
               <p>This command builds and packages the application into a WAR file (<code>jsonpmodel.war</code>) located in the <code>target</code> directory, deploys it to the server, and opens a web browser window with the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/jsonpmodel/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/jsonpmodel/
+</pre>
             </li>
 
             <li>
@@ -726,7 +756,7 @@ gen.close();</pre>
         <div class="sect3">
           <a id="sthref1311"></a>
 
-          <h3 class="sect3"><span class="secnum">19.6.2.2</span> To Run the jsonpmodel Example Application Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">19.6.2.2</span> To Run the jsonpmodel Example Application Using Maven</h3>
 
           <ol>
             <li>
@@ -735,17 +765,23 @@ gen.close();</pre>
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/web/jsonp/jsonpmodel</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="italic">tut-install</span>/examples/web/jsonp/jsonpmodel
+</pre>
             </li>
 
             <li>
               <p>Enter the following command to deploy the application:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
 
             <li>
               <p>Open a web browser window and enter the following address:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/jsonpmodel/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/jsonpmodel/
+</pre>
             </li>
 
             <li>
@@ -765,7 +801,7 @@ gen.close();</pre>
     <a id="BABBJDAC"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">19.7</span> The jsonpstreaming Example Application</h1>
+      <h1 class="sect1" id="sigil_toc_id_618"><span class="secnum">19.7</span> The jsonpstreaming Example Application</h1>
 
       <p>This section describes how to build and run the <code>jsonpstreaming</code> example application. This example is a web application that demonstrates how to create JSON data from form data, how to parse JSON data, and how to write JSON output using the streaming API.</p>
 
@@ -774,7 +810,7 @@ gen.close();</pre>
       <div class="sect2">
         <a id="sthref1312"></a>
 
-        <h2 class="sect2"><span class="secnum">19.7.1</span> Components of the jsonpstreaming Example Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_619"><span class="secnum">19.7.1</span> Components of the jsonpstreaming Example Application</h2>
 
         <p>The <code>jsonpstreaming</code> example application contains the following files.</p>
 
@@ -808,14 +844,14 @@ gen.close();</pre>
       <div class="sect2">
         <a id="sthref1313"></a>
 
-        <h2 class="sect2"><span class="secnum">19.7.2</span> Running the jsonpstreaming Example Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_620"><span class="secnum">19.7.2</span> Running the jsonpstreaming Example Application</h2>
 
         <p>This section describes how to run the <code>jsonpstreaming</code> example application using NetBeans IDE and from the command line.</p>
 
         <div class="sect3">
           <a id="sthref1314"></a>
 
-          <h3 class="sect3"><span class="secnum">19.7.2.1</span> To Run the jsonpstreaming Example Application Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">19.7.2.1</span> To Run the jsonpstreaming Example Application Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -828,7 +864,9 @@ gen.close();</pre>
 
             <li>
               <p>In the Open Project dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/web/jsonp</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="italic">tut-install</span>/examples/web/jsonp
+</pre>
             </li>
 
             <li>
@@ -843,7 +881,9 @@ gen.close();</pre>
               <p>In the <span class="bold">Projects</span> tab, right-click the <code>jsonpstreaming</code> project and select <span class="bold">Run</span>.</p>
 
               <p>This command builds and packages the application into a WAR file (<code>jsonpstreaming.war</code>) located in the <code>target</code> directory, deploys it to the server, and opens a web browser window with the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/jsonpstreaming/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/jsonpstreaming/
+</pre>
             </li>
 
             <li>
@@ -859,7 +899,7 @@ gen.close();</pre>
         <div class="sect3">
           <a id="sthref1315"></a>
 
-          <h3 class="sect3"><span class="secnum">19.7.2.2</span> To Run the jsonpstreaming Example Application Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">19.7.2.2</span> To Run the jsonpstreaming Example Application Using Maven</h3>
 
           <ol>
             <li>
@@ -868,17 +908,23 @@ gen.close();</pre>
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="italic">tut-install</span>/examples/web/jsonp/jsonpstreaming/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="italic">tut-install</span>/examples/web/jsonp/jsonpstreaming/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command to deploy the application:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
 
             <li>
               <p>Open a web browser window and enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/jsonpstreaming/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/jsonpstreaming/
+</pre>
             </li>
 
             <li>
@@ -898,11 +944,11 @@ gen.close();</pre>
     <a id="BABGAAGB"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">19.8</span> Further Information about the Java API for JSON Processing</h1>
+      <h1 class="sect1" id="sigil_toc_id_621"><span class="secnum">19.8</span> Further Information about the Java API for JSON Processing</h1>
 
       <p>For more information on JSON processing in Java EE, see the Java API for JSON Processing specification:</p>
 
-      <p><code><a href="../Text/jsonp.xhtml#http%3A//www.jcp.org/en/jsr/detail%3Fid%3D353">http://www.jcp.org/en/jsr/detail?id=353</a></code></p>
+      <p><code><a href="../Text/http://www.jcp.org/en/jsr/detail?id=.xhtml#http://www.jcp.org/en/jsr/detail?id=353">http://www.jcp.org/en/jsr/detail?id=353</a></code></p>
     </div>
   </div>
 </body>

@@ -55,9 +55,9 @@
     <a id="BNAST"></a><a id="JEETT00350"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">11.1</span> <a id="sthref618"></a><a id="sthref619"></a>Using the Standard Converters</h1>
+      <h1 class="sect1" id="sigil_toc_id_566"><span class="secnum">11.1</span> <a id="sthref618"></a><a id="sthref619"></a>Using the Standard Converters</h1>
 
-      <p><a id="sthref620"></a>The JavaServer Faces implementation provides a set of <code>Converter</code> implementations that you can use to convert component data. The purpose of conversion is to take the String-based data coming in from the Servlet API and convert it to strongly typed Java objects suitable for the business domain. For more information on the conceptual details of the conversion model, see <a href="../Text/jsf-infoxhtml#BNAQI">Conversion Model</a>.</p>
+      <p><a id="sthref620"></a>The JavaServer Faces implementation provides a set of <code>Converter</code> implementations that you can use to convert component data. The purpose of conversion is to take the String-based data coming in from the Servlet API and convert it to strongly typed Java objects suitable for the business domain. For more information on the conceptual details of the conversion model, see <a href="../Text/jsf-intro.xhtml#BNAQI">Conversion Model</a>.</p>
 
       <p>The standard <code>Converter</code> implementations are located in the <code>javax.faces.convert</code> package. Normally, converters are implicitly assigned based on the type of the EL expression pointed to by the value of the component. However, these converters can also be accessed by a converter ID. <a href="../Text/jsf-page-core.xhtml#CHDIHIIC">Table 11-1</a> shows the converter classes and their associated converter IDs.</p>
 
@@ -213,14 +213,16 @@
       </div>
 
       <p>A standard error message is associated with each of these converters. If you have registered one of these converters onto a component on your page and the converter is not able to convert the component's value, the converter's error message will display on the page. For example, the following error message appears if <code>BigIntegerConverter</code> fails to convert a value:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">{0} must be a number consisting of one or more digits</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+{0} must be a number consisting of one or more digits
+</pre>
 
       <p>In this case, the <code>{0}</code> substitution parameter will be replaced with the name of the input component on which the converter is registered.</p>
 
       <p><a id="sthref635"></a><a id="sthref636"></a>Two of the standard converters (<code>DateTimeConverter</code> and <code>NumberConverter</code>) have their own tags, which allow you to configure the format of the component data using the tag attributes. For more information about using <code>DateTimeConverter</code>, see <a href="../Text/jsf-page-core.xhtml#BNASV">Using DateTimeConverter</a>. For more information about using <code>NumberConverter</code>, see <a href="../Text/jsf-page-core.xhtml#BNASX">Using NumberConverter</a>. The following section explains how to convert a component's value, including how to register other standard converters with a component.</p><a id="BNASU"></a><a id="JEETT00931"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.1.1</span> <a id="sthref637"></a><a id="sthref638"></a>Converting a Component's Value</h2>
+        <h2 class="sect2" id="sigil_toc_id_567"><span class="secnum">11.1.1</span> <a id="sthref637"></a><a id="sthref638"></a>Converting a Component's Value</h2>
 
         <p>To use a particular converter to convert a component's value, you need to register the converter onto the component. You can register any of the standard converters in one of the following ways.</p>
 
@@ -243,18 +245,22 @@
         </ul>
 
         <p>As an example of the second technique, if you want a component's data to be converted to an <code>Integer</code>, you can simply bind the component's value to a managed bean property. Here is an example:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Integer age = 0;
+        <pre class="oac_no_warn" xml:space="preserve">
+Integer age = 0;
 public Integer getAge(){ return age;}
-public void setAge(Integer age) {this.age = age;}</pre>
+public void setAge(Integer age) {this.age = age;}
+</pre>
 
         <p><a id="sthref642"></a><a id="sthref643"></a><a id="sthref644"></a>The data from the <code>h:inputText</code> tag in the this example will be converted to a <code>java.lang.Integer</code> value. The <code>Integer</code> type is a supported type of <code>NumberConverter</code>. If you don't need to specify any formatting instructions using the <code>f:convertNumber</code> tag attributes, and if one of the standard converters will suffice, you can simply reference that converter by using the component tag's <code>converter</code> attribute.</p>
 
         <p><a id="sthref645"></a><a id="sthref646"></a>You can also nest an <code>f:converter</code> tag within the component tag and use either the converter tag's <code>converterId</code> attribute or its <code>binding</code> attribute to reference the converter.</p>
 
         <p><a id="sthref647"></a>The <code>converterId</code> attribute must reference the converter's ID. Here is an example that uses one of the converter IDs listed in <a href="../Text/jsf-page-core.xhtml#CHDIHIIC">Table 11-1</a>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText value="#{loginBean.age}"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:inputText value="#{loginBean.age}"&gt;
     &lt;f:converter converterId="javax.faces.Integer" /&gt;
-&lt;/h:inputText&gt;</pre>
+&lt;/h:inputText&gt;
+</pre>
 
         <p>Instead of using the <code>converterId</code> attribute, the <code>f:converter</code> tag can use the <code>binding</code> attribute. The <code>binding</code> attribute must resolve to a bean property that accepts and returns an appropriate <code>Converter</code> instance.</p>
 
@@ -262,36 +268,46 @@ public void setAge(Integer age) {this.age = age;}</pre>
       </div><a id="BNASV"></a><a id="JEETT00932"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.1.2</span> Using DateTimeConverter</h2>
+        <h2 class="sect2" id="sigil_toc_id_568"><span class="secnum">11.1.2</span> Using DateTimeConverter</h2>
 
         <p><a id="sthref648"></a><a id="sthref649"></a><a id="sthref650"></a>You can convert a component's data to a <code>java.util.Date</code> by nesting the <code>convertDateTime</code> tag inside the component tag. The <code>convertDateTime</code> tag has several attributes that allow you to specify the format and type of the data. <a href="../Text/jsf-page-core.xhtml#BNASW">Table 11-2</a> lists the attributes.</p>
 
         <p>Here is a simple example of a <code>convertDateTime</code> tag:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="#{cashierBean.shipDate}"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:outputText value="#{cashierBean.shipDate}"&gt;
     &lt;f:convertDateTime type="date" dateStyle="full" /&gt;
-&lt;/h:outputText&gt;</pre>
+&lt;/h:outputText&gt;
+</pre>
 
         <p>When binding the <code>DateTimeConverter</code> to a component, ensure that the managed bean property to which the component is bound is of type <code>java.util.Date</code>. In the preceding example, <code>cashierBean.shipDate</code> must be of type <code>java.util.Date</code>.</p>
 
         <p>The example tag can display the following output:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Saturday, September 21, 2013</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+Saturday, September 21, 2013
+</pre>
 
         <p>You can also display the same date and time by using the following tag in which the date format is specified:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="#{cashierBean.shipDate}"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:outputText value="#{cashierBean.shipDate}"&gt;
     &lt;f:convertDateTime pattern="EEEEEEEE, MMM dd, yyyy" /&gt;
-&lt;/h:outputText&gt;</pre>
+&lt;/h:outputText&gt;
+</pre>
 
         <p>If you want to display the example date in Spanish, you can use the <code>locale</code> attribute:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="#{cashierBean.shipDate}"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:outputText value="#{cashierBean.shipDate}"&gt;
     &lt;f:convertDateTime dateStyle="full"
                        locale="es"
                        timeStyle="long" type="both" /&gt;
-&lt;/h:outputText&gt;</pre>
+&lt;/h:outputText&gt;
+</pre>
 
         <p>This tag would display the following output:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">jueves 24 de octubre de 2013 15:07:04 GMT</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+jueves 24 de octubre de 2013 15:07:04 GMT
+</pre>
 
-        <p>Refer to the "Customizing Formats" lesson of the <span class="italic">Java Tutorial</span> at <code><a href="../Text/jsf-page-core.xhtml#http%3A//docs.oracle.com/javase/tutorial/i18n/format/simpleDateFormat.html">http://docs.oracle.com/javase/tutorial/i18n/format/simpleDateFormat.html</a></code> for more information on how to format the output using the <code>pattern</code> attribute of the <code>convertDateTime</code> tag.</p>
+        <p>Refer to the "Customizing Formats" lesson of the <span class="italic">Java Tutorial</span> at <code><a href="../Text/http://docs.oracle.com/javase/tutorial/i18n/format/simpleDateFormat.xhtml#http://docs.oracle.com/javase/tutorial/i18n/format/simpleDateFormat.html">http://docs.oracle.com/javase/tutorial/i18n/format/simpleDateFormat.html</a></code> for more information on how to format the output using the <code>pattern</code> attribute of the <code>convertDateTime</code> tag.</p>
 
         <div class="tblhruleformal">
           <a id="sthref651"></a><a id="BNASW"></a>
@@ -431,26 +447,32 @@ public void setAge(Integer age) {this.age = age;}</pre>
       </div><a id="BNASX"></a><a id="JEETT00933"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.1.3</span> <a id="sthref655"></a><a id="sthref656"></a><a id="sthref657"></a>Using NumberConverter</h2>
+        <h2 class="sect2" id="sigil_toc_id_569"><span class="secnum">11.1.3</span> <a id="sthref655"></a><a id="sthref656"></a><a id="sthref657"></a>Using NumberConverter</h2>
 
         <p>You can convert a component's data to a <code>java.lang.Number</code> by nesting the <code>convertNumber</code> tag inside the component tag. The <code>convertNumber</code> tag has several attributes that allow you to specify the format and type of the data. <a href="../Text/jsf-page-core.xhtml#BNASY">Table 11-3</a> lists the attributes.</p>
 
         <p>The following example uses a <code>convertNumber</code> tag to display the total prices of the contents of a shopping cart:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText value="#{cart.total}"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:outputText value="#{cart.total}"&gt;
     &lt;f:convertNumber currencySymbol="$" type="currency"/&gt;
-&lt;/h:outputText&gt;</pre>
+&lt;/h:outputText&gt;
+</pre>
 
         <p>When binding the <code>NumberConverter</code> to a component, ensure that the managed bean property to which the component is bound is of a primitive type or has a type of <code>java.lang.Number</code>. In the preceding example, <code>cart.total</code> is of type <code>double</code>.</p>
 
         <p>Here is an example of a number that this tag can display:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">$934</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+$934
+</pre>
 
         <p>This result can also be displayed by using the following tag in which the currency pattern is specified:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:outputText id="cartTotal" value="#{cart.total}"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:outputText id="cartTotal" value="#{cart.total}"&gt;
     &lt;f:convertNumber pattern="$####" /&gt;
-&lt;/h:outputText&gt;</pre>
+&lt;/h:outputText&gt;
+</pre>
 
-        <p>See the "Customizing Formats" lesson of the <span class="italic">Java Tutorial</span> at <code><a href="../Text/jsf-page-core.xhtml#http%3A//docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html">http://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html</a></code> for more information on how to format the output by using the <code>pattern</code> attribute of the <code>convertNumber</code> tag.</p>
+        <p>See the "Customizing Formats" lesson of the <span class="italic">Java Tutorial</span> at <code><a href="../Text/http://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.xhtml#http://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html">http://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html</a></code> for more information on how to format the output by using the <code>pattern</code> attribute of the <code>convertNumber</code> tag.</p>
 
         <div class="tblhruleformal">
           <a id="sthref658"></a><a id="BNASY"></a>
@@ -665,7 +687,7 @@ public void setAge(Integer age) {this.age = age;}</pre>
     <a id="BNASZ"></a><a id="JEETT00351"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">11.2</span> Registering Listeners on Components</h1>
+      <h1 class="sect1" id="sigil_toc_id_570"><span class="secnum">11.2</span> Registering Listeners on Components</h1>
 
       <p>An application developer can implement listeners as classes or as managed bean methods. If a listener is a managed bean method, the page author references the method from either the component's <code>valueChangeListener</code> attribute or its <code>actionListener</code> attribute. If the listener is a class, the page author can reference the listener from either an <code>f:valueChangeListener</code> tag or an <code>f:actionListener</code> tag and nest the tag inside the component tag to register the listener on the component.</p>
 
@@ -674,7 +696,7 @@ public void setAge(Integer age) {this.age = age;}</pre>
       <p>This section explains how to register a <code>NameChanged</code> value-change listener and a <code>BookChange</code> action listener implementation on components. The Duke's Bookstore case study includes both of these listeners.</p><a id="BNATA"></a><a id="JEETT00934"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.2.1</span> <a id="sthref661"></a><a id="sthref662"></a><a id="sthref663"></a>Registering a Value-Change Listener on a Component</h2>
+        <h2 class="sect2" id="sigil_toc_id_571"><span class="secnum">11.2.1</span> <a id="sthref661"></a><a id="sthref662"></a><a id="sthref663"></a>Registering a Value-Change Listener on a Component</h2>
 
         <p>A page author can register a <code>ValueChangeListener</code> implementation on a component that implements <code>EditableValueHolder</code> by nesting an <code>f:valueChangeListener</code> tag within the component's tag on the page. The <code>f:valueChangeListener</code> tag supports the attributes shown in <a href="../Text/jsf-page-core.xhtml#GKCLY">Table 11-4</a>, one of which must be used.</p>
 
@@ -720,40 +742,45 @@ public void setAge(Integer age) {this.age = age;}</pre>
         </div>
 
         <p>The following example shows a value-change listener registered on a component:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="name"
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:inputText id="name"
              size="30"
              value="#{cashierBean.name}"
              required="true"
              requiredMessage="#{bundle.ReqCustomerName}"&gt;
     &lt;f:valueChangeListener
         type="javaeetutorial.dukesbookstore.listeners.NameChanged" /&gt;
-&lt;/h:inputText&gt;</pre>
+&lt;/h:inputText&gt;
+</pre>
 
         <p><a id="sthref665"></a><a id="sthref666"></a>In the example, the core tag <code>type</code> attribute specifies the custom <code>NameChanged</code> listener as the <code>ValueChangeListener</code> implementation registered on the <code>name</code> component.</p>
 
         <p><a id="sthref667"></a>After this component tag is processed and local values have been validated, its corresponding component instance will queue the <code>ValueChangeEvent</code> associated with the specified <code>ValueChangeListener</code> to the component.</p>
 
-        <p>The <code>binding</code> attribute is used to bind a <code>ValueChangeListener</code> implementation to a managed bean property. This attribute works in a similar way to the <code>binding</code> attribute supported by the standard converter tags. See <a href="../Text/jsf-page-custom.xhtml#BNATG">Binding Component Values and Instances to Managed Bean Properties</a> for more information.</p>
+        <p>The <code>binding</code> attribute is used to bind a <code>ValueChangeListener</code> implementation to a managed bean property. This attribute works in a similar way to the <code>binding</code> attribute supported by the standard converter tags. See <a href="../Text/jsf-custom.xhtml#BNATG">Binding Component Values and Instances to Managed Bean Properties</a> for more information.</p>
       </div><a id="BNATB"></a><a id="JEETT00935"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.2.2</span> <a id="sthref668"></a><a id="sthref669"></a><a id="sthref670"></a>Registering an Action Listener on a Component</h2>
+        <h2 class="sect2" id="sigil_toc_id_572"><span class="secnum">11.2.2</span> <a id="sthref668"></a><a id="sthref669"></a><a id="sthref670"></a>Registering an Action Listener on a Component</h2>
 
         <p>A page author can register an <code>ActionListener</code> implementation on a command component by nesting an <code>f:actionListener</code> tag within the component's tag on the page. Similarly to the <code>f:valueChangeListener</code> tag, the <code>f:actionListener</code> tag supports both the <code>type</code> and <code>binding</code> attributes. One of these attributes must be used to reference the action listener.</p>
 
         <p>Here is an example of an <code>h:commandLink</code> tag that references an <code>ActionListener</code> implementation:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandLink id="Duke" action="bookstore"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:commandLink id="Duke" action="bookstore"&gt;
     &lt;f:actionListener 
         type="javaeetutorial.dukesbookstore.listeners.LinkBookChangeListener" /&gt;
     &lt;h:outputText value="#{bundle.Book201}"/&gt;
-&lt;/h:commandLink&gt;</pre>
+&lt;/h:commandLink&gt;
+</pre>
 
-        <p>The <code>type</code> attribute of the <code>f:actionListener</code> tag specifies the fully qualified class name of the <code>ActionListener</code> implementation. Similarly to the <code>f:valueChangeListener</code> tag, the <code>f:actionListener</code> tag also supports the <code>binding</code> attribute. See <a href="../Text/jsf-page-custom.xhtml#BNATM">Binding Converters, Listeners, and Validators to Managed Bean Properties</a> for more information about binding listeners to managed bean properties.</p>
+        <p>The <code>type</code> attribute of the <code>f:actionListener</code> tag specifies the fully qualified class name of the <code>ActionListener</code> implementation. Similarly to the <code>f:valueChangeListener</code> tag, the <code>f:actionListener</code> tag also supports the <code>binding</code> attribute. See <a href="../Text/jsf-custom.xhtml#BNATM">Binding Converters, Listeners, and Validators to Managed Bean Properties</a> for more information about binding listeners to managed bean properties.</p>
 
         <p>In addition to the <code>actionListener</code> tag that allows you register a custom listener onto a component, the core tag library includes the <code>f:setPropertyActionListener</code> tag. You use this tag to register a special action listener onto the <code>ActionSource</code> instance associated with a component. When the component is activated, the listener will store the object referenced by the tag's <code>value</code> attribute into the object referenced by the tag's <code>target</code> attribute.</p>
 
         <p>The <code>bookcatalog.xhtml</code> page of the Duke's Bookstore application uses <code>f:setPropertyActionListener</code> with two components: the <code>h:commandLink</code> component used to link to the <code>bookdetails.xhtml</code> page and the <code>h:commandButton</code> component used to add a book to the cart:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:dataTable id="books"
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:dataTable id="books"
     value="#{store.books}"
     var="book"
     headerClass="list-header"
@@ -783,7 +810,8 @@ public void setAge(Integer age) {this.age = age;}</pre>
             &lt;f:setPropertyActionListener target="#{requestScope.book}"
                                          value="#{book}"/&gt;
         &lt;/h:commandButton&gt;
-    &lt;/h:column&gt;</pre>
+    &lt;/h:column&gt;
+</pre>
 
         <p>The <code>h:commandLink</code> and <code>h:commandButton</code> tags are within an <code>h:dataTable</code> tag, which iterates over the list of books. The <code>var</code> attribute refers to a single book in the list of books.</p>
 
@@ -798,7 +826,7 @@ public void setAge(Integer age) {this.age = age;}</pre>
     <a id="BNATC"></a><a id="JEETT00352"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">11.3</span> <a id="sthref671"></a><a id="sthref672"></a>Using the Standard Validators</h1>
+      <h1 class="sect1" id="sigil_toc_id_573"><span class="secnum">11.3</span> <a id="sthref671"></a><a id="sthref672"></a>Using the Standard Validators</h1>
 
       <p>JavaServer Faces technology provides a set of standard classes and associated tags that page authors and application developers can use to validate a component's data. <a href="../Text/jsf-page-core.xhtml#BNATD">Table 11-5</a> lists all the standard validator classes and the tags that allow you to use the validators from the page.</p>
 
@@ -913,7 +941,9 @@ public void setAge(Integer age) {this.age = age;}</pre>
       <p>All of these validator classes implement the <code>Validator</code> interface. Component writers and application developers can also implement this interface to define their own set of constraints for a component's value.</p>
 
       <p>Similar to the standard converters, each of these validators has one or more standard error messages associated with it. If you have registered one of these validators onto a component on your page and the validator is unable to validate the component's value, the validator's error message will display on the page. For example, the error message that displays when the component's value exceeds the maximum value allowed by <code>LongRangeValidator</code> is as follows:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">{1}: Validation Error: Value is greater than allowable maximum of "{0}"</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+{1}: Validation Error: Value is greater than allowable maximum of "{0}"
+</pre>
 
       <p>In this case, the <code>{1}</code> substitution parameter is replaced by the component's label or <code>id</code>, and the <code>{0}</code> substitution parameter is replaced with the maximum value allowed by the validator.</p>
 
@@ -924,7 +954,7 @@ public void setAge(Integer age) {this.age = age;}</pre>
       <p>You can also create and register custom validators, although Bean Validation has made this feature less useful. For details, see <a href="../Text/jsf-custom.xhtml#BNAUW">Creating and Using a Custom Validator</a>.</p><a id="BNATE"></a><a id="JEETT00936"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.3.1</span> <a id="sthref694"></a>Validating a Component's Value</h2>
+        <h2 class="sect2" id="sigil_toc_id_574"><span class="secnum">11.3.1</span> <a id="sthref694"></a>Validating a Component's Value</h2>
 
         <p>To validate a component's value using a particular validator, you need to register that validator on the component. You can do this in one of the following ways.</p>
 
@@ -950,27 +980,33 @@ public void setAge(Integer age) {this.age = age;}</pre>
       </div><a id="BNATF"></a><a id="JEETT00937"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.3.2</span> Using Validator Tags</h2>
+        <h2 class="sect2" id="sigil_toc_id_575"><span class="secnum">11.3.2</span> Using Validator Tags</h2>
 
         <p><a id="sthref695"></a><a id="sthref696"></a><a id="sthref697"></a>The following example shows how to use the <code>f:validateLongRange</code> validator tag on an input component named <code>quantity</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="quantity" size="4" value="#{item.quantity}"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:inputText id="quantity" size="4" value="#{item.quantity}"&gt;
     &lt;f:validateLongRange minimum="1"/&gt;
 &lt;/h:inputText&gt;
-&lt;h:message for="quantity"/&gt;</pre>
+&lt;h:message for="quantity"/&gt;
+</pre>
 
         <p>This tag requires the user to enter a number that is at least 1. The <code>validateLongRange</code> tag also has a <code>maximum</code> attribute, which sets a maximum value for the input.</p>
 
         <p>The attributes of all the standard validator tags accept EL value expressions. This means that the attributes can reference managed bean properties rather than specify literal values. For example, the <code>f:validateLongRange</code> tag in the preceding example can reference managed bean properties called <code>minimum</code> and <code>maximum</code> to get the minimum and maximum values acceptable to the validator implementation, as shown in this snippet from the <code>guessnumber-jsf</code> example:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="userNo"
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:inputText id="userNo"
              title="Type a number from 0 to 10:"
              value="#{userNumberBean.userNumber}"&gt;
     &lt;f:validateLongRange minimum="#{userNumberBean.minimum}"
                          maximum="#{userNumberBean.maximum}"/&gt;
-&lt;/h:inputText&gt;</pre>
+&lt;/h:inputText&gt;
+</pre>
 
         <p><a id="sthref698"></a><a id="sthref699"></a><a id="sthref700"></a>The following <code>f:validateRegex</code> tag shows how you might ensure that a password is from 4 to 10 characters long and contains at least one digit, at least one lowercase letter, and at least one uppercase letter:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,10})"
-                 for="passwordVal"/&gt;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,10})"
+                 for="passwordVal"/&gt;
+</pre>
       </div>
     </div>
   </div>
@@ -979,7 +1015,7 @@ public void setAge(Integer age) {this.age = age;}</pre>
     <a id="BNATN"></a><a id="JEETT00353"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">11.4</span> <a id="sthref701"></a>Referencing a Managed Bean Method</h1>
+      <h1 class="sect1" id="sigil_toc_id_576"><span class="secnum">11.4</span> <a id="sthref701"></a>Referencing a Managed Bean Method</h1>
 
       <p><a id="sthref702"></a>A component tag has a set of attributes for referencing managed bean methods that can perform certain functions for the component associated with the tag. These attributes are summarized in <a href="../Text/jsf-page-core.xhtml#BNATO">Table 11-6</a>.</p>
 
@@ -1046,14 +1082,16 @@ public void setAge(Integer age) {this.age = age;}</pre>
 
       <p>Only components that implement <code>ActionSource</code> can use the <code>action</code> and <code>actionListener</code> attributes. Only components that implement <code>EditableValueHolder</code> can use the <code>validator</code> or <code>valueChangeListener</code> attributes.</p>
 
-      <p><a id="sthref713"></a>The component tag refers to a managed bean method using a method expression as a value of one of the attributes. The method referenced by an attribute must follow a particular signature, which is defined by the tag attribute's definition in the documentation at <code><a href="../Text/jsf-page-core.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>. For example, the definition of the <code>validator</code> attribute of the <code>inputText</code> tag is the following:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">void validate(javax.faces.context.FacesContext,
-              javax.faces.component.UIComponent, java.lang.Object)</pre>
+      <p><a id="sthref713"></a>The component tag refers to a managed bean method using a method expression as a value of one of the attributes. The method referenced by an attribute must follow a particular signature, which is defined by the tag attribute's definition in the documentation at <code><a href="../Text/http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/.xhtml#http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/vdldocs/facelets/</a></code>. For example, the definition of the <code>validator</code> attribute of the <code>inputText</code> tag is the following:</p>
+      <pre class="oac_no_warn" xml:space="preserve">
+void validate(javax.faces.context.FacesContext,
+              javax.faces.component.UIComponent, java.lang.Object)
+</pre>
 
       <p>The following sections give examples of how to use the attributes.</p><a id="BNATP"></a><a id="JEETT00938"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.4.1</span> <a id="sthref714"></a><a id="sthref715"></a>Referencing a Method That Performs Navigation</h2>
+        <h2 class="sect2" id="sigil_toc_id_577"><span class="secnum">11.4.1</span> <a id="sthref714"></a><a id="sthref715"></a>Referencing a Method That Performs Navigation</h2>
 
         <p><a id="sthref716"></a><a id="sthref717"></a>If your page includes a component, such as a button or a link, that causes the application to navigate to another page when the component is activated, the tag corresponding to this component must include an <code>action</code> attribute. This attribute does one of the following:</p>
 
@@ -1068,50 +1106,58 @@ public void setAge(Integer age) {this.age = age;}</pre>
         </ul>
 
         <p>The following example shows how to reference a navigation method:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandButton value="#{bundle.Submit}"
-                 action="#{cashierBean.submit}" /&gt;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:commandButton value="#{bundle.Submit}"
+                 action="#{cashierBean.submit}" /&gt;
+</pre>
 
         <p>See <a href="../Text/jsf-develop.xhtml#BNAVC">Writing a Method to Handle Navigation</a> for information on how to write such a method.</p>
       </div><a id="BNATQ"></a><a id="JEETT00939"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.4.2</span> <a id="sthref718"></a><a id="sthref719"></a>Referencing a Method That Handles an Action Event</h2>
+        <h2 class="sect2" id="sigil_toc_id_578"><span class="secnum">11.4.2</span> <a id="sthref718"></a><a id="sthref719"></a>Referencing a Method That Handles an Action Event</h2>
 
         <p><a id="sthref720"></a><a id="sthref721"></a><a id="sthref722"></a>If a component on your page generates an action event, and if that event is handled by a managed bean method, you refer to the method by using the component's <code>actionListener</code> attribute.</p>
 
         <p>The following example shows how such a method could be referenced:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandLink id="Duke" action="bookstore"
-               actionListener="#{actionBean.chooseBookFromLink}"&gt;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:commandLink id="Duke" action="bookstore"
+               actionListener="#{actionBean.chooseBookFromLink}"&gt;
+</pre>
 
-        <p>The <code>actionListener</code> attribute of this component tag references the <code>chooseBookFromLink</code> method using a method expression. The <code>chooseBookFromLink</code> method handles the event when the user clicks the link rendered by this component. See <a href="../Text/jsf-page-core.xhtml#BNAVD">Writing a Method to Handle an Action Event</a> for information on how to write such a method.</p>
+        <p>The <code>actionListener</code> attribute of this component tag references the <code>chooseBookFromLink</code> method using a method expression. The <code>chooseBookFromLink</code> method handles the event when the user clicks the link rendered by this component. See <a href="../Text/jsf-develop.xhtml#BNAVD">Writing a Method to Handle an Action Event</a> for information on how to write such a method.</p>
       </div><a id="BNATR"></a><a id="JEETT00940"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.4.3</span> <a id="sthref723"></a><a id="sthref724"></a>Referencing a Method That Performs Validation</h2>
+        <h2 class="sect2" id="sigil_toc_id_579"><span class="secnum">11.4.3</span> <a id="sthref723"></a><a id="sthref724"></a>Referencing a Method That Performs Validation</h2>
 
         <p><a id="sthref725"></a><a id="sthref726"></a>If the input of one of the components on your page is validated by a managed bean method, refer to the method from the component's tag by using the <code>validator</code> attribute.</p>
 
-        <p>The following simplified example from <a href="../Text/cdi-basic-examples.xhtml#GJCXV">The guessnumber-cdi CDI Example</a> shows how to reference a method that performs validation on <code>inputGuess</code>, an input component:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="inputGuess" 
+        <p>The following simplified example from <a href="../Text/cdi-basicexamples.xhtml#GJCXV">The guessnumber-cdi CDI Example</a> shows how to reference a method that performs validation on <code>inputGuess</code>, an input component:</p>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:inputText id="inputGuess" 
     value="#{userNumberBean.userNumber}" 
     required="true" size="3" 
     disabled="#{userNumberBean.number eq userNumberBean.userNumber ...}"
     validator="#{userNumberBean.validateNumberRange}"&gt;
-&lt;/h:inputText&gt;</pre>
+&lt;/h:inputText&gt;
+</pre>
 
         <p>The managed bean method <code>validateNumberRange</code> verifies that the input value is within the valid range, which changes each time another guess is made. See <a href="../Text/jsf-develop.xhtml#BNAVE">Writing a Method to Perform Validation</a> for information on how to write such a method.</p>
       </div><a id="BNATS"></a><a id="JEETT00941"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">11.4.4</span> <a id="sthref727"></a><a id="sthref728"></a>Referencing a Method That Handles a Value-Change Event</h2>
+        <h2 class="sect2" id="sigil_toc_id_580"><span class="secnum">11.4.4</span> <a id="sthref727"></a><a id="sthref728"></a>Referencing a Method That Handles a Value-Change Event</h2>
 
         <p><a id="sthref729"></a><a id="sthref730"></a><a id="sthref731"></a>If you want a component on your page to generate a value-change event and you want that event to be handled by a managed bean method instead of a <code>ValueChangeListener</code> implementation, you refer to the method by using the component's <code>valueChangeListener</code> attribute:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="name"
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:inputText id="name"
              size="30"
              value="#{cashierBean.name}"
              required="true"
              valueChangeListener="#{cashierBean.processValueChange}" /&gt;
-&lt;/h:inputText&gt;</pre>
+&lt;/h:inputText&gt;
+</pre>
 
         <p>The <code>valueChangeListener</code> attribute of this component tag references the <code>processValueChange</code> method of <code>CashierBean</code> by using a method expression. The <code>processValueChange</code> method handles the event of a user entering a name in the input field rendered by this component.</p>
 

@@ -53,7 +53,7 @@
     <a id="CIHDFGGG"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">56.1</span> <a id="sthref3026"></a>Concurrency Basics</h1>
+      <h1 class="sect1" id="sigil_toc_id_115"><span class="secnum">56.1</span> <a id="sthref3026"></a>Concurrency Basics</h1>
 
       <p>Concurrency is the concept of executing two or more tasks at the same time (in parallel). Tasks may include methods (functions), parts of a program, or even other programs. With current computer architectures, support for multiple cores and multiple processors in a single CPU is very common.</p>
 
@@ -64,7 +64,7 @@
       <div class="sect2">
         <a id="sthref3027"></a>
 
-        <h2 class="sect2"><span class="secnum">56.1.1</span> <a id="sthref3028"></a>Threads and Processes</h2>
+        <h2 class="sect2" id="sigil_toc_id_116"><span class="secnum">56.1.1</span> <a id="sthref3028"></a>Threads and Processes</h2>
 
         <p>The two main concurrency concepts are <span class="glossaryterm">processes</span> and <span class="glossaryterm">threads</span>.</p>
 
@@ -103,7 +103,7 @@
     <a id="CIHFBCFH"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">56.2</span> Main Components of the Concurrency Utilities</h1>
+      <h1 class="sect1" id="sigil_toc_id_117"><span class="secnum">56.2</span> Main Components of the Concurrency Utilities</h1>
 
       <p>Concurrent resources are managed objects that provide concurrency capabilities to Java EE applications. In GlassFish Server, you configure concurrent resources and then make them available for use by application components such as servlets and enterprise beans. Concurrent resources are accessed through JNDI lookup or resource injection.</p>
 
@@ -135,7 +135,7 @@
     <a id="CIHIDBDG"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">56.3</span> <a id="sthref3033"></a><a id="sthref3034"></a>Concurrency and Transactions</h1>
+      <h1 class="sect1" id="sigil_toc_id_118"><span class="secnum">56.3</span> <a id="sthref3033"></a><a id="sthref3034"></a>Concurrency and Transactions</h1>
 
       <p>The most basic operations for transactions are commit and rollback, but, in a distributed environment with concurrent processing, it can be difficult to guarantee that commit or rollback operations will be successfully processed, and the transaction can be spread among different threads, CPU cores, physical machines, and networks.</p>
 
@@ -144,7 +144,8 @@
       <p>Optionally, context objects can begin, commit, or roll back transactions, but these objects cannot enlist in parent component transactions.</p>
 
       <p>The following code snippet illustrates a <code>Runnable</code> task that obtains a <code>UserTransaction</code> and then starts and commits a transaction while interacting with other transactional components, such as an enterprise bean and a database:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class MyTransactionalTask implements Runnable {
+      <pre class="oac_no_warn" xml:space="preserve">
+public class MyTransactionalTask implements Runnable {
  
    UserTransaction ut = ... // obtained through JNDI or injection
  
@@ -163,7 +164,8 @@
        ut.commit();
  
    }
-}</pre>
+} 
+</pre>
     </div>
   </div>
 
@@ -171,7 +173,7 @@
     <a id="CIHCACAA"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">56.4</span> <a id="sthref3035"></a><a id="sthref3036"></a>Concurrency and Security</h1>
+      <h1 class="sect1" id="sigil_toc_id_119"><span class="secnum">56.4</span> <a id="sthref3035"></a><a id="sthref3036"></a>Concurrency and Security</h1>
 
       <p>Concurrency Utilities for Java EE defers most security decisions to the application server implementation. If, however, the container supports a security context, that context can be propagated to the thread of execution. The <code>ContextService</code> can support several runtime behaviors, and the <code>security</code> attribute, if enabled, will propagate the container security principal.</p>
     </div>
@@ -181,7 +183,7 @@
     <a id="CIHCGGEG"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">56.5</span> <a id="sthref3037"></a><a id="sthref3038"></a>The jobs Concurrency Example</h1>
+      <h1 class="sect1" id="sigil_toc_id_120"><span class="secnum">56.5</span> <a id="sthref3037"></a><a id="sthref3038"></a>The jobs Concurrency Example</h1>
 
       <p>This section describes a very basic example that shows how to use some of the basic concurrency features in an enterprise application. Specifically, this example uses one of the main components of Concurrency Utilities for Java EE, a Managed Executor Service.</p>
 
@@ -206,14 +208,14 @@
       <div class="sect2">
         <a id="sthref3039"></a>
 
-        <h2 class="sect2"><span class="secnum">56.5.1</span> Running the jobs Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_121"><span class="secnum">56.5.1</span> Running the jobs Example</h2>
 
         <p>After configuring GlassFish Server by adding two Managed Executor Services, you can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>jobs</code> example.</p>
 
         <div class="sect3">
           <a id="sthref3040"></a>
 
-          <h3 class="sect3"><span class="secnum">56.5.1.1</span> To Configure GlassFish Server for the Basic Concurrency Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">56.5.1.1</span> To Configure GlassFish Server for the Basic Concurrency Example</h3>
 
           <p>To configure GlassFish Server, follow these steps.</p>
 
@@ -299,7 +301,7 @@
         <div class="sect3">
           <a id="sthref3041"></a>
 
-          <h3 class="sect3"><span class="secnum">56.5.1.2</span> To Build, Package, and Deploy the jobs Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">56.5.1.2</span> To Build, Package, and Deploy the jobs Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -312,7 +314,9 @@
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/concurrency</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/concurrency
+</pre>
             </li>
 
             <li>
@@ -334,7 +338,7 @@
         <div class="sect3">
           <a id="sthref3042"></a>
 
-          <h3 class="sect3"><span class="secnum">56.5.1.3</span> To Build, Package, and Deploy the jobs Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">56.5.1.3</span> To Build, Package, and Deploy the jobs Example Using Maven</h3>
 
           <ol>
             <li>
@@ -343,12 +347,16 @@
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/concurrency/jobs</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/concurrency/jobs
+</pre>
             </li>
 
             <li>
               <p>Enter the following command to build and deploy the application:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
           </ol>
         </div>
@@ -356,38 +364,48 @@
         <div class="sect3">
           <a id="sthref3043"></a>
 
-          <h3 class="sect3"><span class="secnum">56.5.1.4</span> To Run the jobs Example and Submit Jobs with Low Priority</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">56.5.1.4</span> To Run the jobs Example and Submit Jobs with Low Priority</h3>
 
           <p>To run the example as a user who submits jobs with low priority, follow these steps:</p>
 
           <ol>
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/jobs</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/jobs
+</pre>
             </li>
 
             <li>
               <p>In the <span class="gui-object-title">Jobs Client</span> page, enter the value 1 in the <span class="gui-object-action">Enter a JobID</span> field, enter nothing in the <span class="gui-object-action">Enter a Token</span> field, then click <span class="gui-object-action">Submit Job</span>.</p>
 
               <p>The following message should be displayed at the bottom of the page:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Job 1 successfully submitted</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Job 1 successfully submitted
+</pre>
 
               <p>The server log includes the following messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">INFO:   Invalid or missing token! 
+              <pre class="oac_no_warn" xml:space="preserve">
+INFO:   Invalid or missing token! 
 INFO:   Task started LOW-1
 INFO:   Job 1 successfully submitted
-INFO:   Task finished LOW-1</pre>
+INFO:   Task finished LOW-1
+</pre>
 
               <p>You submitted a job with low priority. This means that you cannot submit another job for 10 seconds. If you try to do so, the RESTful API will return a service unavailable (HTTP 503) response and the following message will be displayed at the bottom of the page:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Job 2 was NOT submitted</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Job 2 was NOT submitted
+</pre>
 
               <p>The server log will include the following messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">INFO:   Invalid or missing token! 
+              <pre class="oac_no_warn" xml:space="preserve">
+INFO:   Invalid or missing token! 
 INFO:   Job 1 successfully submitted
 INFO:   Task started LOW-1
 INFO:   Invalid or missing token! 
 INFO:   Job 2 was NOT submitted
-INFO:   Task finished LOW-1</pre>
+INFO:   Task finished LOW-1
+</pre>
             </li>
           </ol>
         </div>
@@ -395,14 +413,16 @@ INFO:   Task finished LOW-1</pre>
         <div class="sect3">
           <a id="sthref3044"></a>
 
-          <h3 class="sect3"><span class="secnum">56.5.1.5</span> To Run the jobs Example and Submit Jobs with High Priority</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">56.5.1.5</span> To Run the jobs Example and Submit Jobs with High Priority</h3>
 
           <p>To run the example as a user who submits jobs with high priority, follow these steps:</p>
 
           <ol>
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/jobs</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/jobs
+</pre>
             </li>
 
             <li>
@@ -421,21 +441,28 @@ INFO:   Task finished LOW-1</pre>
               <p>Paste the token in the <span class="gui-object-action">Enter a Token</span> field, then click <span class="gui-object-action">Submit Job</span>.</p>
 
               <p>A message like the following should be displayed at the bottom of the page:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Job 11 successfully submitted</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Job 11 successfully submitted
+</pre>
 
               <p>The server log includes the following messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">INFO:   Token accepted. Execution with high priority.
+              <pre class="oac_no_warn" xml:space="preserve">
+INFO:   Token accepted. Execution with high priority.
 INFO:   Task started HIGH-11
 INFO:   Job 11 successfully submitted
-INFO:   Task finished HIGH-11</pre>
+INFO:   Task finished HIGH-11
+</pre>
 
               <p>You submitted a job with high priority. This means that you can submit multiple jobs, each with a token, and not face the 10 second per job restriction that the low priority submitters face. If you submit 3 jobs with tokens in rapid succession, messages like the following will be displayed at the bottom of the page:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Job 1 was submitted
+              <pre class="oac_no_warn" xml:space="preserve">
+Job 1 was submitted
 Job 2 was submitted
-Job 3 was submitted</pre>
+Job 3 was submitted
+</pre>
 
               <p>The server log will include the following messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">INFO:   Token accepted. Execution with high priority.
+              <pre class="oac_no_warn" xml:space="preserve">
+INFO:   Token accepted. Execution with high priority.
 INFO:   Task started HIGH-1
 INFO:   Job 1 successfully submitted
 INFO:   Token accepted. Execution with high priority.
@@ -446,7 +473,8 @@ INFO:   Token accepted. Execution with high priority.
 INFO:   Task started HIGH-3
 INFO:   Job 3 successfully submitted
 INFO:   Task finished HIGH-2
-INFO:   Task finished HIGH-3</pre>
+INFO:   Task finished HIGH-3
+</pre>
             </li>
           </ol>
         </div>
@@ -458,7 +486,7 @@ INFO:   Task finished HIGH-3</pre>
     <a id="CIHBFEAE"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">56.6</span> <a id="sthref3045"></a><a id="sthref3046"></a>The taskcreator Concurrency Example</h1>
+      <h1 class="sect1" id="sigil_toc_id_122"><span class="secnum">56.6</span> <a id="sthref3045"></a><a id="sthref3046"></a>The taskcreator Concurrency Example</h1>
 
       <p>The <code>taskcreator</code> example demonstrates how to use Concurrency Utilities for Java EE to run tasks immediately, periodically, or after a fixed delay. This example provides a JavaServer Faces interface that enables users to submit tasks to be executed and displays information messages for each task. The example uses the Managed Executor Service to run tasks immediately and the Managed Scheduled Executor Service to run tasks periodically or after a fixed delay. (See <a href="../Text/concurrency-utilities.xhtml#CIHFBCFH">Main Components of the Concurrency Utilities</a> for information about these services.)</p>
 
@@ -491,25 +519,23 @@ INFO:   Task finished HIGH-3</pre>
       <div class="figure">
         <a id="CIHHACFF"></a>
 
-        <p class="titleinfigure">Figure 56-1 Architecture of the taskcreator Example</p>
-
-        <div style="text-align: center;"><img alt="Description of Figure 56-1 follows" longdesc="img_text/jeett_dt_060.htm" src="../Images/jeett_dt_060.png" style="line-height: 1.6em;" title="Description of Figure 56-1 follows" /></div>
-      </div>
-
-      <div class="figure">
-        Description of "Figure 56-1 Architecture of the taskcreator Example"<br />
+        <p class="titleinfigure">Figure 56-1 Architecture of the taskcreator Example</p><br />
+        <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_060.htm" id="sthref3047">Description of "Figure 56-1 Architecture of the taskcreator Example"</a><br />
         <br />
       </div>
 
       <p>The <code>TaskEJB</code> class obtains the default executor service objects from the application server as follows:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource(name="java:comp/DefaultManagedExecutorService")
+      <pre class="oac_no_warn" xml:space="preserve">
+@Resource(name="java:comp/DefaultManagedExecutorService")
 ManagedExecutorService mExecService;
 
 @Resource(name="java:comp/DefaultManagedScheduledExecutorService")
-ManagedScheduledExecutorService sExecService;</pre>
+ManagedScheduledExecutorService sExecService;
+</pre>
 
       <p>The <code>submitTask</code> method in <code>TaskEJB</code> uses these objects to submit tasks for execution as follows:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void submitTask(Task task, String type) {
+      <pre class="oac_no_warn" xml:space="preserve">
+public void submitTask(Task task, String type) {
     /* Use the managed executor objects from the app server */
     switch (type) {
         case "IMMEDIATE":
@@ -525,21 +551,22 @@ ManagedScheduledExecutorService sExecService;</pre>
             periodicTasks.put(task.getName(), fut);
             break;
     }
-}</pre>
+}
+</pre>
 
       <p>For periodic tasks, <code>TaskEJB</code> keeps a reference to the <code>ScheduledFuture</code> object, so that the user can cancel the task at any time.</p>
 
       <div class="sect2">
         <a id="sthref3048"></a>
 
-        <h2 class="sect2"><span class="secnum">56.6.1</span> Running the taskcreator Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_123"><span class="secnum">56.6.1</span> Running the taskcreator Example</h2>
 
         <p>This section describes how to build, package, deploy, and run the <code>taskcreator</code> example using NetBeans IDE or Maven.</p>
 
         <div class="sect3">
           <a id="sthref3049"></a>
 
-          <h3 class="sect3"><span class="secnum">56.6.1.1</span> To Build, Package, and Deploy the taskcreator Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">56.6.1.1</span> To Build, Package, and Deploy the taskcreator Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -552,7 +579,9 @@ ManagedScheduledExecutorService sExecService;</pre>
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/concurrency</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/concurrency
+</pre>
             </li>
 
             <li>
@@ -574,7 +603,7 @@ ManagedScheduledExecutorService sExecService;</pre>
         <div class="sect3">
           <a id="sthref3050"></a>
 
-          <h3 class="sect3"><span class="secnum">56.6.1.2</span> To Build, Package, and Deploy the taskcreator Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">56.6.1.2</span> To Build, Package, and Deploy the taskcreator Example Using Maven</h3>
 
           <ol>
             <li>
@@ -583,12 +612,16 @@ ManagedScheduledExecutorService sExecService;</pre>
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/concurrency/taskcreator</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/concurrency/taskcreator
+</pre>
             </li>
 
             <li>
               <p>Enter the following command to build and deploy the application:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
           </ol>
         </div>
@@ -596,35 +629,43 @@ ManagedScheduledExecutorService sExecService;</pre>
         <div class="sect3">
           <a id="sthref3051"></a>
 
-          <h3 class="sect3"><span class="secnum">56.6.1.3</span> To Run the taskcreator Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">56.6.1.3</span> To Run the taskcreator Example</h3>
 
           <ol>
             <li>
               <p>Open the following URL in a web browser:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/taskcreator/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/taskcreator/
+</pre>
 
               <p>The page contains a form to submit tasks, a task execution log, and a form to cancel periodic tasks.</p>
             </li>
 
             <li>
               <p>Select the <span class="gui-object-action">Immediate</span> task type, enter a task name, and click the <span class="gui-object-action">Submit</span> button. Messages like the following appear in the task execution log:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">12:40:47 - IMMEDIATE Task TaskA finished
-12:40:45 - IMMEDIATE Task TaskA started</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+12:40:47 - IMMEDIATE Task TaskA finished
+12:40:45 - IMMEDIATE Task TaskA started
+</pre>
             </li>
 
             <li>
               <p>Select the <span class="gui-object-action">Delayed (3 sec)</span> task type, enter a task name, and click the <span class="gui-object-action">Submit</span> button. Messages like the following appear in the task execution log:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">12:43:26 - DELAYED Task TaskB finished
+              <pre class="oac_no_warn" xml:space="preserve">
+12:43:26 - DELAYED Task TaskB finished
 12:43:25 - DELAYED Task TaskB started
-12:43:22 - DELAYED Task TaskB submitted</pre>
+12:43:22 - DELAYED Task TaskB submitted
+</pre>
             </li>
 
             <li>
               <p>Select the <span class="gui-object-action">Periodic (8 sec)</span> task type, enter a task name, and click the <span class="gui-object-action">Submit</span> button. Messages like the following appear in the task execution log:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">12:45:25 - PERIODIC Task TaskC finished run #2
+              <pre class="oac_no_warn" xml:space="preserve">
+12:45:25 - PERIODIC Task TaskC finished run #2
 12:45:23 - PERIODIC Task TaskC started run #2
 12:45:17 - PERIODIC Task TaskC finished run #1
-12:45:15 - PERIODIC Task TaskC started run #1</pre>
+12:45:15 - PERIODIC Task TaskC started run #1
+</pre>
 
               <p>You can add more than one periodic task. To cancel a periodic task, select it from the form and click <span class="gui-object-action">Cancel Task</span>.</p>
             </li>
@@ -638,7 +679,7 @@ ManagedScheduledExecutorService sExecService;</pre>
     <a id="CHDBIHAA"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">56.7</span> Further Information about the Concurrency Utilities</h1>
+      <h1 class="sect1" id="sigil_toc_id_124"><span class="secnum">56.7</span> Further Information about the Concurrency Utilities</h1>
 
       <p>For more information about concurrency, see</p>
 
@@ -646,19 +687,19 @@ ManagedScheduledExecutorService sExecService;</pre>
         <li>
           <p>Concurrency Utilities for Java EE specification:</p>
 
-          <p><code><a href="../Text/concurrency-utilities.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D236">http://jcp.org/en/jsr/detail?id=236</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=236">http://jcp.org/en/jsr/detail?id=236</a></code></p>
         </li>
 
         <li>
           <p>Concurrency Utilities specification:</p>
 
-          <p><code><a href="../Text/concurrency-utilities.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D166">http://jcp.org/en/jsr/detail?id=166</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=166">http://jcp.org/en/jsr/detail?id=166</a></code></p>
         </li>
 
         <li>
           <p>Concurrency Lesson in The Java Tutorials:</p>
 
-          <p><code><a href="../Text/concurrency-utilities.xhtml#http%3A//docs.oracle.com/javase/tutorial/essential/concurrency/">http://docs.oracle.com/javase/tutorial/essential/concurrency/</a></code></p>
+          <p><code><a href="../Text/http://docs.oracle.com/javase/tutorial/essential/concurrency/.xhtml#http://docs.oracle.com/javase/tutorial/essential/concurrency/">http://docs.oracle.com/javase/tutorial/essential/concurrency/</a></code></p>
         </li>
       </ul>
     </div>

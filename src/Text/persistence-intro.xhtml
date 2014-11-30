@@ -67,14 +67,14 @@
     <a id="BNBQA"></a><a id="JEETT00488"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">37.1</span> <a id="sthref1826"></a><a id="sthref1827"></a>Entities</h1>
+      <h1 class="sect1" id="sigil_toc_id_733"><span class="secnum">37.1</span> <a id="sthref1826"></a><a id="sthref1827"></a>Entities</h1>
 
       <p>An entity is a lightweight persistence domain object. Typically, an entity represents a table in a relational database, and each entity instance corresponds to a row in that table. The primary programming artifact of an entity is the entity class, although entities can use helper classes.</p>
 
       <p>The persistent state of an entity is represented through either persistent fields or persistent properties. These fields or properties use object/relational mapping annotations to map the entities and entity relationships to the relational data in the underlying data store.</p><a id="BNBQB"></a><a id="JEETT01150"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.1.1</span> <a id="sthref1828"></a>Requirements for Entity Classes</h2>
+        <h2 class="sect2" id="sigil_toc_id_734"><span class="secnum">37.1.1</span> <a id="sthref1828"></a>Requirements for Entity Classes</h2>
 
         <p>An entity class must follow these requirements.</p>
 
@@ -106,7 +106,7 @@
       </div><a id="BNBQC"></a><a id="JEETT01151"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.1.2</span> <a id="sthref1830"></a><a id="sthref1831"></a>Persistent Fields and Properties in Entity Classes</h2>
+        <h2 class="sect2" id="sigil_toc_id_735"><span class="secnum">37.1.2</span> <a id="sthref1830"></a><a id="sthref1831"></a>Persistent Fields and Properties in Entity Classes</h2>
 
         <p>The persistent state of an entity can be accessed through either the entity's instance variables or properties. The fields or properties must be of the following Java language types:</p>
 
@@ -193,25 +193,27 @@
         <p>Entities may use persistent fields, persistent properties, or a combination of both. If the mapping annotations are applied to the entity's instance variables, the entity uses persistent fields. If the mapping annotations are applied to the entity's getter methods for JavaBeans-style properties, the entity uses persistent properties.</p><a id="BNBQD"></a><a id="JEETT00669"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.2.1</span> <a id="sthref1832"></a>Persistent Fields</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.2.1</span> <a id="sthref1832"></a>Persistent Fields</h3>
 
           <p>If the entity class uses persistent fields, the Persistence runtime accesses entity-class instance variables directly. All fields not annotated <code>javax.persistence.Transient</code> or not marked as Java <code>transient</code> will be persisted to the data store. The object/relational mapping annotations must be applied to the instance variables.</p>
         </div><a id="BNBQE"></a><a id="JEETT00670"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.2.2</span> <a id="sthref1833"></a>Persistent Properties</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.2.2</span> <a id="sthref1833"></a>Persistent Properties</h3>
 
           <p>If the entity uses persistent properties, the entity must follow the method conventions of JavaBeans components. JavaBeans-style properties use getter and setter methods that are typically named after the entity class's instance variable names. For every persistent property <span class="variable">property</span> of type <span class="variable">Type</span> of the entity, there is a getter method <code>get</code><span class="variable">Property</span> and setter method <code>set</code><span class="variable">Property</span>. If the property is a Boolean, you may use <code>is</code><span class="variable">Property</span> instead of <code>get</code><span class="variable">Property</span>. For example, if a <code>Customer</code> entity uses persistent properties and has a private instance variable called <code>firstName</code>, the class defines a <code>getFirstName</code> and <code>setFirstName</code> method for retrieving and setting the state of the <code>firstName</code> instance variable.</p>
 
           <p>The method signatures for single-valued persistent properties are as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Type getProperty()
-void setProperty(Type type)</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+Type getProperty()
+void setProperty(Type type)
+</pre>
 
           <p><a id="sthref1834"></a>The object/relational mapping annotations for persistent properties must be applied to the getter methods. Mapping annotations cannot be applied to fields or properties annotated <code>@Transient</code> or marked <code>transient</code>.</p>
         </div><a id="GIQVN"></a><a id="JEETT00671"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.2.3</span> <a id="sthref1835"></a><a id="sthref1836"></a>Using Collections in Entity Fields and Properties</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.2.3</span> <a id="sthref1835"></a><a id="sthref1836"></a>Using Collections in Entity Fields and Properties</h3>
 
           <p>Collection-valued persistent fields and properties must use the supported Java collection interfaces regardless of whether the entity uses persistent fields or properties. The following collection interfaces may be used:</p>
 
@@ -234,21 +236,25 @@ void setProperty(Type type)</pre>
           </ul>
 
           <p>If the entity class uses persistent fields, the type in the preceding method signatures must be one of these collection types. Generic variants of these collection types may also be used. For example, if it has a persistent property that contains a set of phone numbers, the <code>Customer</code> entity would have the following methods:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Set&lt;PhoneNumber&gt; getPhoneNumbers() { ... }
-void setPhoneNumbers(Set&lt;PhoneNumber&gt;) { ... }</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+Set&lt;PhoneNumber&gt; getPhoneNumbers() { ... }
+void setPhoneNumbers(Set&lt;PhoneNumber&gt;) { ... }
+</pre>
 
           <p>If a field or property of an entity consists of a collection of basic types or embeddable classes, use the <code>javax.persistence.ElementCollection</code> annotation on the field or property.</p>
 
           <p>The two attributes of <code>@ElementCollection</code> are <code>targetClass</code> and <code>fetch</code>. The <code>targetClass</code> attribute specifies the class name of the basic or embeddable class and is optional if the field or property is defined using Java programming language generics. The optional <code>fetch</code> attribute is used to specify whether the collection should be retrieved lazily or eagerly, using the <code>javax.persistence.FetchType</code> constants of either <code>LAZY</code> or <code>EAGER</code>, respectively. By default, the collection will be fetched lazily.</p>
 
           <p>The following entity, <code>Person</code>, has a persistent field, <code>nicknames</code>, which is a collection of <code>String</code> classes that will be fetched eagerly. The <code>targetClass</code> element is not required, because it uses generics to define the field:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+          <pre class="oac_no_warn" xml:space="preserve">
+@Entity
 public class Person {
     ...
     @ElementCollection(fetch=EAGER)
     protected Set&lt;String&gt; nickname = new HashSet();
     ...
-}</pre>
+}
+</pre>
 
           <p><a id="sthref1837"></a>Collections of entity elements and relationships may be represented by <code>java.util.Map</code> collections. A <code>Map</code> consists of a key and a value.</p>
 
@@ -288,7 +294,7 @@ public class Person {
         </div><a id="GKAHQ"></a><a id="JEETT00672"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.2.4</span> <a id="sthref1838"></a><a id="sthref1839"></a><a id="sthref1840"></a>Validating Persistent Fields and Properties</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.2.4</span> <a id="sthref1838"></a><a id="sthref1839"></a><a id="sthref1840"></a>Validating Persistent Fields and Properties</h3>
 
           <p>The Java API for JavaBeans Validation (Bean Validation) provides a mechanism for validating application data. Bean Validation is integrated into the Java EE containers, allowing the same validation logic to be used in any of the tiers of an enterprise application.</p>
 
@@ -298,16 +304,19 @@ public class Person {
 
           <p>Bean Validation constraints are applied to the persistent fields or properties of persistent classes. When adding Bean Validation constraints, use the same access strategy as the persistent class. That is, if the persistent class uses field access, apply the Bean Validation constraint annotations on the class's fields. If the class uses property access, apply the constraints on the getter methods.</p>
 
-          <p><a href="../Text/persistence-intro.xhtml#GKAGK">Table 21-1</a> lists Bean Validation's built-in constraints, defined in the <code>javax.validation.constraints</code> package.</p>
+          <p><a href="../Text/bean-validation.xhtml#GKAGK">Table 21-1</a> lists Bean Validation's built-in constraints, defined in the <code>javax.validation.constraints</code> package.</p>
 
-          <p>All the built-in constraints listed in <a href="../Text/persistence-intro.xhtml#GKAGK">Table 21-1</a> have a corresponding annotation, <span class="variable">ConstraintName</span><code>.List</code>, for grouping multiple constraints of the same type on the same field or property. For example, the following persistent field has two <code>@Pattern</code> constraints:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Pattern.List({
+          <p>All the built-in constraints listed in <a href="../Text/bean-validation.xhtml#GKAGK">Table 21-1</a> have a corresponding annotation, <span class="variable">ConstraintName</span><code>.List</code>, for grouping multiple constraints of the same type on the same field or property. For example, the following persistent field has two <code>@Pattern</code> constraints:</p>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Pattern.List({
     @Pattern(regexp="..."),
     @Pattern(regexp="...")
-})</pre>
+})
+</pre>
 
           <p>The following entity class, <code>Contact</code>, has Bean Validation constraints applied to its persistent fields:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+          <pre class="oac_no_warn" xml:space="preserve">
+@Entity
 public class Contact implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -332,7 +341,8 @@ public class Contact implements Serializable {
     @Past
     protected Date birthday;
     ...
-}</pre>
+}
+</pre>
 
           <p>The <code>@NotNull</code> annotation on the <code>firstName</code> and <code>lastName</code> fields specifies that those fields are now required. If a new <code>Contact</code> instance is created where <code>firstName</code> or <code>lastName</code> have not been initialized, Bean Validation will throw a validation error. Similarly, if a previously created instance of <code>Contact</code> has been modified so that <code>firstName</code> or <code>lastName</code> are null, a validation error will be thrown.</p>
 
@@ -345,7 +355,7 @@ public class Contact implements Serializable {
       </div><a id="BNBQF"></a><a id="JEETT01152"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.1.3</span> <a id="sthref1841"></a><a id="sthref1842"></a><a id="sthref1843"></a>Primary Keys in Entities</h2>
+        <h2 class="sect2" id="sigil_toc_id_736"><span class="secnum">37.1.3</span> <a id="sthref1841"></a><a id="sthref1842"></a><a id="sthref1843"></a>Primary Keys in Entities</h2>
 
         <p>Each entity has a unique object identifier. A customer entity, for example, might be identified by a customer number. The unique identifier, or <span class="glossaryterm">primary key</span>, enables clients to locate a particular entity instance. Every entity must have a primary key. An entity may have either a simple or a composite primary key.</p>
 
@@ -420,7 +430,8 @@ public class Contact implements Serializable {
         </ul>
 
         <p><a id="sthref1849"></a><a id="sthref1850"></a>The following primary key class is a composite key, and the <code>customerOrder</code> and <code>itemId</code> fields together uniquely identify an entity:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public final class LineItemKey implements Serializable {
+        <pre class="oac_no_warn" xml:space="preserve">
+public final class LineItemKey implements Serializable {
     private Integer customerOrder;
     private int itemId;
 
@@ -458,11 +469,12 @@ public class Contact implements Serializable {
         return "" + getCustomerOrder() + "-" + getItemId();
     }
     /* Getters and setters */
-}</pre>
+}
+</pre>
       </div><a id="BNBQH"></a><a id="JEETT01153"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.1.4</span> <a id="sthref1851"></a>Multiplicity in Entity Relationships</h2>
+        <h2 class="sect2" id="sigil_toc_id_737"><span class="secnum">37.1.4</span> <a id="sthref1851"></a>Multiplicity in Entity Relationships</h2>
 
         <p>Multiplicities are of the following types.</p>
 
@@ -486,12 +498,12 @@ public class Contact implements Serializable {
       </div><a id="BNBQI"></a><a id="JEETT01154"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.1.5</span> <a id="sthref1860"></a>Direction in Entity Relationships</h2>
+        <h2 class="sect2" id="sigil_toc_id_738"><span class="secnum">37.1.5</span> <a id="sthref1860"></a>Direction in Entity Relationships</h2>
 
         <p>The direction of a relationship can be either bidirectional or unidirectional. A bidirectional relationship has both an owning side and an inverse side. A unidirectional relationship has only an owning side. The owning side of a relationship determines how the Persistence runtime makes updates to the relationship in the database.</p><a id="BNBQJ"></a><a id="JEETT00673"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.5.1</span> <a id="sthref1861"></a>Bidirectional Relationships</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.5.1</span> <a id="sthref1861"></a>Bidirectional Relationships</h3>
 
           <p>In a <span class="glossaryterm">bidirectional</span> relationship, each entity has a relationship field or property that refers to the other entity. Through the relationship field or property, an entity class's code can access its related object. If an entity has a related field, the entity is said to "know" about its related object. For example, if <code>CustomerOrder</code> knows what <code>LineItem</code> instances it has and if <code>LineItem</code> knows what <code>CustomerOrder</code> it belongs to, they have a bidirectional relationship.</p>
 
@@ -517,19 +529,19 @@ public class Contact implements Serializable {
         </div><a id="BNBQK"></a><a id="JEETT00674"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.5.2</span> <a id="sthref1865"></a>Unidirectional Relationships</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.5.2</span> <a id="sthref1865"></a>Unidirectional Relationships</h3>
 
           <p>In a <span class="glossaryterm">unidirectional</span> relationship, only one entity has a relationship field or property that refers to the other. For example, <code>LineItem</code> would have a relationship field that identifies <code>Product</code>, but <code>Product</code> would not have a relationship field or property for <code>LineItem</code>. In other words, <code>LineItem</code> knows about <code>Product</code>, but <code>Product</code> doesn't know which <code>LineItem</code> instances refer to it.</p>
         </div><a id="BNBQL"></a><a id="JEETT00675"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.5.3</span> Queries and Relationship Direction</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.5.3</span> Queries and Relationship Direction</h3>
 
           <p><a id="sthref1866"></a><a id="sthref1867"></a>Java Persistence query language and Criteria API queries often navigate across relationships. The direction of a relationship determines whether a query can navigate from one entity to another. For example, a query can navigate from <code>LineItem</code> to <code>Product</code> but cannot navigate in the opposite direction. For <code>CustomerOrder</code> and <code>LineItem</code>, a query could navigate in both directions because these two entities have a bidirectional relationship.</p>
         </div><a id="BNBQM"></a><a id="JEETT00676"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.5.4</span> <a id="sthref1868"></a>Cascade Operations and Relationships</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.5.4</span> <a id="sthref1868"></a>Cascade Operations and Relationships</h3>
 
           <p>Entities that use relationships often have dependencies on the existence of the other entity in the relationship. For example, a line item is part of an order; if the order is deleted, the line item also should be deleted. This is called a cascade delete relationship.</p>
 
@@ -617,39 +629,47 @@ public class Contact implements Serializable {
           </div>
 
           <p><a id="sthref1870"></a><a id="sthref1871"></a>Cascade delete relationships are specified using the <code>cascade=REMOVE</code> element specification for <code>@OneToOne</code> and <code>@OneToMany</code> relationships. For example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OneToMany(cascade=REMOVE, mappedBy="customer")public SetCustomerOrder getOrders() { return orders; }</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@OneToMany(cascade=REMOVE, mappedBy="customer")
+public Set&lt;CustomerOrder&gt; getOrders() { return orders; }
+</pre>
         </div><a id="GIQXY"></a><a id="JEETT00677"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.1.5.5</span> <a id="sthref1872"></a>Orphan Removal in Relationships</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.1.5.5</span> <a id="sthref1872"></a>Orphan Removal in Relationships</h3>
 
           <p>When a target entity in a one-to-one or one-to-many relationship is removed from the relationship, it is often desirable to cascade the remove operation to the target entity. Such target entities are considered "orphans," and the <code>orphanRemoval</code> attribute can be used to specify that orphaned entities should be removed. For example, if an order has many line items and one of them is removed from the order, the removed line item is considered an orphan. If <code>orphanRemoval</code> is set to <code>true</code>, the line item entity will be deleted when the line item is removed from the order.</p>
 
           <p>The <code>orphanRemoval</code> attribute in <code>@OneToMany</code> and <code>@oneToOne</code> takes a Boolean value and is by default false.</p>
 
           <p>The following example will cascade the remove operation to the orphaned <code>order</code> entity when the <code>customer</code> entity is deleted:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OneToMany(mappedBy="customer", orphanRemoval="true")
-public List&lt;CustomerOrder&gt; getOrders() { ... }</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@OneToMany(mappedBy="customer", orphanRemoval="true")
+public List&lt;CustomerOrder&gt; getOrders() { ... }
+</pre>
         </div>
       </div><a id="GJIWZ"></a><a id="JEETT01155"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.1.6</span> <a id="sthref1873"></a><a id="sthref1874"></a><a id="sthref1875"></a>Embeddable Classes in Entities</h2>
+        <h2 class="sect2" id="sigil_toc_id_739"><span class="secnum">37.1.6</span> <a id="sthref1873"></a><a id="sthref1874"></a><a id="sthref1875"></a>Embeddable Classes in Entities</h2>
 
         <p>Embeddable classes are used to represent the state of an entity but don't have a persistent identity of their own, unlike entity classes. Instances of an embeddable class share the identity of the entity that owns it. Embeddable classes exist only as the state of another entity. An entity may have single-valued or collection-valued embeddable class attributes.</p>
 
         <p>Embeddable classes have the same rules as entity classes but are annotated with the <code>javax.persistence.Embeddable</code> annotation instead of <code>@Entity</code>.</p>
 
         <p>The following embeddable class, <code>ZipCode</code>, has the fields <code>zip</code> and <code>plusFour</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Embeddable
+        <pre class="oac_no_warn" xml:space="preserve">
+@Embeddable
 public class ZipCode {
     String zip;
     String plusFour;
     ...
-}</pre>
+}
+</pre>
 
         <p>This embeddable class is used by the <code>Address</code> entity:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+        <pre class="oac_no_warn" xml:space="preserve">
+@Entity
 public class Address {
     @Id
     protected long id
@@ -661,7 +681,8 @@ public class Address {
     ZipCode zipCode;
     String country;
     ...
-}</pre>
+}
+</pre>
 
         <p>Entities that own embeddable classes as part of their persistent state may annotate the field or property with the <code>javax.persistence.Embedded</code> annotation but are not required to do so.</p>
 
@@ -674,19 +695,20 @@ public class Address {
     <a id="BNBQN"></a><a id="JEETT00489"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">37.2</span> <a id="sthref1876"></a>Entity Inheritance</h1>
+      <h1 class="sect1" id="sigil_toc_id_740"><span class="secnum">37.2</span> <a id="sthref1876"></a>Entity Inheritance</h1>
 
       <p>Entities support class inheritance, polymorphic associations, and polymorphic queries. Entity classes can extend non-entity classes, and non-entity classes can extend entity classes. Entity classes can be both abstract and concrete.</p>
 
-      <p>The <code>roster</code> example application demonstrates entity inheritance, as described in <a href="../Text/persistence-intro.xhtml#GIQRF">Entity Inheritance in the roster Application</a>.</p><a id="BNBQO"></a><a id="JEETT01157"></a>
+      <p>The <code>roster</code> example application demonstrates entity inheritance, as described in <a href="../Text/persistence-basicexamples.xhtml#GIQRF">Entity Inheritance in the roster Application</a>.</p><a id="BNBQO"></a><a id="JEETT01157"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.2.1</span> <a id="sthref1877"></a>Abstract Entities</h2>
+        <h2 class="sect2" id="sigil_toc_id_741"><span class="secnum">37.2.1</span> <a id="sthref1877"></a>Abstract Entities</h2>
 
         <p>An abstract class may be declared an entity by decorating the class with <code>@Entity</code>. Abstract entities are like concrete entities but cannot be instantiated.</p>
 
         <p>Abstract entities can be queried just like concrete entities. If an abstract entity is the target of a query, the query operates on all the concrete subclasses of the abstract entity:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
+        <pre class="oac_no_warn" xml:space="preserve">
+@Entity
 public abstract class Employee {
     @Id
     protected Integer employeeId;
@@ -700,16 +722,18 @@ public class FullTimeEmployee extends Employee {
 @Entity
 public class PartTimeEmployee extends Employee {
     protected Float hourlyWage;
-}</pre>
+}
+</pre>
       </div><a id="BNBQP"></a><a id="JEETT01158"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.2.2</span> <a id="sthref1878"></a>Mapped Superclasses</h2>
+        <h2 class="sect2" id="sigil_toc_id_742"><span class="secnum">37.2.2</span> <a id="sthref1878"></a>Mapped Superclasses</h2>
 
         <p>Entities may inherit from superclasses that contain persistent state and mapping information but are not entities. That is, the superclass is not decorated with the <code>@Entity</code> annotation and is not mapped as an entity by the Java Persistence provider. These superclasses are most often used when you have state and mapping information common to multiple entity classes.</p>
 
         <p>Mapped superclasses are specified by decorating the class with the annotation <code>javax.persistence.MappedSuperclass</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@MappedSuperclass
+        <pre class="oac_no_warn" xml:space="preserve">
+@MappedSuperclass
 public class Employee {
     @Id
     protected Integer employeeId;
@@ -724,7 +748,8 @@ public class FullTimeEmployee extends Employee {
 public class PartTimeEmployee extends Employee {
     protected Float hourlyWage;
     ...
-}<br /></pre>
+}
+</pre>
 
         <p>Mapped superclasses cannot be queried and cannot be used in <code>EntityManager</code> or <code>Query</code> operations. You must use entity subclasses of the mapped superclass in <code>EntityManager</code> or <code>Query</code> operations. Mapped superclasses can't be targets of entity relationships. Mapped superclasses can be abstract or concrete.</p>
 
@@ -732,13 +757,13 @@ public class PartTimeEmployee extends Employee {
       </div><a id="BNBQQ"></a><a id="JEETT01159"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.2.3</span> <a id="sthref1879"></a>Non-Entity Superclasses</h2>
+        <h2 class="sect2" id="sigil_toc_id_743"><span class="secnum">37.2.3</span> <a id="sthref1879"></a>Non-Entity Superclasses</h2>
 
         <p>Entities may have non-entity superclasses, and these superclasses can be either abstract or concrete. The state of non-entity superclasses is nonpersistent, and any state inherited from the non-entity superclass by an entity class is nonpersistent. Non-entity superclasses may not be used in <code>EntityManager</code> or <code>Query</code> operations. Any mapping or relationship annotations in non-entity superclasses are ignored.</p>
       </div><a id="BNBQR"></a><a id="JEETT01160"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.2.4</span> <a id="sthref1880"></a>Entity Inheritance Mapping Strategies</h2>
+        <h2 class="sect2" id="sigil_toc_id_744"><span class="secnum">37.2.4</span> <a id="sthref1880"></a>Entity Inheritance Mapping Strategies</h2>
 
         <p>You can configure how the Java Persistence provider maps inherited entities to the underlying datastore by decorating the root class of the hierarchy with the annotation <code>javax.persistence.Inheritance</code>. The following mapping strategies are used to map the entity data to the underlying database:</p>
 
@@ -757,16 +782,18 @@ public class PartTimeEmployee extends Employee {
         </ul>
 
         <p>The strategy is configured by setting the <code>strategy</code> element of <code>@Inheritance</code> to one of the options defined in the <code>javax.persistence.InheritanceType</code> enumerated type:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public enum InheritanceType {
+        <pre class="oac_no_warn" xml:space="preserve">
+public enum InheritanceType {
     SINGLE_TABLE,
     JOINED,
     TABLE_PER_CLASS
-};</pre>
+};
+</pre>
 
         <p>The default strategy, <code>InheritanceType.SINGLE_TABLE</code>, is used if the <code>@Inheritance</code> annotation is not specified on the root class of the entity hierarchy.</p><a id="BNBQS"></a><a id="JEETT00679"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.2.4.1</span> <a id="sthref1881"></a><a id="sthref1882"></a>The Single Table per Class Hierarchy Strategy</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.2.4.1</span> <a id="sthref1881"></a><a id="sthref1882"></a>The Single Table per Class Hierarchy Strategy</h3>
 
           <p><a id="sthref1883"></a>With this strategy, which corresponds to the default <code>InheritanceType.SINGLE_TABLE</code>, all classes in the hierarchy are mapped to a single table in the database. This table has a <span class="glossaryterm">discriminator column</span> containing a value that identifies the subclass to which the instance represented by the row belongs.</p>
 
@@ -853,11 +880,13 @@ public class PartTimeEmployee extends Employee {
           </div>
 
           <p>The <code>javax.persistence.DiscriminatorType</code> enumerated type is used to set the type of the discriminator column in the database by setting the <code>discriminatorType</code> element of <code>@DiscriminatorColumn</code> to one of the defined types. <code>DiscriminatorType</code> is defined as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public enum DiscriminatorType {
+          <pre class="oac_no_warn" xml:space="preserve">
+public enum DiscriminatorType {
     STRING,
     CHAR,
     INTEGER
-}</pre>
+};
+</pre>
 
           <p>If <code>@DiscriminatorColumn</code> is not specified on the root of the entity hierarchy and a discriminator column is required, the Persistence provider assumes a default column name of <code>DTYPE</code> and column type of <code>DiscriminatorType.STRING</code>.</p>
 
@@ -869,7 +898,7 @@ public class PartTimeEmployee extends Employee {
         </div><a id="BNBQU"></a><a id="JEETT00680"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.2.4.2</span> The Table per Concrete Class Strategy</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.2.4.2</span> The Table per Concrete Class Strategy</h3>
 
           <p>In this strategy, which corresponds to <code>InheritanceType.TABLE_PER_CLASS</code>, each concrete class is mapped to a separate table in the database. All fields or properties in the class, including inherited fields or properties, are mapped to columns in the class's table in the database.</p>
 
@@ -879,7 +908,7 @@ public class PartTimeEmployee extends Employee {
         </div><a id="BNBQV"></a><a id="JEETT00681"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.2.4.3</span> The Joined Subclass Strategy</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.2.4.3</span> The Joined Subclass Strategy</h3>
 
           <p>In this strategy, which corresponds to <code>InheritanceType.JOINED</code>, the root of the class hierarchy is represented by a single table, and each subclass has a separate table that contains only those fields specific to that subclass. That is, the subclass table does not contain columns for inherited fields or properties. The subclass table also has a column or columns that represent its primary key, which is a foreign key to the primary key of the superclass table.</p>
 
@@ -895,29 +924,31 @@ public class PartTimeEmployee extends Employee {
     <a id="BNBQW"></a><a id="JEETT00490"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">37.3</span> <a id="sthref1885"></a><a id="sthref1886"></a>Managing Entities</h1>
+      <h1 class="sect1" id="sigil_toc_id_745"><span class="secnum">37.3</span> <a id="sthref1885"></a><a id="sthref1886"></a>Managing Entities</h1>
 
       <p>Entities are managed by the entity manager, which is represented by <code>javax.persistence.EntityManager</code> instances. Each <code>EntityManager</code> instance is associated with a persistence context: a set of managed entity instances that exist in a particular data store. A persistence context defines the scope under which particular entity instances are created, persisted, and removed. The <code>EntityManager</code> interface defines the methods that are used to interact with the persistence context.</p><a id="BNBQY"></a><a id="JEETT01161"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.3.1</span> <a id="sthref1887"></a><a id="sthref1888"></a>The EntityManager Interface</h2>
+        <h2 class="sect2" id="sigil_toc_id_746"><span class="secnum">37.3.1</span> <a id="sthref1887"></a><a id="sthref1888"></a>The EntityManager Interface</h2>
 
         <p>The <code>EntityManager</code> API creates and removes persistent entity instances, finds entities by the entity's primary key, and allows queries to be run on entities.</p><a id="BNBQZ"></a><a id="JEETT00682"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.3.1.1</span> <a id="sthref1889"></a>Container-Managed Entity Managers</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.3.1.1</span> <a id="sthref1889"></a>Container-Managed Entity Managers</h3>
 
           <p>With a <span class="glossaryterm">container-managed entity manager</span>, an <code>EntityManager</code> instance's persistence context is automatically propagated by the container to all application components that use the <code>EntityManager</code> instance within a single Java Transaction API (JTA) transaction.</p>
 
           <p><a id="sthref1890"></a>JTA transactions usually involve calls across application components. To complete a JTA transaction, these components usually need access to a single persistence context. This occurs when an <code>EntityManager</code> is injected into the application components by means of the <code>javax.persistence.PersistenceContext</code> annotation. The persistence context is automatically propagated with the current JTA transaction, and <code>EntityManager</code> references that are mapped to the same persistence unit provide access to the persistence context within that transaction. By automatically propagating the persistence context, application components don't need to pass references to <code>EntityManager</code> instances to each other in order to make changes within a single transaction. The Java EE container manages the lifecycle of container-managed entity managers.</p>
 
           <p>To obtain an <code>EntityManager</code> instance, inject the entity manager into the application component:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PersistenceContext
-EntityManager em;</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@PersistenceContext
+EntityManager em;
+</pre>
         </div><a id="BNBRA"></a><a id="JEETT00683"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.3.1.2</span> <a id="sthref1891"></a><a id="sthref1892"></a>Application-Managed Entity Managers</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.3.1.2</span> <a id="sthref1891"></a><a id="sthref1892"></a>Application-Managed Entity Managers</h3>
 
           <p>With an <span class="glossaryterm">application-managed entity manager</span>, on the other hand, the persistence context is not propagated to application components, and the lifecycle of <code>EntityManager</code> instances is managed by the application.</p>
 
@@ -926,20 +957,27 @@ EntityManager em;</pre>
           <p>Applications create <code>EntityManager</code> instances in this case by using the <code>createEntityManager</code> method of <code>javax.persistence.EntityManagerFactory</code>.</p>
 
           <p><a id="sthref1893"></a>To obtain an <code>EntityManager</code> instance, you first must obtain an <code>EntityManagerFactory</code> instance by injecting it into the application component by means of the <code>javax.persistence.PersistenceUnit</code> annotation:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PersistenceUnit
-EntityManagerFactory emf;</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@PersistenceUnit
+EntityManagerFactory emf;
+</pre>
 
           <p>Then obtain an <code>EntityManager</code> from the <code>EntityManagerFactory</code> instance:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = emf.createEntityManager();</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+EntityManager em = emf.createEntityManager();
+</pre>
 
           <p><a id="sthref1894"></a>Application-managed entity managers don't automatically propagate the JTA transaction context. Such applications need to manually gain access to the JTA transaction manager and add transaction demarcation information when performing entity operations. The <code>javax.transaction.UserTransaction</code> interface defines methods to begin, commit, and roll back transactions. Inject an instance of <code>UserTransaction</code> by creating an instance variable annotated with <code>@Resource</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource
-UserTransaction utx;</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Resource
+UserTransaction utx;
+</pre>
 
           <p>To begin a transaction, call the <code>UserTransaction.begin</code> method. When all the entity operations are complete, call the <code>UserTransaction.commit</code> method to commit the transaction. The <code>UserTransaction.rollback</code> method is used to roll back the current transaction.</p>
 
           <p>The following example shows how to manage transactions in an application that uses an application-managed entity manager:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PersistenceUnit
+          <pre class="oac_no_warn" xml:space="preserve">
+@PersistenceUnit
 EntityManagerFactory emf;
 EntityManager em;
 @Resource
@@ -954,24 +992,27 @@ try {
     utx.commit();
 } catch (Exception e) {
     utx.rollback();
-}</pre>
+}
+</pre>
         </div><a id="BNBRB"></a><a id="JEETT00684"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.3.1.3</span> <a id="sthref1895"></a>Finding Entities Using the EntityManager</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.3.1.3</span> <a id="sthref1895"></a>Finding Entities Using the EntityManager</h3>
 
           <p>The <code>EntityManager.find</code> method is used to look up entities in the data store by the entity's primary key:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PersistenceContext
+          <pre class="oac_no_warn" xml:space="preserve">
+@PersistenceContext
 EntityManager em;
 public void enterOrder(int custID, CustomerOrder newOrder) {
     Customer cust = em.find(Customer.class, custID);
     cust.getOrders().add(newOrder);
     newOrder.setCustomer(cust);
-}</pre>
+}
+</pre>
         </div><a id="BNBRC"></a><a id="JEETT00685"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.3.1.4</span> <a id="sthref1896"></a>Managing an Entity Instance's Lifecycle</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.3.1.4</span> <a id="sthref1896"></a>Managing an Entity Instance's Lifecycle</h3>
 
           <p>You manage entity instances by invoking operations on the entity by means of an <code>EntityManager</code> instance. Entity instances are in one of four states: new, managed, detached, or removed.</p>
 
@@ -995,10 +1036,11 @@ public void enterOrder(int custID, CustomerOrder newOrder) {
         </div><a id="BNBRD"></a><a id="JEETT00686"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.3.1.5</span> <a id="sthref1897"></a>Persisting Entity Instances</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.3.1.5</span> <a id="sthref1897"></a>Persisting Entity Instances</h3>
 
           <p>New entity instances become managed and persistent either by invoking the <code>persist</code> method or by a cascading <code>persist</code> operation invoked from related entities that have the <code>cascade=PERSIST</code> or <code>cascade=ALL</code> elements set in the relationship annotation. This means that the entity's data is stored to the database when the transaction associated with the <code>persist</code> operation is completed. If the entity is already managed, the <code>persist</code> operation is ignored, although the <code>persist</code> operation will cascade to related entities that have the <code>cascade</code> element set to <code>PERSIST</code> or <code>ALL</code> in the relationship annotation. If <code>persist</code> is called on a removed entity instance, the entity becomes managed. If the entity is detached, either <code>persist</code> will throw an <code>IllegalArgumentException</code>, or the transaction commit will fail. The following method performs a <code>persist</code> operation:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PersistenceContext
+          <pre class="oac_no_warn" xml:space="preserve">
+@PersistenceContext
 EntityManager em;
 ...
 public LineItem createLineItem(CustomerOrder order, Product product,
@@ -1007,30 +1049,35 @@ public LineItem createLineItem(CustomerOrder order, Product product,
     order.getLineItems().add(li);
     em.persist(li);
     return li;
-}</pre>
+}
+</pre>
 
           <p>The <code>persist</code> operation is propagated to all entities related to the calling entity that have the <code>cascade</code> element set to <code>ALL</code> or <code>PERSIST</code> in the relationship annotation:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@OneToMany(cascade=ALL, mappedBy="order")
+          <pre class="oac_no_warn" xml:space="preserve">
+@OneToMany(cascade=ALL, mappedBy="order")
 public Collection&lt;LineItem&gt; getLineItems() {
     return lineItems;
-}</pre>
+}
+</pre>
         </div><a id="BNBRE"></a><a id="JEETT00687"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.3.1.6</span> <a id="sthref1898"></a>Removing Entity Instances</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.3.1.6</span> <a id="sthref1898"></a>Removing Entity Instances</h3>
 
           <p>Managed entity instances are removed by invoking the <code>remove</code> method or by a cascading <code>remove</code> operation invoked from related entities that have the <code>cascade=REMOVE</code> or <code>cascade=ALL</code> elements set in the relationship annotation. If the <code>remove</code> method is invoked on a new entity, the <code>remove</code> operation is ignored, although <code>remove</code> will cascade to related entities that have the <code>cascade</code> element set to <code>REMOVE</code> or <code>ALL</code> in the relationship annotation. If <code>remove</code> is invoked on a detached entity, either <code>remove</code> will throw an <code>IllegalArgumentException</code>, or the transaction commit will fail. If invoked on an already removed entity, <code>remove</code> will be ignored. The entity's data will be removed from the data store when the transaction is completed or as a result of the <code>flush</code> operation.</p>
 
           <p>In the following example, all <code>LineItem</code> entities associated with the order are also removed, as <code>CustomerOrder.getLineItems</code> has <code>cascade=ALL</code> set in the relationship annotation:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void removeOrder(Integer orderId) {
+          <pre class="oac_no_warn" xml:space="preserve">
+public void removeOrder(Integer orderId) {
     try {
         CustomerOrder order = em.find(CustomerOrder.class, orderId);
         em.remove(order);
-    }...</pre>
+    }...
+</pre>
         </div><a id="BNBRF"></a><a id="JEETT00688"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">37.3.1.7</span> <a id="sthref1899"></a>Synchronizing Entity Data to the Database</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">37.3.1.7</span> <a id="sthref1899"></a>Synchronizing Entity Data to the Database</h3>
 
           <p>The state of persistent entities is synchronized to the database when the transaction with which the entity is associated commits. If a managed entity is in a bidirectional relationship with another managed entity, the data will be persisted, based on the owning side of the relationship.</p>
 
@@ -1041,12 +1088,13 @@ public Collection&lt;LineItem&gt; getLineItems() {
       </div><a id="BNBRJ"></a><a id="JEETT01162"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">37.3.2</span> <a id="sthref1900"></a><a id="sthref1901"></a>Persistence Units</h2>
+        <h2 class="sect2" id="sigil_toc_id_747"><span class="secnum">37.3.2</span> <a id="sthref1900"></a><a id="sthref1901"></a>Persistence Units</h2>
 
         <p>A persistence unit defines a set of all entity classes that are managed by <code>EntityManager</code> instances in an application. This set of entity classes represents the data contained within a single data store.</p>
 
         <p><a id="sthref1902"></a>Persistence units are defined by the <code>persistence.xml</code> configuration file. The following is an example <code>persistence.xml</code> file:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;persistence&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;persistence&gt;
     &lt;persistence-unit name="OrderManagement"&gt;
         &lt;description&gt;This unit manages orders and customers.
             It does not rely on any vendor-specific features and can
@@ -1057,7 +1105,8 @@ public Collection&lt;LineItem&gt; getLineItems() {
         &lt;class&gt;com.widgets.CustomerOrder&lt;/class&gt;
         &lt;class&gt;com.widgets.Customer&lt;/class&gt;
     &lt;/persistence-unit&gt;
-&lt;/persistence&gt;</pre>
+&lt;/persistence&gt;
+</pre>
 
         <p>This file defines a persistence unit named <code>OrderManagement</code>, which uses a JTA-aware data source, <code>jdbc/MyOrderDB</code>. The <code>jar-file</code> and <code>class</code> elements specify managed persistence classes: entity classes, embeddable classes, and mapped superclasses. The <code>jar-file</code> element specifies JAR files that are visible to the packaged persistence unit that contain managed persistence classes, whereas the <code>class</code> element explicitly names managed persistence classes.</p>
 
@@ -1116,7 +1165,7 @@ public Collection&lt;LineItem&gt; getLineItems() {
     <a id="GJISE"></a><a id="JEETT00491"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">37.4</span> <a id="sthref1903"></a><a id="sthref1904"></a>Querying Entities</h1>
+      <h1 class="sect1" id="sigil_toc_id_748"><span class="secnum">37.4</span> <a id="sthref1903"></a><a id="sthref1904"></a>Querying Entities</h1>
 
       <p>The Java Persistence API provides the following methods for querying entities.</p>
 
@@ -1142,12 +1191,13 @@ public Collection&lt;LineItem&gt; getLineItems() {
     <a id="CHDBEGIC"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">37.5</span> <a id="sthref1905"></a><a id="sthref1906"></a>Database Schema Creation</h1>
+      <h1 class="sect1" id="sigil_toc_id_749"><span class="secnum">37.5</span> <a id="sthref1905"></a><a id="sthref1906"></a>Database Schema Creation</h1>
 
       <p>The persistence provider can be configured to automatically create the database tables, load data into the tables, and remove the tables during application deployment using standard properties in the application's deployment descriptor. These tasks are typically used during the development phase of a release, not against a production database.</p>
 
       <p>The following is an example of a <code>persistence.xml</code> deployment descriptor that specifies that the provider should drop all database artifacts using a provided script, create the artifacts with a provided script, and load data from a provided script when the application is deployed:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
@@ -1169,12 +1219,13 @@ public Collection&lt;LineItem&gt; getLineItems() {
                   value="META-INF/sql/drop.sql" /&gt;
     &lt;/properties&gt;
   &lt;/persistence-unit&gt;
-&lt;/persistence&gt;</pre>
+&lt;/persistence&gt;
+</pre>
 
       <div class="sect2">
         <a id="sthref1907"></a>
 
-        <h2 class="sect2"><span class="secnum">37.5.1</span> <a id="sthref1908"></a><a id="sthref1909"></a><a id="sthref1910"></a><a id="sthref1911"></a>Configuring an Application to Create or Drop Database Tables</h2>
+        <h2 class="sect2" id="sigil_toc_id_750"><span class="secnum">37.5.1</span> <a id="sthref1908"></a><a id="sthref1909"></a><a id="sthref1910"></a><a id="sthref1911"></a>Configuring an Application to Create or Drop Database Tables</h2>
 
         <p>The <code>javax.persistence.schema-generation.database.action</code> property is used to specify the action taken by the persistence provider when an application is deployed. If the property is not set, the persistence provider will not create or drop any database artifacts.</p>
 
@@ -1240,8 +1291,10 @@ public Collection&lt;LineItem&gt; getLineItems() {
         </div>
 
         <p>In this example, the persistence provider will delete any remaining database artifacts and then create the artifacts when the application is deployed:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;property name="javax.persistence.schema-generation.database.action"
-           value="drop-and-create"/&gt;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;property name="javax.persistence.schema-generation.database.action"
+           value="drop-and-create"/&gt;
+</pre>
 
         <p>By default, the object/relational metadata in the persistence unit is used to create the database artifacts. You may also supply <a id="sthref1914"></a><a id="sthref1915"></a>scripts used by the provider to create and delete the database artifacts. The <code>javax.persistence.schema-generation.create-source</code> and <code>javax.persistence.schema-generation.drop-source</code> properties control how the provider will create or delete the database artifacts.</p>
 
@@ -1307,12 +1360,16 @@ public Collection&lt;LineItem&gt; getLineItems() {
         </div>
 
         <p>In this example, the persistence provider will use a script packaged within the application to create the database artifacts:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;property name="javax.persistence.schema-generation.create-source"
-           value="script"/&gt;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;property name="javax.persistence.schema-generation.create-source"
+           value="script"/&gt;
+</pre>
 
         <p>If you specify a script in <code>create-source</code> or <code>drop-source</code>, specify the location of the script using the <code>javax.persistence.schema-generation.create-script-source</code> or <code>javax.persistence.schema-generation.drop-script-source</code> property. The location of the script is relative to the root of the persistence unit:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;property name="javax.persistence.schema-generation.create-script-source"
-           value="META-INF/sql/create.sql" /&gt;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;property name="javax.persistence.schema-generation.create-script-source"
+           value="META-INF/sql/create.sql" /&gt;
+</pre>
 
         <p>In the above example, the <code>create-script-source</code> is set to a SQL file called <code>create.sql</code> in the <code>META-INF/sql</code> directory relative to root of the persistence unit.</p>
       </div>
@@ -1320,13 +1377,15 @@ public Collection&lt;LineItem&gt; getLineItems() {
       <div class="sect2">
         <a id="sthref1918"></a>
 
-        <h2 class="sect2"><span class="secnum">37.5.2</span> Loading Data Using SQL Scripts</h2>
+        <h2 class="sect2" id="sigil_toc_id_751"><span class="secnum">37.5.2</span> Loading Data Using SQL Scripts</h2>
 
         <p><a id="sthref1919"></a><a id="sthref1920"></a><a id="sthref1921"></a>If you want to <a id="sthref1922"></a>populate the database tables with data before the application loads, specify the location of a load script in the <code>javax.persistence.sql-load-script-source property</code>. The location specified in this property is relative to the root of the persistence unit.</p>
 
         <p>In this example, the load script is a file called <code>data.sql</code> in the <code>META-INF/sql</code> directory relative to the root of the persistence unit:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;property name="javax.persistence.sql-load-script-source"
-          value="META-INF/sql/data.sql" /&gt;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;property name="javax.persistence.sql-load-script-source"
+          value="META-INF/sql/data.sql" /&gt;
+</pre>
       </div>
     </div>
   </div>
@@ -1335,7 +1394,7 @@ public Collection&lt;LineItem&gt; getLineItems() {
     <a id="GKCLC"></a><a id="JEETT00492"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">37.6</span> Further Information about Persistence</h1>
+      <h1 class="sect1" id="sigil_toc_id_752"><span class="secnum">37.6</span> Further Information about Persistence</h1>
 
       <p>For more information about the Java Persistence API, see</p>
 
@@ -1343,25 +1402,25 @@ public Collection&lt;LineItem&gt; getLineItems() {
         <li>
           <p>Java Persistence 2.1 API specification:</p>
 
-          <p><code><a href="../Text/persistence-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D338">http://jcp.org/en/jsr/detail?id=338</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=338">http://jcp.org/en/jsr/detail?id=338</a></code></p>
         </li>
 
         <li>
           <p>EclipseLink, the Java Persistence API implementation in GlassFish Server:</p>
 
-          <p><code><a href="../Text/persistence-intro.xhtml#http%3A//www.eclipse.org/eclipselink/jpa.php">http://www.eclipse.org/eclipselink/jpa.php</a></code></p>
+          <p><code><a href="../Text/http://www.eclipse.org/eclipselink/jpa.xhtml#http://www.eclipse.org/eclipselink/jpa.php">http://www.eclipse.org/eclipselink/jpa.php</a></code></p>
         </li>
 
         <li>
           <p>EclipseLink team blog:</p>
 
-          <p><code><a href="../Text/persistence-intro.xhtml#http%3A//eclipselink.blogspot.com/">http://eclipselink.blogspot.com/</a></code></p>
+          <p><code><a href="../Text/http://eclipselink.blogspot.com/.xhtml#http://eclipselink.blogspot.com/">http://eclipselink.blogspot.com/</a></code></p>
         </li>
 
         <li>
           <p>EclipseLink wiki documentation:</p>
 
-          <p><code><a href="../Text/persistence-intro.xhtml#http%3A//wiki.eclipse.org/EclipseLink">http://wiki.eclipse.org/EclipseLink</a></code></p>
+          <p><code><a href="../Text/http://wiki.eclipse.org/EclipseLink.xhtml#http://wiki.eclipse.org/EclipseLink">http://wiki.eclipse.org/EclipseLink</a></code></p>
         </li>
       </ul>
     </div>

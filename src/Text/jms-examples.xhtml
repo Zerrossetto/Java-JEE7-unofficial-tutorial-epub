@@ -79,7 +79,7 @@
     <a id="BABEFBHJ"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.1</span> Overview of the JMS Examples</h1>
+      <h1 class="sect1" id="sigil_toc_id_376"><span class="secnum">46.1</span> Overview of the JMS Examples</h1>
 
       <p>The following tables list the examples used in this chapter, describe what they do, and link to the section that describes them fully. The example directory for each example is relative to the <span class="variable">tut-install</span><code>/examples/jms/</code> directory.</p>
 
@@ -261,7 +261,7 @@
     <a id="BNCFA"></a><a id="JEETT00554"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.2</span> <a id="sthref2380"></a><a id="sthref2381"></a>Writing Simple JMS Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_377"><span class="secnum">46.2</span> <a id="sthref2380"></a><a id="sthref2381"></a>Writing Simple JMS Applications</h1>
 
       <p>This section shows how to create, package, and run simple JMS clients that are packaged as application clients. The clients demonstrate the basic tasks a JMS application must perform:</p>
 
@@ -281,7 +281,7 @@
 
       <p>Each example uses two clients: one that sends messages and one that receives them. You can run the clients in two terminal windows.</p>
 
-      <p>When you write a JMS client to run in an enterprise bean application, you use many of the same methods in much the same sequence as for an application client. However, there are some significant differences. <a href="../Text/jms-cocepts.xhtml#BNCGL">Using the JMS API in Java EE Applications</a> describes these differences, and this chapter provides examples that illustrate them.</p>
+      <p>When you write a JMS client to run in an enterprise bean application, you use many of the same methods in much the same sequence as for an application client. However, there are some significant differences. <a href="../Text/jms-concepts.xhtml#BNCGL">Using the JMS API in Java EE Applications</a> describes these differences, and this chapter provides examples that illustrate them.</p>
 
       <p>The examples for this section are in the <span class="variable">tut-install</span><code>/examples/jms/simple/</code> directory, under the following subdirectories:</p><br />
       <code>producer/</code><br />
@@ -293,13 +293,13 @@
       <p>Before running the examples, you need to start GlassFish Server and create administered objects.</p><a id="BNCFD"></a><a id="JEETT00823"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.1</span> Starting the JMS Provider</h2>
+        <h2 class="sect2" id="sigil_toc_id_378"><span class="secnum">46.2.1</span> Starting the JMS Provider</h2>
 
         <p>When you use GlassFish Server, your JMS provider is GlassFish Server. Start the server as described in <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>.</p>
       </div><a id="GKTJS"></a><a id="JEETT00824"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.2</span> <a id="sthref2382"></a><a id="sthref2383"></a>Creating JMS Administered Objects</h2>
+        <h2 class="sect2" id="sigil_toc_id_379"><span class="secnum">46.2.2</span> <a id="sthref2382"></a><a id="sthref2383"></a>Creating JMS Administered Objects</h2>
 
         <p>This example uses the following JMS administered objects:</p>
 
@@ -320,7 +320,7 @@
         <p>You can also use the <code>asadmin create-jms-resource</code> command to create resources, the <code>asadmin list-jms-resources</code> command to display their names, and the <code>asadmin delete-jms-resource</code> command to remove them.</p><a id="BABHEFCB"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.2.2.1</span> To Create Resources for the Simple Examples</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.2.1</span> To Create Resources for the Simple Examples</h3>
 
           <p>A <code>glassfish-resources.xml</code> file in one of the Maven projects can create all the resources needed for the simple examples.</p>
 
@@ -331,23 +331,31 @@
 
             <li>
               <p>In a command window, go to the <code>Producer</code> example.</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/jms/simple/producer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/jms/simple/producer
+</pre>
             </li>
 
             <li>
               <p>Create the resources using the <code>asadmin add-resources</code> command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">asadmin add-resources src/main/setup/glassfish-resources.xml</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+asadmin add-resources src/main/setup/glassfish-resources.xml
+</pre>
             </li>
 
             <li>
               <p>Verify the creation of the resources:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">asadmin list-jms-resources</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+asadmin list-jms-resources
+</pre>
 
               <p>The command lists the two destinations and connection factory specified in the <code>glassfish-resources.xml</code> file in addition to the platform default connection factory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">jms/MyQueue
+              <pre class="oac_no_warn" xml:space="preserve">
+jms/MyQueue
 jms/MyTopic
 jms/__defaultConnectionFactory
-Command list-jms-resources executed successfully.</pre>
+Command list-jms-resources executed successfully.
+</pre>
 
               <p>In GlassFish Server, the Java EE <code>java:comp/DefaultJMSConnectionFactory</code> resource is mapped to a connection factory named <code>jms/__defaultConnectionFactory</code>.</p>
             </li>
@@ -356,7 +364,7 @@ Command list-jms-resources executed successfully.</pre>
       </div><a id="BABEEABE"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.3</span> Building All the Simple Examples</h2>
+        <h2 class="sect2" id="sigil_toc_id_380"><span class="secnum">46.2.3</span> Building All the Simple Examples</h2>
 
         <p><a id="sthref2384"></a>To run the simple examples using GlassFish Server, package each example in an application client JAR file. The application client JAR file requires a manifest file, located in the <code>src/main/java/META-INF/</code> directory for each example, along with the <code>.class</code> file.</p>
 
@@ -365,7 +373,7 @@ Command list-jms-resources executed successfully.</pre>
         <div class="sect3">
           <a id="sthref2385"></a>
 
-          <h3 class="sect3"><span class="secnum">46.2.3.1</span> To Build All the Simple Examples Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.3.1</span> To Build All the Simple Examples Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -374,7 +382,9 @@ Command list-jms-resources executed successfully.</pre>
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms
+</pre>
             </li>
 
             <li>
@@ -396,17 +406,21 @@ Command list-jms-resources executed successfully.</pre>
         <div class="sect3">
           <a id="sthref2386"></a>
 
-          <h3 class="sect3"><span class="secnum">46.2.3.2</span> To Build All the Simple Examples Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.3.2</span> To Build All the Simple Examples Using Maven</h3>
 
           <ol>
             <li>
               <p>In a terminal window, go to the <code>simple</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/jms/simple/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/jms/simple/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command to build all the projects:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command places the application client JAR files in the <code>target</code> directories for the examples.</p>
             </li>
@@ -415,7 +429,7 @@ Command list-jms-resources executed successfully.</pre>
       </div><a id="BABIHCAE"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.4</span> <a id="sthref2387"></a><a id="sthref2388"></a>Sending Messages</h2>
+        <h2 class="sect2" id="sigil_toc_id_381"><span class="secnum">46.2.4</span> <a id="sthref2387"></a><a id="sthref2388"></a>Sending Messages</h2>
 
         <p>This section describes how to use a client to send messages. The <code>Producer.java</code> client will send messages in all of these examples.</p>
 
@@ -446,24 +460,27 @@ Command list-jms-resources executed successfully.</pre>
         <div class="sect3">
           <a id="sthref2389"></a>
 
-          <h3 class="sect3"><span class="secnum">46.2.4.1</span> The Producer.java Client</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.4.1</span> The Producer.java Client</h3>
 
           <p>The sending client, <code>Producer.java</code>, performs the following steps.</p>
 
           <ol>
             <li>
               <p>Injects resources for a connection factory, queue, and topic:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
+              <pre class="oac_no_warn" xml:space="preserve">
+@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
 private static ConnectionFactory connectionFactory;
 @Resource(lookup = "jms/MyQueue")
 private static Queue queue;
 @Resource(lookup = "jms/MyTopic")
-private static Topic topic;</pre>
+private static Topic topic;
+</pre>
             </li>
 
             <li>
               <p>Retrieves and verifies command-line arguments that specify the destination type and the number of arguments:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">final int NUM_MSGS;
+              <pre class="oac_no_warn" xml:space="preserve">
+final int NUM_MSGS;
 String destType = args[0];
 System.out.println("Destination type is " + destType);
 if ( ! ( destType.equals("queue") || destType.equals("topic") ) ) { 
@@ -476,15 +493,12 @@ if (args.length == 2){
     NUM_MSGS = 1;
 }
 </pre>
-
-              <div>
-                <br />
-              </div>
             </li>
 
             <li>
               <p>Assigns either the queue or the topic to a destination object, based on the specified destination type:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination dest = null;
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination dest = null;
 try { 
     if (destType.equals("queue")) { 
         dest = (Destination) queue; 
@@ -494,17 +508,21 @@ try {
 } catch (Exception e) {
     System.err.println("Error setting destination: " + e.toString()); 
     System.exit(1);
-}</pre>
+}
+</pre>
             </li>
 
             <li>
               <p>Within a <code>try</code>-with-resources block, creates a <code>JMSContext</code>:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">try (JMSContext context = connectionFactory.createContext();) {</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+try (JMSContext context = connectionFactory.createContext();) {
+</pre>
             </li>
 
             <li>
               <p>Sets the message count to zero, then creates a <code>JMSProducer</code> and sends one or more messages to the destination and increments the count. Messages in the form of strings are of the <code>TextMessage</code> message type:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    int count = 0;
+              <pre class="oac_no_warn" xml:space="preserve">
+    int count = 0;
     for (int i = 0; i &lt; NUM_MSGS; i++) { 
         String message = "This is message " + (i + 1) 
                 + " from producer";
@@ -513,23 +531,28 @@ try {
         context.createProducer().send(dest, message);
         count += 1;
     }
-    System.out.println("Text messages sent: " + count);</pre>
+    System.out.println("Text messages sent: " + count);
+</pre>
             </li>
 
             <li>
               <p>Sends an empty control message to indicate the end of the message stream:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    context.createProducer().send(dest, context.createMessage());</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+    context.createProducer().send(dest, context.createMessage());
+</pre>
 
               <p>Sending an empty message of no specified type is a convenient way for an application to indicate to the consumer that the final message has arrived.</p>
             </li>
 
             <li>
               <p>Catches and handles any exceptions. The end of the <code>try</code>-with-resources block automatically causes the <code>JMSContext</code> to be closed:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">} catch (Exception e) {
+              <pre class="oac_no_warn" xml:space="preserve">
+} catch (Exception e) {
     System.err.println("Exception occurred: " + e.toString());
     System.exit(1);
 }
-System.exit(0);</pre>
+System.exit(0);
+</pre>
             </li>
           </ol>
         </div>
@@ -537,7 +560,7 @@ System.exit(0);</pre>
         <div class="sect3">
           <a id="sthref2390"></a>
 
-          <h3 class="sect3"><span class="secnum">46.2.4.2</span> To Run the Producer Client</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.4.2</span> To Run the Producer Client</h3>
 
           <p>You can run the client using the <code>appclient</code> command. The <code>Producer</code> client takes one or two command-line arguments: a destination type and, optionally, a number of messages. If you do not specify a number of messages, the client sends one message.</p>
 
@@ -550,19 +573,25 @@ System.exit(0);</pre>
 
             <li>
               <p>In a terminal window, go to the <code>producer</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd producer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd producer
+</pre>
             </li>
 
             <li>
               <p>Run the <code>Producer</code> program, sending three messages to the queue:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar queue 3</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar queue 3
+</pre>
 
               <p>The output of the program looks like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is queue
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is queue
 Sending message: This is message 1 from producer
 Sending message: This is message 2 from producer
 Sending message: This is message 3 from producer
-Text messages sent: 3</pre>
+Text messages sent: 3
+</pre>
 
               <p>The messages are now in the queue, waiting to be received.</p>
 
@@ -589,12 +618,12 @@ Text messages sent: 3</pre>
       </div><a id="BNCFB"></a><a id="JEETT01291"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.5</span> <a id="sthref2391"></a><a id="sthref2392"></a><a id="sthref2393"></a>Receiving Messages Synchronously</h2>
+        <h2 class="sect2" id="sigil_toc_id_382"><span class="secnum">46.2.5</span> <a id="sthref2391"></a><a id="sthref2392"></a><a id="sthref2393"></a>Receiving Messages Synchronously</h2>
 
         <p>This section describes the receiving client, which uses the <code>receive</code> method to consume messages synchronously. This section then explains how to run the clients using GlassFish Server.</p><a id="BNCFC"></a><a id="JEETT00822"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.2.5.1</span> The SynchConsumer.java Client</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.5.1</span> The SynchConsumer.java Client</h3>
 
           <p>The receiving client, <code>SynchConsumer.java</code>, performs the following steps.</p>
 
@@ -613,12 +642,15 @@ Text messages sent: 3</pre>
 
             <li>
               <p>Creates a <code>JMSConsumer</code>, starting message delivery:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">consumer = context.createConsumer(dest);</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+consumer = context.createConsumer(dest);
+</pre>
             </li>
 
             <li>
               <p>Receives the messages sent to the destination until the end-of-message-stream control message is received:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">int count = 0;
+              <pre class="oac_no_warn" xml:space="preserve">
+int count = 0;
 while (true) {
     Message m = consumer.receive(1000); 
     if (m != null) { 
@@ -631,7 +663,8 @@ while (true) {
         } 
     }
 }
-System.out.println("Messages received: " + count);</pre>
+System.out.println("Messages received: " + count);
+</pre>
 
               <p>Because the control message is not a <code>TextMessage</code>, the receiving client terminates the <code>while</code> loop and stops receiving messages after the control message arrives.</p>
             </li>
@@ -645,7 +678,7 @@ System.out.println("Messages received: " + count);</pre>
         </div><a id="BNCFG"></a><a id="JEETT00825"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.2.5.2</span> To Run the SynchConsumer and Producer Clients</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.5.2</span> To Run the SynchConsumer and Producer Clients</h3>
 
           <p>You can run the client using the <code>appclient</code> command. The <code>SynchConsumer</code> client takes one command-line argument, the destination type.</p>
 
@@ -654,65 +687,85 @@ System.out.println("Messages received: " + count);</pre>
           <ol>
             <li>
               <p>In the same terminal window where you ran <code>Producer</code>, go to the <code>synchconsumer</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd ../synchconsumer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd ../synchconsumer
+</pre>
             </li>
 
             <li>
               <p>Run the <code>SynchConsumer</code> client, specifying the queue:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/synchconsumer.jar queue</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/synchconsumer.jar queue
+</pre>
 
               <p>The output of the client looks like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is queue
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is queue
 Reading message: This is message 1 from producer
 Reading message: This is message 2 from producer
 Reading message: This is message 3 from producer
-Messages received: 3</pre>
+Messages received: 3
+</pre>
             </li>
 
             <li>
               <p>Now try running the clients in the opposite order. Run the <code>SynchConsumer</code> client:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/synchconsumer.jar queue</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/synchconsumer.jar queue
+</pre>
 
               <p>The client displays the destination type and then waits for messages.</p>
             </li>
 
             <li>
               <p>Open a new terminal window and run the <code>Producer</code> client:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd tut-install/jms/simple/producer
-appclient -client target/producer.jar queue 3<br /></pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/jms/simple/producer
+appclient -client target/producer.jar queue 3
+</pre>
 
               <p>When the messages have been sent, the <code>SynchConsumer</code> client receives them and exits.</p>
             </li>
 
             <li>
               <p>Now run the <code>Producer</code> client using a topic instead of a queue:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar topic 3</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar topic 3
+</pre>
 
               <p>The output of the client looks like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is topic
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is topic
 Sending message: This is message 1 from producer
 Sending message: This is message 2 from producer
 Sending message: This is message 3 from producer
-Text messages sent: 3</pre>
+Text messages sent: 3
+</pre>
             </li>
 
             <li>
               <p>Now, in the other terminal window, run the <code>SynchConsumer</code> client using the topic:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/synchconsumer.jar topic</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/synchconsumer.jar topic
+</pre>
 
               <p>The result, however, is different. Because you are using a subscription on a topic, messages that were sent before you created the subscription on the topic will not be added to the subscription and delivered to the consumer. (See <a href="../Text/jms-concepts.xhtml#BNCED">Publish/Subscribe Messaging Style</a> and <a href="../Text/jms-concepts.xhtml#BABEEJJJ">Consuming Messages from Topics</a> for details.) Instead of receiving the messages, the client waits for messages to arrive.</p>
             </li>
 
             <li>
               <p>Leave the <code>SynchConsumer</code> client running and run the <code>Producer</code> client again:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar topic 3</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar topic 3
+</pre>
 
               <p>Now the <code>SynchConsumer</code> client receives the messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is topic
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is topic
 Reading message: This is message 1 from producer
 Reading message: This is message 2 from producer
 Reading message: This is message 3 from producer
-Messages received: 3</pre>
+Messages received: 3
+</pre>
 
               <p>Because these messages were sent after the consumer was started, the client receives them.</p>
             </li>
@@ -721,7 +774,7 @@ Messages received: 3</pre>
       </div><a id="BNCFH"></a><a id="JEETT01292"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.6</span> <a id="sthref2394"></a><a id="sthref2395"></a><a id="sthref2396"></a>Using a Message Listener for Asynchronous Message Delivery</h2>
+        <h2 class="sect2" id="sigil_toc_id_383"><span class="secnum">46.2.6</span> <a id="sthref2394"></a><a id="sthref2395"></a><a id="sthref2396"></a>Using a Message Listener for Asynchronous Message Delivery</h2>
 
         <p>This section describes the receiving clients in an example that uses a message listener for asynchronous message delivery. This section then explains how to compile and run the clients using GlassFish Server.</p>
 
@@ -744,7 +797,7 @@ Messages received: 3</pre>
         </div><a id="BNCFI"></a><a id="JEETT00826"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.2.6.1</span> Writing the AsynchConsumer.java and TextListener.java Clients</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.6.1</span> Writing the AsynchConsumer.java and TextListener.java Clients</h3>
 
           <p>The sending client is <code>Producer.java</code>, the same client used in <a href="../Text/jms-examples.xhtml#BABIHCAE">Sending Messages</a> and <a href="../Text/jms-examples.xhtml#BNCFB">Receiving Messages Synchronously</a>.</p>
 
@@ -771,8 +824,10 @@ Messages received: 3</pre>
 
             <li>
               <p>Creates an instance of the <code>TextListener</code> class and registers it as the message listener for the <code>JMSConsumer</code>:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">listener = new TextListener();
-consumer.setMessageListener(listener);</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+listener = new TextListener();
+consumer.setMessageListener(listener);
+</pre>
             </li>
 
             <li>
@@ -793,7 +848,8 @@ consumer.setMessageListener(listener);</pre>
 
             <li>
               <p>If the message is a <code>TextMessage</code>, the <code>onMessage</code> method displays its content as a string value. If the message is not a text message, it reports this fact:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void onMessage(Message m) { 
+              <pre class="oac_no_warn" xml:space="preserve">
+public void onMessage(Message m) { 
     try { 
         if (m instanceof TextMessage) { 
             System.out.println(
@@ -804,7 +860,8 @@ consumer.setMessageListener(listener);</pre>
     } catch (JMSException | JMSRuntimeException e) {
         System.err.println("JMSException in onMessage(): " + e.toString());
     }
-}</pre>
+}
+</pre>
             </li>
           </ol>
 
@@ -814,43 +871,55 @@ consumer.setMessageListener(listener);</pre>
         </div><a id="BNCFK"></a><a id="JEETT00268"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.2.6.2</span> <a id="sthref2398"></a>To Run the AsynchConsumer and Producer Clients</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.6.2</span> <a id="sthref2398"></a>To Run the AsynchConsumer and Producer Clients</h3>
 
           <p>You will need two terminal windows, as you did in <a href="../Text/jms-examples.xhtml#BNCFB">Receiving Messages Synchronously</a>.</p>
 
           <ol>
             <li>
               <p>In the terminal window where you ran the <code>SynchConsumer</code> client, go to the <code>asynchconsumer</code> example directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/jms/simple/asynchconsumer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/jms/simple/asynchconsumer
+</pre>
             </li>
 
             <li>
               <p>Run the <code>AsynchConsumer</code> client, specifying the <code>topic</code> destination type:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/asynchconsumer.jar topic</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/asynchconsumer.jar topic
+</pre>
 
               <p>The client displays the following lines (along with some additional output) and then waits for messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is topic
-To end program, enter Q or q, then &lt;return&gt;</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is topic
+To end program, enter Q or q, then &lt;return&gt;
+</pre>
             </li>
 
             <li>
               <p>In the terminal window where you ran the <code>Producer</code> client previously, run the client again, sending three messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar topic 3</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar topic 3
+</pre>
 
               <p>The output of the client looks like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is topic
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is topic
 Sending message: This is message 1 from producer
 Sending message: This is message 2 from producer
 Sending message: This is message 3 from producer
-Text messages sent: 3</pre>
+Text messages sent: 3
+</pre>
 
               <p>In the other window, the <code>AsynchConsumer</code> client displays the following (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is topic
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is topic
 To end program, enter Q or q, then &lt;return&gt;
 Reading message: This is message 1 from producer
 Reading message: This is message 2 from producer
 Reading message: This is message 3 from producer
-Message is not a TextMessage</pre>
+Message is not a TextMessage
+</pre>
 
               <p>The last line appears because the client has received the non-text control message sent by the <code>Producer</code> client.</p>
             </li>
@@ -863,27 +932,35 @@ Message is not a TextMessage</pre>
               <p>Now run the clients using a queue.</p>
 
               <p>In this case, as with the synchronous example, you can run the <code>Producer</code> client first, because there is no timing dependency between the sender and receiver:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar queue 3</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar queue 3
+</pre>
 
               <p>The output of the client looks like this:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is queue
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is queue
 Sending message: This is message 1 from producer
 Sending message: This is message 2 from producer
 Sending message: This is message 3 from producer
-Text messages sent: 3</pre>
+Text messages sent: 3
+</pre>
             </li>
 
             <li>
               <p>In the other window, run the <code>AsynchConsumer</code> client:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/asynchconsumer.jar queue</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/asynchconsumer.jar queue
+</pre>
 
               <p>The output of the client looks like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is queue
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is queue
 To end program, enter Q or q, then &lt;return&gt;
 Reading message: This is message 1 from producer
 Reading message: This is message 2 from producer
 Reading message: This is message 3 from producer
-Message is not a TextMessage</pre>
+Message is not a TextMessage
+</pre>
             </li>
 
             <li>
@@ -894,12 +971,12 @@ Message is not a TextMessage</pre>
       </div><a id="BNCFL"></a><a id="JEETT01293"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.7</span> <a id="sthref2399"></a><a id="sthref2400"></a><a id="sthref2401"></a>Browsing Messages on a Queue</h2>
+        <h2 class="sect2" id="sigil_toc_id_384"><span class="secnum">46.2.7</span> <a id="sthref2399"></a><a id="sthref2400"></a><a id="sthref2401"></a>Browsing Messages on a Queue</h2>
 
         <p>This section describes an example that creates a <code>QueueBrowser</code> object to examine messages on a queue, as described in <a href="../Text/jms-concepts.xhtml#BNCEY">JMS Queue Browsers</a>. This section then explains how to compile, package, and run the example using GlassFish Server.</p><a id="BNCFM"></a><a id="JEETT00827"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.2.7.1</span> The MessageBrowser.java Client</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.7.1</span> The MessageBrowser.java Client</h3>
 
           <p><a id="sthref2402"></a>To create a <code>QueueBrowser</code> for a queue, you call the <code>JMSContext.createBrowser</code> method with the queue as the argument. You obtain the messages in the queue as an <code>Enumeration</code> object. You can then iterate through the <code>Enumeration</code> object and display the contents of each message.</p>
 
@@ -916,24 +993,30 @@ Message is not a TextMessage</pre>
 
             <li>
               <p>Creates a <code>QueueBrowser</code>:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">QueueBrowser browser = context.createBrowser(queue);</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+QueueBrowser browser = context.createBrowser(queue);
+</pre>
             </li>
 
             <li>
               <p>Retrieves the <code>Enumeration</code> that contains the messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Enumeration msgs = browser.getEnumeration();</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Enumeration msgs = browser.getEnumeration();
+</pre>
             </li>
 
             <li>
               <p>Verifies that the <code>Enumeration</code> contains messages, then displays the contents of the messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">if ( !msgs.hasMoreElements() ) { 
+              <pre class="oac_no_warn" xml:space="preserve">
+if ( !msgs.hasMoreElements() ) { 
     System.out.println("No messages in queue");
 } else { 
     while (msgs.hasMoreElements()) { 
         Message tempMsg = (Message)msgs.nextElement(); 
         System.out.println("Message: " + tempMsg); 
     }
-}</pre>
+}
+</pre>
             </li>
 
             <li>
@@ -942,7 +1025,8 @@ Message is not a TextMessage</pre>
           </ol>
 
           <p>Dumping the message contents to standard output retrieves the message body and properties in a format that depends on the implementation of the <code>toString</code> method. In GlassFish Server, the message format looks something like this:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Text:   This is message 3 from producer
+          <pre class="oac_no_warn" xml:space="preserve">
+Text:   This is message 3 from producer
 Class:                  com.sun.messaging.jmq.jmsclient.TextMessageImpl
 getJMSMessageID():      ID:8-10.152.23.26(bf:27:4:e:e7:ec)-55645-1363100335526
 getJMSTimestamp():      1129061034355
@@ -954,7 +1038,8 @@ getJMSRedelivered():    false
 getJMSType():           null
 getJMSExpiration():     0
 getJMSPriority():       4
-Properties:             {JMSXDeliveryCount=0}</pre>
+Properties:             {JMSXDeliveryCount=0}
+</pre>
 
           <p>Instead of displaying the message contents this way, you can call some of the <code>Message</code> interface's getter methods to retrieve the parts of the message you want to see.</p>
 
@@ -962,7 +1047,7 @@ Properties:             {JMSXDeliveryCount=0}</pre>
         </div><a id="BNCFN"></a><a id="JEETT00270"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.2.7.2</span> To Run the QueueBrowser Client</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.7.2</span> To Run the QueueBrowser Client</h3>
 
           <p>To run the <code>MessageBrowser</code> example using the <code>appclient</code> command, follow these steps.</p>
 
@@ -973,30 +1058,41 @@ Properties:             {JMSXDeliveryCount=0}</pre>
           <ol>
             <li>
               <p>In a terminal window, go to the <code>producer</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/examples/jms/simple/producer/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/examples/jms/simple/producer/
+</pre>
             </li>
 
             <li>
               <p>Run the <code>Producer</code> client, sending one message to the queue, along with the non-text control message:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar queue</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar queue
+</pre>
 
               <p>The output of the client looks like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is queue
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is queue
 Sending message: This is message 1 from producer
-Text messages sent: 1</pre>
+Text messages sent: 1
+</pre>
             </li>
 
             <li>
               <p>In another terminal window, go to the <code>messagebrowser</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/jms/simple/messagebrowser</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/jms/simple/messagebrowser
+</pre>
             </li>
 
             <li>
               <p>Run the <code>MessageBrowser</code> client using the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/messagebrowser.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/messagebrowser.jar
+</pre>
 
               <p>The output of the client looks something like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Message: 
+              <pre class="oac_no_warn" xml:space="preserve">
+Message: 
 Text:   This is message 1 from producer
 Class:                  com.sun.messaging.jmq.jmsclient.TextMessageImpl
 getJMSMessageID():      ID:9-10.152.23.26(bf:27:4:e:e7:ec)-55645-1363100335526
@@ -1023,7 +1119,8 @@ getJMSRedelivered():    false
 getJMSType():           null
 getJMSExpiration():     0
 getJMSPriority():       4
-Properties:             {JMSXDeliveryCount=0}</pre>
+Properties:             {JMSXDeliveryCount=0}
+</pre>
 
               <p>The first message is the <code>TextMessage</code>, and the second is the non-text control message.</p>
             </li>
@@ -1034,19 +1131,23 @@ Properties:             {JMSXDeliveryCount=0}</pre>
 
             <li>
               <p>Run the <code>SynchConsumer</code> client to consume the messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/synchconsumer.jar queue</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/synchconsumer.jar queue
+</pre>
 
               <p>The output of the client looks like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Destination type is queue
+              <pre class="oac_no_warn" xml:space="preserve">
+Destination type is queue
 Reading message: This is message 1 from producer
-Messages received: 1</pre>
+Messages received: 1
+</pre>
             </li>
           </ol>
         </div>
       </div><a id="BABDDHHC"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.8</span> Running Multiple Consumers on the Same Destination</h2>
+        <h2 class="sect2" id="sigil_toc_id_385"><span class="secnum">46.2.8</span> Running Multiple Consumers on the Same Destination</h2>
 
         <p>To illustrate further the way point-to-point and publish/subscribe messaging works, you can use the <code>Producer</code> and <code>SynchConsumer</code> examples to send messages that are then consumed by two clients running simultaneously.</p>
 
@@ -1057,14 +1158,18 @@ Messages received: 1</pre>
 
           <li>
             <p>In each of the <code>synchconsumer</code> windows, start running the client, receiving messages from a queue:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/synchconsumer.jar queue</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/synchconsumer.jar queue
+</pre>
 
             <p>Wait until you see the "Destination type is queue" message in both windows.</p>
           </li>
 
           <li>
             <p>In the <code>producer</code> window, run the client, sending 20 or so messages to the queue:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar queue 20</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar queue 20
+</pre>
           </li>
 
           <li>
@@ -1077,14 +1182,18 @@ Messages received: 1</pre>
 
           <li>
             <p>Next, run the <code>synchconsumer</code> clients using a topic. In each window, run the following command:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/synchconsumer.jar topic</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/synchconsumer.jar topic
+</pre>
 
             <p>Wait until you see the "Destination type is topic" message in both windows.</p>
           </li>
 
           <li>
             <p>In the <code>producer</code> window, run the client, sending 20 or so messages to the topic:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar topic 20</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar topic 20
+</pre>
           </li>
 
           <li>
@@ -1094,7 +1203,7 @@ Messages received: 1</pre>
       </div><a id="BNCFX"></a><a id="JEETT01296"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.2.9</span> <a id="sthref2403"></a><a id="sthref2404"></a>Acknowledging Messages</h2>
+        <h2 class="sect2" id="sigil_toc_id_386"><span class="secnum">46.2.9</span> <a id="sthref2403"></a><a id="sthref2404"></a>Acknowledging Messages</h2>
 
         <p>JMS provides two alternative ways for a consuming client to ensure that a message is not acknowledged until the application has finished processing the message:</p>
 
@@ -1215,12 +1324,16 @@ Messages received: 1</pre>
         <p>The example is under the <span class="variable">tut-install</span><code>/examples/jms/simple/clientackconsumer/</code> directory.</p>
 
         <p>The example client, <code>ClientAckConsumer.java</code>, creates a <code>JMSContext</code> that specifies client acknowledgment:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">try (JMSContext context =
+        <pre class="oac_no_warn" xml:space="preserve">
+try (JMSContext context =
       connectionFactory.createContext(JMSContext.CLIENT_ACKNOWLEDGE);) {
-    ...</pre>
+    ...
+</pre>
 
         <p>The client uses a <code>while</code> loop almost identical to that used by <code>SynchConsumer.java</code>, with the exception that after processing each message, it calls the <code>acknowledge</code> method on the <code>JMSContext</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">context.acknowledge();</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+context.acknowledge();
+</pre>
 
         <p>The example uses the following objects:</p>
 
@@ -1235,37 +1348,47 @@ Messages received: 1</pre>
         </ul><a id="GJSCG"></a><a id="JEETT00277"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.2.9.1</span> To Run the ClientAckConsumer Client</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.2.9.1</span> To Run the ClientAckConsumer Client</h3>
 
           <ol>
             <li>
               <p>In a terminal window, go to the following directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/simple/producer/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/simple/producer/
+</pre>
             </li>
 
             <li>
               <p>Run the <code>Producer</code> client, sending some messages to the queue:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar queue 3</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar queue 3
+</pre>
             </li>
 
             <li>
               <p>In another terminal window, go to the following directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/simple/clientackconsumer/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/simple/clientackconsumer/
+</pre>
             </li>
 
             <li>
               <p>To run the client, use the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/clientackconsumer.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/clientackconsumer.jar
+</pre>
 
               <p>The client output looks like this (along with some additional output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Created client-acknowledge JMSContext
+              <pre class="oac_no_warn" xml:space="preserve">
+Created client-acknowledge JMSContext
 Reading message: This is message 1 from producer
 Acknowledging TextMessage
 Reading message: This is message 2 from producer
 Acknowledging TextMessage
 Reading message: This is message 3 from producer
 Acknowledging TextMessage
-Acknowledging non-text control message</pre>
+Acknowledging non-text control message
+</pre>
 
               <p>The client acknowledges each message explicitly after processing it, just as a <code>JMSContext</code> configured to use <code>AUTO_ACKNOWLEDGE</code> does automatically after a <code>MessageListener</code> returns successfully from processing a message received asynchronously.</p>
             </li>
@@ -1279,12 +1402,12 @@ Acknowledging non-text control message</pre>
     <a id="GIWFH"></a><a id="JEETT00555"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.3</span> Writing More Advanced JMS Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_387"><span class="secnum">46.3</span> Writing More Advanced JMS Applications</h1>
 
       <p>The following examples show how to use some of the more advanced features of the JMS API: durable subscriptions and transactions.</p><a id="BNCGG"></a><a id="JEETT01297"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.3.1</span> <a id="sthref2407"></a><a id="sthref2408"></a>Using Durable Subscriptions</h2>
+        <h2 class="sect2" id="sigil_toc_id_388"><span class="secnum">46.3.1</span> <a id="sthref2407"></a><a id="sthref2408"></a>Using Durable Subscriptions</h2>
 
         <p>The <code>durablesubscriptionexample</code> example shows how unshared durable subscriptions work. It demonstrates that a durable subscription continues to exist and accumulate messages even when there is no active consumer on it.</p>
 
@@ -1297,26 +1420,30 @@ Acknowledging non-text control message</pre>
         <p>The example uses a connection factory, j<code>ms/DurableConnectionFactory</code>, that has a client ID.</p>
 
         <p>The <code>DurableConsumer</code> client creates a <code>JMSContext</code> using the connection factory. It then stops the <code>JMSContext</code>, calls <code>createDurableConsumer</code> to create a durable subscription and a consumer on the topic by specifying a subscription name, registers a message listener, and starts the <code>JMSContext</code> again. The subscription is created only if it does not already exist, so the example can be run repeatedly:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">try (JMSContext context = durableConnectionFactory.createContext();) {
+        <pre class="oac_no_warn" xml:space="preserve">
+try (JMSContext context = durableConnectionFactory.createContext();) {
     context.stop();
     consumer = context.createDurableConsumer(topic, "MakeItLast");
     listener = new TextListener();
     consumer.setMessageListener(listener);
     context.start();
-    ...</pre>
+    ...
+</pre>
 
         <p>To send messages to the topic, you run the <code>producer</code> client.</p>
 
         <p>The <code>unsubscriber</code> example contains a very simple <code>Unsubscriber</code> client, which creates a <code>JMSContext</code> on the same connection factory and then calls the <code>unsubscribe</code> method, specifying the subscription name:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">try (JMSContext context = durableConnectionFactory.createContext();) {
+        <pre class="oac_no_warn" xml:space="preserve">
+try (JMSContext context = durableConnectionFactory.createContext();) {
     System.out.println("Unsubscribing from durable subscription");
     context.unsubscribe("MakeItLast");
-} ...</pre>
+} ...
+</pre>
 
         <div class="sect3">
           <a id="sthref2409"></a>
 
-          <h3 class="sect3"><span class="secnum">46.3.1.1</span> To Create Resources for the Durable Subscription Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.3.1.1</span> To Create Resources for the Durable Subscription Example</h3>
 
           <ol>
             <li>
@@ -1325,63 +1452,83 @@ Acknowledging non-text control message</pre>
 
             <li>
               <p>In a command window, go to the <code>durableconsumer</code> example.</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/jms/durablesubscriptionexample/durableconsumer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/jms/durablesubscriptionexample/durableconsumer
+</pre>
             </li>
 
             <li>
               <p>Create the resources using the <code>asadmin add-resources</code> command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">asadmin add-resources src/main/setup/glassfish-resources.xml</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+asadmin add-resources src/main/setup/glassfish-resources.xml
+</pre>
 
               <p>The command output reports the creation of a connector connection pool and a connector resource.</p>
             </li>
 
             <li>
               <p>Verify the creation of the resources:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">asadmin list-jms-resources</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+asadmin list-jms-resources
+</pre>
 
               <p>In addition to the resources you created for the simple examples, the command lists the new connection factory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">jms/MyQueue
+              <pre class="oac_no_warn" xml:space="preserve">
+jms/MyQueue
 jms/MyTopic
 jms/__defaultConnectionFactory
 jms/DurableConnectionFactory
-Command list-jms-resources executed successfully.</pre>
+Command list-jms-resources executed successfully.
+</pre>
             </li>
           </ol>
         </div><a id="GJSCI"></a><a id="JEETT00279"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.3.1.2</span> To Run the Durable Subscription Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.3.1.2</span> To Run the Durable Subscription Example</h3>
 
           <ol>
             <li>
               <p>In a terminal window, go to the following directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/durablesubscriptionexample/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/durablesubscriptionexample/
+</pre>
             </li>
 
             <li>
               <p>Build the <code>durableconsumer</code> and <code>unsubscriber</code> examples:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
 
             <li>
               <p>Go to the <code>durableconsumer</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd durableconsumer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd durableconsumer
+</pre>
             </li>
 
             <li>
               <p>To run the client, enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/durableconsumer.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/durableconsumer.jar
+</pre>
 
               <p>The client creates the durable consumer and then waits for messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Creating consumer for topic
+              <pre class="oac_no_warn" xml:space="preserve">
+Creating consumer for topic
 Starting consumer
-To end program, enter Q or q, then &lt;return&gt;</pre>
+To end program, enter Q or q, then &lt;return&gt;
+</pre>
             </li>
 
             <li>
               <p>In another terminal window, run the <code>Producer</code> client, sending some messages to the topic:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd tut-install/examples/jms/simple/producer
-appclient -client target/producer.jar topic 3<br /></pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/examples/jms/simple/producer
+appclient -client target/producer.jar topic 3
+</pre>
             </li>
 
             <li>
@@ -1390,19 +1537,23 @@ appclient -client target/producer.jar topic 3<br /></pre>
 
             <li>
               <p>Now, while the <code>DurableConsumer</code> client is not running, use the <code>Producer</code> client to send more messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar topic 2</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar topic 2
+</pre>
 
               <p>If a durable subscription did not exist, these messages would be lost, because no consumer on the topic is currently running. However, the durable subscription is still active, and it retains the messages.</p>
             </li>
 
             <li>
               <p>Run the <code>DurableConsumer</code> client again. It immediately receives the messages that were sent while it was inactive:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Creating consumer for topic
+              <pre class="oac_no_warn" xml:space="preserve">
+Creating consumer for topic
 Starting consumer
 To end program, enter Q or q, then &lt;return&gt;
 Reading message: This is message 1 from producer
 Reading message: This is message 2 from producer
-Message is not a TextMessage</pre>
+Message is not a TextMessage
+</pre>
             </li>
 
             <li>
@@ -1414,19 +1565,23 @@ Message is not a TextMessage</pre>
         <div class="sect3">
           <a id="sthref2410"></a>
 
-          <h3 class="sect3"><span class="secnum">46.3.1.3</span> To Run the unsubscriber Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.3.1.3</span> To Run the unsubscriber Example</h3>
 
           <p>After you have finished running the <code>DurableConsumer</code> client, run the <code>unsubscriber</code> example to unsubscribe from the durable subscription.</p>
 
           <ol>
             <li>
               <p>In a terminal window, go to the following directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/durablesubscriptionexample/unsubscriber</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/durablesubscriptionexample/unsubscriber
+</pre>
             </li>
 
             <li>
               <p>To run the <code>Unsubscriber</code> client, enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/unsubscriber.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/unsubscriber.jar
+</pre>
 
               <p>The client reports that it is unsubscribing from the durable subscription.</p>
             </li>
@@ -1435,7 +1590,7 @@ Message is not a TextMessage</pre>
       </div><a id="BNCGJ"></a><a id="JEETT01298"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.3.2</span> <a id="sthref2411"></a><a id="sthref2412"></a>Using Local Transactions</h2>
+        <h2 class="sect2" id="sigil_toc_id_389"><span class="secnum">46.3.2</span> <a id="sthref2411"></a><a id="sthref2412"></a>Using Local Transactions</h2>
 
         <p>The <code>transactedexample</code> example demonstrates the use of local transactions in a JMS client application. It also demonstrates the use of the request/reply messaging pattern described in <a href="../Text/jms-concepts.xhtml#BNCGB">Creating Temporary Destinations</a>, although it uses permanent rather than temporary destinations. The example consists of three modules, <code>genericsupplier</code>, <code>retailer</code>, and <code>vendor</code>, which can be found under the <span class="variable">tut-install</span><code>/examples/jms/transactedexample/</code> directory. The source code can be found in the <code>src/main/java/javaeetutorial</code> trees for each module. The <code>genericsupplier</code> and <code>retailer</code> modules each contain a single class, <code>genericsupplier/GenericSupplier.java</code> and <code>retailer/Retailer.java</code>, respectively. The <code>vendor</code> module is more complex, containing four classes: <code>vendor/Vendor.java</code>, <code>vendor/VendorMessageListener.java</code>, <code>vendor/Order.java</code>, and <code>vendor/SampleUtilities.java</code>.</p>
 
@@ -1444,34 +1599,41 @@ Message is not a TextMessage</pre>
         <ol>
           <li>
             <p>A retailer (<code>retailer/src/main/java/javaeetutorial/retailer/Retailer.java</code>) sends a <code>MapMessage</code> to a vendor order queue, ordering a quantity of computers, and waits for the vendor's reply:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">outMessage = context.createMapMessage();
+            <pre class="oac_no_warn" xml:space="preserve">
+outMessage = context.createMapMessage();
 outMessage.setString("Item", "Computer(s)");
 outMessage.setInt("Quantity", quantity);
 outMessage.setJMSReplyTo(retailerConfirmQueue);
 context.createProducer().send(vendorOrderQueue, outMessage);
 System.out.println("Retailer: ordered " + quantity + " computer(s)");
-orderConfirmReceiver = context.createConsumer(retailerConfirmQueue);</pre>
+orderConfirmReceiver = context.createConsumer(retailerConfirmQueue);
+</pre>
           </li>
 
           <li>
             <p>The vendor (<code>vendor/src/main/java/javaeetutorial/retailer/Vendor.java</code>) receives the retailer's order message and sends an order message to the supplier order topic in one transaction. This JMS transaction uses a single session, so you can combine a receive from a queue with a send to a topic. Here is the code that uses the same session to create a consumer for a queue:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">vendorOrderReceiver = session.createConsumer(vendorOrderQueue);</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+vendorOrderReceiver = session.createConsumer(vendorOrderQueue);
+</pre>
 
             <p>The following code receives the incoming message, sends an outgoing message, and commits the <code>JMSContext</code>. The message processing has been removed to keep the sequence simple:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">inMessage = vendorOrderReceiver.receive();
+            <pre class="oac_no_warn" xml:space="preserve">
+inMessage = vendorOrderReceiver.receive();
 // Process the incoming message and format the outgoing 
 // message
 ...
 context.createProducer().send(supplierOrderTopic, orderMessage);
 ...
-context.commit();</pre>
+context.commit();
+</pre>
 
             <p>For simplicity, there are only two suppliers, one for CPUs and one for hard drives.</p>
           </li>
 
           <li>
             <p>Each supplier (<code>genericsupplier/src/main/java/javaeetutorial/retailer/GenericSupplier.java</code>) receives the order from the order topic, checks its inventory, and then sends the items ordered to the queue named in the order message's <code>JMSReplyTo</code> field. If it does not have enough of the item in stock, the supplier sends what it has. The synchronous receive from the topic and the send to the queue take place in one JMS transaction:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">receiver = context.createConsumer(SupplierOrderTopic);
+            <pre class="oac_no_warn" xml:space="preserve">
+receiver = context.createConsumer(SupplierOrderTopic);
 ...
 inMessage = receiver.receive();
 if (inMessage instanceof MapMessage) {
@@ -1484,30 +1646,37 @@ context.createProducer().send(
          (Queue) orderMessage.getJMSReplyTo(),
          outMessage);
 // Display message contents
-context.commit();</pre>
+context.commit();
+</pre>
           </li>
 
           <li>
             <p>The vendor receives the suppliers' replies from its confirmation queue and updates the state of the order. Messages are processed by an asynchronous message listener, <code>VendorMessageListener</code>; this step shows the use of JMS transactions with a message listener:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">MapMessage component = (MapMessage) message;
+            <pre class="oac_no_warn" xml:space="preserve">
+MapMessage component = (MapMessage) message;
 ...
 int orderNumber = component.getInt("VendorOrderNumber");
 Order order = Order.getOrder(orderNumber).processSubOrder(component);
-context.commit();</pre>
+context.commit();
+</pre>
           </li>
 
           <li>
             <p>When all outstanding replies are processed for a given order, the vendor message listener sends a message notifying the retailer whether it can fulfill the order:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Queue replyQueue = (Queue) order.order.getJMSReplyTo();
+            <pre class="oac_no_warn" xml:space="preserve">
+Queue replyQueue = (Queue) order.order.getJMSReplyTo();
 MapMessage retailerConfirmMessage = context.createMapMessage();
 // Format the message
 context.createProducer().send(replyQueue, retailerConfirmMessage);
-context.commit();</pre>
+context.commit();
+</pre>
           </li>
 
           <li>
             <p>The retailer receives the message from the vendor:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">inMessage = (MapMessage) orderConfirmReceiver.receive();</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+inMessage = (MapMessage) orderConfirmReceiver.receive();
+</pre>
 
             <p>The retailer then places a second order for twice as many computers as in the first order, so these steps are executed twice.</p>
           </li>
@@ -1518,13 +1687,8 @@ context.commit();</pre>
         <div class="figure">
           <a id="BNCGK"></a><a id="JEETT00056"></a>
 
-          <p class="titleinfigure">Figure 46-1 Transactions: JMS Client Example</p>
-
-          <div style="text-align: center;"><img alt="Description of Figure 46-1 follows" longdesc="img_text/jeett_dt_034.htm" src="../Images/jeett_dt_034.png" style="line-height: 1.6em;" title="Description of Figure 46-1 follows" /></div>
-        </div>
-
-        <div class="figure">
-          Description of "Figure 46-1 Transactions: JMS Client Example"<br />
+          <p class="titleinfigure">Figure 46-1 Transactions: JMS Client Example</p><br />
+          <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_034.htm" id="sthref2413">Description of "Figure 46-1 Transactions: JMS Client Example"</a><br />
           <br />
         </div>
 
@@ -1539,7 +1703,7 @@ context.commit();</pre>
         <div class="sect3">
           <a id="sthref2414"></a>
 
-          <h3 class="sect3"><span class="secnum">46.3.2.1</span> To Create Resources for the transactedexample Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.3.2.1</span> To Create Resources for the transactedexample Example</h3>
 
           <ol>
             <li>
@@ -1548,20 +1712,27 @@ context.commit();</pre>
 
             <li>
               <p>In a command window, go to the <code>genericsupplier</code> example:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/jms/transactedexample/genericsupplier</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/jms/transactedexample/genericsupplier
+</pre>
             </li>
 
             <li>
               <p>Create the resources using the <code>asadmin add-resources</code> command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">asadmin add-resources src/main/setup/glassfish-resources.xml</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+asadmin add-resources src/main/setup/glassfish-resources.xml
+</pre>
             </li>
 
             <li>
               <p>Verify the creation of the resources:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">asadmin list-jms-resources</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+asadmin list-jms-resources
+</pre>
 
               <p>In addition to the resources you created for the simple examples and the durable subscription example, the command lists the four new destinations:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">jms/MyQueue
+              <pre class="oac_no_warn" xml:space="preserve">
+jms/MyQueue
 jms/MyTopic
 jms/AQueue
 jms/BQueue
@@ -1569,89 +1740,119 @@ jms/CQueue
 jms/OTopic
 jms/__defaultConnectionFactory
 jms/DurableConnectionFactory
-Command list-jms-resources executed successfully.</pre>
+Command list-jms-resources executed successfully.
+</pre>
             </li>
           </ol>
         </div><a id="GJSHA"></a><a id="JEETT00281"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.3.2.2</span> To Run the transactedexample Clients</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.3.2.2</span> To Run the transactedexample Clients</h3>
 
           <p>You will need four terminal windows to run the clients. Make sure that you start the clients in the correct order.</p>
 
           <ol>
             <li>
               <p>In a terminal window, go to the following directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/transactedexample/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/transactedexample/
+</pre>
             </li>
 
             <li>
               <p>To build and package all the modules, enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
 
             <li>
               <p>Go to the <code>genericsupplier</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd genericsupplier</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd genericsupplier
+</pre>
             </li>
 
             <li>
               <a id="BABFCGBI"></a>
 
               <p>Use the following command to start the CPU supplier client:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target\genericsupplier.jar CPU</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target\genericsupplier.jar CPU
+</pre>
 
               <p>After some initial output, the client reports the following:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Starting CPU supplier</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Starting CPU supplier
+</pre>
             </li>
 
             <li>
               <p>In a second terminal window, go to the <code>genericsupplier</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/examples/jms/transactedexample/genericsupplier</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/examples/jms/transactedexample/genericsupplier
+</pre>
             </li>
 
             <li>
               <p>Use the following command to start the hard drive supplier client:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target\genericsupplier.jar HD</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target\genericsupplier.jar HD
+</pre>
 
               <p>After some initial output, the client reports the following:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Starting Hard Drive supplier</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Starting Hard Drive supplier
+</pre>
             </li>
 
             <li>
               <p>In a third terminal window, go to the <code>vendor</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/examples/jms/transactedexample/vendor</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/examples/jms/transactedexample/vendor
+</pre>
             </li>
 
             <li>
               <p>Use the following command to start the <code>Vendor</code> client:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target\vendor.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target\vendor.jar
+</pre>
 
               <p>After some initial output, the client reports the following:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Starting vendor</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Starting vendor
+</pre>
             </li>
 
             <li>
               <p>In another terminal window, go to the <code>retailer</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/examples/jms/transactedexample/retailer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/examples/jms/transactedexample/retailer
+</pre>
             </li>
 
             <li>
               <a id="BABBIHCE"></a>
 
               <p>Use a command like the following to run the <code>Retailer</code> client. The argument specifies the number of computers to order:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/retailer.jar 4</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/retailer.jar 4
+</pre>
 
               <p>After some initial output, the <code>Retailer</code> client reports something like the following. In this case, the first order is filled, but the second is not:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Retailer: Quantity to be ordered is 4
+              <pre class="oac_no_warn" xml:space="preserve">
+Retailer: Quantity to be ordered is 4
 Retailer: Ordered 4 computer(s)
 Retailer: Order filled
 Retailer: Placing another order
 Retailer: Ordered 8 computer(s)
-Retailer: Order not filled</pre>
+Retailer: Order not filled
+</pre>
 
               <p>The <code>Vendor</code> client reports something like the following, stating in this case that it is able to send all the computers in the first order, but not in the second:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Vendor: Retailer ordered 4 Computer(s)
+              <pre class="oac_no_warn" xml:space="preserve">
+Vendor: Retailer ordered 4 Computer(s)
 Vendor: Ordered 4 CPU(s) and hard drive(s)
   Vendor: Committed transaction 1
 Vendor: Completed processing for order 1
@@ -1662,38 +1863,47 @@ Vendor: Ordered 8 CPU(s) and hard drive(s)
   Vendor: Committed transaction 1
 Vendor: Completed processing for order 2
 Vendor: Unable to send 8 computer(s)
-  Vendor: Committed transaction 2</pre>
+  Vendor: Committed transaction 2
+</pre>
 
               <p>The CPU supplier reports something like the following. In this case, it is able to send all the CPUs for both orders:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CPU Supplier: Vendor ordered 4 CPU(s)
+              <pre class="oac_no_warn" xml:space="preserve">
+CPU Supplier: Vendor ordered 4 CPU(s)
 CPU Supplier: Sent 4 CPU(s)
   CPU Supplier: Committed transaction
 CPU Supplier: Vendor ordered 8 CPU(s)
 CPU Supplier: Sent 8 CPU(s)
-  CPU Supplier: Committed transaction</pre>
+  CPU Supplier: Committed transaction
+</pre>
 
               <p>The hard drive supplier reports something like the following. In this case, it has a shortage of hard drives for the second order:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hard Drive Supplier: Vendor ordered 4 Hard Drive(s)
+              <pre class="oac_no_warn" xml:space="preserve">
+Hard Drive Supplier: Vendor ordered 4 Hard Drive(s)
 Hard Drive Supplier: Sent 4 Hard Drive(s)
   Hard Drive Supplier: Committed transaction
 Hard Drive Supplier: Vendor ordered 8 Hard Drive(s)
 Hard Drive Supplier: Sent 1 Hard Drive(s)
-  Hard Drive Supplier: Committed transaction</pre>
+  Hard Drive Supplier: Committed transaction
+</pre>
             </li>
 
             <li>
               <p>Repeat steps <a href="../Text/jms-examples.xhtml#BABFCGBI">4</a> through <a href="../Text/jms-examples.xhtml#BABBIHCE">10</a> as many times as you wish. Occasionally, the vendor will report an exception that causes a rollback:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Vendor: JMSException occurred: javax.jms.JMSException: Simulated 
+              <pre class="oac_no_warn" xml:space="preserve">
+Vendor: JMSException occurred: javax.jms.JMSException: Simulated 
 database concurrent access exception
-  Vendor: Rolled back transaction 1</pre>
+  Vendor: Rolled back transaction 1
+</pre>
             </li>
 
             <li>
               <p>After you finish running the clients, you can delete the destination resources by using the following commands:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">asadmin delete-jms-resource jms/AQueue
+              <pre class="oac_no_warn" xml:space="preserve">
+asadmin delete-jms-resource jms/AQueue
 asadmin delete-jms-resource jms/BQueue
 asadmin delete-jms-resource jms/CQueue
-asadmin delete-jms-resource jms/OTopic</pre>
+asadmin delete-jms-resource jms/OTopic
+</pre>
             </li>
           </ol>
         </div>
@@ -1705,12 +1915,12 @@ asadmin delete-jms-resource jms/OTopic</pre>
     <a id="BABGEFHC"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.4</span> Writing High Performance and Scalable JMS Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_390"><span class="secnum">46.4</span> Writing High Performance and Scalable JMS Applications</h1>
 
       <p>This section describes how to use the JMS API to write applications that can handle high volumes of messages robustly. These examples use both nondurable and durable shared consumers.</p><a id="BABIBEAC"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.4.1</span> Using Shared Nondurable Subscriptions</h2>
+        <h2 class="sect2" id="sigil_toc_id_391"><span class="secnum">46.4.1</span> Using Shared Nondurable Subscriptions</h2>
 
         <p>This section describes the receiving clients in an example that shows how to use a shared consumer to distribute messages sent to a topic among different consumers. This section then explains how to compile and run the clients using GlassFish Server.</p>
 
@@ -1723,7 +1933,7 @@ asadmin delete-jms-resource jms/OTopic</pre>
         <div class="sect3">
           <a id="sthref2415"></a>
 
-          <h3 class="sect3"><span class="secnum">46.4.1.1</span> Writing the Clients for the Shared Consumer Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.4.1.1</span> Writing the Clients for the Shared Consumer Example</h3>
 
           <p>The sending client is <code>Producer.java</code>, the same client used in previous examples.</p>
 
@@ -1740,7 +1950,9 @@ asadmin delete-jms-resource jms/OTopic</pre>
 
             <li>
               <p>Creates a consumer on a shared nondurable subscription, specifying a subscription name:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">consumer = context.createSharedConsumer(topic, "SubName");</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+consumer = context.createSharedConsumer(topic, "SubName");
+</pre>
             </li>
 
             <li>
@@ -1764,7 +1976,7 @@ asadmin delete-jms-resource jms/OTopic</pre>
         <div class="sect3">
           <a id="sthref2416"></a>
 
-          <h3 class="sect3"><span class="secnum">46.4.1.2</span> To Run the SharedConsumer and Producer Clients</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.4.1.2</span> To Run the SharedConsumer and Producer Clients</h3>
 
           <ol>
             <li>
@@ -1773,31 +1985,43 @@ asadmin delete-jms-resource jms/OTopic</pre>
 
             <li>
               <p>Open three command windows. In the first, go to the <code>simple/producer/</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/examples/jms/simple/producer/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/examples/jms/simple/producer/
+</pre>
             </li>
 
             <li>
               <p>In the second and third command windows, go to the <code>shared/sharedconsumer/</code> directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/examples/jms/shared/sharedconsumer/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/examples/jms/shared/sharedconsumer/
+</pre>
             </li>
 
             <li>
               <p>In one of the <code>sharedconsumer</code> windows, build the example:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
 
             <li>
               <p>In each of the two <code>sharedconsumer</code> windows, start running the client. You do not need to specify a <code>topic</code> argument:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/sharedconsumer.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/sharedconsumer.jar
+</pre>
 
               <p>Wait until you see the following output in both windows:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Waiting for messages on topic
-To end program, enter Q or q, then &lt;return&gt;</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Waiting for messages on topic
+To end program, enter Q or q, then &lt;return&gt;
+</pre>
             </li>
 
             <li>
               <p>In the <code>producer</code> window, run the client, specifying the topic and a number of messages:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar topic 20</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar topic 20
+</pre>
 
               <p>Each consumer client receives some of the messages. Only one of the clients receives the non-text message that signals the end of the message stream.</p>
             </li>
@@ -1810,42 +2034,52 @@ To end program, enter Q or q, then &lt;return&gt;</pre>
       </div><a id="BABEJBHA"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.4.2</span> <a id="sthref2417"></a><a id="sthref2418"></a>Using Shared Durable Subscriptions</h2>
+        <h2 class="sect2" id="sigil_toc_id_392"><span class="secnum">46.4.2</span> <a id="sthref2417"></a><a id="sthref2418"></a>Using Shared Durable Subscriptions</h2>
 
         <p>The <code>shareddurableconsumer</code> client shows how to use shared durable subscriptions. It shows how shared durable subscriptions combine the advantages of durable subscriptions (the subscription remains active when the client is not) with those of shared consumers (the message load can be divided among multiple clients).</p>
 
         <p>The example is much more similar to the <code>sharedconsumer</code> example than to the <code>DurableConsumer.java</code> client. It uses two classes, <code>SharedDurableConsumer.java</code> and <code>TextListener.java</code>, which can be found under the <span class="variable">tut-install</span><code>/examples/jms/shared/shareddurableconsumer/</code> directory.</p>
 
         <p>The client uses <code>java:comp/DefaultJMSConnectionFactory</code>, the connection factory that does not have a client identifier, as is recommended for shared durable subscriptions. It uses the <code>createSharedDurableConsumer</code> method with a subscription name to establish the subscription:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">consumer = context.createSharedDurableConsumer(topic, "MakeItLast");</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+consumer = context.createSharedDurableConsumer(topic, "MakeItLast");
+</pre>
 
         <p>You run the example in combination with the <code>Producer.java</code> client.</p>
 
         <div class="sect3">
           <a id="sthref2419"></a>
 
-          <h3 class="sect3"><span class="secnum">46.4.2.1</span> To Run the SharedDurableConsumer and Producer Clients</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.4.2.1</span> To Run the SharedDurableConsumer and Producer Clients</h3>
 
           <ol>
             <li>
               <p>In a terminal window, go to the following directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/shared/shareddurableconsumer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/shared/shareddurableconsumer
+</pre>
             </li>
 
             <li>
               <p>To compile and package the client, enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
 
             <li>
               <p>Run the client first to establish the durable subscription:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/shareddurableconsumer.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/shareddurableconsumer.jar
+</pre>
             </li>
 
             <li>
               <p>The client displays the following and pauses:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Waiting for messages on topic
-To end program, enter Q or q, then &lt;return&gt;</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Waiting for messages on topic
+To end program, enter Q or q, then &lt;return&gt;
+</pre>
             </li>
 
             <li>
@@ -1854,12 +2088,16 @@ To end program, enter Q or q, then &lt;return&gt;</pre>
 
             <li>
               <p>Open another terminal window and go to the <code>producer</code> example directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cd <span class="variable">tut-install</span>/examples/jms/simple/producer</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+cd <span class="variable">tut-install</span>/examples/jms/simple/producer
+</pre>
             </li>
 
             <li>
               <p>Run the <code>producer</code> example, sending a number of messages to the topic:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar topic 6</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar topic 6
+</pre>
             </li>
 
             <li>
@@ -1868,12 +2106,16 @@ To end program, enter Q or q, then &lt;return&gt;</pre>
 
             <li>
               <p>Run the client in both the first and third terminal windows. Whichever client starts first will receive all the messages that were sent when there was no active subscriber:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/shareddurableconsumer.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/shareddurableconsumer.jar
+</pre>
             </li>
 
             <li>
               <p>With both <code>shareddurableconsumer</code> clients still running, go to the <code>producer</code> window and send a larger number of messages to the topic:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client target/producer.jar topic 25</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client target/producer.jar topic 25
+</pre>
 
               <p>Now the messages will be shared by the two consumer clients. If you continue sending groups of messages to the topic, each client receives some of the messages. If you exit one of the clients and send more messages, the other client will receive all the messages.</p>
             </li>
@@ -1887,7 +2129,7 @@ To end program, enter Q or q, then &lt;return&gt;</pre>
     <a id="BABBABFC"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.5</span> <a id="sthref2420"></a><a id="sthref2421"></a><a id="sthref2422"></a>Sending and Receiving Messages Using a Simple Web Application</h1>
+      <h1 class="sect1" id="sigil_toc_id_393"><span class="secnum">46.5</span> <a id="sthref2420"></a><a id="sthref2421"></a><a id="sthref2422"></a>Sending and Receiving Messages Using a Simple Web Application</h1>
 
       <p>Web applications can use the JMS API to send and receive messages, as noted in <a href="../Text/jms-concepts.xhtml#BNCGN">Using Java EE Components to Produce and to Synchronously Receive Messages</a>. This section describes the components of a very simple web application that uses the JMS API.</p>
 
@@ -1898,20 +2140,15 @@ To end program, enter Q or q, then &lt;return&gt;</pre>
       <div class="figure">
         <a id="sthref2423"></a>
 
-        <p class="titleinfigure">Figure 46-2 The websimplemessage Application</p>
-
-        <div style="text-align: center;"><img alt="Description of Figure 46-2 follows" longdesc="img_text/jeett_dt_035.htm" src="../Images/jeett_dt_035.png" style="line-height: 1.6em;" title="Description of Figure 46-2 follows" /></div>
-      </div>
-
-      <div class="figure">
-        Description of "Figure 46-2 The websimplemessage Application"<br />
+        <p class="titleinfigure">Figure 46-2 The websimplemessage Application</p><br />
+        <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_035.htm" id="sthref2424">Description of "Figure 46-2 The websimplemessage Application"</a><br />
         <br />
       </div>
 
       <div class="sect2">
         <a id="sthref2425"></a>
 
-        <h2 class="sect2"><span class="secnum">46.5.1</span> The websimplemessage Facelets Pages</h2>
+        <h2 class="sect2" id="sigil_toc_id_394"><span class="secnum">46.5.1</span> The websimplemessage Facelets Pages</h2>
 
         <p>The Facelets pages for the example are as follows.</p>
 
@@ -1929,23 +2166,26 @@ To end program, enter Q or q, then &lt;return&gt;</pre>
       <div class="sect2">
         <a id="sthref2426"></a>
 
-        <h2 class="sect2"><span class="secnum">46.5.2</span> The websimplemessage Managed Beans</h2>
+        <h2 class="sect2" id="sigil_toc_id_395"><span class="secnum">46.5.2</span> The websimplemessage Managed Beans</h2>
 
         <p>The two managed beans for the example are as follows.</p>
 
         <ul>
           <li>
             <p><code>SenderBean.java</code>, a CDI managed bean with one property, <code>messageText</code>, and one business method, <code>sendMessage</code>. The class is annotated with <code>@JMSDestinationDefinition</code> to create a component-private queue:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@JMSDestinationDefinition(
+            <pre class="oac_no_warn" xml:space="preserve">
+@JMSDestinationDefinition(
         name = "java:comp/jms/webappQueue",
         interfaceName = "javax.jms.Queue",
         destinationName = "PhysicalWebappQueue")
 @Named
 @RequestScoped
-public class SenderBean {</pre>
+public class SenderBean {
+</pre>
 
             <p>The <code>sendMessage</code> method injects a <code>JMSContext</code> (using the default connection factory) and the queue, creates a producer, sends the message the user typed on the Facelets page, and creates a <code>FacesMessage</code> to display on the Facelets page:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject
+            <pre class="oac_no_warn" xml:space="preserve">
+@Inject
 private JMSContext context;
 @Resource(lookup = "java:comp/jms/webappQueue")
 private Queue queue;
@@ -1964,12 +2204,14 @@ public void sendMessage() {
                 "SenderBean.sendMessage: Exception: {0}",
                 t.toString());
     }
-}</pre>
+}
+</pre>
           </li>
 
           <li>
             <p><code>ReceiverBean.java</code>, a CDI managed bean with one business method, <code>getMessage</code>. The method injects a <code>JMSContext</code> (using the default connection factory) and the queue that was defined in <code>SenderBean</code>, creates a consumer, receives the message, and creates a <code>FacesMessage</code> to display on the Facelets page:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject
+            <pre class="oac_no_warn" xml:space="preserve">
+@Inject
 private JMSContext context;
 @Resource(lookup = "java:comp/jms/webappQueue")
 private Queue queue;
@@ -1993,7 +2235,8 @@ public void getMessage() {
                 "ReceiverBean.getMessage: Exception: {0}",
                 t.toString());
     }
-}</pre>
+}
+</pre>
           </li>
         </ul>
       </div>
@@ -2001,14 +2244,14 @@ public void getMessage() {
       <div class="sect2">
         <a id="sthref2427"></a>
 
-        <h2 class="sect2"><span class="secnum">46.5.3</span> Running the websimplemessage Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_396"><span class="secnum">46.5.3</span> Running the websimplemessage Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>websimplemessage</code> application.</p>
 
         <div class="sect3">
           <a id="sthref2428"></a>
 
-          <h3 class="sect3"><span class="secnum">46.5.3.1</span> Creating Resources for the websimplemessage Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.5.3.1</span> Creating Resources for the websimplemessage Example</h3>
 
           <p>This example uses an annotation-defined queue and the preconfigured default connection factory <code>java:comp/DefaultJMSConnectionFactory</code>.</p>
         </div>
@@ -2016,7 +2259,7 @@ public void getMessage() {
         <div class="sect3">
           <a id="sthref2429"></a>
 
-          <h3 class="sect3"><span class="secnum">46.5.3.2</span> To Package and Deploy websimplemessage Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.5.3.2</span> To Package and Deploy websimplemessage Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -2029,7 +2272,9 @@ public void getMessage() {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms
+</pre>
             </li>
 
             <li>
@@ -2051,7 +2296,7 @@ public void getMessage() {
         <div class="sect3">
           <a id="sthref2430"></a>
 
-          <h3 class="sect3"><span class="secnum">46.5.3.3</span> To Package and Deploy websimplemessage Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.5.3.3</span> To Package and Deploy websimplemessage Using Maven</h3>
 
           <ol>
             <li>
@@ -2060,12 +2305,16 @@ public void getMessage() {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/websimplemessage/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/websimplemessage/
+</pre>
             </li>
 
             <li>
               <p>To compile the source files and package and deploy the application, use the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
           </ol>
         </div>
@@ -2073,19 +2322,23 @@ public void getMessage() {
         <div class="sect3">
           <a id="sthref2431"></a>
 
-          <h3 class="sect3"><span class="secnum">46.5.3.4</span> To Run the websimplemessage Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.5.3.4</span> To Run the websimplemessage Example</h3>
 
           <ol>
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/websimplemessage</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/websimplemessage
+</pre>
             </li>
 
             <li>
               <p>Enter a message in the text field and click <span class="gui-object-action">Send Message</span>.</p>
 
               <p>If, for example, you enter "Hello, Duke", the following appears below the buttons:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Sent message: Message from producer: Hello, Duke</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Sent message: Message from producer: Hello, Duke
+</pre>
             </li>
 
             <li>
@@ -2096,7 +2349,9 @@ public void getMessage() {
               <p>Click <span class="gui-object-action">Receive Message</span>.</p>
 
               <p>The following appears below the buttons:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Reading message: Message from producer: Hello, Duke</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Reading message: Message from producer: Hello, Duke
+</pre>
             </li>
 
             <li>
@@ -2116,7 +2371,7 @@ public void getMessage() {
     <a id="BNBPK"></a><a id="JEETT00088"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.6</span> <a id="sthref2432"></a><a id="sthref2433"></a><a id="sthref2434"></a>Receiving Messages Asynchronously Using a Message-Driven Bean</h1>
+      <h1 class="sect1" id="sigil_toc_id_397"><span class="secnum">46.6</span> <a id="sthref2432"></a><a id="sthref2433"></a><a id="sthref2434"></a>Receiving Messages Asynchronously Using a Message-Driven Bean</h1>
 
       <p>If you are writing an application to run in the Java EE application client container or on the Java SE platform, and you want to receive messages asynchronously, you need to define a class that implements the <code>MessageListener</code> interface, create a <code>JMSConsumer</code>, and call the method <code>setMessageListener</code>.</p>
 
@@ -2127,7 +2382,7 @@ public void getMessage() {
       <p>This section describes a simple message-driven bean example. Before proceeding, you should read the basic conceptual information in the section <a href="../Text/ejb-intro.xhtml#GIPKO">What Is a Message-Driven Bean?</a> as well as <a href="../Text/jms-concepts.xhtml#BNCGQ">Using Message-Driven Beans to Receive Messages Asynchronously</a>.</p><a id="BNBPL"></a><a id="JEETT00453"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.6.1</span> Overview of the simplemessage Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_398"><span class="secnum">46.6.1</span> Overview of the simplemessage Example</h2>
 
         <p>The <code>simplemessage</code> application has the following components:</p>
 
@@ -2146,13 +2401,8 @@ public void getMessage() {
         <div class="figure">
           <a id="BNBPM"></a><a id="JEETT00028"></a>
 
-          <p class="titleinfigure">Figure 46-3 The simplemessage Application</p>
-
-          <div style="text-align: center;"><img alt="Description of Figure 46-3 follows" longdesc="img_text/jeett_dt_036.htm" src="../Images/jeett_dt_036.png" style="line-height: 1.6em;" title="Description of Figure 46-3 follows" /></div>
-        </div>
-
-        <div class="figure">
-          Description of "Figure 46-3 The simplemessage Application"<br />
+          <p class="titleinfigure">Figure 46-3 The simplemessage Application</p><br />
+          <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_036.htm" id="sthref2435">Description of "Figure 46-3 The simplemessage Application"</a><br />
           <br />
         </div>
 
@@ -2160,53 +2410,62 @@ public void getMessage() {
       </div><a id="BNBPN"></a><a id="JEETT00454"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.6.2</span> <a id="sthref2436"></a><a id="sthref2437"></a><a id="sthref2438"></a><a id="sthref2439"></a><a id="sthref2440"></a>The simplemessage Application Client</h2>
+        <h2 class="sect2" id="sigil_toc_id_399"><span class="secnum">46.6.2</span> <a id="sthref2436"></a><a id="sthref2437"></a><a id="sthref2438"></a><a id="sthref2439"></a><a id="sthref2440"></a>The simplemessage Application Client</h2>
 
         <p>The <code>SimpleMessageClient</code> sends messages to the queue that the <code>SimpleMessageBean</code> listens to. The client starts by injecting the connection factory and queue resources:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
+        <pre class="oac_no_warn" xml:space="preserve">
+@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
 private static ConnectionFactory connectionFactory;
 
 @Resource(lookup = "jms/MyQueue")
-private static Queue queue;</pre>
+private static Queue queue;
+</pre>
 
         <p>Next, the client creates the <code>JMSContext</code> in a <code>try</code>-with-resources block:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">String text;
+        <pre class="oac_no_warn" xml:space="preserve">
+String text;
 final int NUM_MSGS = 3;
 
-try (JMSContext context = connectionFactory.createContext();) {</pre>
+try (JMSContext context = connectionFactory.createContext();) {
+</pre>
 
         <p>Finally, the client sends several text messages to the queue:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">for (int i = 0; i &lt; NUM_MSGS; i++) {
+        <pre class="oac_no_warn" xml:space="preserve">
+for (int i = 0; i &lt; NUM_MSGS; i++) {
     text = "This is message " + (i + 1);
     System.out.println("Sending message: " + text);
     context.createProducer().send(queue, text);
-}</pre>
+}
+</pre>
       </div><a id="BNBPO"></a><a id="JEETT00455"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.6.3</span> <a id="sthref2441"></a><a id="sthref2442"></a>The simplemessage Message-Driven Bean Class</h2>
+        <h2 class="sect2" id="sigil_toc_id_400"><span class="secnum">46.6.3</span> <a id="sthref2441"></a><a id="sthref2442"></a>The simplemessage Message-Driven Bean Class</h2>
 
-        <p>The code for the <code>SimpleMessageBean</code> class illustrates the requirements of a message-driven bean class described in <a href="../Text/jms-examples.xhtml#BNCGQ">Using Message-Driven Beans to Receive Messages Asynchronously</a>.</p>
+        <p>The code for the <code>SimpleMessageBean</code> class illustrates the requirements of a message-driven bean class described in <a href="../Text/jms-concepts.xhtml#BNCGQ">Using Message-Driven Beans to Receive Messages Asynchronously</a>.</p>
 
         <p>The first few lines of the <code>SimpleMessageBean</code> class use the <code>@MessageDriven</code> annotation's <code>activationConfig</code> attribute to specify configuration properties:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@MessageDriven(activationConfig = {
+        <pre class="oac_no_warn" xml:space="preserve">
+@MessageDriven(activationConfig = {
     @ActivationConfigProperty(propertyName = "destinationLookup",
             propertyValue = "jms/MyQueue"),
     @ActivationConfigProperty(propertyName = "destinationType",
             propertyValue = "javax.jms.Queue")
-})</pre>
+})
+</pre>
 
-        <p>See <a href="../Text/jms-examples.xhtml#GJKOH">Table 45-3</a> for a list of the available properties.</p>
+        <p>See <a href="../Text/jms-concepts.xhtml#GJKOH">Table 45-3</a> for a list of the available properties.</p>
 
         <p>See <a href="../Text/jms-examples.xhtml#BNCGW">Sending Messages from a Session Bean to an MDB</a> for examples of the <code>subscriptionDurability</code>, <code>clientId</code>, <code>subscriptionName</code>, and <code>messageSelector</code> properties.</p><a id="BNBPP"></a><a id="JEETT01113"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.6.3.1</span> <a id="sthref2443"></a><a id="sthref2444"></a><a id="sthref2445"></a>The onMessage Method</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.6.3.1</span> <a id="sthref2443"></a><a id="sthref2444"></a><a id="sthref2445"></a>The onMessage Method</h3>
 
           <p>When the queue receives a message, the EJB container invokes the message listener method or methods. For a bean that uses JMS, this is the <code>onMessage</code> method of the <code>MessageListener</code> interface.</p>
 
           <p>In the <code>SimpleMessageBean</code> class, the <code>onMessage</code> method casts the incoming message to a <code>TextMessage</code> and displays the text:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public void onMessage(Message inMessage) {
+          <pre class="oac_no_warn" xml:space="preserve">
+public void onMessage(Message inMessage) {
 
     try {
         if (inMessage instanceof TextMessage) {
@@ -2224,17 +2483,18 @@ try (JMSContext context = connectionFactory.createContext();) {</pre>
                 e.toString());
         mdc.setRollbackOnly();
     }
-}</pre>
+}
+</pre>
         </div>
       </div><a id="BNBPQ"></a><a id="JEETT00456"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.6.4</span> Running the simplemessage Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_401"><span class="secnum">46.6.4</span> Running the simplemessage Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, deploy, and run the <code>simplemessage</code> example.</p><a id="BNBPR"></a><a id="JEETT01114"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.6.4.1</span> <a id="sthref2446"></a><a id="sthref2447"></a>Creating Resources for the simplemessage Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.6.4.1</span> <a id="sthref2446"></a><a id="sthref2447"></a>Creating Resources for the simplemessage Example</h3>
 
           <p>This example uses the queue named <code>jms/MyQueue</code> and the preconfigured default connection factory <code>java:comp/DefaultJMSConnectionFactory</code>.</p>
 
@@ -2246,7 +2506,7 @@ try (JMSContext context = connectionFactory.createContext();) {</pre>
         <div class="sect3">
           <a id="sthref2448"></a>
 
-          <h3 class="sect3"><span class="secnum">46.6.4.2</span> To Run the simplemessage Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.6.4.2</span> To Run the simplemessage Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -2259,7 +2519,9 @@ try (JMSContext context = connectionFactory.createContext();) {</pre>
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/simplemessage</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/simplemessage
+</pre>
             </li>
 
             <li>
@@ -2276,16 +2538,20 @@ try (JMSContext context = connectionFactory.createContext();) {</pre>
               <p>This command packages the application client and the message-driven bean, then creates a file named <code>simplemessage.ear</code> in the <code>simplemessage-ear/target/</code> directory. It then deploys the <code>simplemessage-ear</code> module, retrieves the client stubs, and runs the application client.</p>
 
               <p>The output in the output window looks like this (preceded by application client container output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Sending message: This is message 1
+              <pre class="oac_no_warn" xml:space="preserve">
+Sending message: This is message 1
 Sending message: This is message 2
 Sending message: This is message 3
 To see if the bean received the messages,
- check &lt;install_dir&gt;/domains/domain1/logs/server.log.</pre>
+ check &lt;install_dir&gt;/domains/domain1/logs/server.log.
+</pre>
 
               <p>In the server log file, lines similar to the following appear:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">MESSAGE BEAN: Message received: This is message 1
+              <pre class="oac_no_warn" xml:space="preserve">
+MESSAGE BEAN: Message received: This is message 1
 MESSAGE BEAN: Message received: This is message 2
-MESSAGE BEAN: Message received: This is message 3</pre>
+MESSAGE BEAN: Message received: This is message 3
+</pre>
 
               <p>The received messages may appear in a different order from the order in which they were sent.</p>
             </li>
@@ -2297,7 +2563,7 @@ MESSAGE BEAN: Message received: This is message 3</pre>
         </div><a id="BNBPT"></a><a id="JEETT00208"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.6.4.3</span> To Run the simplemessage Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.6.4.3</span> To Run the simplemessage Example Using Maven</h3>
 
           <ol>
             <li>
@@ -2306,26 +2572,34 @@ MESSAGE BEAN: Message received: This is message 3</pre>
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/simplemessage/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/simplemessage/
+</pre>
             </li>
 
             <li>
               <p>To compile the source files and package the application, use the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This target packages the application client and the message-driven bean, then creates a file named <code>simplemessage.ear</code> in the <code>simplemessage-ear/target/</code> directory. It then deploys the <code>simplemessage-ear</code> module, retrieves the client stubs, and runs the application client.</p>
 
               <p>The output in the terminal window looks like this (preceded by application client container output):</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Sending message: This is message 1
+              <pre class="oac_no_warn" xml:space="preserve">
+Sending message: This is message 1
 Sending message: This is message 2
 Sending message: This is message 3
 To see if the bean received the messages,
- check &lt;install_dir&gt;/domains/domain1/logs/server.log.</pre>
+ check &lt;install_dir&gt;/domains/domain1/logs/server.log.
+</pre>
 
               <p>In the server log file, lines similar to the following appear:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">MESSAGE BEAN: Message received: This is message 1
+              <pre class="oac_no_warn" xml:space="preserve">
+MESSAGE BEAN: Message received: This is message 1
 MESSAGE BEAN: Message received: This is message 2
-MESSAGE BEAN: Message received: This is message 3</pre>
+MESSAGE BEAN: Message received: This is message 3
+</pre>
 
               <p>The received messages may appear in a different order from the order in which they were sent.</p>
             </li>
@@ -2343,7 +2617,7 @@ MESSAGE BEAN: Message received: This is message 3</pre>
     <a id="BNCGW"></a><a id="JEETT00556"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.7</span> <a id="sthref2449"></a><a id="sthref2450"></a><a id="sthref2451"></a><a id="sthref2452"></a><a id="sthref2453"></a>Sending Messages from a Session Bean to an MDB</h1>
+      <h1 class="sect1" id="sigil_toc_id_402"><span class="secnum">46.7</span> <a id="sthref2449"></a><a id="sthref2450"></a><a id="sthref2451"></a><a id="sthref2452"></a><a id="sthref2453"></a>Sending Messages from a Session Bean to an MDB</h1>
 
       <p>This section explains how to write, compile, package, deploy, and run an application that uses the JMS API in conjunction with a session bean. The application contains the following components:</p>
 
@@ -2364,20 +2638,15 @@ MESSAGE BEAN: Message received: This is message 3</pre>
       <p>You will find the source files for this section in the <span class="variable">tut-install</span><code>/examples/jms/clientsessionmdb/</code> directory. Path names in this section are relative to this directory.</p><a id="BNCGX"></a><a id="JEETT01299"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.7.1</span> Writing the Application Components for the clientsessionmdb Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_403"><span class="secnum">46.7.1</span> Writing the Application Components for the clientsessionmdb Example</h2>
 
         <p>This application demonstrates how to send messages from an enterprise bean (in this case, a session bean) rather than from an application client, as in the example in <a href="../Text/jms-examples.xhtml#BNBPK">Receiving Messages Asynchronously Using a Message-Driven Bean</a>. <a href="../Text/jms-examples.xhtml#BNCGY">Figure 46-4</a> illustrates the structure of this application. Sending messages from an enterprise bean is very similar to sending messages from a managed bean, which was shown in <a href="../Text/jms-examples.xhtml#BABBABFC">Sending and Receiving Messages Using a Simple Web Application</a>.</p>
 
         <div class="figure">
           <a id="BNCGY"></a><a id="JEETT00057"></a>
 
-          <p class="titleinfigure">Figure 46-4 An Enterprise Bean Application: Client to Session Bean to Message-Driven Bean</p>
-
-          <div style="text-align: center;"><img alt="Description of Figure 46-4 follows" longdesc="img_text/jeett_dt_037.htm" src="../Images/jeett_dt_037.png" style="line-height: 1.6em;" title="Description of Figure 46-4 follows" /></div>
-        </div>
-
-        <div class="figure">
-          Description of "Figure 46-4 An Enterprise Bean Application: Client to Session Bean to Message-Driven Bean"<br />
+          <p class="titleinfigure">Figure 46-4 An Enterprise Bean Application: Client to Session Bean to Message-Driven Bean</p><br />
+          <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_037.htm" id="sthref2454">Description of "Figure 46-4 An Enterprise Bean Application: Client to Session Bean to Message-Driven Bean"</a><br />
           <br />
         </div>
 
@@ -2386,24 +2655,27 @@ MESSAGE BEAN: Message received: This is message 3</pre>
         <p>The application client in the example injects the Publisher enterprise bean's remote home interface and then calls the bean's business method. The enterprise bean creates 18 text messages. For each message, it sets a <code>String</code> property randomly to one of six values representing the news categories and then publishes the message to a topic. The message-driven bean uses a message selector for the property to limit which of the published messages will be delivered to it.</p><a id="BNCGZ"></a><a id="JEETT00829"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.7.1.1</span> Coding the Application Client: MyAppClient.java</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.7.1.1</span> Coding the Application Client: MyAppClient.java</h3>
 
           <p>The application client, <code>MyAppClient.java</code>, found under <code>clientsessionmdb-app-client</code>, performs no JMS API operations and so is simpler than the client in <a href="../Text/jms-examples.xhtml#BNBPK">Receiving Messages Asynchronously Using a Message-Driven Bean</a>. The client uses dependency injection to obtain the Publisher enterprise bean's business interface:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@EJB(name="PublisherRemote")
-private static PublisherRemote publisher;</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@EJB(name="PublisherRemote")
+private static PublisherRemote publisher;
+</pre>
 
           <p>The client then calls the bean's business method twice.</p>
         </div><a id="BNCHA"></a><a id="JEETT00830"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.7.1.2</span> Coding the Publisher Session Bean</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.7.1.2</span> Coding the Publisher Session Bean</h3>
 
           <p>The Publisher bean is a stateless session bean that has one business method. The Publisher bean uses a remote interface rather than a local interface because it is accessed from the application client.</p>
 
           <p>The remote interface, <code>PublisherRemote.java</code>, found under <code>clientsessionmdb-ejb</code>, declares a single business method, <code>publishNews</code>.</p>
 
           <p>The bean class, <code>PublisherBean.java</code>, also found under <code>clientsessionmdb-ejb</code>, implements the <code>publishNews</code> method and its helper method <code>chooseType</code>. The bean class injects <code>SessionContext</code> and <code>Topic</code> resources (the topic is defined in the message-driven bean). It then injects a <code>JMSContext</code>, which uses the preconfigured default connection factory unless you specify otherwise. The bean class begins as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Stateless
+          <pre class="oac_no_warn" xml:space="preserve">
+@Stateless
 @Remote({
     PublisherRemote.class
 })
@@ -2415,16 +2687,18 @@ public class PublisherBean implements PublisherRemote {
     private Topic topic;
     @Inject
     private JMSContext context;
-    ...</pre>
+    ...
+</pre>
 
           <p>The business method <code>publishNews</code> creates a <code>JMSProducer</code> and publishes the messages.</p>
         </div><a id="BNCHB"></a><a id="JEETT00831"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.7.1.3</span> <a id="sthref2455"></a><a id="sthref2456"></a>Coding the Message-Driven Bean: MessageBean.java</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.7.1.3</span> <a id="sthref2455"></a><a id="sthref2456"></a>Coding the Message-Driven Bean: MessageBean.java</h3>
 
           <p>The message-driven bean class, <code>MessageBean.java</code>, found under <code>clientsessionmdb-ejb</code>, is almost identical to the one in <a href="../Text/jms-examples.xhtml#BNBPK">Receiving Messages Asynchronously Using a Message-Driven Bean</a>. However, the <code>@MessageDriven</code> annotation is different, because instead of a queue, the bean is using a topic, a durable subscription, and a message selector. The bean defines a topic for the use of the application; the definition uses the <code>java:module</code> scope because both the session bean and the message-driven bean are in the same module. Because the destination is defined in the message-driven bean, the <code>@MessageDriven</code> annotation uses the <code>destinationLookup</code> activation config property. (See <a href="../Text/jms-concepts.xhtml#BABHFBDH">Creating Resources for Java EE Applications</a> for more information.) The annotation also sets the activation config properties <code>messageSelector</code>, <code>subscriptionDurability</code>, <code>clientId</code>, and <code>subscriptionName</code>, as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@JMSDestinationDefinition(
+          <pre class="oac_no_warn" xml:space="preserve">
+@JMSDestinationDefinition(
         name = "java:module/jms/newsTopic",
         interfaceName = "javax.jms.Topic",
         destinationName = "PhysicalNewsTopic")
@@ -2441,7 +2715,8 @@ public class PublisherBean implements PublisherRemote {
             propertyValue = "MyID"),
     @ActivationConfigProperty(propertyName = "subscriptionName",
             propertyValue = "MySub")
-})</pre>
+})
+</pre>
 
           <p>The topic is the one defined in the <code>PublisherBean</code>. The message selector in this case represents both the sports and opinion desks, just to demonstrate the syntax of message selectors.</p>
 
@@ -2452,7 +2727,7 @@ public class PublisherBean implements PublisherRemote {
       <div class="sect2">
         <a id="sthref2457"></a>
 
-        <h2 class="sect2"><span class="secnum">46.7.2</span> Running the clientsessionmdb Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_404"><span class="secnum">46.7.2</span> Running the clientsessionmdb Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, deploy, and run the <code>simplemessage</code> example.</p>
 
@@ -2461,7 +2736,7 @@ public class PublisherBean implements PublisherRemote {
         <div class="sect3">
           <a id="sthref2458"></a>
 
-          <h3 class="sect3"><span class="secnum">46.7.2.1</span> To Run clientsessionmdb Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.7.2.1</span> To Run clientsessionmdb Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -2474,7 +2749,9 @@ public class PublisherBean implements PublisherRemote {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/clientsessionmdb</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/clientsessionmdb
+</pre>
             </li>
 
             <li>
@@ -2509,8 +2786,10 @@ public class PublisherBean implements PublisherRemote {
               <p>The command then deploys the EAR file, retrieves the client stubs, and runs the client.</p>
 
               <p>The client displays these lines:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">To view the bean output,
- check &lt;install_dir&gt;/domains/domain1/logs/server.log.</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+To view the bean output,
+ check &lt;install_dir&gt;/domains/domain1/logs/server.log.
+</pre>
 
               <p>The output from the enterprise beans appears in the server log file. The Publisher session bean sends two sets of 18 messages numbered 0 through 17. Because of the message selector, the message-driven bean receives only the messages whose <code>NewsType</code> property is <code>Sports</code> or <code>Opinion</code>.</p>
             </li>
@@ -2524,7 +2803,7 @@ public class PublisherBean implements PublisherRemote {
         <div class="sect3">
           <a id="sthref2459"></a>
 
-          <h3 class="sect3"><span class="secnum">46.7.2.2</span> To Run clientsessionmdb Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.7.2.2</span> To Run clientsessionmdb Using Maven</h3>
 
           <ol>
             <li>
@@ -2533,12 +2812,16 @@ public class PublisherBean implements PublisherRemote {
 
             <li>
               <p>Go to the following directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/clientsessionmdb/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/clientsessionmdb/
+</pre>
             </li>
 
             <li>
               <p>To compile the source files and package, deploy, and run the application, enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command creates the following:</p>
 
@@ -2561,15 +2844,19 @@ public class PublisherBean implements PublisherRemote {
               <p>The command then deploys the EAR file, retrieves the client stubs, and runs the client.</p>
 
               <p>The client displays these lines:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">To view the bean output,
- check &lt;install_dir&gt;/domains/domain1/logs/server.log.</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+To view the bean output,
+ check &lt;install_dir&gt;/domains/domain1/logs/server.log.
+</pre>
 
               <p>The output from the enterprise beans appears in the server log file. The Publisher session bean sends two sets of 18 messages numbered 0 through 17. Because of the message selector, the message-driven bean receives only the messages whose <code>NewsType</code> property is <code>Sports</code> or <code>Opinion</code>.</p>
             </li>
 
             <li>
               <p>Undeploy the application after you have finished running it:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn cargo:undeploy</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn cargo:undeploy
+</pre>
             </li>
           </ol>
         </div>
@@ -2581,7 +2868,7 @@ public class PublisherBean implements PublisherRemote {
     <a id="BNCHF"></a><a id="JEETT00557"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.8</span> <a id="sthref2460"></a><a id="sthref2461"></a><a id="sthref2462"></a><a id="sthref2463"></a>Using an Entity to Join Messages from Two MDBs</h1>
+      <h1 class="sect1" id="sigil_toc_id_405"><span class="secnum">46.8</span> <a id="sthref2460"></a><a id="sthref2461"></a><a id="sthref2462"></a><a id="sthref2463"></a>Using an Entity to Join Messages from Two MDBs</h1>
 
       <p>This section explains how to write, compile, package, deploy, and run an application that uses the JMS API with an entity. The application uses the following components:</p>
 
@@ -2602,7 +2889,7 @@ public class PublisherBean implements PublisherRemote {
       <p>You will find the source files for this section in the <span class="variable">tut-install</span><code>/examples/jms/clientmdbentity/</code> directory. Path names in this section are relative to this directory.</p><a id="BNCHG"></a><a id="JEETT01301"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.8.1</span> Overview of the clientmdbentity Example Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_406"><span class="secnum">46.8.1</span> Overview of the clientmdbentity Example Application</h2>
 
         <p>This application simulates, in a simplified way, the work flow of a company's human resources (HR) department when it processes a new hire. This application also demonstrates how to use the Java EE platform to accomplish a task that many JMS applications need to perform.</p>
 
@@ -2633,24 +2920,19 @@ public class PublisherBean implements PublisherRemote {
         <div class="figure">
           <a id="BNCHH"></a><a id="JEETT00058"></a>
 
-          <p class="titleinfigure">Figure 46-5 An Enterprise Bean Application: Client to Message-Driven Beans to Entity</p>
-
-          <div style="text-align: center;"><img alt="Description of Figure 46-5 follows" longdesc="img_text/jeett_dt_038.htm" src="../Images/jeett_dt_038.png" style="line-height: 1.6em;" title="Description of Figure 46-5 follows" /></div>
-        </div>
-
-        <div class="figure">
-          Description of "Figure 46-5 An Enterprise Bean Application: Client to Message-Driven Beans to Entity"<br />
+          <p class="titleinfigure">Figure 46-5 An Enterprise Bean Application: Client to Message-Driven Beans to Entity</p><br />
+          <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_038.htm" id="sthref2464">Description of "Figure 46-5 An Enterprise Bean Application: Client to Message-Driven Beans to Entity"</a><br />
           <br />
         </div>
       </div><a id="BNCHI"></a><a id="JEETT01302"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">46.8.2</span> Writing the Application Components for the clientmdbentity Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_407"><span class="secnum">46.8.2</span> Writing the Application Components for the clientmdbentity Example</h2>
 
         <p>Writing the components of the application involves coding the application client, the message-driven beans, and the entity class.</p><a id="BNCHJ"></a><a id="JEETT00832"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.8.2.1</span> <a id="sthref2465"></a><a id="sthref2466"></a><a id="sthref2467"></a><a id="sthref2468"></a>Coding the Application Client: HumanResourceClient.java</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.8.2.1</span> <a id="sthref2465"></a><a id="sthref2466"></a><a id="sthref2467"></a><a id="sthref2468"></a>Coding the Application Client: HumanResourceClient.java</h3>
 
           <p>The application client, <code>HumanResourceClient.java</code>, found under <code>clientmdbentity-app-client</code>, performs the following steps:</p>
 
@@ -2684,7 +2966,7 @@ public class PublisherBean implements PublisherRemote {
         </div><a id="BNCHK"></a><a id="JEETT00833"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.8.2.2</span> <a id="sthref2469"></a>Coding the Message-Driven Beans for the clientmdbentity Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.8.2.2</span> <a id="sthref2469"></a>Coding the Message-Driven Beans for the clientmdbentity Example</h3>
 
           <p>This example uses two message-driven beans, both under <code>clientmdbentity-ejb</code>:</p>
 
@@ -2738,24 +3020,29 @@ public class PublisherBean implements PublisherRemote {
         </div><a id="BNCHL"></a><a id="JEETT00834"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">46.8.2.3</span> Coding the Entity Class for the clientmdbentity Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.8.2.3</span> Coding the Entity Class for the clientmdbentity Example</h3>
 
           <p>The <code>SetupOffice.java</code> class, also under <code>clientmdbentity-ejb</code>, is an entity class. The entity and the message-driven beans are packaged together in an EJB JAR file. The entity class is declared as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Entity
-public class SetupOffice implements Serializable {</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Entity
+public class SetupOffice implements Serializable {
+</pre>
 
           <p>The class contains a no-argument constructor and a constructor that takes two arguments, the employee ID and name. It also contains getter and setter methods for the employee ID, name, office number, and equipment list. The getter method for the employee ID has the <code>@Id</code> annotation to indicate that this field is the primary key:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Id
+          <pre class="oac_no_warn" xml:space="preserve">
+@Id
 public String getEmployeeId() {
     return id;
-}</pre>
+}
+</pre>
 
           <p>The class also implements the two business methods, <code>doEquipmentList</code> and <code>doOfficeNumber</code>, and their helper method, <code>checkIfSetupComplete</code>.</p>
 
           <p>The message-driven beans call the business methods and the getter methods.</p>
 
           <p>The <code>persistence.xml</code> file for the entity specifies the most basic settings:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+          <pre class="oac_no_warn" xml:space="preserve">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;persistence version="2.1" 
              xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -2769,14 +3056,15 @@ public String getEmployeeId() {
                 value="drop-and-create-tables"/&gt;
     &lt;/properties&gt;
   &lt;/persistence-unit&gt;
-&lt;/persistence&gt;</pre>
+&lt;/persistence&gt;
+</pre>
         </div>
       </div>
 
       <div class="sect2">
         <a id="sthref2470"></a>
 
-        <h2 class="sect2"><span class="secnum">46.8.3</span> Running the clientmdbentity Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_408"><span class="secnum">46.8.3</span> Running the clientmdbentity Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, deploy, and run the <code>clientmdbentity</code> example.</p>
 
@@ -2785,7 +3073,7 @@ public String getEmployeeId() {
         <div class="sect3">
           <a id="sthref2471"></a>
 
-          <h3 class="sect3"><span class="secnum">46.8.3.1</span> To Run clientmdbentity Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.8.3.1</span> To Run clientmdbentity Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -2798,7 +3086,9 @@ public String getEmployeeId() {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/clientmdbentity</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/clientmdbentity
+</pre>
             </li>
 
             <li>
@@ -2838,7 +3128,7 @@ public String getEmployeeId() {
         <div class="sect3">
           <a id="sthref2472"></a>
 
-          <h3 class="sect3"><span class="secnum">46.8.3.2</span> To Run clientmdbentity Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.8.3.2</span> To Run clientmdbentity Using Maven</h3>
 
           <ol>
             <li>
@@ -2847,12 +3137,16 @@ public String getEmployeeId() {
 
             <li>
               <p>Go to the following directory:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jms/clientmdbentity/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jms/clientmdbentity/
+</pre>
             </li>
 
             <li>
               <p>To compile the source files and package, deploy, and run the application, enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command creates the following:</p>
 
@@ -2878,10 +3172,11 @@ public String getEmployeeId() {
         <div class="sect3">
           <a id="sthref2473"></a>
 
-          <h3 class="sect3"><span class="secnum">46.8.3.3</span> Viewing the Application Output</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">46.8.3.3</span> Viewing the Application Output</h3>
 
           <p>The output in the NetBeans IDE output window or in the terminal window looks something like this (preceded by application client container output and Maven output):</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SENDER: Setting hire ID to 50, name Bill Tudor, position Programmer
+          <pre class="oac_no_warn" xml:space="preserve">
+SENDER: Setting hire ID to 50, name Bill Tudor, position Programmer
 SENDER: Setting hire ID to 51, name Carol Jones, position Senior Programmer
 SENDER: Setting hire ID to 52, name Mark Wilson, position Manager
 SENDER: Setting hire ID to 53, name Polly Wren, position Senior Programmer
@@ -2915,7 +3210,8 @@ New hire event processed:
   Employee ID: 51
   Name: Carol Jones
   Equipment: Laptop
-  Office number: 262</pre>
+  Office number: 262
+</pre>
 
           <p>The output from the message-driven beans and the entity class appears in the server log.</p>
 
@@ -2931,7 +3227,7 @@ New hire event processed:
     <a id="BABDFDJC"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">46.9</span> Using NetBeans IDE to Create JMS Resources</h1>
+      <h1 class="sect1" id="sigil_toc_id_409"><span class="secnum">46.9</span> Using NetBeans IDE to Create JMS Resources</h1>
 
       <p>When you write your own JMS applications, you will need to create resources for them. This section explains how to use NetBeans IDE to create <code>src/main/setup/glassfish-resources.xml</code> files similar to those used in the examples in this chapter. It also explains how to use NetBeans IDE to delete the resources.</p>
 
@@ -2940,7 +3236,7 @@ New hire event processed:
       <div class="sect2">
         <a id="sthref2474"></a>
 
-        <h2 class="sect2"><span class="secnum">46.9.1</span> <a id="sthref2475"></a><a id="sthref2476"></a><a id="sthref2477"></a><a id="sthref2478"></a>To Create JMS Resources Using NetBeans IDE</h2>
+        <h2 class="sect2" id="sigil_toc_id_410"><span class="secnum">46.9.1</span> <a id="sthref2475"></a><a id="sthref2476"></a><a id="sthref2477"></a><a id="sthref2478"></a>To Create JMS Resources Using NetBeans IDE</h2>
 
         <p>Follow these steps to create a JMS resource in GlassFish Server using NetBeans IDE. Repeat these steps for each resource you need.</p>
 
@@ -2992,7 +3288,7 @@ New hire event processed:
       <div class="sect2">
         <a id="sthref2479"></a>
 
-        <h2 class="sect2"><span class="secnum">46.9.2</span> To Delete JMS Resources Using NetBeans IDE</h2>
+        <h2 class="sect2" id="sigil_toc_id_411"><span class="secnum">46.9.2</span> To Delete JMS Resources Using NetBeans IDE</h2>
 
         <ol>
           <li>

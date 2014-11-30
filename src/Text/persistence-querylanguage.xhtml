@@ -18,7 +18,7 @@
 
     <p><a id="sthref1961"></a><a id="sthref1962"></a><a id="sthref1963"></a>The query language uses the abstract persistence schemas of entities, including their relationships, for its data model and defines operators and expressions based on this data model. The scope of a query spans the abstract schemas of related entities that are packaged in the same persistence unit. The query language uses an SQL-like syntax to select objects or values based on entity abstract schema types and relationships among them.</p>
 
-    <p>This chapter relies on the material presented in earlier chapters. For conceptual information, see <a href="../Text/persistence-intro.xhtml#BNBPZ">Chapter 37, "Introduction to the Java Persistence API"</a>. For code examples, see <a href="../Text/persistence-basic-examples.xhtml#GIJST">Chapter 38, "Running the Persistence Examples."</a></p>
+    <p>This chapter relies on the material presented in earlier chapters. For conceptual information, see <a href="../Text/persistence-intro.xhtml#BNBPZ">Chapter 37, "Introduction to the Java Persistence API"</a>. For code examples, see <a href="../Text/persistence-basicexamples.xhtml#GIJST">Chapter 38, "Running the Persistence Examples."</a></p>
 
     <p>The following topics are addressed here:</p>
 
@@ -49,7 +49,7 @@
     <a id="BNBTH"></a><a id="JEETT00496"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">39.1</span> Query Language Terminology</h1>
+      <h1 class="sect1" id="sigil_toc_id_758"><span class="secnum">39.1</span> Query Language Terminology</h1>
 
       <p>The following list defines some of the terms referred to in this chapter.</p>
 
@@ -89,62 +89,74 @@
     <a id="BNBRG"></a><a id="JEETT00497"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">39.2</span> <a id="sthref1973"></a>Creating Queries Using the Java Persistence Query Language</h1>
+      <h1 class="sect1" id="sigil_toc_id_759"><span class="secnum">39.2</span> <a id="sthref1973"></a>Creating Queries Using the Java Persistence Query Language</h1>
 
       <p>The <code>EntityManager.createQuery</code> and <code>EntityManager.createNamedQuery</code> methods are used to query the datastore by using Java Persistence query language queries.</p>
 
       <p><a id="sthref1974"></a>The <code>createQuery</code> method is used to create <span class="glossaryterm">dynamic queries</span>, which are queries defined directly within an application's business logic:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public List findWithName(String name) {
+      <pre class="oac_no_warn" xml:space="preserve">
+public List findWithName(String name) {
 return em.createQuery(
     "SELECT c FROM Customer c WHERE c.name LIKE :custName")
     .setParameter("custName", name)
     .setMaxResults(10)
     .getResultList();
-}</pre>
+}
+</pre>
 
       <p><a id="sthref1975"></a><a id="sthref1976"></a>The <code>createNamedQuery</code> method is used to create <span class="glossaryterm">static queries</span>, or queries that are defined in metadata by using the <code>javax.persistence.NamedQuery</code> annotation. The <code>name</code> element of <code>@NamedQuery</code> specifies the name of the query that will be used with the <code>createNamedQuery</code> method. The <code>query</code> element of <code>@NamedQuery</code> is the query:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NamedQuery(
+      <pre class="oac_no_warn" xml:space="preserve">
+@NamedQuery(
     name="findAllCustomersWithName",
     query="SELECT c FROM Customer c WHERE c.name LIKE :custName"
-)</pre>
+)
+</pre>
 
       <p>Here's an example of <code>createNamedQuery</code>, which uses the <code>@NamedQuery</code>:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PersistenceContext
+      <pre class="oac_no_warn" xml:space="preserve">
+@PersistenceContext
 public EntityManager em;
 ...
 customers = em.createNamedQuery("findAllCustomersWithName")
     .setParameter("custName", "Smith")
-    .getResultList();</pre><a id="BNBRH"></a><a id="JEETT01180"></a>
+    .getResultList();
+</pre><a id="BNBRH"></a><a id="JEETT01180"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.2.1</span> <a id="sthref1977"></a>Named Parameters in Queries</h2>
+        <h2 class="sect2" id="sigil_toc_id_760"><span class="secnum">39.2.1</span> <a id="sthref1977"></a>Named Parameters in Queries</h2>
 
         <p>Named parameters are query parameters that are prefixed with a colon (<code>:</code>). Named parameters in a query are bound to an argument by the following method:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">javax.persistence.Query.setParameter(String name, Object value)</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+javax.persistence.Query.setParameter(String name, Object value)
+</pre>
 
         <p>In the following example, the <code>name</code> argument to the <code>findWithName</code> business method is bound to the <code>:custName</code> named parameter in the query by calling <code>Query.setParameter</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public List findWithName(String name) {
+        <pre class="oac_no_warn" xml:space="preserve">
+public List findWithName(String name) {
     return em.createQuery(
         "SELECT c FROM Customer c WHERE c.name LIKE :custName")
         .setParameter("custName", name)
         .getResultList();
-}</pre>
+}
+</pre>
 
         <p>Named parameters are case-sensitive and may be used by both dynamic and static queries.</p>
       </div><a id="BNBRI"></a><a id="JEETT01181"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.2.2</span> <a id="sthref1978"></a>Positional Parameters in Queries</h2>
+        <h2 class="sect2" id="sigil_toc_id_761"><span class="secnum">39.2.2</span> <a id="sthref1978"></a>Positional Parameters in Queries</h2>
 
         <p>You may use positional parameters instead of named parameters in queries. Positional parameters are prefixed with a question mark (<code>?</code>) followed by the numeric position of the parameter in the query. The method <code>Query.setParameter(integer position, Object value)</code> is used to set the parameter values.</p>
 
         <p>In the following example, the <code>findWithName</code> business method is rewritten to use input parameters:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public List findWithName(String name) {
+        <pre class="oac_no_warn" xml:space="preserve">
+public List findWithName(String name) {
     return em.createQuery(
         "SELECT c FROM Customer c WHERE c.name LIKE ?1")
         .setParameter(1, name)
         .getResultList();
-}</pre>
+}
+</pre>
 
         <p>Input parameters are numbered starting from 1. Input parameters are case-sensitive, and may be used by both dynamic and static queries.</p>
       </div>
@@ -155,16 +167,18 @@ customers = em.createNamedQuery("findAllCustomersWithName")
     <a id="BNBTI"></a><a id="JEETT00498"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">39.3</span> <a id="sthref1979"></a>Simplified Query Language Syntax</h1>
+      <h1 class="sect1" id="sigil_toc_id_762"><span class="secnum">39.3</span> <a id="sthref1979"></a>Simplified Query Language Syntax</h1>
 
       <p>This section briefly describes the syntax of the query language so that you can quickly move on to <a href="../Text/persistence-querylanguage.xhtml#BNBTL">Example Queries</a>. When you are ready to learn about the syntax in more detail, see <a href="../Text/persistence-querylanguage.xhtml#BNBUF">Full Query Language Syntax</a>.</p><a id="BNBTJ"></a><a id="JEETT01182"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.3.1</span> Select Statements</h2>
+        <h2 class="sect2" id="sigil_toc_id_763"><span class="secnum">39.3.1</span> Select Statements</h2>
 
         <p>A select query has six clauses: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code>, and <code>ORDER BY</code>. The <code>SELECT</code> and <code>FROM</code> clauses are required, but the <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code>, and <code>ORDER BY</code> clauses are optional. Here is the high-level BNF syntax of a query language select query:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">QL_statement ::= select_clause from_clause 
-  [where_clause][groupby_clause][having_clause][orderby_clause]</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+QL_statement ::= select_clause from_clause 
+  [where_clause][groupby_clause][having_clause][orderby_clause]
+</pre>
 
         <p>The BNF syntax defines the following clauses.</p>
 
@@ -214,11 +228,13 @@ customers = em.createNamedQuery("findAllCustomersWithName")
       </div><a id="BNBTK"></a><a id="JEETT01183"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.3.2</span> <a id="sthref1989"></a><a id="sthref1990"></a>Update and Delete Statements</h2>
+        <h2 class="sect2" id="sigil_toc_id_764"><span class="secnum">39.3.2</span> <a id="sthref1989"></a><a id="sthref1990"></a>Update and Delete Statements</h2>
 
         <p>Update and delete statements provide bulk operations over sets of entities. These statements have the following syntax:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">update_statement :: = update_clause [where_clause] 
-delete_statement :: = delete_clause [where_clause]</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+update_statement :: = update_clause [where_clause] 
+delete_statement :: = delete_clause [where_clause]
+</pre>
 
         <p>The update and delete clauses determine the type of the entities to be updated or deleted. The <code>WHERE</code> clause may be used to restrict the scope of the update or delete operation.</p>
       </div>
@@ -229,19 +245,21 @@ delete_statement :: = delete_clause [where_clause]</pre>
     <a id="BNBTL"></a><a id="JEETT00499"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">39.4</span> <a id="sthref1991"></a><a id="sthref1992"></a>Example Queries</h1>
+      <h1 class="sect1" id="sigil_toc_id_765"><span class="secnum">39.4</span> <a id="sthref1991"></a><a id="sthref1992"></a>Example Queries</h1>
 
-      <p>The following queries are from the <code>Player</code> entity of the <code>roster</code> application, which is documented in <a href="../Text/persistence-querylanguage.xhtml#GIQSQ">The roster Application</a>.</p><a id="BNBTM"></a><a id="JEETT01184"></a>
+      <p>The following queries are from the <code>Player</code> entity of the <code>roster</code> application, which is documented in <a href="../Text/persistence-basicexamples.xhtml#GIQSQ">The roster Application</a>.</p><a id="BNBTM"></a><a id="JEETT01184"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.4.1</span> Simple Queries</h2>
+        <h2 class="sect2" id="sigil_toc_id_766"><span class="secnum">39.4.1</span> Simple Queries</h2>
 
         <p>If you are unfamiliar with the query language, these simple queries are a good place to start.</p><a id="BNBTN"></a><a id="JEETT00706"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.1.1</span> A Basic Select Query</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT p
-FROM Player p</pre>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.1.1</span> A Basic Select Query</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT p
+FROM Player p
+</pre>
 
           <ul>
             <li>
@@ -250,7 +268,9 @@ FROM Player p</pre>
 
             <li>
               <p><span class="bold">Description</span>: The <code>FROM</code> clause declares an identification variable named <code>p</code>, omitting the optional keyword <code>AS</code>. If the <code>AS</code> keyword were included, the clause would be written as follows:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">FROM Player AS p</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+FROM Player AS p
+</pre>
 
               <p>The <code>Player</code> element is the abstract schema name of the <code>Player</code> entity.</p>
             </li>
@@ -262,10 +282,12 @@ FROM Player p</pre>
         </div><a id="BNBTO"></a><a id="JEETT00707"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.1.2</span> Eliminating Duplicate Values</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.1.2</span> Eliminating Duplicate Values</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p
-WHERE p.position = ?1</pre>
+WHERE p.position = ?1
+</pre>
 
           <ul>
             <li>
@@ -285,10 +307,12 @@ WHERE p.position = ?1</pre>
         </div><a id="BNBTP"></a><a id="JEETT00708"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.1.3</span> Using Named Parameters</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.1.3</span> Using Named Parameters</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p
-WHERE p.position = :position AND p.name = :name</pre>
+WHERE p.position = :position AND p.name = :name
+</pre>
 
           <ul>
             <li>
@@ -303,14 +327,16 @@ WHERE p.position = :position AND p.name = :name</pre>
       </div><a id="BNBTQ"></a><a id="JEETT01185"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.4.2</span> <a id="sthref1998"></a>Queries That Navigate to Related Entities</h2>
+        <h2 class="sect2" id="sigil_toc_id_767"><span class="secnum">39.4.2</span> <a id="sthref1998"></a>Queries That Navigate to Related Entities</h2>
 
         <p><a id="sthref1999"></a><a id="sthref2000"></a>In the query language, an expression can traverse, or navigate, to related entities. These expressions are the primary difference between the Java Persistence query language and SQL. Queries navigates to related entities, whereas SQL joins tables.</p><a id="BNBTR"></a><a id="JEETT00709"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.2.1</span> A Simple Query with Relationships</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
-FROM Player p, IN (p.teams) t</pre>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.2.1</span> A Simple Query with Relationships</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
+FROM Player p, IN (p.teams) t
+</pre>
 
           <ul>
             <li>
@@ -321,34 +347,41 @@ FROM Player p, IN (p.teams) t</pre>
               <p><a id="sthref2001"></a><a id="sthref2002"></a><span class="bold">Description</span>: The <code>FROM</code> clause declares two identification variables: <code>p</code> and <code>t</code>. The <code>p</code> variable represents the <code>Player</code> entity, and the <code>t</code> variable represents the related <code>Team</code> entity. The declaration for <code>t</code> references the previously declared <code>p</code> variable. The <code>IN</code> keyword signifies that <code>teams</code> is a collection of related entities. The <code>p.teams</code> expression navigates from a <code>Player</code> to its related <code>Team</code>. The period in the <code>p.teams</code> expression is the navigation operator.</p>
 
               <p><a id="sthref2003"></a>You may also use the <code>JOIN</code> statement to write the same query:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
-FROM Player p JOIN p.teams t</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
+FROM Player p JOIN p.teams t
+</pre>
 
               <p>This query could also be rewritten as:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+              <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p
-WHERE p.team IS NOT EMPTY</pre>
+WHERE p.team IS NOT EMPTY
+</pre>
             </li>
           </ul>
         </div><a id="BNBTS"></a><a id="JEETT00710"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.2.2</span> Navigating to Single-Valued Relationship Fields</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.2.2</span> Navigating to Single-Valued Relationship Fields</h3>
 
           <p><a id="sthref2004"></a>Use the <code>JOIN</code> clause statement to navigate to a single-valued relationship field:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT t
-FROM Team t 
-JOIN t.league l
-WHERE l.sport = 'soccer' OR l.sport ='football'</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT t
+FROM Team t JOIN t.league l
+WHERE l.sport = 'soccer' OR l.sport ='football'
+</pre>
 
           <p>In this example, the query will return all teams that are in either soccer or football leagues.</p>
         </div><a id="BNBTT"></a><a id="JEETT00711"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.2.3</span> Traversing Relationships with an Input Parameter</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.2.3</span> Traversing Relationships with an Input Parameter</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p, IN (p.teams) AS t
-WHERE t.city = :city</pre>
+WHERE t.city = :city
+</pre>
 
           <ul>
             <li>
@@ -368,10 +401,12 @@ WHERE t.city = :city</pre>
         </div><a id="BNBTU"></a><a id="JEETT00712"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.2.4</span> Traversing Multiple Relationships</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.2.4</span> Traversing Multiple Relationships</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p, IN (p.teams) t
-WHERE t.league = :league</pre>
+WHERE t.league = :league
+</pre>
 
           <ul>
             <li>
@@ -387,10 +422,12 @@ WHERE t.league = :league</pre>
         </div><a id="BNBTV"></a><a id="JEETT00713"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.2.5</span> Navigating According to Related Fields</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.2.5</span> Navigating According to Related Fields</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p, IN (p.teams) t
-WHERE t.league.sport = :sport</pre>
+WHERE t.league.sport = :sport
+</pre>
 
           <ul>
             <li>
@@ -405,15 +442,17 @@ WHERE t.league.sport = :sport</pre>
       </div><a id="BNBTW"></a><a id="JEETT01186"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.4.3</span> Queries with Other Conditional Expressions</h2>
+        <h2 class="sect2" id="sigil_toc_id_768"><span class="secnum">39.4.3</span> Queries with Other Conditional Expressions</h2>
 
         <p><a id="sthref2009"></a>Every <code>WHERE</code> clause must specify a conditional expression, of which there are several kinds. In the previous examples, the conditional expressions are comparison expressions that test for equality. The following examples demonstrate some of the other kinds of conditional expressions. For descriptions of all conditional expressions, see <a href="../Text/persistence-querylanguage.xhtml#BNBUU">WHERE Clause</a>.</p><a id="BNBTX"></a><a id="JEETT00714"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.3.1</span> <a id="sthref2010"></a>The LIKE Expression</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.3.1</span> <a id="sthref2010"></a>The LIKE Expression</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT p
 FROM Player p
-WHERE p.name LIKE 'Mich%'</pre>
+WHERE p.name LIKE 'Mich%'
+</pre>
 
           <ul>
             <li>
@@ -431,10 +470,12 @@ WHERE p.name LIKE 'Mich%'</pre>
         </div><a id="BNBTY"></a><a id="JEETT00715"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.3.2</span> <a id="sthref2011"></a>The IS NULL Expression</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT t
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.3.2</span> <a id="sthref2011"></a>The IS NULL Expression</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT t
 FROM Team t
-WHERE t.league IS NULL</pre>
+WHERE t.league IS NULL
+</pre>
 
           <ul>
             <li>
@@ -452,10 +493,12 @@ WHERE t.league IS NULL</pre>
         </div><a id="BNBTZ"></a><a id="JEETT00716"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.3.3</span> <a id="sthref2012"></a>The IS EMPTY Expression</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.3.3</span> <a id="sthref2012"></a>The IS EMPTY Expression</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT p
 FROM Player p
-WHERE p.teams IS EMPTY</pre>
+WHERE p.teams IS EMPTY
+</pre>
 
           <ul>
             <li>
@@ -473,10 +516,12 @@ WHERE p.teams IS EMPTY</pre>
         </div><a id="BNBUA"></a><a id="JEETT00717"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.3.4</span> <a id="sthref2013"></a>The BETWEEN Expression</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.3.4</span> <a id="sthref2013"></a>The BETWEEN Expression</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p
-WHERE p.salary BETWEEN :lowerSalary AND :higherSalary</pre>
+WHERE p.salary BETWEEN :lowerSalary AND :higherSalary
+</pre>
 
           <ul>
             <li>
@@ -485,7 +530,9 @@ WHERE p.salary BETWEEN :lowerSalary AND :higherSalary</pre>
 
             <li>
               <p><span class="bold">Description</span>: This <code>BETWEEN</code> expression has three arithmetic expressions: a persistent field (<code>p.salary</code>) and the two input parameters (<code>:lowerSalary</code> and <code>:higherSalary</code>). The following expression is equivalent to the <code>BETWEEN</code> expression:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">p.salary = :lowerSalary AND p.salary = :higherSalary</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+p.salary &gt;= :lowerSalary AND p.salary &lt;= :higherSalary
+</pre>
             </li>
 
             <li>
@@ -495,10 +542,12 @@ WHERE p.salary BETWEEN :lowerSalary AND :higherSalary</pre>
         </div><a id="BNBUB"></a><a id="JEETT00718"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.3.5</span> <a id="sthref2014"></a>Comparison Operators</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p1
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.3.5</span> <a id="sthref2014"></a>Comparison Operators</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p1
 FROM Player p1, Player p2
-WHERE p1.salary  p2.salary AND p2.name = :name</pre>
+WHERE p1.salary &gt; p2.salary AND p2.name = :name
+</pre>
 
           <ul>
             <li>
@@ -517,15 +566,17 @@ WHERE p1.salary  p2.salary AND p2.name = :name</pre>
       </div><a id="BNBUC"></a><a id="JEETT01187"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.4.4</span> Bulk Updates and Deletes</h2>
+        <h2 class="sect2" id="sigil_toc_id_769"><span class="secnum">39.4.4</span> Bulk Updates and Deletes</h2>
 
         <p><a id="sthref2015"></a><a id="sthref2016"></a>The following examples show how to use the <code>UPDATE</code> and <code>DELETE</code> expressions in queries. <code>UPDATE</code> and <code>DELETE</code> operate on multiple entities according to the condition or conditions set in the <code>WHERE</code> clause. The <code>WHERE</code> clause in <code>UPDATE</code> and <code>DELETE</code> queries follows the same rules as <code>SELECT</code> queries.</p><a id="BNBUD"></a><a id="JEETT00719"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.4.1</span> <a id="sthref2017"></a>Update Queries</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">UPDATE Player p
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.4.1</span> <a id="sthref2017"></a>Update Queries</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+UPDATE Player p
 SET p.status = 'inactive'
-WHERE p.lastPlayed &lt; :inactiveThresholdDate</pre>
+WHERE p.lastPlayed &lt; :inactiveThresholdDate
+</pre>
 
           <ul>
             <li>
@@ -535,11 +586,13 @@ WHERE p.lastPlayed &lt; :inactiveThresholdDate</pre>
         </div><a id="BNBUE"></a><a id="JEETT00720"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.4.4.2</span> <a id="sthref2018"></a>Delete Queries</h3>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">DELETE
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.4.4.2</span> <a id="sthref2018"></a>Delete Queries</h3>
+          <pre class="oac_no_warn" xml:space="preserve">
+DELETE
 FROM Player p
 WHERE p.status = 'inactive'
-AND p.teams IS EMPTY</pre>
+AND p.teams IS EMPTY
+</pre>
 
           <ul>
             <li>
@@ -555,12 +608,12 @@ AND p.teams IS EMPTY</pre>
     <a id="BNBUF"></a><a id="JEETT00500"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">39.5</span> <a id="sthref2019"></a><a id="sthref2020"></a>Full Query Language Syntax</h1>
+      <h1 class="sect1" id="sigil_toc_id_770"><span class="secnum">39.5</span> <a id="sthref2019"></a><a id="sthref2020"></a>Full Query Language Syntax</h1>
 
-      <p>This section discusses the query language syntax, as defined in the Java Persistence API 2.0 specification available at <code><a href="../Text/persistence-querylanguage.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D317">http://jcp.org/en/jsr/detail?id=317</a></code>. Much of the following material paraphrases or directly quotes the specification.</p><a id="BNBUG"></a><a id="JEETT01188"></a>
+      <p>This section discusses the query language syntax, as defined in the Java Persistence API 2.0 specification available at <code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=317">http://jcp.org/en/jsr/detail?id=317</a></code>. Much of the following material paraphrases or directly quotes the specification.</p><a id="BNBUG"></a><a id="JEETT01188"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.5.1</span> BNF Symbols</h2>
+        <h2 class="sect2" id="sigil_toc_id_771"><span class="secnum">39.5.1</span> BNF Symbols</h2>
 
         <p><a href="../Text/persistence-querylanguage.xhtml#BNBUH">Table 39-1</a> describes the BNF symbols used in this chapter.</p>
 
@@ -657,10 +710,11 @@ AND p.teams IS EMPTY</pre>
       </div><a id="BNBUI"></a><a id="JEETT01189"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.5.2</span> BNF Grammar of the Java Persistence Query Language</h2>
+        <h2 class="sect2" id="sigil_toc_id_772"><span class="secnum">39.5.2</span> BNF Grammar of the Java Persistence Query Language</h2>
 
         <p>Here is the entire BNF diagram for the query language:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">QL_statement ::= select_statement | update_statement | delete_statement
+        <pre class="oac_no_warn" xml:space="preserve">
+QL_statement ::= select_statement | update_statement | delete_statement
 select_statement ::= select_clause from_clause [where_clause] [groupby_clause] 
     [having_clause] [orderby_clause]
 update_statement ::= update_clause [where_clause]
@@ -876,16 +930,17 @@ functions_returning_strings ::=
         string_primary) |
     LOWER(string_primary) |
     UPPER(string_primary)
-trim_specification ::= LEADING | TRAILING | BOTH</pre>
+trim_specification ::= LEADING | TRAILING | BOTH
+</pre>
       </div><a id="BNBUJ"></a><a id="JEETT01190"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.5.3</span> <a id="sthref2022"></a>FROM Clause</h2>
+        <h2 class="sect2" id="sigil_toc_id_773"><span class="secnum">39.5.3</span> <a id="sthref2022"></a>FROM Clause</h2>
 
         <p><a id="sthref2023"></a><a id="sthref2024"></a>The <code>FROM</code> clause defines the domain of the query by declaring identification variables.</p><a id="BNBUK"></a><a id="JEETT00721"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.3.1</span> <a id="sthref2025"></a>Identifiers</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.3.1</span> <a id="sthref2025"></a>Identifiers</h3>
 
           <p>An identifier is a sequence of one or more characters. The first character must be a valid first character (letter, <code>$</code>, <code>_</code>) in an identifier of the Java programming language, hereafter in this chapter called simply "Java." Each subsequent character in the sequence must be a valid nonfirst character (letter, digit, <code>$</code>, <code>_</code>) in a Java identifier. (For details, see the Java SE API documentation of the <code>isJavaIdentifierStart</code> and <code>isJavaIdentifierPart</code> methods of the <code>Character</code> class.) The question mark (<code>?</code>) is a reserved character in the query language and cannot be used in an identifier.</p>
 
@@ -985,121 +1040,155 @@ trim_specification ::= LEADING | TRAILING | BOTH</pre>
         </div><a id="BNBUM"></a><a id="JEETT00722"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.3.2</span> <a id="sthref2028"></a>Identification Variables</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.3.2</span> <a id="sthref2028"></a>Identification Variables</h3>
 
           <p>An identification variable is an identifier declared in the <code>FROM</code> clause. Although they can reference identification variables, the <code>SELECT</code> and <code>WHERE</code> clauses cannot declare them. All identification variables must be declared in the <code>FROM</code> clause.</p>
 
           <p><a id="sthref2029"></a>Because it is an identifier, an identification variable has the same naming conventions and restrictions as an identifier, with the exception that an identification variable is case-insensitive. For example, an identification variable cannot be the same as a query language keyword. (See <a href="../Text/persistence-querylanguage.xhtml#BNBUK">Identifiers</a> for more naming rules.) Also, within a given persistence unit, an identification variable name must not match the name of any entity or abstract schema.</p>
 
           <p><a id="sthref2030"></a>The <code>FROM</code> clause can contain multiple declarations, separated by commas. A declaration can reference another identification variable that has been previously declared (to the left). In the following <code>FROM</code> clause, the variable <code>t</code> references the previously declared variable <code>p</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">FROM Player p, IN (p.teams) AS t</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+FROM Player p, IN (p.teams) AS t
+</pre>
 
           <p><a id="sthref2031"></a>Even if it is not used in the <code>WHERE</code> clause, an identification variable's declaration can affect the results of the query. For example, compare the next two queries. The following query returns all players, whether or not they belong to a team:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT p
-FROM Player p</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT p
+FROM Player p
+</pre>
 
           <p>In contrast, because it declares the <code>t</code> identification variable, the next query fetches all players who belong to a team:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT p
-FROM Player p, IN (p.teams) AS t</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT p
+FROM Player p, IN (p.teams) AS t
+</pre>
 
           <p>The following query returns the same results as the preceding query, but the <code>WHERE</code> clause makes it easier to read:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT p
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT p
 FROM Player p
-WHERE p.teams IS NOT EMPTY</pre>
+WHERE p.teams IS NOT EMPTY
+</pre>
 
           <p>An identification variable always designates a reference to a single value whose type is that of the expression used in the declaration. There are two kinds of declarations: range variable and collection member.</p>
         </div><a id="BNBUN"></a><a id="JEETT00723"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.3.3</span> <a id="sthref2032"></a>Range Variable Declarations</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.3.3</span> <a id="sthref2032"></a>Range Variable Declarations</h3>
 
           <p><a id="sthref2033"></a>To declare an identification variable as an abstract schema type, you specify a range variable declaration. In other words, an identification variable can range over the abstract schema type of an entity. In the following example, an identification variable named <code>p</code> represents the abstract schema named <code>Player</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">FROM Player p</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+FROM Player p
+</pre>
 
           <p>A range variable declaration can include the optional <code>AS</code> operator:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">FROM Player AS p</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+FROM Player AS p
+</pre>
 
           <p><a id="sthref2034"></a><a id="sthref2035"></a>To obtain objects, a query usually uses path expressions to navigate through the relationships. But for those objects that cannot be obtained by navigation, you can use a range variable declaration to designate a starting point, or query root.</p>
 
           <p>If the query compares multiple values of the same abstract schema type, the <code>FROM</code> clause must declare multiple identification variables for the abstract schema:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">FROM Player p1, Player p2</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+FROM Player p1, Player p2
+</pre>
 
           <p>For an example of such a query, see <a href="../Text/persistence-querylanguage.xhtml#BNBUB">Comparison Operators</a>.</p>
         </div><a id="BNBUO"></a><a id="JEETT00724"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.3.4</span> <a id="sthref2036"></a><a id="sthref2037"></a>Collection Member Declarations</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.3.4</span> <a id="sthref2036"></a><a id="sthref2037"></a>Collection Member Declarations</h3>
 
           <p><a id="sthref2038"></a>In a one-to-many relationship, the multiple side consists of a collection of entities. An identification variable can represent a member of this collection. To access a collection member, the path expression in the variable's declaration navigates through the relationships in the abstract schema. (For more information on path expressions, see <a href="../Text/persistence-querylanguage.xhtml#BNBUQ">Path Expressions</a>.) Because a path expression can be based on another path expression, the navigation can traverse several relationships. See <a href="../Text/persistence-querylanguage.xhtml#BNBTU">Traversing Multiple Relationships</a>.</p>
 
           <p>A collection member declaration must include the <code>IN</code> operator but can omit the optional <code>AS</code> operator.</p>
 
           <p>In the following example, the entity represented by the abstract schema named <code>Player</code> has a relationship field called <code>teams</code>. The identification variable called <code>t</code> represents a single member of the <code>teams</code> collection:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">FROM Player p, IN (p.teams) t</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+FROM Player p, IN (p.teams) t
+</pre>
         </div><a id="BNBUP"></a><a id="JEETT00725"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.3.5</span> <a id="sthref2039"></a>Joins</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.3.5</span> <a id="sthref2039"></a>Joins</h3>
 
           <p>The <code>JOIN</code> operator is used to traverse over relationships between entities and is functionally similar to the <code>IN</code> operator.</p>
 
           <p>In the following example, the query joins over the relationship between customers and orders:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT c
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT c
 FROM Customer c JOIN c.orders o
-WHERE c.status = 1 AND o.totalPrice  10000</pre>
+WHERE c.status = 1 AND o.totalPrice &gt; 10000
+</pre>
 
           <p><a id="sthref2040"></a>The <code>INNER</code> keyword is optional:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT c
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT c
 FROM Customer c INNER JOIN c.orders o
-WHERE c.status = 1 AND o.totalPrice  10000</pre>
+WHERE c.status = 1 AND o.totalPrice &gt; 10000
+</pre>
 
           <p><a id="sthref2041"></a>These examples are equivalent to the following query, which uses the <code>IN</code> operator:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT c
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT c
 FROM Customer c, IN (c.orders) o
-WHERE c.status = 1 AND o.totalPrice  10000</pre>
+WHERE c.status = 1 AND o.totalPrice &gt; 10000
+</pre>
 
           <p>You can also join a single-valued relationship:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT t
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT t
 FROM Team t JOIN t.league l
-WHERE l.sport = :sport</pre>
+WHERE l.sport = :sport
+</pre>
 
           <p><a id="sthref2042"></a><a id="sthref2043"></a>A <code>LEFT JOIN</code> or <code>LEFT OUTER JOIN</code> retrieves a set of entities where matching values in the join condition may be absent. The <code>OUTER</code> keyword is optional:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT c.name, o.totalPrice
-FROM CustomerOrder o LEFT JOIN o.customer c</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT c.name, o.totalPrice
+FROM CustomerOrder o LEFT JOIN o.customer c
+</pre>
 
           <p><a id="sthref2044"></a>A <code>FETCH JOIN</code> is a join operation that returns associated entities as a side effect of running the query. In the following example, the query returns a set of departments and, as a side effect, the associated employees of the departments, even though the employees were not explicitly retrieved by the <code>SELECT</code> clause:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT d
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT d
 FROM Department d LEFT JOIN FETCH d.employees
-WHERE d.deptno = 1</pre>
+WHERE d.deptno = 1
+</pre>
         </div>
       </div><a id="BNBUQ"></a><a id="JEETT01191"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.5.4</span> <a id="sthref2045"></a>Path Expressions</h2>
+        <h2 class="sect2" id="sigil_toc_id_774"><span class="secnum">39.5.4</span> <a id="sthref2045"></a>Path Expressions</h2>
 
         <p><a id="sthref2046"></a><a id="sthref2047"></a>Path expressions are important constructs in the syntax of the query language for several reasons. First, path expressions define navigation paths through the relationships in the abstract schema. These path definitions affect both the scope and the results of a query. Second, path expressions can appear in any of the main clauses of a query (<code>SELECT</code>, <code>DELETE</code>, <code>HAVING</code>, <code>UPDATE</code>, <code>WHERE</code>, <code>FROM</code>, <code>GROUP BY</code>, <code>ORDER BY</code>). Finally, although much of the query language is a subset of SQL, path expressions are extensions not found in SQL.</p><a id="BNBUR"></a><a id="JEETT00726"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.4.1</span> Examples of Path Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.4.1</span> Examples of Path Expressions</h3>
 
           <p>Here, the <code>WHERE</code> clause contains a <code>single_valued_path_expression</code>; the <code>p</code> is an identification variable, and <code>salary</code> is a persistent field of <code>Player</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p
-WHERE p.salary BETWEEN :lowerSalary AND :higherSalary</pre>
+WHERE p.salary BETWEEN :lowerSalary AND :higherSalary
+</pre>
 
           <p>Here, the <code>WHERE</code> clause also contains a <code>single_valued_path_expression</code>; <code>t</code> is an identification variable, <code>league</code> is a single-valued relationship field, and <code>sport</code> is a persistent field of <code>league</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p, IN (p.teams) t
-WHERE t.league.sport = :sport</pre>
+WHERE t.league.sport = :sport
+</pre>
 
           <p>Here, the <code>WHERE</code> clause contains a <code>collection_valued_path_expression</code>; <code>p</code> is an identification variable, and <code>teams</code> designates a collection-valued relationship field:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT p
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT p
 FROM Player p
-WHERE p.teams IS EMPTY</pre>
+WHERE p.teams IS EMPTY
+</pre>
         </div><a id="BNBUS"></a><a id="JEETT00727"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.4.2</span> <a id="sthref2048"></a>Expression Types</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.4.2</span> <a id="sthref2048"></a>Expression Types</h3>
 
           <p>The type of a path expression is the type of the object represented by the ending element, which can be one of the following:</p>
 
@@ -1123,32 +1212,40 @@ WHERE p.teams IS EMPTY</pre>
         </div><a id="BNBUT"></a><a id="JEETT00728"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.4.3</span> <a id="sthref2049"></a>Navigation</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.4.3</span> <a id="sthref2049"></a>Navigation</h3>
 
           <p>A path expression enables the query to navigate to related entities. The terminating elements of an expression determine whether navigation is allowed. If an expression contains a single-valued relationship field, the navigation can continue to an object that is related to the field. However, an expression cannot navigate beyond a persistent field or a collection-valued relationship field. For example, the expression <code>p.teams.league.sport</code> is illegal because <code>teams</code> is a collection-valued relationship field. To reach the <code>sport</code> field, the <code>FROM</code> clause could define an identification variable named <code>t</code> for the <code>teams</code> field:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">FROM Player AS p, IN (p.teams) t
-WHERE t.league.sport = 'soccer'</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+FROM Player AS p, IN (p.teams) t
+WHERE t.league.sport = 'soccer'
+</pre>
         </div>
       </div><a id="BNBUU"></a><a id="JEETT01192"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.5.5</span> <a id="sthref2050"></a>WHERE Clause</h2>
+        <h2 class="sect2" id="sigil_toc_id_775"><span class="secnum">39.5.5</span> <a id="sthref2050"></a>WHERE Clause</h2>
 
         <p><a id="sthref2051"></a>The <code>WHERE</code> clause specifies a conditional expression that limits the values returned by the query. The query returns all corresponding values in the data store for which the conditional expression is <code>TRUE</code>. Although usually specified, the <code>WHERE</code> clause is optional. If the <code>WHERE</code> clause is omitted, the query returns all values. The high-level syntax for the <code>WHERE</code> clause is as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">where_clause ::= WHERE conditional_expression</pre><a id="BNBUV"></a><a id="JEETT00729"></a>
+        <pre class="oac_no_warn" xml:space="preserve">
+where_clause ::= WHERE conditional_expression
+</pre><a id="BNBUV"></a><a id="JEETT00729"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.1</span> <a id="sthref2052"></a>Literals</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.1</span> <a id="sthref2052"></a>Literals</h3>
 
           <p>There are four kinds of literals: string, numeric, Boolean, and enum.</p>
 
           <ul>
             <li>
               <p><a id="sthref2053"></a><span class="bold">String literals</span>: A string literal is enclosed in single quotes:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">'Duke'</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+'Duke'
+</pre>
 
               <p>If a string literal contains a single quote, you indicate the quote by using two single quotes:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">'Duke''s'</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+'Duke''s'
+</pre>
 
               <p>Like a Java <code>String</code>, a string literal in the query language uses the Unicode character encoding.</p>
             </li>
@@ -1158,11 +1255,11 @@ WHERE t.league.sport = 'soccer'</pre>
 
               <ul>
                 <li>
-                  <p>An exact numeric literal is a numeric value without a decimal point, such as 65, 233, and +12. Using the Java integer syntax, exact numeric literals support numbers in the range of a Java <code>long</code>.</p>
+                  <p>An exact numeric literal is a numeric value without a decimal point, such as 65, &ndash;233, and +12. Using the Java integer syntax, exact numeric literals support numbers in the range of a Java <code>long</code>.</p>
                 </li>
 
                 <li>
-                  <p>An approximate numeric literal is a numeric value in scientific notation, such as 57., 85.7, and +2.1. Using the syntax of the Java floating-point literal, approximate numeric literals support numbers in the range of a Java <code>double</code>.</p>
+                  <p>An approximate numeric literal is a numeric value in scientific notation, such as 57., &ndash;85.7, and +2.1. Using the syntax of the Java floating-point literal, approximate numeric literals support numbers in the range of a Java <code>double</code>.</p>
                 </li>
               </ul>
             </li>
@@ -1173,15 +1270,17 @@ WHERE t.league.sport = 'soccer'</pre>
 
             <li>
               <p><a id="sthref2056"></a><span class="bold">Enum literals</span>: The Java Persistence query language supports the use of enum literals using the Java enum literal syntax. The enum class name must be specified as a fully qualified class name:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT e
+              <pre class="oac_no_warn" xml:space="preserve">
+SELECT e
 FROM Employee e
-WHERE e.status = com.example.EmployeeStatus.FULL_TIME</pre>
+WHERE e.status = com.example.EmployeeStatus.FULL_TIME
+</pre>
             </li>
           </ul>
         </div><a id="BNBVA"></a><a id="JEETT00730"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.2</span> <a id="sthref2057"></a>Input Parameters</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.2</span> <a id="sthref2057"></a>Input Parameters</h3>
 
           <p><a id="sthref2058"></a><a id="sthref2059"></a>An input parameter can be either a named parameter or a positional parameter.</p>
 
@@ -1217,13 +1316,13 @@ WHERE e.status = com.example.EmployeeStatus.FULL_TIME</pre>
         </div><a id="BNBVB"></a><a id="JEETT00731"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.3</span> <a id="sthref2060"></a>Conditional Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.3</span> <a id="sthref2060"></a>Conditional Expressions</h3>
 
           <p><a id="sthref2061"></a>A <code>WHERE</code> clause consists of a conditional expression, which is evaluated from left to right within a precedence level. You can change the order of evaluation by using parentheses.</p>
         </div><a id="BNBVC"></a><a id="JEETT00732"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.4</span> <a id="sthref2062"></a><a id="sthref2063"></a>Operators and Their Precedence</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.4</span> <a id="sthref2062"></a><a id="sthref2063"></a>Operators and Their Precedence</h3>
 
           <p><a href="../Text/persistence-querylanguage.xhtml#BNBVD">Table 39-2</a> lists the query language operators in order of decreasing precedence.</p>
 
@@ -1261,11 +1360,11 @@ WHERE e.status = com.example.EmployeeStatus.FULL_TIME</pre>
                   </td>
 
                   <td align="left" headers="r3c1-t3 r1c2-t3">
-                    <p><code>+</code> (unary)</p>
+                    <p><code>+ &ndash;</code> (unary)</p>
 
                     <p><code>* /</code> (multiplication and division)</p>
 
-                    <p><code>+</code> (addition and subtraction)</p>
+                    <p><code>+ &ndash;</code> (addition and subtraction)</p>
                   </td>
                 </tr>
 
@@ -1277,11 +1376,15 @@ WHERE e.status = com.example.EmployeeStatus.FULL_TIME</pre>
                   <td align="left" headers="r4c1-t3 r1c2-t3">
                     <p><code>=</code></p>
 
-                    <p><code>=</code></p>
+                    <p><code>&gt;</code></p>
 
-                    <p><code>=</code></p>
+                    <p><code>&gt;=</code></p>
 
-                    <p>(not equal)</p>
+                    <p><code>&lt;</code></p>
+
+                    <p><code>&lt;=</code></p>
+
+                    <p><code>&lt;&gt;</code> (not equal)</p>
 
                     <p><code>[NOT] BETWEEN</code></p>
 
@@ -1316,37 +1419,45 @@ WHERE e.status = com.example.EmployeeStatus.FULL_TIME</pre>
         </div><a id="BNBVE"></a><a id="JEETT00733"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.5</span> <a id="sthref2065"></a>BETWEEN Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.5</span> <a id="sthref2065"></a>BETWEEN Expressions</h3>
 
           <p><a id="sthref2066"></a>A <code>BETWEEN</code> expression determines whether an arithmetic expression falls within a range of values.</p>
 
           <p>These two expressions are equivalent:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">p.age BETWEEN 15 AND 19
-p.age = 15 AND p.age = 19</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+p.age BETWEEN 15 AND 19
+p.age &gt;= 15 AND p.age &lt;= 19
+</pre>
 
           <p>The following two expressions also are equivalent:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">p.age NOT BETWEEN 15 AND 19
-p.age  15 OR p.age  19</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+p.age NOT BETWEEN 15 AND 19
+p.age &lt; 15 OR p.age &gt; 19
+</pre>
 
           <p>If an arithmetic expression has a <code>NULL</code> value, the value of the <code>BETWEEN</code> expression is unknown.</p>
         </div><a id="BNBVF"></a><a id="JEETT00734"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.6</span> <a id="sthref2067"></a>IN Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.6</span> <a id="sthref2067"></a>IN Expressions</h3>
 
           <p>An <code>IN</code> expression determines whether a string belongs to a set of string literals or whether a number belongs to a set of number values.</p>
 
           <p>The path expression must have a string or numeric value. If the path expression has a <code>NULL</code> value, the value of the <code>IN</code> expression is unknown.</p>
 
           <p>In the following example, the expression is <code>TRUE</code> if the country is <code>UK</code> , but <code>FALSE</code> if the country is <code>Peru</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">o.country IN ('UK', 'US', 'France')</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+o.country IN ('UK', 'US', 'France')
+</pre>
 
           <p>You may also use input parameters:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">o.country IN ('UK', 'US', 'France', :country)</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+o.country IN ('UK', 'US', 'France', :country)
+</pre>
         </div><a id="BNBVG"></a><a id="JEETT00735"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.7</span> <a id="sthref2068"></a>LIKE Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.7</span> <a id="sthref2068"></a>LIKE Expressions</h3>
 
           <p><a id="sthref2069"></a>A <code>LIKE</code> expression determines whether a wildcard pattern matches a string.</p>
 
@@ -1438,36 +1549,42 @@ p.age  15 OR p.age  19</pre>
         </div><a id="BNBVI"></a><a id="JEETT00736"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.8</span> <a id="sthref2072"></a>NULL Comparison Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.8</span> <a id="sthref2072"></a>NULL Comparison Expressions</h3>
 
           <p>A <code>NULL</code> comparison expression tests whether a single-valued path expression or an input parameter has a <code>NULL</code> value. Usually, the <code>NULL</code> comparison expression is used to test whether a single-valued relationship has been set:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT t
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT t
 FROM Team t
-WHERE t.league IS NULL</pre>
+WHERE t.league IS NULL
+</pre>
 
           <p>This query selects all teams where the league relationship is not set. Note that the following query is <span class="italic">not</span> equivalent:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT t
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT t
 FROM Team t
-WHERE t.league = NULL</pre>
+WHERE t.league = NULL
+</pre>
 
           <p>The comparison with <code>NULL</code> using the equals operator (<code>=</code>) always returns an unknown value, even if the relationship is not set. The second query will always return an empty result.</p>
         </div><a id="BNBVJ"></a><a id="JEETT00737"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.9</span> Empty Collection Comparison Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.9</span> Empty Collection Comparison Expressions</h3>
 
           <p><a id="sthref2073"></a>The <code>IS [NOT] EMPTY</code> comparison expression tests whether a collection-valued path expression has no elements. In other words, it tests whether a collection-valued relationship has been set.</p>
 
           <p>If the collection-valued path expression is <code>NULL</code>, the empty collection comparison expression has a <code>NULL</code> value.</p>
 
           <p>Here is an example that finds all orders that do not have any line items:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT o
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT o
 FROM CustomerOrder o
-WHERE o.lineItems IS EMPTY</pre>
+WHERE o.lineItems IS EMPTY
+</pre>
         </div><a id="BNBVK"></a><a id="JEETT00738"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.10</span> <a id="sthref2074"></a><a id="sthref2075"></a><a id="sthref2076"></a>Collection Member Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.10</span> <a id="sthref2074"></a><a id="sthref2075"></a><a id="sthref2076"></a>Collection Member Expressions</h3>
 
           <p>The <code>[NOT]</code> <code>MEMBER [OF]</code> collection member expression determines whether a value is a member of a collection. The value and the collection members must have the same type.</p>
 
@@ -1476,20 +1593,24 @@ WHERE o.lineItems IS EMPTY</pre>
           <p>The <code>OF</code> keyword is optional.</p>
 
           <p>The following example tests whether a line item is part of an order:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT o
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT o
 FROM CustomerOrder o
-WHERE :lineItem MEMBER OF o.lineItems</pre>
+WHERE :lineItem MEMBER OF o.lineItems
+</pre>
         </div><a id="BNBVL"></a><a id="JEETT00739"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.11</span> <a id="sthref2077"></a>Subqueries</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.11</span> <a id="sthref2077"></a>Subqueries</h3>
 
           <p>Subqueries may be used in the <code>WHERE</code> or <code>HAVING</code> clause of a query. Subqueries must be surrounded by parentheses.</p>
 
           <p>The following example finds all customers who have placed more than ten orders:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT c
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT c
 FROM Customer c
-WHERE (SELECT COUNT(o) FROM c.orders o) 10</pre>
+WHERE (SELECT COUNT(o) FROM c.orders o)&gt; 10
+</pre>
 
           <p>Subqueries may contain <code>EXISTS</code>, <code>ALL</code>, and <code>ANY</code> expressions.</p>
 
@@ -1498,12 +1619,14 @@ WHERE (SELECT COUNT(o) FROM c.orders o) 10</pre>
               <p><a id="sthref2078"></a><span class="bold">EXISTS expressions</span>: The <code>[NOT] EXISTS</code> expression is used with a subquery and is true only if the result of the subquery consists of one or more values; otherwise, it is false.</p>
 
               <p>The following example finds all employees whose spouses are also employees:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT DISTINCT emp
+              <pre class="oac_no_warn" xml:space="preserve">
+SELECT DISTINCT emp
 FROM Employee emp
 WHERE EXISTS (
     SELECT spouseEmp
     FROM Employee spouseEmp
-    WHERE spouseEmp = emp.spouse)</pre>
+    WHERE spouseEmp = emp.spouse)
+</pre>
             </li>
 
             <li>
@@ -1511,21 +1634,23 @@ WHERE EXISTS (
 
               <p>The <code>ANY</code> expression is used with a subquery and is true if some of the values returned by the subquery are true. An <code>ANY</code> expression is false if the subquery result is empty or if all the values returned are false. The <code>SOME</code> keyword is synonymous with <code>ANY</code>.</p>
 
-              <p>The <code>ALL</code> and <code>ANY</code> expressions are used with the <code>=</code>, , <code>=</code>, , <code>=</code>, and comparison operators.</p>
+              <p>The <code>ALL</code> and <code>ANY</code> expressions are used with the <code>=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, and <code>&lt;&gt;</code> comparison operators.</p>
 
               <p>The following example finds all employees whose salaries are higher than the salaries of the managers in the employee's department:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT emp
+              <pre class="oac_no_warn" xml:space="preserve">
+SELECT emp
 FROM Employee emp
 WHERE emp.salary &gt; ALL (
     SELECT m.salary
     FROM Manager m
-    WHERE m.department = emp.department)</pre>
+    WHERE m.department = emp.department)
+</pre>
             </li>
           </ul>
         </div><a id="BNBVO"></a><a id="JEETT00740"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.12</span> <a id="sthref2081"></a><a id="sthref2082"></a>Functional Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.12</span> <a id="sthref2081"></a><a id="sthref2082"></a>Functional Expressions</h3>
 
           <p>The query language includes several string, arithmetic, and date/time functions that may be used in the <code>SELECT</code>, <code>WHERE</code>, or <code>HAVING</code> clause of a query. The functions are listed in <a href="../Text/persistence-querylanguage.xhtml#BNBVP">Table 39-4</a>, <a href="../Text/persistence-querylanguage.xhtml#BNBVQ">Table 39-5</a>, and <a href="../Text/persistence-querylanguage.xhtml#GJJNL">Table 39-6</a>.</p>
 
@@ -1760,33 +1885,37 @@ WHERE emp.salary &gt; ALL (
         </div><a id="GJJND"></a><a id="JEETT00741"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.13</span> <a id="sthref2097"></a>Case Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.13</span> <a id="sthref2097"></a>Case Expressions</h3>
 
           <p>Case expressions change based on a condition, similar to the <code>case</code> keyword of the Java programming language. The <code>CASE</code> keyword indicates the start of a case expression, and the expression is terminated by the <code>END</code> keyword. The <code>WHEN</code> and <code>THEN</code> keywords define individual conditions, and the <code>ELSE</code> keyword defines the default condition should none of the other conditions be satisfied.</p>
 
           <p>The following query selects the name of a person and a conditional string, depending on the subtype of the <code>Person</code> entity. If the subtype is <code>Student</code>, the string <code>kid</code> is returned. If the subtype is <code>Guardian</code> or <code>Staff</code>, the string <code>adult</code> is returned. If the entity is some other subtype of <code>Person</code>, the string <code>unknown</code> is returned:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT p.name
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT p.name
 CASE TYPE(p)
     WHEN Student THEN 'kid'
     WHEN Guardian THEN 'adult'
     WHEN Staff THEN 'adult'
     ELSE 'unknown'
 END
-FROM Person p</pre>
+FROM Person p
+</pre>
 
           <p>The following query sets a discount for various types of customers. Gold-level customers get a 20% discount, silver-level customers get a 15% discount, bronze-level customers get a 10% discount, and everyone else gets a 5% discount:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">UPDATE Customer c
+          <pre class="oac_no_warn" xml:space="preserve">
+UPDATE Customer c
 SET c.discount = 
     CASE c.level
         WHEN 'Gold' THEN 20
         WHEN 'SILVER' THEN 15
         WHEN 'Bronze' THEN 10
         ELSE 5
-    END</pre>
+    END
+</pre>
         </div><a id="BNBVR"></a><a id="JEETT00742"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.14</span> <a id="sthref2098"></a>NULL Values</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.14</span> <a id="sthref2098"></a>NULL Values</h3>
 
           <p><a id="sthref2099"></a>If the target of a reference is not in the persistent store, the target is <code>NULL</code>. For conditional expressions containing <code>NULL</code>, the query language uses the semantics defined by SQL92. Briefly, these semantics are as follows.</p>
 
@@ -1972,7 +2101,7 @@ SET c.discount =
         </div><a id="BNBVU"></a><a id="JEETT00743"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.5.15</span> <a id="sthref2103"></a>Equality Semantics</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.5.15</span> <a id="sthref2103"></a>Equality Semantics</h3>
 
           <p><a id="sthref2104"></a><a id="sthref2105"></a>In the query language, only values of the same type can be compared. However, this rule has one exception: Exact and approximate numeric values can be compared. In such a comparison, the required type conversion adheres to the rules of Java numeric promotion.</p>
 
@@ -2117,23 +2246,27 @@ SET c.discount =
       </div><a id="BNBVX"></a><a id="JEETT01193"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.5.6</span> <a id="sthref2114"></a>SELECT Clause</h2>
+        <h2 class="sect2" id="sigil_toc_id_776"><span class="secnum">39.5.6</span> <a id="sthref2114"></a>SELECT Clause</h2>
 
         <p>The <code>SELECT</code> clause defines the types of the objects or values returned by the query.</p><a id="BNBVY"></a><a id="JEETT00744"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.6.1</span> Return Types</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.6.1</span> Return Types</h3>
 
           <p><a id="sthref2115"></a>The return type of the <code>SELECT</code> clause is defined by the result types of the select expressions contained within it. If multiple expressions are used, the result of the query is an <code>Object[]</code>, and the elements in the array correspond to the order of the expressions in the <code>SELECT</code> clause and in type to the result types of each expression.</p>
 
           <p>A <code>SELECT</code> clause cannot specify a collection-valued expression. For example, the <code>SELECT</code> clause <code>p.teams</code> is invalid because <code>teams</code> is a collection. However, the clause in the following query is valid because <code>t</code> is a single element of the <code>teams</code> collection:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT t
-FROM Player p, IN (p.teams) t</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT t
+FROM Player p, IN (p.teams) t
+</pre>
 
           <p>The following query is an example of a query with multiple expressions in the <code>SELECT</code> clause:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT c.name, c.country.name
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT c.name, c.country.name
 FROM customer c
-WHERE c.lastname = 'Coss' AND c.firstname = 'Roxane'</pre>
+WHERE c.lastname = 'Coss' AND c.firstname = 'Roxane'
+</pre>
 
           <p>This query returns a list of <code>Object[]</code> elements; the first array element is a string denoting the customer name, and the second array element is a string denoting the name of the customer's country.</p>
 
@@ -2252,44 +2385,54 @@ WHERE c.lastname = 'Coss' AND c.firstname = 'Roxane'</pre>
           </ul>
 
           <p>The following example returns the average order quantity:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT AVG(o.quantity)
-FROM CustomerOrder o</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT AVG(o.quantity)
+FROM CustomerOrder o
+</pre>
 
           <p>The following example returns the total cost of the items ordered by Roxane Coss:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT SUM(l.price)
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT SUM(l.price)
 FROM CustomerOrder o JOIN o.lineItems l JOIN o.customer c
-WHERE c.lastname = 'Coss' AND c.firstname = 'Roxane'</pre>
+WHERE c.lastname = 'Coss' AND c.firstname = 'Roxane'
+</pre>
 
           <p>The following example returns the total number of orders:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT COUNT(o)
-FROM CustomerOrder o</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT COUNT(o)
+FROM CustomerOrder o
+</pre>
 
           <p>The following example returns the total number of items that have prices in Hal Incandenza's order:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT COUNT(l.price)
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT COUNT(l.price)
 FROM CustomerOrder o JOIN o.lineItems l JOIN o.customer c
-WHERE c.lastname = 'Incandenza' AND c.firstname = 'Hal'</pre>
+WHERE c.lastname = 'Incandenza' AND c.firstname = 'Hal'
+</pre>
         </div><a id="BNBWB"></a><a id="JEETT00745"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.6.2</span> The DISTINCT Keyword</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.6.2</span> The DISTINCT Keyword</h3>
 
           <p>The <code>DISTINCT</code> keyword eliminates duplicate return values. If a query returns a <code>java.util.Collection</code>, which allows duplicates, you must specify the <code>DISTINCT</code> keyword to eliminate duplicates.</p>
         </div><a id="BNBWC"></a><a id="JEETT00746"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">39.5.6.3</span> <a id="sthref2122"></a>Constructor Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">39.5.6.3</span> <a id="sthref2122"></a>Constructor Expressions</h3>
 
           <p>Constructor expressions allow you to return Java instances that store a query result element instead of an <code>Object[]</code>.</p>
 
           <p>The following query creates a <code>CustomerDetail</code> instance per <code>Customer</code> matching the <code>WHERE</code> clause. A <code>CustomerDetail</code> stores the customer name and customer's country name. So the query returns a <code>List</code> of <code>CustomerDetail</code> instances:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT NEW com.example.CustomerDetail(c.name, c.country.name)
+          <pre class="oac_no_warn" xml:space="preserve">
+SELECT NEW com.example.CustomerDetail(c.name, c.country.name)
 FROM customer c
-WHERE c.lastname = 'Coss' AND c.firstname = 'Roxane'</pre>
+WHERE c.lastname = 'Coss' AND c.firstname = 'Roxane'
+</pre>
         </div>
       </div><a id="BNBWD"></a><a id="JEETT01194"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.5.7</span> <a id="sthref2123"></a>ORDER BY Clause</h2>
+        <h2 class="sect2" id="sigil_toc_id_777"><span class="secnum">39.5.7</span> <a id="sthref2123"></a>ORDER BY Clause</h2>
 
         <p>As its name suggests, the <code>ORDER BY</code> clause orders the values or objects returned by the query.</p>
 
@@ -2298,33 +2441,41 @@ WHERE c.lastname = 'Coss' AND c.firstname = 'Roxane'</pre>
         <p><a id="sthref2124"></a><a id="sthref2125"></a>The <code>ASC</code> keyword specifies ascending order, the default, and the <code>DESC</code> keyword indicates descending order.</p>
 
         <p>When using the <code>ORDER BY</code> clause, the <code>SELECT</code> clause must return an orderable set of objects or values. You cannot order the values or objects for values or objects not returned by the <code>SELECT</code> clause. For example, the following query is valid because the <code>ORDER BY</code> clause uses the objects returned by the <code>SELECT</code> clause:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT o
+        <pre class="oac_no_warn" xml:space="preserve">
+SELECT o
 FROM Customer c JOIN c.orders o JOIN c.address a
 WHERE a.state = 'CA'
-ORDER BY o.quantity, o.totalcost</pre>
+ORDER BY o.quantity, o.totalcost
+</pre>
 
         <p>The following example is <span class="italic">not</span> valid, because the <code>ORDER BY</code> clause uses a value not returned by the <code>SELECT</code> clause:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT p.product_name
+        <pre class="oac_no_warn" xml:space="preserve">
+SELECT p.product_name
 FROM CustomerOrder o, IN(o.lineItems) l JOIN o.customer c
 WHERE c.lastname = 'Faehmel' AND c.firstname = 'Robert'
-ORDER BY o.quantity</pre>
+ORDER BY o.quantity
+</pre>
       </div><a id="BNBWE"></a><a id="JEETT01195"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">39.5.8</span> <a id="sthref2126"></a><a id="sthref2127"></a>GROUP BY and HAVING Clauses</h2>
+        <h2 class="sect2" id="sigil_toc_id_778"><span class="secnum">39.5.8</span> <a id="sthref2126"></a><a id="sthref2127"></a>GROUP BY and HAVING Clauses</h2>
 
         <p>The <code>GROUP BY</code> clause allows you to group values according to a set of properties.</p>
 
         <p>The following query groups the customers by their country and returns the number of customers per country:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT c.country, COUNT(c)
-FROM Customer c GROUP BY c.country</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+SELECT c.country, COUNT(c)
+FROM Customer c GROUP BY c.country
+</pre>
 
         <p>The <code>HAVING</code> clause is used with the <code>GROUP BY</code> clause to further restrict the returned result of a query.</p>
 
         <p>The following query groups orders by the status of their customer and returns the customer status plus the average <code>totalPrice</code> for all orders where the corresponding customers have the same status. In addition, it considers only customers with status <code>1</code>, <code>2</code>, or <code>3</code>, so orders of other customers are not taken into account:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SELECT c.status, AVG(o.totalPrice)
+        <pre class="oac_no_warn" xml:space="preserve">
+SELECT c.status, AVG(o.totalPrice)
 FROM CustomerOrder o JOIN o.customer c
-GROUP BY c.status HAVING c.status IN (1, 2, 3)</pre>
+GROUP BY c.status HAVING c.status IN (1, 2, 3)
+</pre>
       </div>
     </div>
   </div>

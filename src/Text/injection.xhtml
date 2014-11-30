@@ -39,30 +39,32 @@
     <a id="BABHDCAI"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">4.1</span> Resource Injection</h1>
+      <h1 class="sect1" id="sigil_toc_id_270"><span class="secnum">4.1</span> Resource Injection</h1>
 
       <p><span class="glossaryterm">Resource injection</span> enables you to inject any resource available in the JNDI namespace into any container-managed object, such as a servlet, an enterprise bean, or a managed bean. For example, you can use resource injection to inject data sources, connectors, or custom resources available in the JNDI namespace.</p>
 
       <p>The type you use for the reference to the injected instance is usually an interface, which decouples your code from the implementation of the resource.</p>
 
       <p>For example, the following code injects a data source object that provides connections to the default Java DB database shipped with GlassFish Server:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-      <pre class="oac_no_warn" xml:space="preserve">public class MyServlet extends HttpServlet {
+      <pre class="oac_no_warn" xml:space="preserve">
+public class MyServlet extends HttpServlet {
     @Resource(name="java:comp/DefaultDataSource")
     private javax.sql.DataSource dsc;
     ...
-}</pre>
+}
+</pre>
 
       <p>In addition to field-based injection as in the preceding example, you can inject resources using method-based injection:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-      <pre class="oac_no_warn" xml:space="preserve">public class MyServlet extends HttpServlet {
+      <pre class="oac_no_warn" xml:space="preserve">
+public class MyServlet extends HttpServlet {
     private javax.sql.DataSource dsc;
     ...
     @Resource(name="java:comp/DefaultDataSource")
     public void setDsc(java.sql.DataSource ds) {
         dsc = ds;
     }
-}</pre>
+}
+</pre>
 
       <p>To use method-based injection, the setter method must follow the JavaBeans conventions for property names: The method name must begin with <code>set</code>, have a <code>void</code> return type, and have only one parameter.</p>
 
@@ -74,23 +76,25 @@
     <a id="BABDJGIE"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">4.2</span> Dependency Injection</h1>
+      <h1 class="sect1" id="sigil_toc_id_271"><span class="secnum">4.2</span> Dependency Injection</h1>
 
       <p><span class="glossaryterm">Dependency injection</span> enables you to turn regular Java classes into managed objects and to inject them into any other managed object. Using dependency injection, your code can declare dependencies on any managed object. The container automatically provides instances of these dependencies at the injection points at runtime, and it also manages the lifecycle of these instances for you.</p>
 
       <p>Dependency injection in Java EE defines scopes, which determine the lifecycle of the objects that the container instantiates and injects. For example, a managed object that is only needed to respond to a single client request (such as a currency converter) has a different scope than a managed object that is needed to process multiple client requests within a session (such as a shopping cart).</p>
 
       <p>You can define managed objects (also called <span class="glossaryterm">managed beans</span>) that you can later inject by assigning a scope to a regular class:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-      <pre class="oac_no_warn" xml:space="preserve">@javax.enterprise.context.RequestScoped
-public class CurrencyConverter { ... }</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+@javax.enterprise.context.RequestScoped
+public class CurrencyConverter { ... }
+</pre>
 
       <p>Use the <code>javax.inject.Inject</code> annotation to inject managed beans; for example:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"></pre>
-      <pre class="oac_no_warn" xml:space="preserve">public class MyServlet extends HttpServlet {
+      <pre class="oac_no_warn" xml:space="preserve">
+public class MyServlet extends HttpServlet {
     @Inject CurrencyConverter cc;
     ...
-}</pre>
+}
+</pre>
 
       <p>As opposed to resource injection, dependency injection is typesafe because it resolves by type. To decouple your code from the implementation of the managed bean, you can reference the injected instances using an interface type and have your managed bean implement that interface.</p>
 
@@ -102,7 +106,7 @@ public class CurrencyConverter { ... }</pre>
     <a id="BABHFECJ"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">4.3</span> The Main Differences between Resource Injection and Dependency Injection</h1>
+      <h1 class="sect1" id="sigil_toc_id_272"><span class="secnum">4.3</span> The Main Differences between Resource Injection and Dependency Injection</h1>
 
       <p><a href="../Text/injection.xhtml#BABCEJEE">Table 4-1</a> lists the main differences between resource injection and dependency injection.</p>
 

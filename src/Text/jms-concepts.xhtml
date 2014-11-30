@@ -47,12 +47,12 @@
     <a id="BNCDR"></a><a id="JEETT00548"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">45.1</span> <a id="sthref2194"></a>Overview of the JMS API</h1>
+      <h1 class="sect1" id="sigil_toc_id_344"><span class="secnum">45.1</span> <a id="sthref2194"></a>Overview of the JMS API</h1>
 
       <p>This overview defines the concept of messaging, describes the JMS API and where it can be used, and explains how the JMS API works within the Java EE platform.</p><a id="BNCDS"></a><a id="JEETT01269"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.1.1</span> <a id="sthref2195"></a><a id="sthref2196"></a>What Is Messaging?</h2>
+        <h2 class="sect2" id="sigil_toc_id_345"><span class="secnum">45.1.1</span> <a id="sthref2195"></a><a id="sthref2196"></a>What Is Messaging?</h2>
 
         <p>Messaging is a method of communication between software components or applications. A messaging system is a peer-to-peer facility: A messaging client can send messages to, and receive messages from, any other client. Each client connects to a messaging agent that provides facilities for creating, sending, receiving, and reading messages.</p>
 
@@ -62,7 +62,7 @@
       </div><a id="BNCDT"></a><a id="JEETT01270"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.1.2</span> <a id="sthref2197"></a>What Is the JMS API?</h2>
+        <h2 class="sect2" id="sigil_toc_id_346"><span class="secnum">45.1.2</span> <a id="sthref2197"></a>What Is the JMS API?</h2>
 
         <p>The Java Message Service is a Java API that allows applications to create, send, receive, and read messages. The JMS API defines a common set of interfaces and associated semantics that allow programs written in the Java programming language to communicate with other messaging implementations.</p>
 
@@ -80,11 +80,11 @@
           </li>
         </ul>
 
-        <p>The current version of the JMS specification is Version 2.0. You can download a copy of the specification from the Java Community Process website: <code><a href="../Text/jms-concepts.xhtml#http%3A//www.jcp.org/en/jsr/detail%3Fid%3D343">http://www.jcp.org/en/jsr/detail?id=343</a></code>.</p>
+        <p>The current version of the JMS specification is Version 2.0. You can download a copy of the specification from the Java Community Process website: <code><a href="../Text/http://www.jcp.org/en/jsr/detail?id=.xhtml#http://www.jcp.org/en/jsr/detail?id=343">http://www.jcp.org/en/jsr/detail?id=343</a></code>.</p>
       </div><a id="BNCDU"></a><a id="JEETT01271"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.1.3</span> When Can You Use the JMS API?</h2>
+        <h2 class="sect2" id="sigil_toc_id_347"><span class="secnum">45.1.3</span> When Can You Use the JMS API?</h2>
 
         <p>An enterprise application provider is likely to choose a messaging API over a tightly coupled API, such as a remote procedure call (RPC), under the following circumstances.</p>
 
@@ -131,13 +131,8 @@
         <div class="figure">
           <a id="BNCDV"></a><a id="JEETT00046"></a>
 
-          <p class="titleinfigure">Figure 45-1 Messaging in an Enterprise Application</p>
-
-          <div style="text-align: center;"><img alt="Description of Figure 45-1 follows" longdesc="img_text/jeett_dt_026.htm" src="../Images/jeett_dt_026.png" style="line-height: 1.6em;" title="Description of Figure 45-1 follows" /></div>
-        </div>
-
-        <div class="figure">
-          Description of "Figure 45-1 Messaging in an Enterprise Application"<br />
+          <p class="titleinfigure">Figure 45-1 Messaging in an Enterprise Application</p><br />
+          <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_026.htm" id="sthref2198">Description of "Figure 45-1 Messaging in an Enterprise Application"</a><br />
           <br />
         </div>
 
@@ -145,7 +140,7 @@
       </div><a id="BNCDW"></a><a id="JEETT01272"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.1.4</span> <a id="sthref2199"></a><a id="sthref2200"></a>How Does the JMS API Work with the Java EE Platform?</h2>
+        <h2 class="sect2" id="sigil_toc_id_348"><span class="secnum">45.1.4</span> <a id="sthref2199"></a><a id="sthref2200"></a>How Does the JMS API Work with the Java EE Platform?</h2>
 
         <p>When the JMS API was first introduced, its most important purpose was to allow Java applications to access existing messaging-oriented middleware (MOM) systems. Since that time, many vendors have adopted and implemented the JMS API, so a JMS product can now provide a complete messaging capability for an enterprise.</p>
 
@@ -178,14 +173,14 @@
     <a id="BNCDX"></a><a id="JEETT00549"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">45.2</span> <a id="sthref2201"></a>Basic JMS API Concepts</h1>
+      <h1 class="sect1" id="sigil_toc_id_349"><span class="secnum">45.2</span> <a id="sthref2201"></a>Basic JMS API Concepts</h1>
 
       <p>This section introduces the most basic JMS API concepts, the ones you must know to get started writing simple application clients that use the JMS API.</p>
 
       <p>The next section introduces the JMS API programming model. Later sections cover more advanced concepts, including the ones you need in order to write applications that use message-driven beans.</p><a id="BNCDY"></a><a id="JEETT01273"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.2.1</span> <a id="sthref2202"></a>JMS API Architecture</h2>
+        <h2 class="sect2" id="sigil_toc_id_350"><span class="secnum">45.2.1</span> <a id="sthref2202"></a>JMS API Architecture</h2>
 
         <p>A JMS application is composed of the following parts.</p>
 
@@ -197,7 +192,7 @@
           <li>
             <p><span class="glossaryterm">JMS clients</span> are the programs or components, written in the Java programming language, that produce and consume messages. Any Java EE application component can act as a JMS client.</p>
 
-            <p>Java SE applications can also act as JMS clients; the <span class="italic">Message Queue Developer's Guide for Java Clients</span> in the GlassFish Server documentation (<code><a href="../Text/jms-concepts.xhtml#https%3A//glassfish.java.net/docs/">https://glassfish.java.net/docs/</a></code>) explains how to make this work.</p>
+            <p>Java SE applications can also act as JMS clients; the <span class="italic">Message Queue Developer's Guide for Java Clients</span> in the GlassFish Server documentation (<code><a href="../Text/https://glassfish.java.net/docs/.xhtml#https://glassfish.java.net/docs/">https://glassfish.java.net/docs/</a></code>) explains how to make this work.</p>
           </li>
 
           <li>
@@ -214,26 +209,21 @@
         <div class="figure">
           <a id="BNCDZ"></a><a id="JEETT00047"></a>
 
-          <p class="titleinfigure">Figure 45-2 JMS API Architecture</p>
-
-          <div style="text-align: center;"><img alt="Description of Figure 45-2 follows" longdesc="img_text/jeett_dt_027.htm" src="../Images/jeett_dt_027.png" style="line-height: 1.6em;" title="Description of Figure 45-2 follows" /></div>
-        </div>
-
-        <div class="figure">
-          Description of "Figure 45-2 JMS API Architecture"<br />
+          <p class="titleinfigure">Figure 45-2 JMS API Architecture</p><br />
+          <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_027.htm" id="sthref2206">Description of "Figure 45-2 JMS API Architecture"</a><br />
           <br />
         </div>
       </div><a id="BNCEA"></a><a id="JEETT01274"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.2.2</span> <a id="sthref2207"></a><a id="sthref2208"></a>Messaging Styles</h2>
+        <h2 class="sect2" id="sigil_toc_id_351"><span class="secnum">45.2.2</span> <a id="sthref2207"></a><a id="sthref2208"></a>Messaging Styles</h2>
 
         <p>Before the JMS API existed, most messaging products supported either the point-to-point or the publish/subscribe style of messaging. The JMS specification defines compliance for each style. A JMS provider must implement both styles, and the JMS API provides interfaces that are specific to each. The following subsections describe these messaging styles.</p>
 
         <p>The JMS API, however, makes it unnecessary to use only one of the two styles. It allows you to use the same code to send and receive messages using either the PTP or the pub/sub style. The destinations you use remain specific to one style, and the behavior of the application will depend in part on whether you are using a queue or a topic. However, the code itself can be common to both styles, making your applications flexible and reusable. This tutorial describes and illustrates this coding approach, using the greatly simplified API provided by JMS 2.0.</p><a id="BNCEB"></a><a id="JEETT00803"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.2.2.1</span> <a id="sthref2209"></a><a id="sthref2210"></a>Point-to-Point Messaging Style</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.2.2.1</span> <a id="sthref2209"></a><a id="sthref2210"></a>Point-to-Point Messaging Style</h3>
 
           <p>A <span class="glossaryterm">point-to-point</span> (PTP) product or application is built on the concept of message <span class="glossaryterm">queues</span>, senders, and receivers. Each message is addressed to a specific queue, and receiving clients extract messages from the queues established to hold their messages. Queues retain all messages sent to them until the messages are consumed or expire.</p>
 
@@ -252,13 +242,8 @@
           <div class="figure">
             <a id="BNCEC"></a><a id="JEETT00048"></a>
 
-            <p class="titleinfigure">Figure 45-3 Point-to-Point Messaging</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 45-3 follows" longdesc="img_text/jeett_dt_028.htm" src="../Images/jeett_dt_028.png" style="line-height: 1.6em;" title="Description of Figure 45-3 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 45-3 Point-to-Point Messaging"<br />
+            <p class="titleinfigure">Figure 45-3 Point-to-Point Messaging</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_028.htm" id="sthref2211">Description of "Figure 45-3 Point-to-Point Messaging"</a><br />
             <br />
           </div>
 
@@ -266,7 +251,7 @@
         </div><a id="BNCED"></a><a id="JEETT00804"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.2.2.2</span> <a id="sthref2212"></a><a id="sthref2213"></a>Publish/Subscribe Messaging Style</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.2.2.2</span> <a id="sthref2212"></a><a id="sthref2213"></a>Publish/Subscribe Messaging Style</h3>
 
           <p>In a <span class="glossaryterm">publish/subscribe</span> (pub/sub) product or application, clients address messages to a <span class="glossaryterm">topic</span>, which functions somewhat like a bulletin board. Publishers and subscribers can dynamically publish or subscribe to the topic. The system takes care of distributing the messages arriving from a topic's multiple publishers to its multiple subscribers. Topics retain messages only as long as it takes to distribute them to subscribers.</p>
 
@@ -291,20 +276,15 @@
           <div class="figure">
             <a id="BNCEE"></a><a id="JEETT00049"></a>
 
-            <p class="titleinfigure">Figure 45-4 Publish/Subscribe Messaging</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 45-4 follows" longdesc="img_text/jeett_dt_029.htm" src="../Images/jeett_dt_029.png" style="line-height: 1.6em;" title="Description of Figure 45-4 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 45-4 Publish/Subscribe Messaging"<br />
+            <p class="titleinfigure">Figure 45-4 Publish/Subscribe Messaging</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_029.htm" id="sthref2214">Description of "Figure 45-4 Publish/Subscribe Messaging"</a><br />
             <br />
           </div>
         </div>
       </div><a id="BNCEG"></a><a id="JEETT01275"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.2.3</span> <a id="sthref2215"></a>Message Consumption</h2>
+        <h2 class="sect2" id="sigil_toc_id_352"><span class="secnum">45.2.3</span> <a id="sthref2215"></a>Message Consumption</h2>
 
         <p>Messaging products are inherently asynchronous: There is no fundamental timing dependency between the production and the consumption of a message. However, the JMS specification uses this term in a more precise sense. Messages can be consumed in either of two ways.</p>
 
@@ -325,7 +305,7 @@
     <a id="BNCEH"></a><a id="JEETT00550"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">45.3</span> <a id="sthref2220"></a><a id="sthref2221"></a>The JMS API Programming Model</h1>
+      <h1 class="sect1" id="sigil_toc_id_353"><span class="secnum">45.3</span> <a id="sthref2220"></a><a id="sthref2221"></a>The JMS API Programming Model</h1>
 
       <p>The basic building blocks of a JMS application are</p>
 
@@ -364,13 +344,8 @@
       <div class="figure">
         <a id="BNCEI"></a><a id="JEETT00050"></a>
 
-        <p class="titleinfigure">Figure 45-5 The JMS API Programming Model</p>
-
-        <div style="text-align: center;"><img alt="Description of Figure 45-5 follows" longdesc="img_text/jeett_dt_030.htm" src="../Images/jeett_dt_030.png" style="line-height: 1.6em;" title="Description of Figure 45-5 follows" /></div>
-      </div>
-
-      <div class="figure">
-        Description of "Figure 45-5 The JMS API Programming Model"<br />
+        <p class="titleinfigure">Figure 45-5 The JMS API Programming Model</p><br />
+        <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_030.htm" id="sthref2222">Description of "Figure 45-5 The JMS API Programming Model"</a><br />
         <br />
       </div>
 
@@ -381,7 +356,7 @@
       <p>Examples that show how to combine all these objects in applications appear in <a href="../Text/jms-examples.xhtml#BNCGV">Chapter 46, "Java Message Service Examples,"</a> beginning with <a href="../Text/jms-examples.xhtml#BNCFA">Writing Simple JMS Applications</a>. For more detail, see the JMS API documentation, part of the Java EE API documentation.</p><a id="BNCEJ"></a><a id="JEETT01276"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.1</span> <a id="sthref2223"></a><a id="sthref2224"></a><a id="sthref2225"></a><a id="sthref2226"></a>JMS Administered Objects</h2>
+        <h2 class="sect2" id="sigil_toc_id_354"><span class="secnum">45.3.1</span> <a id="sthref2223"></a><a id="sthref2224"></a><a id="sthref2225"></a><a id="sthref2226"></a>JMS Administered Objects</h2>
 
         <p>Two parts of a JMS application, destinations and connection factories, are commonly maintained administratively rather than programmatically. The technology underlying these objects is likely to be very different from one implementation of the JMS API to another. Therefore, the management of these objects belongs with other administrative tasks that vary from provider to provider.</p>
 
@@ -394,19 +369,21 @@
         <p>The Java EE platform specification allows a developer to create administered objects using annotations or deployment descriptor elements. Objects created in this way are specific to the application for which they are created. See <a href="../Text/jms-concepts.xhtml#BABHFBDH">Creating Resources for Java EE Applications</a> for details. Definitions in a deployment descriptor override those specified by annotations.</p><a id="BNCEK"></a><a id="JEETT00806"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.1.1</span> <a id="sthref2227"></a><a id="sthref2228"></a>JMS Connection Factories</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.1.1</span> <a id="sthref2227"></a><a id="sthref2228"></a>JMS Connection Factories</h3>
 
-          <p>A <span class="glossaryterm">connection factory</span> is the object a client uses to create a connection to a provider. A connection factory encapsulates a set of connection configuration parameters that has been defined by an administrator. Each connection factory is an instance of the <code>ConnectionFactory</code>, <code>QueueConnectionFactory</code>, or <code>TopicConnectionFactory</code> interface. To learn how to create connection factories, see <a href="../Text/jms-concepts.xhtml#GKTJS">Creating JMS Administered Objects</a>.</p>
+          <p>A <span class="glossaryterm">connection factory</span> is the object a client uses to create a connection to a provider. A connection factory encapsulates a set of connection configuration parameters that has been defined by an administrator. Each connection factory is an instance of the <code>ConnectionFactory</code>, <code>QueueConnectionFactory</code>, or <code>TopicConnectionFactory</code> interface. To learn how to create connection factories, see <a href="../Text/jms-examples.xhtml#GKTJS">Creating JMS Administered Objects</a>.</p>
 
           <p><a id="sthref2229"></a><a id="sthref2230"></a>At the beginning of a JMS client program, you usually inject a connection factory resource into a <code>ConnectionFactory</code> object. A Java EE server must provide a JMS connection factory with the logical JNDI name <code>java:comp/DefaultJMSConnectionFactory</code>. The actual JNDI name will be implementation-specific.</p>
 
           <p>For example, the following code fragment looks up the default JMS connection factory and assigns it to a <code>ConnectionFactory</code> object:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
-private static ConnectionFactory connectionFactory;</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
+private static ConnectionFactory connectionFactory;
+</pre>
         </div><a id="BNCEL"></a><a id="JEETT00807"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.1.2</span> <a id="sthref2231"></a><a id="sthref2232"></a><a id="sthref2233"></a><a id="sthref2234"></a><a id="sthref2235"></a><a id="sthref2236"></a><a id="sthref2237"></a><a id="sthref2238"></a>JMS Destinations</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.1.2</span> <a id="sthref2231"></a><a id="sthref2232"></a><a id="sthref2233"></a><a id="sthref2234"></a><a id="sthref2235"></a><a id="sthref2236"></a><a id="sthref2237"></a><a id="sthref2238"></a>JMS Destinations</h3>
 
           <p>A <span class="glossaryterm">destination</span> is the object a client uses to specify the target of messages it produces and the source of messages it consumes. In the PTP messaging style, destinations are called queues. In the pub/sub messaging style, destinations are called topics. A JMS application can use multiple queues or topics (or both). To learn how to create destination resources, see <a href="../Text/jms-examples.xhtml#GKTJS">Creating JMS Administered Objects</a>.</p>
 
@@ -417,11 +394,13 @@ private static ConnectionFactory connectionFactory;</pre>
           <p><a id="sthref2239"></a>In addition to injecting a connection factory resource into a client program, you usually inject a destination resource. Unlike connection factories, destinations are specific to either the PTP or pub/sub messaging style. To create an application that allows you to use the same code for both topics and queues, you assign the destination to a <code>Destination</code> object.</p>
 
           <p><a id="sthref2240"></a>The following code specifies two resources, a queue and a topic. The resource names are mapped to destination resources created in the JNDI namespace:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource(lookup = "jms/MyQueue")
+          <pre class="oac_no_warn" xml:space="preserve">
+@Resource(lookup = "jms/MyQueue")
 private static Queue queue;
 
 @Resource(lookup = "jms/MyTopic")
-private static Topic topic;</pre>
+private static Topic topic;
+</pre>
 
           <p>In a Java EE application, JMS administered objects are normally placed in the <code>jms</code> naming subcontext.<a id="sthref2241"></a></p>
 
@@ -430,7 +409,7 @@ private static Topic topic;</pre>
       </div><a id="BNCEM"></a><a id="JEETT01277"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.2</span> <a id="sthref2242"></a><a id="sthref2243"></a>Connections</h2>
+        <h2 class="sect2" id="sigil_toc_id_355"><span class="secnum">45.3.2</span> <a id="sthref2242"></a><a id="sthref2243"></a>Connections</h2>
 
         <p>A <span class="glossaryterm">connection</span> encapsulates a virtual connection with a JMS provider. For example, a connection could represent an open TCP/IP socket between a client and a provider service daemon. You use a connection to create one or more sessions.</p>
 
@@ -456,7 +435,7 @@ private static Topic topic;</pre>
       </div><a id="BNCEN"></a><a id="JEETT01278"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.3</span> <a id="sthref2244"></a><a id="sthref2245"></a>Sessions</h2>
+        <h2 class="sect2" id="sigil_toc_id_356"><span class="secnum">45.3.3</span> <a id="sthref2244"></a><a id="sthref2245"></a>Sessions</h2>
 
         <p>A <span class="glossaryterm">session</span> is a single-threaded context for producing and consuming messages.</p>
 
@@ -468,7 +447,7 @@ private static Topic topic;</pre>
       </div><a id="BABGDFEA"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.4</span> <a id="sthref2246"></a><a id="sthref2247"></a>JMSContext Objects</h2>
+        <h2 class="sect2" id="sigil_toc_id_357"><span class="secnum">45.3.4</span> <a id="sthref2246"></a><a id="sthref2247"></a>JMSContext Objects</h2>
 
         <p>A <code>JMSContext</code> object combines a connection and a session in a single object. That is, it provides both an active connection to a JMS provider and a single-threaded context for sending and receiving messages.</p>
 
@@ -499,13 +478,17 @@ private static Topic topic;</pre>
         <p>You can create a <code>JMSContext</code> in a <code>try</code>-with-resources block.</p>
 
         <p>To create a <code>JMSContext</code>, call the <code>createContext</code> method on the connection factory:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">JMSContext context = connectionFactory.createContext();</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+JMSContext context = connectionFactory.createContext();
+</pre>
 
         <p>When called with no arguments from an application client or a Java SE client, or from the Java EE web or EJB container when there is no active JTA transaction in progress, the <code>createContext</code> method creates a non-transacted session with an acknowledgment mode of <code>JMSContext.AUTO_ACKNOWLEDGE</code>. When called with no arguments from the web or EJB container when there is an active JTA transaction in progress, the <code>createContext</code> method creates a transacted session. For information about the way JMS transactions work in Java EE applications, see <a href="../Text/jms-concepts.xhtml#BNCGL">Using the JMS API in Java EE Applications</a>.</p>
 
         <p>From an application client or a Java SE client, you can also call the <code>createContext</code> method with the argument <code>JMSContext.SESSION_TRANSACTED</code> to create a transacted session:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">JMSContext context = 
-        connectionFactory.createContext(JMSContext.SESSION_TRANSACTED);</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+JMSContext context = 
+        connectionFactory.createContext(JMSContext.SESSION_TRANSACTED);
+</pre>
 
         <p>The session uses local transactions; see <a href="../Text/jms-concepts.xhtml#BNCGH">Using JMS Local Transactions</a> for details.</p>
 
@@ -517,26 +500,32 @@ private static Topic topic;</pre>
       </div><a id="BNCEO"></a><a id="JEETT01279"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.5</span> <a id="sthref2248"></a><a id="sthref2249"></a><a id="sthref2250"></a>JMS Message Producers</h2>
+        <h2 class="sect2" id="sigil_toc_id_358"><span class="secnum">45.3.5</span> <a id="sthref2248"></a><a id="sthref2249"></a><a id="sthref2250"></a>JMS Message Producers</h2>
 
         <p>A <span class="glossaryterm">message producer</span> is an object that is created by a <code>JMSContext</code> or a session and used for sending messages to a destination. A message producer created by a <code>JMSContext</code> implements the <code>JMSProducer</code> interface. You could create it this way:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">try (JMSContext context = connectionFactory.createContext();) {
+        <pre class="oac_no_warn" xml:space="preserve">
+try (JMSContext context = connectionFactory.createContext();) {
     JMSProducer producer = context.createProducer();
-    ...</pre>
+    ...
+</pre>
 
         <p>However, a <code>JMSProducer</code> is a lightweight object that does not consume significant resources. For this reason, you do not need to save the <code>JMSProducer</code> in a variable; you can create a new one each time you send a message. You send messages to a specific destination by using the <code>send</code> method. For example:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">context.createProducer().send(dest, message);</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+context.createProducer().send(dest, message);
+</pre>
 
         <p>You can create the message in a variable before sending it, as shown here, or you can create it within the <code>send</code> call. See <a href="../Text/jms-concepts.xhtml#BNCES">JMS Messages</a> for more information.</p>
       </div><a id="BNCEP"></a><a id="JEETT01280"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.6</span> <a id="sthref2251"></a><a id="sthref2252"></a>JMS Message Consumers</h2>
+        <h2 class="sect2" id="sigil_toc_id_359"><span class="secnum">45.3.6</span> <a id="sthref2251"></a><a id="sthref2252"></a>JMS Message Consumers</h2>
 
         <p>A <span class="glossaryterm">message consumer</span> is an object that is created by a <code>JMSContext</code> or a session and used for receiving messages sent to a destination. A message producer created by a <code>JMSContext</code> implements the <code>JMSConsumer</code> interface. The simplest way to create a message consumer is to use the <code>JMSContext.createConsumer</code> method:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">try (JMSContext context = connectionFactory.createContext();) {
+        <pre class="oac_no_warn" xml:space="preserve">
+try (JMSContext context = connectionFactory.createContext();) {
     JMSConsumer consumer = context.createConsumer(dest);
-    ...</pre>
+    ...
+</pre>
 
         <p>A message consumer allows a JMS client to register interest in a destination with a JMS provider. The JMS provider manages the delivery of messages from a destination to the registered consumers of the destination.</p>
 
@@ -545,24 +534,30 @@ private static Topic topic;</pre>
         <p>You use the <code>receive</code> method to consume a message synchronously. You can use this method at any time after you create the consumer.</p>
 
         <p>If you specify no arguments or an argument of <code>0</code>, the method blocks indefinitely until a message arrives:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Message m = consumer.receive();
-Message m = consumer.receive(0);</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+Message m = consumer.receive();
+Message m = consumer.receive(0);
+</pre>
 
         <p>For a simple client, this may not matter. But if it is possible that a message might not be available, use a synchronous receive with a timeout: Call the <code>receive</code> method with a timeout argument greater than <code>0</code>. One second is a recommended timeout value:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Message m = consumer.receive(1000); // time out after a second</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+Message m = consumer.receive(1000); // time out after a second
+</pre>
 
         <p>To enable asynchronous message delivery from an application client or a Java SE client, you use a message listener, as described in the next section.</p>
 
         <p>You can use the <code>JMSContext.createDurableConsumer</code> method to create a durable topic subscription. This method is valid only if you are using a topic. For details, see <a href="../Text/jms-concepts.xhtml#BNCGD">Creating Durable Subscriptions</a>. For topics, you can also create shared consumers; see <a href="../Text/jms-concepts.xhtml#BABJCIGJ">Creating Shared Subscriptions</a>.</p><a id="BNCEQ"></a><a id="JEETT00808"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.6.1</span> <a id="sthref2253"></a><a id="sthref2254"></a><a id="sthref2255"></a>JMS Message Listeners</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.6.1</span> <a id="sthref2253"></a><a id="sthref2254"></a><a id="sthref2255"></a>JMS Message Listeners</h3>
 
           <p>A message listener is an object that acts as an asynchronous event handler for messages. This object implements the <code>MessageListener</code> interface, which contains one method, <code>onMessage</code>. In the <code>onMessage</code> method, you define the actions to be taken when a message arrives.</p>
 
           <p>From an application client or a Java SE client, you register the message listener with a specific message consumer by using the <code>setMessageListener</code> method. For example, if you define a class named <code>Listener</code> that implements the <code>MessageListener</code> interface, you can register the message listener as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Listener myListener = new Listener();
-consumer.setMessageListener(myListener);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+Listener myListener = new Listener();
+consumer.setMessageListener(myListener);
+</pre>
 
           <p>When message delivery begins, the JMS provider automatically calls the message listener's <code>onMessage</code> method whenever a message is delivered. The <code>onMessage</code> method takes one argument of type <code>Message</code>, which your implementation of the method can cast to another message subtype as needed (see <a href="../Text/jms-concepts.xhtml#BNCEW">Message Bodies</a>).</p>
 
@@ -574,12 +569,14 @@ consumer.setMessageListener(myListener);</pre>
         </div><a id="BNCER"></a><a id="JEETT00809"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.6.2</span> <a id="sthref2256"></a>JMS Message Selectors</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.6.2</span> <a id="sthref2256"></a>JMS Message Selectors</h3>
 
           <p>If your messaging application needs to filter the messages it receives, you can use a JMS message selector, which allows a message consumer for a destination to specify the messages that interest it. Message selectors assign the work of filtering messages to the JMS provider rather than to the application. For an example of an application that uses a message selector, see <a href="../Text/jms-examples.xhtml#BNCGW">Sending Messages from a Session Bean to an MDB</a>.</p>
 
           <p>A message selector is a <code>String</code> that contains an expression. The syntax of the expression is based on a subset of the SQL92 conditional expression syntax. The message selector in the example selects any message that has a <code>NewsType</code> property that is set to the value <code>'Sports'</code> or <code>'Opinion'</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">NewsType = 'Sports' OR NewsType = 'Opinion'</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+NewsType = 'Sports' OR NewsType = 'Opinion'
+</pre>
 
           <p>The <code>createConsumer</code> and <code>createDurableConsumer</code> methods, as well as the methods for creating shared consumers, allow you to specify a message selector as an argument when you create a message consumer.</p>
 
@@ -587,7 +584,7 @@ consumer.setMessageListener(myListener);</pre>
         </div><a id="BABEEJJJ"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.6.3</span> Consuming Messages from Topics</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.6.3</span> Consuming Messages from Topics</h3>
 
           <p>The semantics of consuming messages from topics are more complex than the semantics of consuming messages from queues.</p>
 
@@ -621,7 +618,7 @@ consumer.setMessageListener(myListener);</pre>
         </div><a id="BNCGD"></a><a id="JEETT00818"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.6.4</span> <a id="sthref2257"></a><a id="sthref2258"></a><a id="sthref2259"></a><a id="sthref2260"></a><a id="sthref2261"></a>Creating Durable Subscriptions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.6.4</span> <a id="sthref2257"></a><a id="sthref2258"></a><a id="sthref2259"></a><a id="sthref2260"></a><a id="sthref2261"></a>Creating Durable Subscriptions</h3>
 
           <p>To ensure that a pub/sub application receives all sent messages, use durable subscriptions for the consumers on the topic.</p>
 
@@ -658,17 +655,23 @@ consumer.setMessageListener(myListener);</pre>
           <p>You can set the client ID administratively for a client-specific connection factory using either the command line or the Administration Console. (In an application client or a Java SE client, you can instead call <code>JMSContext.setClientID</code>.)</p>
 
           <p>After using this connection factory to create the <code>JMSContext</code>, you call the <code>createDurableConsumer</code> method with two arguments: the topic and a string that specifies the name of the subscription:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">String subName = "MySub";
-JMSConsumer consumer = context.createDurableConsumer(myTopic, subName);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+String subName = "MySub";
+JMSConsumer consumer = context.createDurableConsumer(myTopic, subName);
+</pre>
 
           <p>The subscription becomes active after you create the consumer. Later, you might close the consumer:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">consumer.close();</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+consumer.close();
+</pre>
 
           <p>The JMS provider stores the messages sent to the topic, as it would store messages sent to a queue. If the program or another application calls <code>createDurableConsumer</code> using the same connection factory and its client ID, the same topic, and the same subscription name, then the subscription is reactivated and the JMS provider delivers the messages that were sent while the subscription was inactive.</p>
 
           <p>To delete a durable subscription, first close the consumer, then call the <code>unsubscribe</code> method with the subscription name as the argument:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">consumer.close();
-context.unsubscribe(subName);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+consumer.close();
+context.unsubscribe(subName);
+</pre>
 
           <p>The <code>unsubscribe</code> method deletes the state the provider maintains for the subscription.</p>
 
@@ -677,13 +680,8 @@ context.unsubscribe(subName);</pre>
           <div class="figure">
             <a id="BNCGE"></a><a id="JEETT00051"></a>
 
-            <p class="titleinfigure">Figure 45-6 Nondurable Subscriptions and Consumers</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 45-6 follows" longdesc="img_text/jeett_dt_031.htm" src="../Images/jeett_dt_031.png" style="line-height: 1.6em;" title="Description of Figure 45-6 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 45-6 Nondurable Subscriptions and Consumers"<br />
+            <p class="titleinfigure">Figure 45-6 Nondurable Subscriptions and Consumers</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_031.htm" id="sthref2264">Description of "Figure 45-6 Nondurable Subscriptions and Consumers"</a><br />
             <br />
           </div>
 
@@ -692,30 +690,29 @@ context.unsubscribe(subName);</pre>
           <div class="figure">
             <a id="BNCGF"></a><a id="JEETT00052"></a>
 
-            <p class="titleinfigure">Figure 45-7 Consumers on a Durable Subscription</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 45-7 follows" longdesc="img_text/jeett_dt_032.htm" src="../Images/jeett_dt_032.png" style="line-height: 1.6em;" title="Description of Figure 45-7 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 45-7 Consumers on a Durable Subscription"<br />
+            <p class="titleinfigure">Figure 45-7 Consumers on a Durable Subscription</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_032.htm" id="sthref2265">Description of "Figure 45-7 Consumers on a Durable Subscription"</a><br />
             <br />
           </div>
 
           <p><a id="sthref2266"></a><a id="sthref2267"></a>A shared durable subscription allows you to use multiple consumers to receive messages from a durable subscription. If you use a shared durable subscription, the connection factory you use does not need to have a client identifier. To create a shared durable subscription, call the <code>JMSContext.createSharedDurableConsumer</code> method, specifying the topic and subscription name:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">JMSConsumer consumer = 
-        context.createSharedDurableConsumer(topic, "MakeItLast");</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+JMSConsumer consumer = 
+        context.createSharedDurableConsumer(topic, "MakeItLast");
+</pre>
 
           <p>See <a href="../Text/jms-examples.xhtml#BNCFX">Acknowledging Messages</a>, <a href="../Text/jms-examples.xhtml#BNCGG">Using Durable Subscriptions</a>, <a href="../Text/jms-examples.xhtml#BABEJBHA">Using Shared Durable Subscriptions</a>, and <a href="../Text/jms-examples.xhtml#BNCGW">Sending Messages from a Session Bean to an MDB</a> for examples of Java EE applications that use durable subscriptions.</p>
         </div><a id="BABJCIGJ"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.6.5</span> <a id="sthref2268"></a><a id="sthref2269"></a>Creating Shared Subscriptions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.6.5</span> <a id="sthref2268"></a><a id="sthref2269"></a>Creating Shared Subscriptions</h3>
 
           <p>A topic subscription created by the <code>createConsumer</code> or <code>createDurableConsumer</code> method can have only one consumer (although a topic can have many). Multiple clients consuming from the same topic have, by definition, multiple subscriptions to the topic, and all the clients receive all the messages sent to the topic (unless they filter them with message selectors).</p>
 
           <p>It is, however, possible to create a nondurable shared subscription to a topic by using the <code>createSharedConsumer</code> method and specifying not only a destination but a subscription name:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">consumer = context.createSharedConsumer(topicName, "SubName");</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+consumer = context.createSharedConsumer(topicName, "SubName");
+</pre>
 
           <p>With a shared subscription, messages will be distributed among multiple clients that use the same topic and subscription name. Each message sent to the topic will be added to every subscription (subject to any message selectors), but each message added to a subscription will be delivered to only one of the consumers on that subscription, so it will be received by only one of the clients. A shared subscription can be useful if you want to share the message load among several consumers on the subscription rather than having just one consumer on the subscription receive each message. This feature can improve the scalability of Java EE application client applications and Java SE applications. (Message-driven beans share the work of processing messages from a topic among multiple threads.)</p>
 
@@ -726,7 +723,7 @@ context.unsubscribe(subName);</pre>
       </div><a id="BNCES"></a><a id="JEETT01281"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.7</span> <a id="sthref2270"></a>JMS Messages</h2>
+        <h2 class="sect2" id="sigil_toc_id_360"><span class="secnum">45.3.7</span> <a id="sthref2270"></a>JMS Messages</h2>
 
         <p>The ultimate purpose of a JMS application is to produce and consume messages that can then be used by other software applications. JMS messages have a basic format that is simple but highly flexible, allowing you to create messages that match formats used by non-JMS applications on heterogeneous platforms.</p>
 
@@ -735,7 +732,7 @@ context.unsubscribe(subName);</pre>
         <p>For complete documentation of message headers, properties, and bodies, see the documentation of the <code>Message</code> interface in the API documentation. For a list of possible message types, see <a href="../Text/jms-concepts.xhtml#BNCEW">Message Bodies</a>.</p><a id="BNCET"></a><a id="JEETT00810"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.7.1</span> <a id="sthref2271"></a><a id="sthref2272"></a>Message Headers</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.7.1</span> <a id="sthref2271"></a><a id="sthref2272"></a>Message Headers</h3>
 
           <p>A JMS message header contains a number of predefined fields that contain values used by both clients and providers to identify and route messages. <a href="../Text/jms-concepts.xhtml#BNCEU">Table 45-1</a> lists and describes the JMS message header fields and indicates how their values are set. For example, every message has a unique identifier, which is represented in the header field <code>JMSMessageID</code>. The value of another header field, <code>JMSDestination</code>, represents the queue or the topic to which the message is sent. Other fields include a timestamp and a priority level.</p>
 
@@ -921,7 +918,7 @@ context.unsubscribe(subName);</pre>
         </div><a id="BNCEV"></a><a id="JEETT00811"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.7.2</span> <a id="sthref2294"></a><a id="sthref2295"></a>Message Properties</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.7.2</span> <a id="sthref2294"></a><a id="sthref2295"></a>Message Properties</h3>
 
           <p>You can create and set properties for messages if you need values in addition to those provided by the header fields. You can use properties to provide compatibility with other messaging systems, or you can use them to create message selectors (see <a href="../Text/jms-concepts.xhtml#BNCER">JMS Message Selectors</a>). For an example of setting a property to be used as a message selector, see <a href="../Text/jms-examples.xhtml#BNCGW">Sending Messages from a Session Bean to an MDB</a>.</p>
 
@@ -929,7 +926,7 @@ context.unsubscribe(subName);</pre>
         </div><a id="BNCEW"></a><a id="JEETT00812"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.3.7.3</span> <a id="sthref2296"></a><a id="sthref2297"></a>Message Bodies</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.3.7.3</span> <a id="sthref2296"></a><a id="sthref2297"></a>Message Bodies</h3>
 
           <p>The JMS API defines six different types of messages. Each message type corresponds to a different message body. These message types allow you to send and receive data in many different forms. <a href="../Text/jms-concepts.xhtml#BNCEX">Table 45-2</a> describes these message types.</p>
 
@@ -1015,32 +1012,42 @@ context.unsubscribe(subName);</pre>
           </div>
 
           <p>The JMS API provides methods for creating messages of each type and for filling in their contents. For example, to create and send a <code>TextMessage</code>, you might use the following statements:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">TextMessage message = context.createTextMessage();
+          <pre class="oac_no_warn" xml:space="preserve">
+TextMessage message = context.createTextMessage();
 message.setText(msg_text);     // msg_text is a String
-context.createProducer().send(message);</pre>
+context.createProducer().send(message);
+</pre>
 
           <p><a id="sthref2305"></a>At the consuming end, a message arrives as a generic <code>Message</code> object. You can then cast the object to the appropriate message type and use more specific methods to access the body and extract the message contents (and its headers and properties if needed). For example, you might use the stream-oriented read methods of <code>BytesMessage</code>. You must always cast to the appropriate message type to retrieve the body of a <code>StreamMessage</code>.</p>
 
           <p>Instead of casting the message to a message type, you can call the <code>getBody</code> method on the <code>Message</code>, specifying the type of the message as an argument. For example, you can retrieve a <code>TextMessage</code> as a <code>String</code>. The following code fragment uses the <code>getBody</code> method:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Message m = consumer.receive();
+          <pre class="oac_no_warn" xml:space="preserve">
+Message m = consumer.receive();
 if (m instanceof TextMessage) {
     String message = m.getBody(String.class);
     System.out.println("Reading message: " + message);
 } else {
     // Handle error or process another message type
-}</pre>
+}
+</pre>
 
           <p>The JMS API provides shortcuts for creating and receiving a <code>TextMessage</code>, <code>BytesMessage</code>, <code>MapMessage</code>, or <code>ObjectMessage</code>. For example, you do not have to wrap a string in a <code>TextMessage</code>; instead, you can send and receive the string directly. For example, you can send a string as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">String message = "This is a message";
-context.createProducer().send(dest, message);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+String message = "This is a message";
+context.createProducer().send(dest, message);
+</pre>
 
           <p><a id="sthref2306"></a>You can receive the message by using the <code>receiveBody</code> method:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">String message = receiver.receiveBody(String.class);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+String message = receiver.receiveBody(String.class);
+</pre>
 
           <p>You can use the <code>receiveBody</code> method to receive any type of message except <code>StreamMessage</code> and <code>Message</code>, as long as the body of the message can be assigned to a particular type.</p>
 
           <p>An empty <code>Message</code> can be useful if you want to send a message that is simply a signal to the application. Some of the examples in <a href="../Text/jms-examples.xhtml#BNCGV">Chapter 46, "Java Message Service Examples,"</a> send an empty message after sending a series of text messages. For example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">context.createProducer().send(dest, context.createMessage());</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+context.createProducer().send(dest, context.createMessage());
+</pre>
 
           <p>The consumer code can then interpret a non-text message as a signal that all the messages sent have now been received.</p>
 
@@ -1049,10 +1056,12 @@ context.createProducer().send(dest, message);</pre>
       </div><a id="BNCEY"></a><a id="JEETT01282"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.8</span> <a id="sthref2307"></a><a id="sthref2308"></a><a id="sthref2309"></a>JMS Queue Browsers</h2>
+        <h2 class="sect2" id="sigil_toc_id_361"><span class="secnum">45.3.8</span> <a id="sthref2307"></a><a id="sthref2308"></a><a id="sthref2309"></a>JMS Queue Browsers</h2>
 
         <p>Messages sent to a queue remain in the queue until the message consumer for that queue consumes them. The JMS API provides a <code>QueueBrowser</code> object that allows you to browse the messages in the queue and display the header values for each message. To create a <code>QueueBrowser</code> object, use the <code>JMSContext.createBrowser</code> method. For example:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">QueueBrowser browser = context.createBrowser(queue);</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+QueueBrowser browser = context.createBrowser(queue);
+</pre>
 
         <p>See <a href="../Text/jms-examples.xhtml#BNCFL">Browsing Messages on a Queue</a> for an example of using a <code>QueueBrowser</code> object.</p>
 
@@ -1062,7 +1071,7 @@ context.createProducer().send(dest, message);</pre>
       </div><a id="BNCEZ"></a><a id="JEETT01283"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.3.9</span> <a id="sthref2310"></a><a id="sthref2311"></a>JMS Exception Handling</h2>
+        <h2 class="sect2" id="sigil_toc_id_362"><span class="secnum">45.3.9</span> <a id="sthref2310"></a><a id="sthref2311"></a>JMS Exception Handling</h2>
 
         <p>The root class for all checked exceptions in the JMS API is <code>JMSException</code>. The root cause for all unchecked exceptions in the JMS API is <code>JMSRuntimeException</code>.</p>
 
@@ -1129,7 +1138,7 @@ context.createProducer().send(dest, message);</pre>
     <a id="BNCFU"></a><a id="JEETT00551"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">45.4</span> <a id="sthref2312"></a>Using Advanced JMS Features</h1>
+      <h1 class="sect1" id="sigil_toc_id_363"><span class="secnum">45.4</span> <a id="sthref2312"></a>Using Advanced JMS Features</h1>
 
       <p>This section explains how to use features of the JMS API to achieve the level of reliability and performance your application requires. Many people use JMS in their applications because they cannot tolerate dropped or duplicate messages and because they require that every message be received once and only once. The JMS API provides this functionality.</p>
 
@@ -1150,7 +1159,7 @@ context.createProducer().send(dest, message);</pre>
       <p>The following sections describe these features as they apply to application clients or Java SE clients. Some of the features work differently in the Java EE web or EJB container; in these cases, the differences are noted here and are explained in detail in <a href="../Text/jms-concepts.xhtml#BNCGL">Using the JMS API in Java EE Applications</a>.</p><a id="BNCFW"></a><a id="JEETT00813"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.4.1</span> <a id="sthref2313"></a><a id="sthref2314"></a>Controlling Message Acknowledgment</h2>
+        <h2 class="sect2" id="sigil_toc_id_364"><span class="secnum">45.4.1</span> <a id="sthref2313"></a><a id="sthref2314"></a>Controlling Message Acknowledgment</h2>
 
         <p>Until a JMS message has been acknowledged, it is not considered to be successfully consumed. The successful consumption of a message ordinarily takes place in three stages.</p>
 
@@ -1216,7 +1225,7 @@ context.createProducer().send(dest, message);</pre>
       </div><a id="BNCFV"></a><a id="JEETT01284"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.4.2</span> <a id="sthref2322"></a>Specifying Options for Sending Messages</h2>
+        <h2 class="sect2" id="sigil_toc_id_365"><span class="secnum">45.4.2</span> <a id="sthref2322"></a>Specifying Options for Sending Messages</h2>
 
         <p>You can set a number of options when you send a message. These options enable you to perform the following tasks:</p>
 
@@ -1241,7 +1250,7 @@ context.createProducer().send(dest, message);</pre>
         <p>Method chaining allows you to specify more than one of these options when you create a producer and call the <code>send</code> method; see <a href="../Text/jms-concepts.xhtml#BABJFIAD">Using JMSProducer Method Chaining</a>.</p><a id="BNCFY"></a><a id="JEETT00814"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.4.2.1</span> <a id="sthref2323"></a><a id="sthref2324"></a><a id="sthref2325"></a><a id="sthref2326"></a><a id="sthref2327"></a><a id="sthref2328"></a>Specifying Message Persistence</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.4.2.1</span> <a id="sthref2323"></a><a id="sthref2324"></a><a id="sthref2325"></a><a id="sthref2326"></a><a id="sthref2327"></a><a id="sthref2328"></a>Specifying Message Persistence</h3>
 
           <p>The JMS API supports two delivery modes specifying whether messages are lost if the JMS provider fails. These delivery modes are fields of the <code>DeliveryMode</code> interface.</p>
 
@@ -1258,32 +1267,38 @@ context.createProducer().send(dest, message);</pre>
           <p>To specify the delivery mode, use the <code>setDeliveryMode</code> method of the <code>JMSProducer</code> interface to set the delivery mode for all messages sent by that producer.</p>
 
           <p>You can use method chaining to set the delivery mode when you create a producer and send a message. The following call creates a producer with a <code>NON_PERSISTENT</code> delivery mode and uses it to send a message:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">context.createProducer()
-       .setDeliveryMode(DeliveryMode.NON_PERSISTENT).send(dest, msg);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+context.createProducer()
+       .setDeliveryMode(DeliveryMode.NON_PERSISTENT).send(dest, msg);
+</pre>
 
           <p>If you do not specify a delivery mode, the default is <code>PERSISTENT</code>. Using the <code>NON_PERSISTENT</code> delivery mode may improve performance and reduce storage overhead, but you should use it only if your application can afford to miss messages.</p>
         </div><a id="BNCFZ"></a><a id="JEETT00815"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.4.2.2</span> <a id="sthref2331"></a><a id="sthref2332"></a><a id="sthref2333"></a>Setting Message Priority Levels</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.4.2.2</span> <a id="sthref2331"></a><a id="sthref2332"></a><a id="sthref2333"></a>Setting Message Priority Levels</h3>
 
           <p>You can use message priority levels to instruct the JMS provider to deliver urgent messages first. Use the <code>setPriority</code> method of the <code>JMSProducer</code> interface to set the priority level for all messages sent by that producer.</p>
 
           <p>You can use method chaining to set the priority level when you create a producer and send a message. For example, the following call sets a priority level of 7 for a producer and then sends a message:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">context.createProducer().setPriority(7).send(dest, msg);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+context.createProducer().setPriority(7).send(dest, msg);
+</pre>
 
           <p>The ten levels of priority range from 0 (lowest) to 9 (highest). If you do not specify a priority level, the default level is 4. A JMS provider tries to deliver higher-priority messages before lower-priority ones, but does not have to deliver messages in exact order of priority.</p>
         </div><a id="BNCGA"></a><a id="JEETT00816"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.4.2.3</span> <a id="sthref2334"></a><a id="sthref2335"></a><a id="sthref2336"></a>Allowing Messages to Expire</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.4.2.3</span> <a id="sthref2334"></a><a id="sthref2335"></a><a id="sthref2336"></a>Allowing Messages to Expire</h3>
 
           <p>By default, a message never expires. If a message will become obsolete after a certain period, however, you may want to set an expiration time. Use the <code>setTimeToLive</code> method of the <code>JMSProducer</code> interface to set a default expiration time for all messages sent by that producer.</p>
 
           <p>For example, a message that contains rapidly changing data such as a stock price will become obsolete after a few minutes, so you might configure messages to expire after that time.</p>
 
           <p>You can use method chaining to set the time to live when you create a producer and send a message. For example, the following call sets a time to live of five minutes for a producer and then sends a message:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">context.createProducer().setTimeToLive(300000).send(dest, msg);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+context.createProducer().setTimeToLive(300000).send(dest, msg);
+</pre>
 
           <p>If the specified <code>timeToLive</code> value is <code>0</code>, the message never expires.</p>
 
@@ -1291,50 +1306,58 @@ context.createProducer().send(dest, message);</pre>
         </div><a id="BABGEADH"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.4.2.4</span> <a id="sthref2337"></a><a id="sthref2338"></a><a id="sthref2339"></a>Specifying a Delivery Delay</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.4.2.4</span> <a id="sthref2337"></a><a id="sthref2338"></a><a id="sthref2339"></a>Specifying a Delivery Delay</h3>
 
           <p>You can specify a length of time that must elapse after a message is sent before the JMS provider delivers the message. Use the <code>setDeliveryDelay</code> method of the <code>JMSProducer</code> interface to set a delivery delay for all messages sent by that producer.</p>
 
           <p>You can use method chaining to set the delivery delay when you create a producer and send a message. For example, the following call sets a delivery delay of 3 seconds for a producer and then sends a message:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">context.createProducer().setDeliveryDelay(3000).send(dest, msg);</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+context.createProducer().setDeliveryDelay(3000).send(dest, msg);
+</pre>
         </div><a id="BABJFIAD"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.4.2.5</span> Using JMSProducer Method Chaining</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.4.2.5</span> Using JMSProducer Method Chaining</h3>
 
           <p>The setter methods on the <code>JMSProducer</code> interface return <code>JMSProducer</code> objects, so you can use method chaining to create a producer, set multiple properties, and send a message. For example, the following chained method calls create a producer, set a user-defined property, set the expiration, delivery mode, and priority for the message, and then send a message to a queue:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">context.createProducer()
+          <pre class="oac_no_warn" xml:space="preserve">
+context.createProducer()
         .setProperty("MyProperty", "MyValue")
         .setTimeToLive(10000)
         .setDeliveryMode(NON_PERSISTENT)
         .setPriority(2)
-        .send(queue, body);</pre>
+        .send(queue, body);
+</pre>
 
           <p>You can also call the <code>JMSProducer</code> methods to set properties on a message and then send the message in a separate <code>send</code> method call. You can also set message properties directly on a message.</p>
         </div>
       </div><a id="BNCGB"></a><a id="JEETT00817"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.4.3</span> <a id="sthref2340"></a><a id="sthref2341"></a><a id="sthref2342"></a><a id="sthref2343"></a><a id="sthref2344"></a>Creating Temporary Destinations</h2>
+        <h2 class="sect2" id="sigil_toc_id_366"><span class="secnum">45.4.3</span> <a id="sthref2340"></a><a id="sthref2341"></a><a id="sthref2342"></a><a id="sthref2343"></a><a id="sthref2344"></a>Creating Temporary Destinations</h2>
 
         <p>Normally, you create JMS destinations (queues and topics) administratively rather than programmatically. Your JMS provider includes a tool to create and remove destinations, and it is common for destinations to be long-lasting.</p>
 
         <p>The JMS API also enables you to create destinations (<code>TemporaryQueue</code> and <code>TemporaryTopic</code> objects) that last only for the duration of the connection in which they are created. You create these destinations dynamically using the <code>JMSContext.createTemporaryQueue</code> and the <code>JMSContext.createTemporaryTopic</code> methods, as in the following example:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">TemporaryTopic replyTopic = context.createTemporaryTopic();</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+TemporaryTopic replyTopic = context.createTemporaryTopic();
+</pre>
 
         <p>The only message consumers that can consume from a temporary destination are those created by the same connection that created the destination. Any message producer can send to the temporary destination. If you close the connection to which a temporary destination belongs, the destination is closed and its contents are lost.</p>
 
         <p><a id="sthref2345"></a>You can use temporary destinations to implement a simple request/reply mechanism. If you create a temporary destination and specify it as the value of the <code>JMSReplyTo</code> message header field when you send a message, then the consumer of the message can use the value of the <code>JMSReplyTo</code> field as the destination to which it sends a reply. The consumer can also reference the original request by setting the <code>JMSCorrelationID</code> header field of the reply message to the value of the <code>JMSMessageID</code> header field of the request. For example, an <code>onMessage</code> method can create a <code>JMSContext</code> so that it can send a reply to the message it receives. It can use code such as the following:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">replyMsg = context.createTextMessage("Consumer processed message: " 
+        <pre class="oac_no_warn" xml:space="preserve">
+replyMsg = context.createTextMessage("Consumer processed message: " 
         + msg.getText());
 replyMsg.setJMSCorrelationID(msg.getJMSMessageID());
-context.createProducer().send((Topic) msg.getJMSReplyTo(), replyMsg);</pre>
+context.createProducer().send((Topic) msg.getJMSReplyTo(), replyMsg);
+</pre>
 
         <p>For an example, see <a href="../Text/jms-examples.xhtml#BNCHF">Using an Entity to Join Messages from Two MDBs</a>.</p>
       </div><a id="BNCGH"></a><a id="JEETT00819"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.4.4</span> <a id="sthref2346"></a><a id="sthref2347"></a><a id="sthref2348"></a><a id="sthref2349"></a><a id="sthref2350"></a>Using JMS Local Transactions</h2>
+        <h2 class="sect2" id="sigil_toc_id_367"><span class="secnum">45.4.4</span> <a id="sthref2346"></a><a id="sthref2347"></a><a id="sthref2348"></a><a id="sthref2349"></a><a id="sthref2350"></a>Using JMS Local Transactions</h2>
 
         <p>A <span class="glossaryterm">transaction</span> groups a series of operations into an atomic unit of work. If any one of the operations fails, the transaction can be rolled back, and the operations can be attempted again from the beginning. If all the operations succeed, the transaction can be committed.</p>
 
@@ -1343,8 +1366,10 @@ context.createProducer().send((Topic) msg.getJMSReplyTo(), replyMsg);</pre>
         <p>You can use the <code>JMSContext.rollback</code> method to roll back a transaction. A transaction rollback means that all produced messages are destroyed and all consumed messages are recovered and redelivered unless they have expired (see <a href="../Text/jms-concepts.xhtml#BNCGA">Allowing Messages to Expire</a>).</p>
 
         <p>A transacted session is always involved in a transaction. To create a transacted session, call the <code>createContext</code> method as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">JMSContext context = 
-        connectionFactory.createContext(JMSContext.SESSION_TRANSACTED);</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+JMSContext context = 
+        connectionFactory.createContext(JMSContext.SESSION_TRANSACTED);
+</pre>
 
         <p>As soon as the <code>commit</code> or the <code>rollback</code> method is called, one transaction ends and another transaction begins. Closing a transacted session rolls back its transaction in progress, including any pending sends and receives.</p>
 
@@ -1353,12 +1378,14 @@ context.createProducer().send((Topic) msg.getJMSReplyTo(), replyMsg);</pre>
         <p>You can combine several sends and receives in a single JMS local transaction, so long as they are all performed using the same <code>JMSContext</code>.</p>
 
         <p>Do not use a single transaction if you use a request/reply mechanism, in which you send a message and then receive a reply to that message. If you try to use a single transaction, the program will hang, because the send cannot take place until the transaction is committed. The following code fragment illustrates the problem:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">// Don't do this!
+        <pre class="oac_no_warn" xml:space="preserve">
+// Don't do this!
 outMsg.setJMSReplyTo(replyQueue);
 context.createProducer().send(outQueue, outMsg);
 consumer = context.createConsumer(replyQueue);
 inMsg = consumer.receive();
-context.commit();</pre>
+context.commit();
+</pre>
 
         <p>Because a message sent during a transaction is not actually sent until the transaction is committed, the transaction cannot contain any receives that depend on that message's having been sent.</p>
 
@@ -1367,13 +1394,8 @@ context.commit();</pre>
         <div class="figure">
           <a id="BNCGI"></a><a id="JEETT00053"></a>
 
-          <p class="titleinfigure">Figure 45-8 Using JMS Local Transactions</p>
-
-          <div style="text-align: center;"><img alt="Description of Figure 45-8 follows" longdesc="img_text/jeett_dt_033.htm" src="../Images/jeett_dt_033.png" style="line-height: 1.6em;" title="Description of Figure 45-8 follows" /></div>
-        </div>
-
-        <div class="figure">
-          Description of "Figure 45-8 Using JMS Local Transactions"<br />
+          <p class="titleinfigure">Figure 45-8 Using JMS Local Transactions</p><br />
+          <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_033.htm" id="sthref2351">Description of "Figure 45-8 Using JMS Local Transactions"</a><br />
           <br />
         </div>
 
@@ -1384,9 +1406,11 @@ context.commit();</pre>
         <p>This is the fundamental difference between messaging and synchronized processing. Instead of tightly coupling the sender and the receiver of a message, JMS couples the sender of a message with the destination, and it separately couples the destination with the receiver of the message. Therefore, while the sends and receives each have a tight coupling with the JMS provider, they do not have any coupling with each other.</p>
 
         <p>When you create a <code>JMSContext</code>, you can specify whether it is transacted by using the <code>JMSContext.SESSION_TRANSACTED</code> argument to the <code>createContext</code> method. For example:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">try (JMSContext context = connectionFactory.createContext(
+        <pre class="oac_no_warn" xml:space="preserve">
+try (JMSContext context = connectionFactory.createContext(
         JMSContext.SESSION_TRANSACTED);) {
-    ...</pre>
+    ...
+</pre>
 
         <p>The <code>commit</code> and the <code>rollback</code> methods for local transactions are associated with the session that underlies the <code>JMSContext</code>. You can combine operations on more than one queue or topic, or on a combination of queues and topics, in a single transaction if you use the same session to perform the operations. For example, you can use the same <code>JMSContext</code> to receive a message from a queue and send a message to a topic in the same transaction.</p>
 
@@ -1394,18 +1418,21 @@ context.commit();</pre>
       </div><a id="BABFIFAJ"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.4.5</span> <a id="sthref2352"></a><a id="sthref2353"></a>Sending Messages Asynchronously</h2>
+        <h2 class="sect2" id="sigil_toc_id_368"><span class="secnum">45.4.5</span> <a id="sthref2352"></a><a id="sthref2353"></a>Sending Messages Asynchronously</h2>
 
         <p>Normally, when you send a persistent message, the <code>send</code> method blocks until the JMS provider confirms that the message was sent successfully. The asynchronous send mechanism allows your application to send a message and continue work while waiting to learn whether the send completed.</p>
 
         <p>This feature is currently available only in application clients and Java SE clients.</p>
 
         <p>Sending a message asynchronously involves supplying a callback object. You specify a <code>CompletionListener</code> with an <code>onCompletion</code> method. For example, the following code instantiates a <code>CompletionListener</code> named <code>SendListener</code>. It then calls the <code>setAsync</code> method to specify that sends from this producer should be asynchronous and should use the specified listener:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CompletionListener listener = new SendListener();
-context.createProducer().setAsync(listener).send(dest, message);</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+CompletionListener listener = new SendListener();
+context.createProducer().setAsync(listener).send(dest, message);
+</pre>
 
         <p>The <code>CompletionListener</code> class must implement two methods, <code>onCompletion</code> and <code>onException</code>. The <code>onCompletion</code> method is called if the send succeeds, and the <code>onException</code> method is called if it fails. A simple implementation of these methods might look like this:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+        <pre class="oac_no_warn" xml:space="preserve">
+@Override
 public void onCompletion(Message message) {
     System.out.println("onCompletion method: Send has completed.");
 }
@@ -1414,7 +1441,8 @@ public void onCompletion(Message message) {
 public void onException(Message message, Exception e) {
     System.out.println("onException method: send failed: " + e.toString());
     System.out.println("Unsent message is: \n" + message);
-}</pre>
+}
+</pre>
       </div>
     </div>
   </div>
@@ -1423,7 +1451,7 @@ public void onException(Message message, Exception e) {
     <a id="BNCGL"></a><a id="JEETT00552"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">45.5</span> <a id="sthref2354"></a>Using the JMS API in Java EE Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_369"><span class="secnum">45.5</span> <a id="sthref2354"></a>Using the JMS API in Java EE Applications</h1>
 
       <p>This section describes how using the JMS API in enterprise bean applications or web applications differs from using it in application clients.</p>
 
@@ -1432,25 +1460,29 @@ public void onException(Message message, Exception e) {
       <p>This rule does not apply to application clients. The application client container supports the creation of multiple sessions for each connection.</p><a id="BABHFBDH"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.5.1</span> Creating Resources for Java EE Applications</h2>
+        <h2 class="sect2" id="sigil_toc_id_370"><span class="secnum">45.5.1</span> Creating Resources for Java EE Applications</h2>
 
         <p>You can use annotations to create application-specific connection factories and destinations for Java EE enterprise bean or web components. The resources you create in this way are visible only to the application for which you create them.</p>
 
         <p>You can also use deployment descriptor elements to create these resources. Elements specified in the deployment descriptor override elements specified in annotations. See <a href="../Text/packaging.xhtml#BCGDJDFB">Packaging Applications</a> for basic information about deployment descriptors. You must use a deployment descriptor to create application-specific resources for application clients.</p>
 
         <p>To create a destination, use a <code>@JMSDestinationDefinition</code> annotation like the following on a class:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@JMSDestinationDefinition(
+        <pre class="oac_no_warn" xml:space="preserve">
+@JMSDestinationDefinition(
     name = "java:app/jms/myappTopic",
     interfaceName = "javax.jms.Topic",
     destinationName = "MyPhysicalAppTopic"
-  )</pre>
+  )
+</pre>
 
         <p>The <code>name</code>, <code>interfaceName</code>, and <code>destinationName</code> elements are required. You can optionally specify a <code>description</code> element. To create multiple destinations, enclose them in a <code>@JMSDestinationDefinitions</code> annotation, separated by commas.</p>
 
         <p>To create a connection factory, use a <code>@JMSConnectionFactoryDefinition</code> annotation like the following on a class:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@JMSConnectionFactoryDefinition(
+        <pre class="oac_no_warn" xml:space="preserve">
+@JMSConnectionFactoryDefinition(
     name="java:app/jms/MyConnectionFactory"
-)</pre>
+)
+</pre>
 
         <p>The <code>name</code> element is required. You can optionally specify a number of other elements, such as <code>clientId</code> if you want to use the connection factory for durable subscriptions, or <code>description</code>. If you do not specify the <code>interfaceName</code> element, the default interface is <code>javax.jms.ConnectionFactory</code>. To create multiple connection factories, enclose them in a <code>@JMSConnectionFactoryDefinitions</code> annotation, separated by commas.</p>
 
@@ -1475,8 +1507,10 @@ public void onException(Message message, Exception e) {
         </div>
 
         <p>When you inject the resource into a component, use the value of the <code>name</code> element in the definition annotation as the value of the <code>lookup</code> element in the <code>@Resource</code> annotation:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource(lookup = "java:app/jms/myappTopic")
-private Topic topic;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@Resource(lookup = "java:app/jms/myappTopic")
+private Topic topic;
+</pre>
 
         <p>The following portable JNDI namespaces are available. Which ones you can use depends on how your application is packaged.</p>
 
@@ -1502,49 +1536,58 @@ private Topic topic;</pre>
       </div><a id="BNCGM"></a><a id="JEETT01286"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.5.2</span> Using Resource Injection in Enterprise Bean or Web Components</h2>
+        <h2 class="sect2" id="sigil_toc_id_371"><span class="secnum">45.5.2</span> Using Resource Injection in Enterprise Bean or Web Components</h2>
 
         <p>You may use resource injection to inject both administered objects and <code>JMSContext</code> objects in Java EE applications.</p>
 
         <div class="sect3">
           <a id="sthref2355"></a>
 
-          <h3 class="sect3"><span class="secnum">45.5.2.1</span> Injecting a ConnectionFactory, Queue, or Topic</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.5.2.1</span> Injecting a ConnectionFactory, Queue, or Topic</h3>
 
           <p>Normally, you use the <code>@Resource</code> annotation to inject a <code>ConnectionFactory</code>, <code>Queue</code>, or <code>Topic</code> into your Java EE application. These objects must be created administratively before you deploy your application. You may want to use the default connection factory, whose JNDI name is <code>java:comp/DefaultJMSConnectionFactory</code>.</p>
 
           <p>When you use resource injection in an application client component, you normally declare the JMS resource static:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
+          <pre class="oac_no_warn" xml:space="preserve">
+@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
 private static ConnectionFactory connectionFactory;
 
 @Resource(lookup = "jms/MyQueue")
-private static Queue queue;</pre>
+private static Queue queue;
+</pre>
 
           <p>However, when you use this annotation in a session bean, a message-driven bean, or a web component, do <span class="italic">not</span> declare the resource static:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
+          <pre class="oac_no_warn" xml:space="preserve">
+@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
 private ConnectionFactory connectionFactory;
 
 @Resource(lookup = "jms/MyTopic")
-private Topic topic;</pre>
+private Topic topic;
+</pre>
 
           <p>If you declare the resource static in these components, runtime errors will result.</p>
         </div><a id="BABCJBEE"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.5.2.2</span> Injecting a JMSContext Object</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.5.2.2</span> Injecting a JMSContext Object</h3>
 
           <p>To access a <code>JMSContext</code> object in an enterprise bean or web component, instead of injecting the <code>ConnectionFactory</code> resource and then creating a <code>JMSContext</code>, you can use the <code>@Inject</code> and <code>@JMSConnectionFactory</code> annotations to inject a <code>JMSContext</code>. To use the default connection factory, use code like the following:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Injectprivate JMSContext context1;</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Inject
+private JMSContext context1;
+</pre>
 
           <p>To use your own connection factory, use code like the following:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject
+          <pre class="oac_no_warn" xml:space="preserve">
+@Inject
 @JMSConnectionFactory("jms/MyConnectionFactory")
-private JMSContext context2;</pre>
+private JMSContext context2;
+</pre>
         </div>
       </div><a id="BNCGN"></a><a id="JEETT01287"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.5.3</span> <a id="sthref2356"></a><a id="sthref2357"></a>Using Java EE Components to Produce and to Synchronously Receive Messages</h2>
+        <h2 class="sect2" id="sigil_toc_id_372"><span class="secnum">45.5.3</span> <a id="sthref2356"></a><a id="sthref2357"></a>Using Java EE Components to Produce and to Synchronously Receive Messages</h2>
 
         <p>An application that produces messages or synchronously receives them can use a Java EE web or EJB component, such as a managed bean, a servlet, or a session bean, to perform these operations. The example in <a href="../Text/jms-examples.xhtml#BNCGW">Sending Messages from a Session Bean to an MDB</a> uses a stateless session bean to send messages to a topic. The example in <a href="../Text/jms-examples.xhtml#BABBABFC">Sending and Receiving Messages Using a Simple Web Application</a> uses managed beans to produce and to consume messages.</p>
 
@@ -1553,7 +1596,7 @@ private JMSContext context2;</pre>
         <p>Using the JMS API in a Java EE component is in many ways similar to using it in an application client. The main differences are the areas of resource management and transactions.</p><a id="BNCGO"></a><a id="JEETT00820"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.5.3.1</span> <a id="sthref2358"></a><a id="sthref2359"></a><a id="sthref2360"></a>Managing JMS Resources in Web and EJB Components</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.5.3.1</span> <a id="sthref2358"></a><a id="sthref2359"></a><a id="sthref2360"></a>Managing JMS Resources in Web and EJB Components</h3>
 
           <p>The JMS resources are a connection and a session, usually combined in a <code>JMSContext</code> object. In general, it is important to release JMS resources when they are no longer being used. Here are some useful practices to follow.</p>
 
@@ -1573,7 +1616,7 @@ private JMSContext context2;</pre>
         </div><a id="BNCGP"></a><a id="JEETT00821"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">45.5.3.2</span> <a id="sthref2361"></a>Managing Transactions in Session Beans</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">45.5.3.2</span> <a id="sthref2361"></a>Managing Transactions in Session Beans</h3>
 
           <p>Instead of using local transactions, you use JTA transactions. You can use either container-managed transactions or bean-managed transactions. Normally, you use container-managed transactions for bean methods that perform sends or receives, allowing the EJB container to handle transaction demarcation. Because container-managed transactions are the default, you do not have to specify them.</p>
 
@@ -1582,7 +1625,7 @@ private JMSContext context2;</pre>
       </div><a id="BNCGQ"></a><a id="JEETT01288"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.5.4</span> <a id="sthref2362"></a><a id="sthref2363"></a>Using Message-Driven Beans to Receive Messages Asynchronously</h2>
+        <h2 class="sect2" id="sigil_toc_id_373"><span class="secnum">45.5.4</span> <a id="sthref2362"></a><a id="sthref2363"></a>Using Message-Driven Beans to Receive Messages Asynchronously</h2>
 
         <p>The sections <a href="../Text/ejb-intro.xhtml#GIPKO">What Is a Message-Driven Bean?</a> and <a href="../Text/jms-concepts.xhtml#BNCDW">How Does the JMS API Work with the Java EE Platform?</a> describe how the Java EE platform supports a special kind of enterprise bean, the message-driven bean, which allows Java EE applications to process JMS messages asynchronously. Other Java EE web and EJB components allow you to send messages and to receive them synchronously but not asynchronously.</p>
 
@@ -1605,7 +1648,9 @@ private JMSContext context2;</pre>
         </ul>
 
         <p>It is recommended, but not required, that a message-driven bean class implement the message listener interface for the message type it supports. A bean that supports the JMS API implements the <code>javax.jms.MessageListener</code> interface, which means that it must provide an <code>onMessage</code> method with the following signature:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">void onMessage(Message inMessage)</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+void onMessage(Message inMessage)
+</pre>
 
         <p><a id="sthref2364"></a>The <code>onMessage</code> method is called by the bean's container when a message has arrived for the bean to service. This method contains the business logic that handles the processing of the message. It is the message-driven bean's responsibility to parse the message and perform the necessary business logic.</p>
 
@@ -1733,7 +1778,8 @@ private JMSContext context2;</pre>
         </div>
 
         <p>For example, here is the message-driven bean used in <a href="../Text/jms-examples.xhtml#BNBPK">Receiving Messages Asynchronously Using a Message-Driven Bean</a>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@MessageDriven(activationConfig = {
+        <pre class="oac_no_warn" xml:space="preserve">
+@MessageDriven(activationConfig = {
     @ActivationConfigProperty(propertyName = "destinationLookup",
             propertyValue = "jms/MyQueue"),
     @ActivationConfigProperty(propertyName = "destinationType",
@@ -1768,13 +1814,16 @@ public class SimpleMessageBean implements MessageListener {
             mdc.setRollbackOnly();
         }
     }
-}</pre>
+}
+</pre>
 
         <p>If JMS is integrated with the application server using a resource adapter, the JMS resource adapter handles these tasks for the EJB container.</p>
 
         <p>The bean class commonly injects a <code>MessageDrivenContext</code> resource, which provides some additional methods you can use for transaction management (<code>setRollbackOnly</code>, for example):</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    @Resource
-    private MessageDrivenContext mdc;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+    @Resource
+    private MessageDrivenContext mdc;
+</pre>
 
         <p>A message-driven bean never has a local or remote interface. Instead, it has only a bean class.</p>
 
@@ -1786,7 +1835,7 @@ public class SimpleMessageBean implements MessageListener {
       </div><a id="BNCGS"></a><a id="JEETT01289"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">45.5.5</span> <a id="sthref2366"></a>Managing JTA Transactions</h2>
+        <h2 class="sect2" id="sigil_toc_id_374"><span class="secnum">45.5.5</span> <a id="sthref2366"></a>Managing JTA Transactions</h2>
 
         <p>Java EE application clients and Java SE clients use JMS local transactions (described in <a href="../Text/jms-concepts.xhtml#BNCGH">Using JMS Local Transactions</a>), which allow the grouping of sends and receives within a specific JMS session. Java EE applications that run in the web or EJB container commonly use JTA transactions to ensure the integrity of accesses to external resources. The key difference between a JTA transaction and a JMS local transaction is that a JTA transaction is controlled by the application server's transaction managers. JTA transactions may be <span class="glossaryterm">distributed</span>, which means that they can encompass multiple resources in the same transaction, such as a JMS provider and a database.</p>
 
@@ -1800,7 +1849,7 @@ public class SimpleMessageBean implements MessageListener {
           <li>
             <p><a id="sthref2367"></a><span class="bold">Container-managed transactions</span>: The container controls the integrity of your transactions without your having to call <code>commit</code> or <code>rollback</code>. Container-managed transactions are easier to use than bean-managed transactions. You can specify appropriate transaction attributes for your enterprise bean methods.</p>
 
-            <p>Use the <code>Required</code> transaction attribute (the default) to ensure that a method is always part of a transaction. If a transaction is in progress when the method is called, the method will be part of that transaction; if not, a new transaction will be started before the method is called and will be committed when the method returns. See <a href="../Text/jms-concepts.xhtml#BNCIK">Transaction Attributes</a> for more information.</p>
+            <p>Use the <code>Required</code> transaction attribute (the default) to ensure that a method is always part of a transaction. If a transaction is in progress when the method is called, the method will be part of that transaction; if not, a new transaction will be started before the method is called and will be committed when the method returns. See <a href="../Text/transactions.xhtml#BNCIK">Transaction Attributes</a> for more information.</p>
           </li>
 
           <li>
@@ -1843,7 +1892,7 @@ public class SimpleMessageBean implements MessageListener {
     <a id="BNCGU"></a><a id="JEETT00553"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">45.6</span> Further Information about JMS</h1>
+      <h1 class="sect1" id="sigil_toc_id_375"><span class="secnum">45.6</span> Further Information about JMS</h1>
 
       <p>For more information about JMS, see</p>
 
@@ -1851,13 +1900,13 @@ public class SimpleMessageBean implements MessageListener {
         <li>
           <p>Java Message Service website:</p>
 
-          <p><code><a href="../Text/jms-concepts.xhtml#http%3A//www.oracle.com/technetwork/java/index-jsp-142945.html">http://www.oracle.com/technetwork/java/index-jsp-142945.html</a></code></p>
+          <p><code><a href="../Text/http://www.oracle.com/technetwork/java/index-jsp-142.xhtml#http://www.oracle.com/technetwork/java/index-jsp-142945.html">http://www.oracle.com/technetwork/java/index-jsp-142945.html</a></code></p>
         </li>
 
         <li>
           <p>Java Message Service specification, version 2.0, available from:</p>
 
-          <p><code><a href="../Text/jms-concepts.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D343">http://jcp.org/en/jsr/detail?id=343</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=343">http://jcp.org/en/jsr/detail?id=343</a></code></p>
         </li>
       </ul>
     </div>

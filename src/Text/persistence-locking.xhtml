@@ -33,7 +33,7 @@
     <a id="GKJHZ"></a><a id="JEETT00505"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">42.1</span> <a id="sthref2158"></a>Overview of Entity Locking and Concurrency</h1>
+      <h1 class="sect1" id="sigil_toc_id_753"><span class="secnum">42.1</span> <a id="sthref2158"></a>Overview of Entity Locking and Concurrency</h1>
 
       <p>Entity data is <span class="glossaryterm">concurrently accessed</span> if the data in a data source is accessed at the same time by multiple applications. Ensure that the underlying data's integrity is preserved when it is accessed concurrently.</p>
 
@@ -62,7 +62,7 @@
       </div><a id="GKJJC"></a><a id="JEETT01206"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">42.1.1</span> <a id="sthref2161"></a>Using Optimistic Locking</h2>
+        <h2 class="sect2" id="sigil_toc_id_754"><span class="secnum">42.1.1</span> <a id="sthref2161"></a>Using Optimistic Locking</h2>
 
         <p>Use the <code>javax.persistence.Version</code> annotation to mark a persistent field or property as a version attribute of an entity. The version attribute enables the entity for optimistic concurrency control. The persistence provider reads and updates the version attribute when an entity instance is modified during a transaction. The application may read the version attribute, but <span class="italic">must not</span> modify the value.</p>
 
@@ -101,12 +101,16 @@
         </ul>
 
         <p>The following code snippet shows how to define a version attribute in an entity with persistent fields:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Version
-protected int version;</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@Version
+protected int version;
+</pre>
 
         <p>The following code snippet shows how to define a version attribute in an entity with persistent properties:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Version
-protected Short getVersion() { ... }</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@Version
+protected Short getVersion() { ... }
+</pre>
       </div>
     </div>
   </div>
@@ -115,7 +119,7 @@ protected Short getVersion() { ... }</pre>
     <a id="GKJIU"></a><a id="JEETT00506"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">42.2</span> <a id="sthref2162"></a>Lock Modes</h1>
+      <h1 class="sect1" id="sigil_toc_id_755"><span class="secnum">42.2</span> <a id="sthref2162"></a>Lock Modes</h1>
 
       <p>The application may increase the level of locking for an entity by specifying the use of lock modes. Lock modes may be specified to increase the level of optimistic locking or to request the use of pessimistic locks.</p>
 
@@ -229,50 +233,62 @@ protected Short getVersion() { ... }</pre>
       </div><a id="GKJIK"></a><a id="JEETT01207"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">42.2.1</span> Setting the Lock Mode</h2>
+        <h2 class="sect2" id="sigil_toc_id_756"><span class="secnum">42.2.1</span> Setting the Lock Mode</h2>
 
         <p>To specify the lock mode, use one of the following techniques.</p>
 
         <ul>
           <li>
             <p>Call the <code>EntityManager.lock</code> method, passing in one of the lock modes:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+            <pre class="oac_no_warn" xml:space="preserve">
+EntityManager em = ...;
 Person person = ...;
-em.lock(person, LockModeType.OPTIMISTIC);</pre>
+em.lock(person, LockModeType.OPTIMISTIC);
+</pre>
           </li>
 
           <li>
             <p>Call one of the <code>EntityManager.find</code> methods that take the lock mode as a parameter:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+            <pre class="oac_no_warn" xml:space="preserve">
+EntityManager em = ...;
 String personPK = ...;
 Person person = em.find(Person.class, personPK, 
-    LockModeType.PESSIMISTIC_WRITE);</pre>
+    LockModeType.PESSIMISTIC_WRITE);
+</pre>
           </li>
 
           <li>
             <p>Call one of the <code>EntityManager.refresh</code> methods that take the lock mode as a parameter:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">EntityManager em = ...;
+            <pre class="oac_no_warn" xml:space="preserve">
+EntityManager em = ...;
 String personPK = ...;
 Person person = em.find(Person.class, personPK);
 ...
-em.refresh(person, LockModeType.OPTIMISTIC_FORCE_INCREMENT);</pre>
+em.refresh(person, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+</pre>
           </li>
 
           <li>
             <p>Call the <code>Query.setLockMode</code> or <code>TypedQuery.setLockMode</code> method, passing the lock mode as the parameter:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Query q = em.createQuery(...);
-q.setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT);</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+Query q = em.createQuery(...);
+q.setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT);
+</pre>
           </li>
 
           <li>
             <p>Add a <code>lockMode</code> element to the <code>@NamedQuery</code> annotation:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@NamedQuery(name="lockPersonQuery",  query="SELECT p FROM Person p WHERE p.name LIKE :name",  lockMode=PESSIMISTIC_READ)</pre>
+            <pre class="oac_no_warn" xml:space="preserve">
+@NamedQuery(name="lockPersonQuery",
+  query="SELECT p FROM Person p WHERE p.name LIKE :name",
+  lockMode=PESSIMISTIC_READ)
+</pre>
           </li>
         </ul>
       </div><a id="GKJIL"></a><a id="JEETT01208"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">42.2.2</span> <a id="sthref2164"></a>Using Pessimistic Locking</h2>
+        <h2 class="sect2" id="sigil_toc_id_757"><span class="secnum">42.2.2</span> <a id="sthref2164"></a>Using Pessimistic Locking</h2>
 
         <p>Versioned entities, as well as entities that do not have version attributes, can be locked pessimistically.</p>
 
@@ -283,7 +299,7 @@ q.setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT);</pre>
         <p>Pessimistically locking a versioned entity with <code>PESSIMISTIC_FORCE_INCREMENT</code> results in the version attribute being incremented even if the entity data is unmodified. When pessimistically locking a versioned entity, the persistence provider will perform the version checks that occur during optimistic locking, and if the version check fails, an <code>OptimisticLockException</code> will be thrown. An attempt to lock a non-versioned entity with <code>PESSIMISTIC_FORCE_INCREMENT</code> is not portable and may result in a <code>PersistenceException</code> if the persistence provider does not support optimistic locks for non-versioned entities. Locking a versioned entity with <code>PESSIMISTIC_WRITE</code> results in the version attribute being incremented if the transaction was successfully committed.</p><a id="GKJLQ"></a><a id="JEETT00753"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">42.2.2.1</span> Pessimistic Locking Timeouts</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">42.2.2.1</span> Pessimistic Locking Timeouts</h3>
 
           <p>Use the <code>javax.persistence.lock.timeout</code> property to specify the length of time in milliseconds the persistence provider should wait to obtain a lock on the database tables. If the time it takes to obtain a lock exceeds the value of this property, a <code>LockTimeoutException</code> will be thrown, but the current transaction will not be marked for rollback. If you set this property to <code>0</code>, the persistence provider should throw a <code>LockTimeoutException</code> if it cannot immediately obtain a lock.</p>
 

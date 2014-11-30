@@ -77,7 +77,7 @@
     <a id="GKIGR"></a><a id="JEETT00362"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.1</span> <a id="sthref812"></a>Overview of Ajax</h1>
+      <h1 class="sect1" id="sigil_toc_id_420"><span class="secnum">13.1</span> <a id="sthref812"></a>Overview of Ajax</h1>
 
       <p>Ajax refers to JavaScript and XML, technologies that are widely used for creating dynamic and asynchronous web content. While Ajax is not limited to JavaScript and XML technologies, more often than not they are used together by web applications. The focus of this tutorial is on using JavaScript based Ajax functionality in JavaServer Faces web applications.</p>
 
@@ -85,7 +85,7 @@
 
       <p>When a JavaScript function sends an asynchronous request from the client to the server, the server sends back a response that is used to update the page's Document Object Model (DOM). This response is often in the format of an XML document. The term <span class="italic">Ajax</span> refers to this interaction between the client and server.</p>
 
-      <p>The server response need not be in XML only; it can also be in other formats, such as JSON (see <a href="../Text/jsonp.xhtml#BABEECIB">Introduction to JSON</a> and <code><a href="../Text/jsf-ajax.xhtml#http%3A//www.json.org/">http://www.json.org/</a></code>). This tutorial does not focus on the response formats.</p>
+      <p>The server response need not be in XML only; it can also be in other formats, such as JSON (see <a href="../Text/jsonp.xhtml#BABEECIB">Introduction to JSON</a> and <code><a href="../Text/http://www.json.org/.xhtml#http://www.json.org/">http://www.json.org/</a></code>). This tutorial does not focus on the response formats.</p>
 
       <p>Ajax enables asynchronous and partial updating of web applications. Such functionality allows for highly responsive web pages that are rendered in near real time. Ajax-based web applications can access server and process information and can also retrieve data without interfering with the display and rendering of the current web page on a client (such as a browser).</p>
 
@@ -111,7 +111,7 @@
     <a id="GKINL"></a><a id="JEETT00363"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.2</span> Using Ajax Functionality with JavaServer Faces Technology</h1>
+      <h1 class="sect1" id="sigil_toc_id_421"><span class="secnum">13.2</span> Using Ajax Functionality with JavaServer Faces Technology</h1>
 
       <p>Ajax functionality can be added to a JavaServer Faces application in one of the following ways:</p>
 
@@ -141,7 +141,7 @@
     <a id="GKABR"></a><a id="JEETT00364"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.3</span> <a id="sthref813"></a><a id="sthref814"></a>Using Ajax with Facelets</h1>
+      <h1 class="sect1" id="sigil_toc_id_422"><span class="secnum">13.3</span> <a id="sthref813"></a><a id="sthref814"></a>Using Ajax with Facelets</h1>
 
       <p>As mentioned in the previous section, JavaServer Faces technology supports Ajax by using a built-in JavaScript resource library that is provided as part of the JavaServer Faces core libraries. This built-in Ajax resource can be used in JavaServer Faces web applications in one of the following ways.</p>
 
@@ -156,12 +156,14 @@
       </ul><a id="GKAFN"></a><a id="JEETT00965"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.3.1</span> <a id="sthref815"></a><a id="sthref816"></a>Using the f:ajax Tag</h2>
+        <h2 class="sect2" id="sigil_toc_id_423"><span class="secnum">13.3.1</span> <a id="sthref815"></a><a id="sthref816"></a>Using the f:ajax Tag</h2>
 
         <p>The <code>f:ajax</code> tag is a JavaServer Faces core tag that provides Ajax functionality to any regular UI component when used in conjunction with that component. In the following example, Ajax behavior is added to an input component by including the <code>f:ajax</code> core tag:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText value="#{bean.message}"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:inputText value="#{bean.message}"&gt;
     &lt;f:ajax /&gt;
-&lt;/h:inputText&gt;</pre>
+&lt;/h:inputText&gt;
+</pre>
 
         <p>In this example, although Ajax is enabled, the other attributes of the <code>f:ajax</code> tag are not defined. If an event is not defined, the default action for the component is performed. For the <code>inputText</code> component, when no <code>event</code> attribute is specified, the default event is <code>valueChange</code>. <a href="../Text/jsf-ajax.xhtml#GKDER">Table 13-1</a> lists the attributes of the <code>f:ajax</code> tag and their default actions.</p>
 
@@ -373,7 +375,7 @@
     <a id="GKACE"></a><a id="JEETT00365"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.4</span> <a id="sthref819"></a>Sending an Ajax Request</h1>
+      <h1 class="sect1" id="sigil_toc_id_424"><span class="secnum">13.4</span> <a id="sthref819"></a>Sending an Ajax Request</h1>
 
       <p>To activate Ajax functionality, the web application must create an Ajax request and send it to the server. The server then processes the request.</p>
 
@@ -398,15 +400,17 @@
       </div><a id="GKHVT"></a><a id="JEETT00966"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.4.1</span> <a id="sthref820"></a>Using the event Attribute</h2>
+        <h2 class="sect2" id="sigil_toc_id_425"><span class="secnum">13.4.1</span> <a id="sthref820"></a>Using the event Attribute</h2>
 
         <p>The <code>event</code> attribute defines the event that triggers the Ajax action. Some of the possible values for this attribute are <code>click</code>, <code>keyup</code>, <code>mouseover</code>, <code>focus</code>, and <code>blur</code>.</p>
 
         <p>If not specified, a default event based on the parent component will be applied. The default event is <code>action</code> for <code>javax.faces.component.ActionSource</code> components, such as a <code>commandButton</code>, and <code>valueChange</code> for <code>javax.faces.component.EditableValueHolder</code> components, such as <code>inputText</code>. In the following example, an Ajax tag is associated with the button component, and the event that triggers the Ajax action is a mouse click:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandButton id="submit" value="Submit"&gt; 
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:commandButton id="submit" value="Submit"&gt; 
     &lt;f:ajax event="click" /&gt;
 &lt;/h:commandButton&gt;
-&lt;h:outputText id="result" value="#{userNumberBean.response}" /&gt;</pre>
+&lt;h:outputText id="result" value="#{userNumberBean.response}" /&gt;
+</pre>
 
         <div align="center">
           <div class="inftblnote">
@@ -430,7 +434,7 @@
       </div><a id="GKHUZ"></a><a id="JEETT00967"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.4.2</span> <a id="sthref821"></a>Using the execute Attribute</h2>
+        <h2 class="sect2" id="sigil_toc_id_426"><span class="secnum">13.4.2</span> <a id="sthref821"></a>Using the execute Attribute</h2>
 
         <p>The <code>execute</code> attribute defines the component or components to be executed on the server. The component is identified by its <code>id</code> attribute. You can specify more than one executable component. If more than one component is to be executed, specify a space-delimited list of components.</p>
 
@@ -439,18 +443,20 @@
         <p>The <code>execute</code> attribute value can also be a keyword, such as <code>@all</code>, <code>@none</code>, <code>@this</code>, or <code>@form</code>. The default value is <code>@this</code>, which refers to the component within which the <code>f:ajax</code> tag is nested.</p>
 
         <p>The following code specifies that the <code>h:inputText</code> component with the <code>id</code> value of <code>userNo</code> should be executed when the button is clicked:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:inputText id="userNo" 
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:inputText id="userNo" 
              title="Type a number from 0 to 10:"
              value="#{userNumberBean.userNumber}"&gt;
     ...
 &lt;/h:inputText&gt;
 &lt;h:commandButton id="submit" value="Submit"&gt; 
     &lt;f:ajax event="click" execute="userNo" /&gt;
-&lt;/h:commandButton&gt;</pre>
+&lt;/h:commandButton&gt;
+</pre>
       </div><a id="GKHWM"></a><a id="JEETT00968"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.4.3</span> <a id="sthref822"></a>Using the immediate Attribute</h2>
+        <h2 class="sect2" id="sigil_toc_id_427"><span class="secnum">13.4.3</span> <a id="sthref822"></a>Using the immediate Attribute</h2>
 
         <p>The <code>immediate</code> attribute indicates whether user inputs are to be processed early in the application lifecycle or later. If the attribute is set to <code>true</code>, events generated from this component are broadcast during the Apply Request Values phase. Otherwise, the events will be broadcast during the Invoke Application phase.</p>
 
@@ -458,11 +464,13 @@
       </div><a id="GKHZS"></a><a id="JEETT00969"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.4.4</span> <a id="sthref823"></a>Using the listener Attribute</h2>
+        <h2 class="sect2" id="sigil_toc_id_428"><span class="secnum">13.4.4</span> <a id="sthref823"></a>Using the listener Attribute</h2>
 
-        <p>The <code>listener</code> attribute refers to a method expression that is executed on the server side in response to an Ajax action on the client. The listener's <code>javax.faces.event.AjaxBehaviorListener.processAjaxBehavior</code> method is called once during the Invoke Application phase of the lifecycle. In the following code from the <code>reservation</code> example application (see <a href="../Text/jsf-ajax.xhtml#BABGGIAA">The reservation Example Application</a>), a <code>listener</code> attribute is defined by an <code>f:ajax</code> tag, which refers to a method from the bean:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:ajax event="change" render="total" 
-        listener="#{reservationBean.calculateTotal}"/&gt;</pre>
+        <p>The <code>listener</code> attribute refers to a method expression that is executed on the server side in response to an Ajax action on the client. The listener's <code>javax.faces.event.AjaxBehaviorListener.processAjaxBehavior</code> method is called once during the Invoke Application phase of the lifecycle. In the following code from the <code>reservation</code> example application (see <a href="../Text/jsf-facelets.xhtml#BABGGIAA">The reservation Example Application</a>), a <code>listener</code> attribute is defined by an <code>f:ajax</code> tag, which refers to a method from the bean:</p>
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;f:ajax event="change" render="total" 
+        listener="#{reservationBean.calculateTotal}"/&gt;
+</pre>
 
         <p>Whenever either the price or the number of tickets ordered changes, the <code>calculateTotal</code> method of <code>ReservationBean</code> recalculates the total cost of the tickets and displays it in the output component named <code>total</code>.</p>
       </div>
@@ -473,7 +481,7 @@
     <a id="GKDDF"></a><a id="JEETT00366"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.5</span> <a id="sthref824"></a><a id="sthref825"></a>Monitoring Events on the Client</h1>
+      <h1 class="sect1" id="sigil_toc_id_429"><span class="secnum">13.5</span> <a id="sthref824"></a><a id="sthref825"></a>Monitoring Events on the Client</h1>
 
       <p>To monitor ongoing Ajax requests, use the <code>onevent</code> attribute of the <code>f:ajax</code> tag. The value of this attribute is the name of a JavaScript function. JavaServer Faces calls the <code>onevent</code> function at each stage of the processing of an Ajax request: begin, complete, and success.</p>
 
@@ -561,7 +569,9 @@
       </div>
 
       <p>By using the <code>status</code> property of the data object, you can identify the current status of the Ajax request and monitor its progress. In the following example, <code>monitormyajaxevent</code> is a JavaScript function that monitors the Ajax request sent by the event:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:ajax event="click" render="statusmessage" onevent="monitormyajaxevent"/&gt;</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;f:ajax event="click" render="statusmessage" onevent="monitormyajaxevent"/&gt;
+</pre>
     </div>
   </div>
 
@@ -569,7 +579,7 @@
     <a id="GKDCB"></a><a id="JEETT00367"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.6</span> <a id="sthref827"></a><a id="sthref828"></a>Handling Errors</h1>
+      <h1 class="sect1" id="sigil_toc_id_430"><span class="secnum">13.6</span> <a id="sthref827"></a><a id="sthref828"></a>Handling Errors</h1>
 
       <p>JavaServer Faces handles Ajax errors through use of the <code>onerror</code> attribute of the <code>f:ajax</code> tag. The value of this attribute is the name of a JavaScript function.</p>
 
@@ -625,7 +635,7 @@
               </td>
 
               <td align="left" headers="r3c1-t7 r1c2-t7">
-                <p>One of the valid HTTP errors: <code>request.status==null</code> or <code>request.status==undefined</code> or <code>request.status200</code> or <code>request.status=300</code>.</p>
+                <p>One of the valid HTTP errors: <code>request.status==null</code> or <code>request.status==undefined</code> or <code>request.status&lt;200</code> or <code>request.status&gt;=300</code>.</p>
               </td>
             </tr>
 
@@ -653,7 +663,9 @@
       </div>
 
       <p>In the following example, any errors that occurred in processing the Ajax request are handled by the <code>handlemyajaxerror</code> JavaScript function:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:ajax event="click" render="errormessage" onerror="handlemyajaxerror"/&gt;</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;f:ajax event="click" render="errormessage" onerror="handlemyajaxerror"/&gt;
+</pre>
     </div>
   </div>
 
@@ -661,15 +673,17 @@
     <a id="GKDBR"></a><a id="JEETT00368"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.7</span> <a id="sthref830"></a><a id="sthref831"></a>Receiving an Ajax Response</h1>
+      <h1 class="sect1" id="sigil_toc_id_431"><span class="secnum">13.7</span> <a id="sthref830"></a><a id="sthref831"></a>Receiving an Ajax Response</h1>
 
       <p>After the application sends an Ajax request, it is processed on the server side, and a response is sent back to the client. As described earlier, Ajax allows for partial updating of web pages. To enable such partial updating, JavaServer Faces technology allows for partial processing of the view. The handling of the response is defined by the <code>render</code> attribute of the <code>f:ajax</code> tag.</p>
 
       <p>Similar to the <code>execute</code> attribute, the <code>render</code> attribute defines which sections of the page will be updated. The value of a <code>render</code> attribute can be one or more component <code>id</code> values, one of the keywords <code>@this</code>, <code>@all</code>, <code>@none</code>, or <code>@form</code>, or an EL expression. In the following example, the <code>render</code> attribute identifies an output component to be displayed when the button component is clicked (the default event for a command button):</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:commandButton id="submit" value="Submit"&gt; 
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:commandButton id="submit" value="Submit"&gt; 
     &lt;f:ajax execute="userNo" render="result" /&gt;
 &lt;/h:commandButton&gt;
-&lt;h:outputText id="result" value="#{userNumberBean.response}" /&gt;</pre>
+&lt;h:outputText id="result" value="#{userNumberBean.response}" /&gt;
+</pre>
 
       <div align="center">
         <div class="inftblnote">
@@ -695,7 +709,7 @@
     <a id="GKUAR"></a><a id="JEETT00369"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.8</span> <a id="sthref832"></a>Ajax Request Lifecycle</h1>
+      <h1 class="sect1" id="sigil_toc_id_432"><span class="secnum">13.8</span> <a id="sthref832"></a>Ajax Request Lifecycle</h1>
 
       <p>An Ajax request varies from other typical JavaServer Faces requests, and its processing is also handled differently by the JavaServer Faces lifecycle.</p>
 
@@ -713,32 +727,38 @@
     <a id="GKHYH"></a><a id="JEETT00370"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.9</span> <a id="sthref833"></a>Grouping of Components</h1>
+      <h1 class="sect1" id="sigil_toc_id_433"><span class="secnum">13.9</span> <a id="sthref833"></a>Grouping of Components</h1>
 
       <p>The previous sections describe how to associate a single UI component with Ajax functionality. You can also associate Ajax with more than one component at a time by grouping them together on a page. The following example shows how a number of components can be grouped by using the <code>f:ajax</code> tag:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:ajax&gt;
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;f:ajax&gt;
     &lt;h:form&gt;
         &lt;h:inputText id="input1" value="#{user.name}"/&gt; 
         &lt;h:commandButton id="Submit"/&gt;
     &lt;/h:form&gt;
-&lt;/f:ajax&gt;</pre>
+&lt;/f:ajax&gt;
+</pre>
 
       <p>In the example, neither component is associated with any Ajax <code>event</code> or <code>render</code> attributes yet. Therefore, no action will take place in case of user input. You can associate the above components with an <code>event</code> and a <code>render</code> attribute as follows:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:ajax event="click" render="@all"&gt;
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;f:ajax event="click" render="@all"&gt;
     &lt;h:form&gt;
         &lt;h:inputText id="input1" value="#{user.name}"/&gt; 
         &lt;h:commandButton id="Submit"/&gt; 
     &lt;/h:form&gt;
-&lt;/f:ajax&gt;</pre>
+&lt;/f:ajax&gt;
+</pre>
 
       <p>In the updated example, when the user clicks either component, the updated results will be displayed for all components. You can further fine-tune the Ajax action by adding specific events to each of the components, in which case Ajax functionality becomes cumulative. Consider the following example:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;f:ajax event="click" render="@all"&gt;
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;f:ajax event="click" render="@all"&gt;
     ...
     &lt;h:commandButton id="Submit"&gt;
         &lt;f:ajax event="mouseover"/&gt;
     &lt;/h:commandButton&gt;
     ...
-&lt;/f:ajax&gt;</pre>
+&lt;/f:ajax&gt;
+</pre>
 
       <p>Now the button component will fire an Ajax action in case of a <code>mouseover</code> event as well as a mouse-click event.</p>
     </div>
@@ -748,7 +768,7 @@
     <a id="GKAAM"></a><a id="JEETT00371"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.10</span> <a id="sthref834"></a><a id="sthref835"></a>Loading JavaScript as a Resource</h1>
+      <h1 class="sect1" id="sigil_toc_id_434"><span class="secnum">13.10</span> <a id="sthref834"></a><a id="sthref835"></a>Loading JavaScript as a Resource</h1>
 
       <p>The JavaScript resource file bundled with JavaServer Faces technology is named <code>jsf.js</code> and is available in the <code>javax.faces</code> library. This resource library supports Ajax functionality in JavaServer Faces applications.</p>
 
@@ -767,17 +787,20 @@
       </ul><a id="GKAFI"></a><a id="JEETT00970"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.10.1</span> <a id="sthref836"></a><a id="sthref837"></a>Using JavaScript API in a Facelets Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_435"><span class="secnum">13.10.1</span> <a id="sthref836"></a><a id="sthref837"></a>Using JavaScript API in a Facelets Application</h2>
 
         <p>To use the bundled JavaScript resource API directly in a web application, such as a Facelets page, you need to first identify the default JavaScript resource for the page with the help of the <code>h:outputScript</code> tag. For example, consider the following section of a Facelets page:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:form&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:form&gt;
     &lt;h:outputScript name="jsf.js" library="javax.faces" target="head"/&gt;
-&lt;/h:form&gt;</pre>
+&lt;/h:form&gt;
+</pre>
 
         <p>Specifying the target as <code>head</code> causes the script resource to be rendered within the <code>head</code> element on the HTML page.</p>
 
         <p>In the next step, identify the component to which you would like to attach the Ajax functionality. Add the Ajax functionality to the component by using the JavaScript API. For example, consider the following:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:form&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:form&gt;
     &lt;h:outputScript name="jsf.js" library="javax.faces" target="head"&gt;
     &lt;h:inputText id="inputname" value="#{userBean.name}"/&gt;
     &lt;h:outputText id="outputname" value="#{userBean.name}"/&gt;
@@ -785,7 +808,8 @@
                      onclick="jsf.ajax.request(this, event, 
                               {execute:'inputname',render:'outputname'});
                               return false;" /&gt;
-&lt;/h:form&gt;</pre>
+&lt;/h:form&gt;
+</pre>
 
         <p>The <code>jsf.ajax.request</code> method takes up to three parameters that specify source, event, and options. The source parameter identifies the DOM element that triggered the Ajax request, typically <code>this</code>. The optional event parameter identifies the DOM event that triggered this request. The optional options parameter contains a set of name/value pairs from <a href="../Text/jsf-ajax.xhtml#GKAIW">Table 13-5</a>.</p>
 
@@ -866,14 +890,16 @@
       </div><a id="GKIPX"></a><a id="JEETT00971"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.10.2</span> <a id="sthref839"></a><a id="sthref840"></a>Using the @ResourceDependency Annotation in a Bean Class</h2>
+        <h2 class="sect2" id="sigil_toc_id_436"><span class="secnum">13.10.2</span> <a id="sthref839"></a><a id="sthref840"></a>Using the @ResourceDependency Annotation in a Bean Class</h2>
 
         <p>Use the <code>javax.faces.application.ResourceDependency</code> annotation to cause the bean class to load the default <code>jsf.js</code> library.</p>
 
         <p>To load the Ajax resource from the server side, use the <code>jsf.ajax.request</code> method within the bean class. This method is usually used when creating a custom component or a custom renderer for a component.</p>
 
         <p>The following example shows how the resource is loaded in a bean class:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ResourceDependency(name="jsf.js" library="javax.faces" target="head")</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@ResourceDependency(name="jsf.js" library="javax.faces" target="head")
+</pre>
       </div>
     </div>
   </div>
@@ -882,22 +908,23 @@
     <a id="GKOKB"></a><a id="JEETT00372"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.11</span> <a id="sthref841"></a><a id="sthref842"></a>The ajaxguessnumber Example Application</h1>
+      <h1 class="sect1" id="sigil_toc_id_437"><span class="secnum">13.11</span> <a id="sthref841"></a><a id="sthref842"></a>The ajaxguessnumber Example Application</h1>
 
-      <p>To demonstrate the advantages of using Ajax, revisit the <code>guessnumber</code> example from <a href="../Text/jsf-ajax.xhtml#GIEPX">Chapter 8, "Introduction to Facelets"</a>. If you modify this example to use Ajax, the response need not be displayed on the <code>response.xhtml</code> page. Instead, an asynchronous call is made to the bean on the server side, and the response is displayed on the originating page by executing just the input component rather than by form submission.</p>
+      <p>To demonstrate the advantages of using Ajax, revisit the <code>guessnumber</code> example from <a href="../Text/jsf-facelets.xhtml#GIEPX">Chapter 8, "Introduction to Facelets"</a>. If you modify this example to use Ajax, the response need not be displayed on the <code>response.xhtml</code> page. Instead, an asynchronous call is made to the bean on the server side, and the response is displayed on the originating page by executing just the input component rather than by form submission.</p>
 
       <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/jsf/ajaxguessnumber/</code> directory.</p><a id="GKOIJ"></a><a id="JEETT00972"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.11.1</span> The ajaxguessnumber Source Files</h2>
+        <h2 class="sect2" id="sigil_toc_id_438"><span class="secnum">13.11.1</span> The ajaxguessnumber Source Files</h2>
 
         <p>The changes to the <code>guessnumber</code> application occur in two source files.</p><a id="GKOFW"></a><a id="JEETT00617"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">13.11.1.1</span> The ajaxgreeting.xhtml Facelets Page</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">13.11.1.1</span> The ajaxgreeting.xhtml Facelets Page</h3>
 
           <p>The Facelets page for <code>ajaxguessnumber</code>, <code>ajaxgreeting.xhtml</code>, is almost the same as the <code>greeting.xhtml</code> page for the <code>guessnumber</code> application:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:head&gt;
+          <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:head&gt;
     &lt;h:outputStylesheet library="css" name="default.css"/&gt;
     &lt;title&gt;Ajax Guess Number Facelets Application&lt;/title&gt;
 &lt;/h:head&gt;
@@ -938,7 +965,8 @@
             &lt;/h:panelGroup&gt;
         &lt;/p&gt;
     &lt;/h:form&gt;
-&lt;/h:body&gt;</pre>
+&lt;/h:body&gt;
+</pre>
 
           <p>The most important change is in the <code>h:commandButton</code> tag. The <code>action</code> attribute is removed from the tag, and an <code>f:ajax</code> tag is added.</p>
 
@@ -946,10 +974,11 @@
         </div><a id="GKOHN"></a><a id="JEETT00619"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">13.11.1.2</span> The UserNumberBean Backing Bean</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">13.11.1.2</span> The UserNumberBean Backing Bean</h3>
 
           <p>A small change is also made in the <code>UserNumberBean</code> code so that the output component does not display any message for the default (null) value of the property <code>response</code>. Here is the modified bean code:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public String getResponse() {
+          <pre class="oac_no_warn" xml:space="preserve">
+public String getResponse() {
     if ((userNumber != null)
             &amp;&amp; (userNumber.compareTo(dukesNumberBean.getRandomInt()) == 0)) {
         return "Yay! You got it!";
@@ -959,28 +988,32 @@
     } else {
         return "Sorry, " + userNumber + " is incorrect.";
     }
-}</pre>
+}
+</pre>
         </div>
 
         <div class="sect3">
           <a id="sthref843"></a>
 
-          <h3 class="sect3"><span class="secnum">13.11.1.3</span> The DukesNumberBean CDI Managed Bean</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">13.11.1.3</span> The DukesNumberBean CDI Managed Bean</h3>
 
           <p>The <code>DukesNumberBean</code> session-scoped CDI managed bean stores the range of guessable numbers and the randomly chosen number from that range. It is injected into <code>UserNumberBean</code> with the CDI <code>@Inject</code> annotation so that the value of the random number can be compared to the number the user submitted:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@InjectDukesNumberBean dukesNumberBean;</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Inject
+DukesNumberBean dukesNumberBean;
+</pre>
 
           <p>You will learn more about CDI in <a href="../Text/cdi-basic.xhtml#GIWHB">Chapter 23, "Introduction to Contexts and Dependency Injection for Java EE"</a>.</p>
         </div>
       </div><a id="GKOKE"></a><a id="JEETT00973"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">13.11.2</span> Running the ajaxguessnumber Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_439"><span class="secnum">13.11.2</span> Running the ajaxguessnumber Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>ajaxguessnumber</code> application.</p><a id="GLHVU"></a><a id="JEETT00170"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">13.11.2.1</span> To Build, Package, and Deploy the ajaxguessnumber Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">13.11.2.1</span> To Build, Package, and Deploy the ajaxguessnumber Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -993,7 +1026,9 @@
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/jsf
+</pre>
             </li>
 
             <li>
@@ -1013,7 +1048,7 @@
         </div><a id="GLHVQ"></a><a id="JEETT00171"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">13.11.2.2</span> To Build, Package, and Deploy the ajaxguessnumber Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">13.11.2.2</span> To Build, Package, and Deploy the ajaxguessnumber Example Using Maven</h3>
 
           <ol>
             <li>
@@ -1022,12 +1057,16 @@
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/ajaxguessnumber/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/jsf/ajaxguessnumber/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command builds and packages the application into a WAR file, <code>ajaxguessnumber.war</code>, located in the <code>target</code> directory. It then deploys the application.</p>
             </li>
@@ -1035,12 +1074,14 @@
         </div><a id="GLHWE"></a><a id="JEETT00172"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">13.11.2.3</span> To Run the ajaxguessnumber Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">13.11.2.3</span> To Run the ajaxguessnumber Example</h3>
 
           <ol>
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/ajaxguessnumber</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/ajaxguessnumber
+</pre>
             </li>
 
             <li>
@@ -1058,7 +1099,7 @@
     <a id="GKSDK"></a><a id="JEETT00373"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">13.12</span> Further Information about Ajax in JavaServer Faces Technology</h1>
+      <h1 class="sect1" id="sigil_toc_id_440"><span class="secnum">13.12</span> Further Information about Ajax in JavaServer Faces Technology</h1>
 
       <p>For more information on Ajax in JavaServer Faces Technology, see</p>
 
@@ -1066,13 +1107,13 @@
         <li>
           <p>JavaServer Faces project website:</p>
 
-          <p><code><a href="../Text/jsf-ajax.xhtml#https%3A//javaserverfaces.java.net/">https://javaserverfaces.java.net/</a></code></p>
+          <p><code><a href="../Text/https://javaserverfaces.java.net/.xhtml#https://javaserverfaces.java.net/">https://javaserverfaces.java.net/</a></code></p>
         </li>
 
         <li>
           <p>JavaServer Faces JavaScript Library APIs:</p>
 
-          <p><code><a href="../Text/jsf-ajax.xhtml#http%3A//docs.oracle.com/javaee/7/javaserverfaces/2.2/jsdocs/symbols/jsf.ajax.html">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/jsdocs/symbols/jsf.ajax.html</a></code></p>
+          <p><code><a href="../Text/http://docs.oracle.com/javaee/7/javaserverfaces/2.2/jsdocs/symbols/jsf.ajax.xhtml#http://docs.oracle.com/javaee/7/javaserverfaces/2.2/jsdocs/symbols/jsf.ajax.html">http://docs.oracle.com/javaee/7/javaserverfaces/2.2/jsdocs/symbols/jsf.ajax.html</a></code></p>
         </li>
       </ul>
     </div>

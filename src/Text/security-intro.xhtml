@@ -65,7 +65,7 @@
     <a id="BNBWK"></a><a id="JEETT00509"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">47.1</span> <a id="sthref2481"></a><a id="sthref2482"></a><a id="sthref2483"></a>Overview of Java EE Security</h1>
+      <h1 class="sect1" id="sigil_toc_id_821"><span class="secnum">47.1</span> <a id="sthref2481"></a><a id="sthref2482"></a><a id="sthref2483"></a>Overview of Java EE Security</h1>
 
       <p>Every enterprise that has either sensitive resources that can be accessed by many users or resources that traverse unprotected, open networks, such as the Internet, needs to be protected.</p>
 
@@ -86,27 +86,22 @@
       </ul><a id="BNBWL"></a><a id="JEETT01212"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.1.1</span> <a id="sthref2489"></a>A Simple Application Security Walkthrough</h2>
+        <h2 class="sect2" id="sigil_toc_id_822"><span class="secnum">47.1.1</span> <a id="sthref2489"></a>A Simple Application Security Walkthrough</h2>
 
         <p>The security behavior of a Java EE environment may be better understood by examining what happens in a simple application with a web client, a user interface, and enterprise bean business logic.</p>
 
         <p>In the following example, which is taken from the Java EE 7 Specification, the web client relies on the web server to act as its authentication proxy by collecting user authentication data from the client and using it to establish an authenticated session.</p><a id="BNBWM"></a><a id="JEETT00760"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.1.1.1</span> Step 1: Initial Request</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.1.1.1</span> Step 1: Initial Request</h3>
 
           <p>In the first step of this example, the web client requests the main application URL. This action is shown in <a href="../Text/security-intro.xhtml#BNBWN">Figure 47-1</a>.</p>
 
           <div class="figure">
             <a id="BNBWN"></a><a id="JEETT00029"></a>
 
-            <p class="titleinfigure">Figure 47-1 Initial Request</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 47-1 follows" longdesc="img_text/jeett_dt_039.htm" src="../Images/jeett_dt_039.png" style="line-height: 1.6em;" title="Description of Figure 47-1 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 47-1 Initial Request"<br />
+            <p class="titleinfigure">Figure 47-1 Initial Request</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_039.htm" id="sthref2490">Description of "Figure 47-1 Initial Request"</a><br />
             <br />
           </div>
 
@@ -114,39 +109,29 @@
         </div><a id="BNBWO"></a><a id="JEETT00761"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.1.1.2</span> Step 2: Initial Authentication</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.1.1.2</span> Step 2: Initial Authentication</h3>
 
           <p>The web server returns a form that the web client uses to collect authentication data, such as user name and password, from the user. The web client forwards the authentication data to the web server, where it is validated by the web server, as shown in <a href="../Text/security-intro.xhtml#BNBWP">Figure 47-2</a>. The validation mechanism may be local to a server or may leverage the underlying security services. On the basis of the validation, the web server sets a credential for the user.</p>
 
           <div class="figure">
             <a id="BNBWP"></a><a id="JEETT00030"></a>
 
-            <p class="titleinfigure">Figure 47-2 Initial Authentication</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 47-2 follows" longdesc="img_text/jeett_dt_040.htm" src="../Images/jeett_dt_040.png" style="line-height: 1.6em;" title="Description of Figure 47-2 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 47-2 Initial Authentication"<br />
+            <p class="titleinfigure">Figure 47-2 Initial Authentication</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_040.htm" id="sthref2491">Description of "Figure 47-2 Initial Authentication"</a><br />
             <br />
           </div>
         </div><a id="BNBWQ"></a><a id="JEETT00762"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.1.1.3</span> Step 3: URL Authorization</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.1.1.3</span> Step 3: URL Authorization</h3>
 
           <p>The credential is used for future determinations of whether the user is authorized to access restricted resources it may request. The web server consults the security policy associated with the web resource to determine the security roles that are permitted access to the resource. The security policy is derived from annotations or from the deployment descriptor. The web container then tests the user's credential against each role to determine whether it can map the user to the role. <a href="../Text/security-intro.xhtml#BNBWR">Figure 47-3</a> shows this process.</p>
 
           <div class="figure">
             <a id="BNBWR"></a><a id="JEETT00031"></a>
 
-            <p class="titleinfigure">Figure 47-3 URL Authorization</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 47-3 follows" longdesc="img_text/jeett_dt_041.htm" src="../Images/jeett_dt_041.png" style="line-height: 1.6em;" title="Description of Figure 47-3 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 47-3 URL Authorization"<br />
+            <p class="titleinfigure">Figure 47-3 URL Authorization</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_041.htm" id="sthref2492">Description of "Figure 47-3 URL Authorization"</a><br />
             <br />
           </div>
 
@@ -154,20 +139,15 @@
         </div><a id="BNBWS"></a><a id="JEETT00763"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.1.1.4</span> Step 4: Fulfilling the Original Request</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.1.1.4</span> Step 4: Fulfilling the Original Request</h3>
 
           <p>If the user is authorized, the web server returns the result of the original URL request, as shown in <a href="../Text/security-intro.xhtml#BNBWT">Figure 47-4</a>.</p>
 
           <div class="figure">
             <a id="BNBWT"></a><a id="JEETT00032"></a>
 
-            <p class="titleinfigure">Figure 47-4 Fulfilling the Original Request</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 47-4 follows" longdesc="img_text/jeett_dt_042.htm" src="../Images/jeett_dt_042.png" style="line-height: 1.6em;" title="Description of Figure 47-4 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 47-4 Fulfilling the Original Request"<br />
+            <p class="titleinfigure">Figure 47-4 Fulfilling the Original Request</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_042.htm" id="sthref2493">Description of "Figure 47-4 Fulfilling the Original Request"</a><br />
             <br />
           </div>
 
@@ -175,20 +155,15 @@
         </div><a id="BNBWU"></a><a id="JEETT00764"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.1.1.5</span> Step 5: Invoking Enterprise Bean Business Methods</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.1.1.5</span> Step 5: Invoking Enterprise Bean Business Methods</h3>
 
           <p>The web page performs the remote method call to the enterprise bean, using the user's credential to establish a secure association between the web page and the enterprise bean, as shown in <a href="../Text/security-intro.xhtml#BNBWV">Figure 47-5</a>. The association is implemented as two related security contexts: one in the web server and one in the EJB container.</p>
 
           <div class="figure">
             <a id="BNBWV"></a><a id="JEETT00033"></a>
 
-            <p class="titleinfigure">Figure 47-5 Invoking an Enterprise Bean Business Method</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 47-5 follows" longdesc="img_text/jeett_dt_043.htm" src="../Images/jeett_dt_043.png" style="line-height: 1.6em;" title="Description of Figure 47-5 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 47-5 Invoking an Enterprise Bean Business Method"<br />
+            <p class="titleinfigure">Figure 47-5 Invoking an Enterprise Bean Business Method</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_043.htm" id="sthref2494">Description of "Figure 47-5 Invoking an Enterprise Bean Business Method"</a><br />
             <br />
           </div>
 
@@ -201,7 +176,7 @@
       </div><a id="BNBWW"></a><a id="JEETT01213"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.1.2</span> <a id="sthref2495"></a>Features of a Security Mechanism</h2>
+        <h2 class="sect2" id="sigil_toc_id_823"><span class="secnum">47.1.2</span> <a id="sthref2495"></a>Features of a Security Mechanism</h2>
 
         <p>A properly implemented security mechanism will provide the following functionality:</p>
 
@@ -237,7 +212,7 @@
       </div><a id="BNBWX"></a><a id="JEETT01214"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.1.3</span> <a id="sthref2496"></a><a id="sthref2497"></a><a id="sthref2498"></a><a id="sthref2499"></a>Characteristics of Application Security</h2>
+        <h2 class="sect2" id="sigil_toc_id_824"><span class="secnum">47.1.3</span> <a id="sthref2496"></a><a id="sthref2497"></a><a id="sthref2498"></a><a id="sthref2499"></a>Characteristics of Application Security</h2>
 
         <p>Java EE applications consist of components that can contain both protected and unprotected resources. Often, you need to protect resources to ensure that only authorized users have access. Authorization provides controlled access to protected resources. Authorization is based on identification and authentication. <span class="glossaryterm">Identification</span> is a process that enables recognition of an entity by a system, and authentication is a process that verifies the identity of a user, device, or other entity in a computer system, usually as a prerequisite to allowing access to resources in a system.</p>
 
@@ -282,12 +257,12 @@
     <a id="BNBWY"></a><a id="JEETT00510"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">47.2</span> <a id="sthref2506"></a>Security Mechanisms</h1>
+      <h1 class="sect1" id="sigil_toc_id_825"><span class="secnum">47.2</span> <a id="sthref2506"></a>Security Mechanisms</h1>
 
       <p>The characteristics of an application should be considered when deciding the layer and type of security to be provided for applications. The following sections discuss the characteristics of the common mechanisms that can be used to secure Java EE applications. Each of these mechanisms can be used individually or with others to provide protection layers based on the specific needs of your implementation.</p><a id="BNBWZ"></a><a id="JEETT01215"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.2.1</span> <a id="sthref2507"></a>Java SE Security Mechanisms</h2>
+        <h2 class="sect2" id="sigil_toc_id_826"><span class="secnum">47.2.1</span> <a id="sthref2507"></a>Java SE Security Mechanisms</h2>
 
         <p>Java SE provides support for a variety of security features and mechanisms.</p>
 
@@ -315,16 +290,16 @@
 
         <p><a id="sthref2518"></a><a id="sthref2519"></a><a id="sthref2520"></a><a id="sthref2521"></a><a id="sthref2522"></a>Java SE also provides a set of tools for managing keystores, certificates, and policy files; generating and verifying JAR signatures; and obtaining, listing, and managing Kerberos tickets.</p>
 
-        <p>For more information on Java SE security, visit <code><a href="../Text/security-intro.xhtml#http%3A//docs.oracle.com/javase/7/docs/technotes/guides/security/">http://docs.oracle.com/javase/7/docs/technotes/guides/security/</a></code>.</p>
+        <p>For more information on Java SE security, visit <code><a href="../Text/http://docs.oracle.com/javase/7/docs/technotes/guides/security/.xhtml#http://docs.oracle.com/javase/7/docs/technotes/guides/security/">http://docs.oracle.com/javase/7/docs/technotes/guides/security/</a></code>.</p>
       </div><a id="BNBXA"></a><a id="JEETT01216"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.2.2</span> <a id="sthref2523"></a>Java EE Security Mechanisms</h2>
+        <h2 class="sect2" id="sigil_toc_id_827"><span class="secnum">47.2.2</span> <a id="sthref2523"></a>Java EE Security Mechanisms</h2>
 
         <p>Java EE security services are provided by the component container and can be implemented by using declarative or programmatic techniques (see <a href="../Text/security-intro.xhtml#BNBXE">Securing Containers</a>). Java EE security services provide a robust and easily configured security mechanism for authenticating users and authorizing access to application functions and associated data at many different layers. Java EE security services are separate from the security mechanisms of the operating system.</p><a id="BNBXB"></a><a id="JEETT00765"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.2.2.1</span> <a id="sthref2524"></a><a id="sthref2525"></a>Application-Layer Security</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.2.2.1</span> <a id="sthref2524"></a><a id="sthref2525"></a>Application-Layer Security</h3>
 
           <p>In Java EE, component containers are responsible for providing application-layer security, security services for a specific application type tailored to the needs of the application. At the application layer, application firewalls can be used to enhance application protection by protecting the communication stream and all associated application resources from attacks.</p>
 
@@ -362,7 +337,7 @@
         </div><a id="BNBXC"></a><a id="JEETT00766"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.2.2.2</span> <a id="sthref2526"></a><a id="sthref2527"></a>Transport-Layer Security</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.2.2.2</span> <a id="sthref2526"></a><a id="sthref2527"></a>Transport-Layer Security</h3>
 
           <p><a id="sthref2528"></a><a id="sthref2529"></a>Transport-layer security is provided by the transport mechanisms used to transmit information over the wire between clients and providers; thus, transport-layer security relies on secure HTTP transport (HTTPS) using Secure Sockets Layer (SSL). Transport security is a point-to-point security mechanism that can be used for authentication, message integrity, and confidentiality. When running over an SSL-protected session, the server and client can authenticate each other and negotiate an encryption algorithm and cryptographic keys before the application protocol transmits or receives its first byte of data. Security is active from the time the data leaves the client until it arrives at its destination, or vice versa, even across intermediaries. The problem is that the data is not protected once it gets to the destination. One solution is to encrypt the message before sending.</p>
 
@@ -420,7 +395,7 @@
         </div><a id="BNBXD"></a><a id="JEETT00767"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.2.2.3</span> <a id="sthref2531"></a><a id="sthref2532"></a><a id="sthref2533"></a><a id="sthref2534"></a><a id="sthref2535"></a>Message-Layer Security</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.2.2.3</span> <a id="sthref2531"></a><a id="sthref2532"></a><a id="sthref2533"></a><a id="sthref2534"></a><a id="sthref2535"></a>Message-Layer Security</h3>
 
           <p>In message-layer security, security information is contained within the SOAP message and/or SOAP message attachment, which allows security information to travel along with the message or attachment. For example, a portion of the message may be signed by a sender and encrypted for a particular receiver. When sent from the initial sender, the message may pass through intermediate nodes before reaching its intended receiver. In this scenario, the encrypted portions continue to be opaque to any intermediate nodes and can be decrypted only by the intended receiver. For this reason, message-layer security is also sometimes referred to as end-to-end security.</p>
 
@@ -446,7 +421,7 @@
 
           <p>The disadvantage of using message-layer security is that it is relatively complex and adds some overhead to processing.</p>
 
-          <p>GlassFish Server supports message security using Metro, a web services stack that uses Web Services Security (WSS) to secure messages. Because this message security is specific to Metro and is not a part of the Java EE platform, this tutorial does not discuss using WSS to secure messages. See the <span class="italic">Metro User's Guide</span> at <code><a href="../Text/security-intro.xhtml#https%3A//metro.java.net/guide/">https://metro.java.net/guide/</a></code>.</p>
+          <p>GlassFish Server supports message security using Metro, a web services stack that uses Web Services Security (WSS) to secure messages. Because this message security is specific to Metro and is not a part of the Java EE platform, this tutorial does not discuss using WSS to secure messages. See the <span class="italic">Metro User's Guide</span> at <code><a href="../Text/https://metro.java.net/guide/.xhtml#https://metro.java.net/guide/">https://metro.java.net/guide/</a></code>.</p>
         </div>
       </div>
     </div>
@@ -456,22 +431,22 @@
     <a id="BNBXE"></a><a id="JEETT00511"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">47.3</span> <a id="sthref2536"></a><a id="sthref2537"></a>Securing Containers</h1>
+      <h1 class="sect1" id="sigil_toc_id_828"><span class="secnum">47.3</span> <a id="sthref2536"></a><a id="sthref2537"></a>Securing Containers</h1>
 
       <p>In Java EE, the component containers are responsible for providing application security. A container provides two types of security: declarative and programmatic.</p><a id="BNBXG"></a><a id="JEETT01217"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.3.1</span> <a id="sthref2538"></a><a id="sthref2539"></a><a id="sthref2540"></a>Using Annotations to Specify Security Information</h2>
+        <h2 class="sect2" id="sigil_toc_id_829"><span class="secnum">47.3.1</span> <a id="sthref2538"></a><a id="sthref2539"></a><a id="sthref2540"></a>Using Annotations to Specify Security Information</h2>
 
         <p>Annotations enable a declarative style of programming and so encompass both the declarative and programmatic security concepts. Users can specify information about security within a class file by using annotations. GlassFish Server uses this information when the application is deployed. Not all security information can be specified by using annotations, however. Some information must be specified in the application deployment descriptors.</p>
 
-        <p>Specific annotations that can be used to specify security information within an enterprise bean class file are described in <a href="../Text/security-javaeexhtml#GJGDI">Securing an Enterprise Bean Using Declarative Security</a>. <a href="../Text/security-webtier.xhtml#BNCAS">Chapter 48, "Getting Started Securing Web Applications"</a>, describes how to use annotations to secure web applications where possible. Deployment descriptors are described only where necessary.</p>
+        <p>Specific annotations that can be used to specify security information within an enterprise bean class file are described in <a href="../Text/security-javaee.xhtml#GJGDI">Securing an Enterprise Bean Using Declarative Security</a>. <a href="../Text/security-webtier.xhtml#BNCAS">Chapter 48, "Getting Started Securing Web Applications"</a>, describes how to use annotations to secure web applications where possible. Deployment descriptors are described only where necessary.</p>
 
         <p>For more information on annotations, see <a href="../Text/security-intro.xhtml#BNBYJ">Further Information about Security</a>.</p>
       </div><a id="BNBXF"></a><a id="JEETT01218"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.3.2</span> <a id="sthref2541"></a><a id="sthref2542"></a><a id="sthref2543"></a>Using Deployment Descriptors for Declarative Security</h2>
+        <h2 class="sect2" id="sigil_toc_id_830"><span class="secnum">47.3.2</span> <a id="sthref2541"></a><a id="sthref2542"></a><a id="sthref2543"></a>Using Deployment Descriptors for Declarative Security</h2>
 
         <p>Declarative security can express an application component's security requirements by using deployment descriptors. Because deployment descriptor information is declarative, it can be changed without the need to modify the source code. At runtime, the Java EE server reads the deployment descriptor and acts upon the corresponding application, module, or component accordingly. Deployment descriptors must provide certain structural information for each component if this information has not been provided in annotations or is not to be defaulted.</p>
 
@@ -483,19 +458,19 @@
           <li>
             <p><a id="sthref2544"></a><a id="sthref2545"></a>Web components may use a web application deployment descriptor named <code>web.xml</code>.</p>
 
-            <p>The schema for web component deployment descriptors is provided in Chapter 14 of the Java Servlet 3.1 specification (JSR 340), which can be downloaded from <code><a href="../Text/security-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D340">http://jcp.org/en/jsr/detail?id=340</a></code>.</p>
+            <p>The schema for web component deployment descriptors is provided in Chapter 14 of the Java Servlet 3.1 specification (JSR 340), which can be downloaded from <code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=340">http://jcp.org/en/jsr/detail?id=340</a></code>.</p>
           </li>
 
           <li>
             <p><a id="sthref2546"></a><a id="sthref2547"></a>Enterprise JavaBeans components may use an EJB deployment descriptor named <code>META-INF/ejb-jar.xml</code>, contained in the EJB JAR file.</p>
 
-            <p>The schema for enterprise bean deployment descriptors is provided in Chapter 14 of the EJB 3.2 Core Contracts and Requirements Specification (JSR 345), which can be downloaded from <code><a href="../Text/security-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D345">http://jcp.org/en/jsr/detail?id=345</a></code>.</p>
+            <p>The schema for enterprise bean deployment descriptors is provided in Chapter 14 of the EJB 3.2 Core Contracts and Requirements Specification (JSR 345), which can be downloaded from <code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=345">http://jcp.org/en/jsr/detail?id=345</a></code>.</p>
           </li>
         </ul>
       </div><a id="BNBXH"></a><a id="JEETT01219"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.3.3</span> <a id="sthref2548"></a><a id="sthref2549"></a>Using Programmatic Security</h2>
+        <h2 class="sect2" id="sigil_toc_id_831"><span class="secnum">47.3.3</span> <a id="sthref2548"></a><a id="sthref2549"></a>Using Programmatic Security</h2>
 
         <p>Programmatic security is embedded in an application and is used to make security decisions. Programmatic security is useful when declarative security alone is not sufficient to express the security model of an application. The API for programmatic security consists of methods of the <code>EJBContext</code> interface and the <code>HttpServletRequest</code> interface. These methods allow components to make business-logic decisions based on the security role of the caller or remote user.</p>
 
@@ -518,7 +493,7 @@
     <a id="BNBXI"></a><a id="JEETT00512"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">47.4</span> <a id="sthref2550"></a>Securing GlassFish Server</h1>
+      <h1 class="sect1" id="sigil_toc_id_832"><span class="secnum">47.4</span> <a id="sthref2550"></a>Securing GlassFish Server</h1>
 
       <p>This tutorial describes deployment to GlassFish Server, which provides highly secure, interoperable, and distributed component computing based on the Java EE security model. GlassFish Server supports the Java EE 7 security model. You can configure GlassFish Server for the following purposes.</p>
 
@@ -562,7 +537,7 @@
     <a id="BNBXJ"></a><a id="JEETT00513"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">47.5</span> Working with Realms, Users, Groups, and Roles</h1>
+      <h1 class="sect1" id="sigil_toc_id_833"><span class="secnum">47.5</span> Working with Realms, Users, Groups, and Roles</h1>
 
       <p>You often need to protect resources to ensure that only authorized users have access. See <a href="../Text/security-intro.xhtml#BNBWX">Characteristics of Application Security</a> for an introduction to the concepts of authentication, identification, and authorization.</p>
 
@@ -587,7 +562,7 @@
       </ol><a id="BNBXK"></a><a id="JEETT01220"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.5.1</span> What Are Realms, Users, Groups, and Roles?</h2>
+        <h2 class="sect2" id="sigil_toc_id_834"><span class="secnum">47.5.1</span> What Are Realms, Users, Groups, and Roles?</h2>
 
         <p><a id="sthref2560"></a>A <span class="glossaryterm">realm</span> is a security policy domain defined for a web or application server. A realm contains a collection of users, who may or may not be assigned to a group. Managing users in GlassFish Server is discussed in <a href="../Text/security-intro.xhtml#BNBXR">Managing Users and Groups in GlassFish Server</a>.</p>
 
@@ -598,20 +573,15 @@
         <div class="figure">
           <a id="BNBXL"></a><a id="JEETT00034"></a>
 
-          <p class="titleinfigure">Figure 47-6 Mapping Roles to Users and Groups</p>
-
-          <div style="text-align: center;"><img alt="Description of Figure 47-6 follows" longdesc="img_text/jeett_dt_044.htm" src="../Images/jeett_dt_044.png" style="line-height: 1.6em;" title="Description of Figure 47-6 follows" /></div>
-        </div>
-
-        <div class="figure">
-          Description of "Figure 47-6 Mapping Roles to Users and Groups"<br />
+          <p class="titleinfigure">Figure 47-6 Mapping Roles to Users and Groups</p><br />
+          <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_044.htm" id="sthref2561">Description of "Figure 47-6 Mapping Roles to Users and Groups"</a><br />
           <br />
         </div>
 
         <p>The following sections provide more information on realms, users, groups, and roles.</p><a id="BNBXM"></a><a id="JEETT00768"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.5.1.1</span> <a id="sthref2562"></a><a id="sthref2563"></a>What Is a Realm?</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.5.1.1</span> <a id="sthref2562"></a><a id="sthref2563"></a>What Is a Realm?</h3>
 
           <p>The protected resources on a server can be partitioned into a set of protection spaces, each with its own authentication scheme and/or authorization database containing a collection of users and groups. A realm is a complete database of users and groups identified as valid users of one or more applications and controlled by the same authentication policy.</p>
 
@@ -625,7 +595,7 @@
         </div><a id="BNBXN"></a><a id="JEETT00769"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.5.1.2</span> <a id="sthref2567"></a><a id="sthref2568"></a>What Is a User?</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.5.1.2</span> <a id="sthref2567"></a><a id="sthref2568"></a>What Is a User?</h3>
 
           <p>A <span class="glossaryterm">user</span> is an individual or application program identity that has been defined in GlassFish Server. In a web application, a user can have associated with that identity a set of roles that entitle the user to access all resources protected by those roles. Users can be associated with a group.</p>
 
@@ -633,7 +603,7 @@
         </div><a id="BNBXO"></a><a id="JEETT00770"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.5.1.3</span> <a id="sthref2569"></a><a id="sthref2570"></a>What Is a Group?</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.5.1.3</span> <a id="sthref2569"></a><a id="sthref2570"></a>What Is a Group?</h3>
 
           <p>A <span class="glossaryterm">group</span> is a set of authenticated users, classified by common traits, defined in GlassFish Server. A Java EE user of the <code>file</code> realm can belong to a group in GlassFish Server. (A user in the <code>certificate</code> realm cannot.) A group in GlassFish Server is a category of users classified by common traits, such as job title or customer profile. For example, most customers of an e-commerce application might belong to the <code>CUSTOMER</code> group, but the big spenders would belong to the <code>PREFERRED</code> group. Categorizing users into groups makes it easier to control the access of large numbers of users.</p>
 
@@ -641,13 +611,13 @@
         </div><a id="BNBXP"></a><a id="JEETT00771"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.5.1.4</span> <a id="sthref2571"></a><a id="sthref2572"></a>What Is a Role?</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.5.1.4</span> <a id="sthref2571"></a><a id="sthref2572"></a>What Is a Role?</h3>
 
           <p>A <span class="glossaryterm">role</span> is an abstract name for the permission to access a particular set of resources in an application. A role can be compared to a key that can open a lock. Many people might have a copy of the key. The lock doesn't care who you are, only that you have the right key.</p>
         </div><a id="BNBXQ"></a><a id="JEETT00772"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.5.1.5</span> Some Other Terminology</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.5.1.5</span> Some Other Terminology</h3>
 
           <p>The following terminology is also used to describe the security requirements of the Java EE platform.</p>
 
@@ -672,12 +642,12 @@
       </div><a id="BNBXR"></a><a id="JEETT01221"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.5.2</span> <a id="sthref2577"></a><a id="sthref2578"></a>Managing Users and Groups in GlassFish Server</h2>
+        <h2 class="sect2" id="sigil_toc_id_835"><span class="secnum">47.5.2</span> <a id="sthref2577"></a><a id="sthref2578"></a>Managing Users and Groups in GlassFish Server</h2>
 
         <p>Follow these steps for managing users before you run the tutorial examples.</p><a id="BNBXS"></a><a id="JEETT00241"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">47.5.2.1</span> <a id="sthref2579"></a><a id="sthref2580"></a>To Add Users to GlassFish Server</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">47.5.2.1</span> <a id="sthref2579"></a><a id="sthref2580"></a>To Add Users to GlassFish Server</h3>
 
           <ol>
             <li>
@@ -748,7 +718,7 @@
       </div><a id="BNBXU"></a><a id="JEETT01222"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.5.3</span> <a id="sthref2581"></a><a id="sthref2582"></a><a id="sthref2583"></a>Setting Up Security Roles</h2>
+        <h2 class="sect2" id="sigil_toc_id_836"><span class="secnum">47.5.3</span> <a id="sthref2581"></a><a id="sthref2582"></a><a id="sthref2583"></a>Setting Up Security Roles</h2>
 
         <p>When you design an enterprise bean or web component, you should always think about the kinds of users who will access the component. For example, a web application for a human resources department might have a different request URL for someone who has been assigned the role of <code>DEPT_ADMIN</code> than for someone who has been assigned the role of <code>DIRECTOR</code>. The <code>DEPT_ADMIN</code> role may let you view employee data, but the <code>DIRECTOR</code> role enables you to modify employee data, including salary data. Each of these security roles is an abstract logical grouping of users that is defined by the person who assembles the application. When an application is deployed, the deployer will map the roles to security identities in the operational environment, as shown in <a href="../Text/security-intro.xhtml#BNBXL">Figure 47-6</a>.</p>
 
@@ -757,7 +727,8 @@
         <p>The following is an example of an application in which the role of <code>DEPT-ADMIN</code> is authorized for methods that review employee payroll data, and the role of <code>DIRECTOR</code> is authorized for methods that change employee payroll data.</p>
 
         <p>The enterprise bean would be annotated as shown in the following code:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.annotation.security.DeclareRoles;
+        <pre class="oac_no_warn" xml:space="preserve">
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 ...
 @DeclareRoles({"DEPT-ADMIN", "DIRECTOR"})
@@ -781,14 +752,17 @@ import javax.annotation.security.RolesAllowed;
         // ...
     }
     ...
- }</pre>
+ }
+</pre>
 
         <p>For a servlet, you can use the <code>@HttpConstraint</code> annotation within the <code>@ServletSecurity</code> annotation to specify the roles that are allowed to access the servlet. For example, a servlet might be annotated as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@WebServlet(name = "PayrollServlet", urlPatterns = {"/payroll"})
+        <pre class="oac_no_warn" xml:space="preserve">
+@WebServlet(name = "PayrollServlet", urlPatterns = {"/payroll"})
 @ServletSecurity(
 @HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL,
     rolesAllowed = {"DEPT-ADMIN", "DIRECTOR"}))
-public class GreetingServlet extends HttpServlet {</pre>
+public class GreetingServlet extends HttpServlet {
+</pre>
 
         <p>These annotations are discussed in more detail in <a href="../Text/security-webtier.xhtml#GJRMH">Specifying Security for Basic Authentication Using Annotations</a> and <a href="../Text/security-javaee.xhtml#GJGDI">Securing an Enterprise Bean Using Declarative Security</a>.</p>
 
@@ -796,14 +770,15 @@ public class GreetingServlet extends HttpServlet {</pre>
       </div><a id="BNBXV"></a><a id="JEETT01223"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.5.4</span> <a id="sthref2584"></a><a id="sthref2585"></a><a id="sthref2586"></a><a id="sthref2587"></a><a id="sthref2588"></a>Mapping Roles to Users and Groups</h2>
+        <h2 class="sect2" id="sigil_toc_id_837"><span class="secnum">47.5.4</span> <a id="sthref2584"></a><a id="sthref2585"></a><a id="sthref2586"></a><a id="sthref2587"></a><a id="sthref2588"></a>Mapping Roles to Users and Groups</h2>
 
         <p>When you are developing a Java EE application, you don't need to know what categories of users have been defined for the realm in which the application will be run. In the Java EE platform, the security architecture provides a mechanism for mapping the roles defined in the application to the users or groups defined in the runtime realm.</p>
 
         <p>The role names used in the application are often the same as the group names defined in GlassFish Server. Under these circumstances, you can enable a default principal-to-role mapping in GlassFish Server by using the Administration Console. The task <a href="../Text/security-webtier.xhtml#GJJLK">To Set Up Your System for Running the Security Examples</a> explains how to do this. All the tutorial security examples use default principal-to-role mapping. With that setting enabled, if the group name defined on GlassFish Server matches the role name defined in the application, there is no need to use the runtime deployment descriptor to provide a mapping. The application server will implicitly make this mapping, as long as the names of the groups and roles match.</p>
 
         <p>If the role names used in an application are <span class="italic">not</span> the same as the group names defined on the server, use the runtime deployment descriptor to specify the mapping. The following example demonstrates how to do this mapping in the <code>glassfish-web.xml</code> file, which is the file used for web applications:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;glassfish-web-app&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;glassfish-web-app&gt;
     ...
     &lt;security-role-mapping&gt;
         &lt;role-name&gt;Mascot&lt;/role-name&gt;
@@ -815,7 +790,8 @@ public class GreetingServlet extends HttpServlet {</pre>
         &lt;group-name&gt;Director&lt;/group-name&gt;
     &lt;/security-role-mapping&gt;
     ...
-&lt;/glassfish-web-app&gt;</pre>
+&lt;/glassfish-web-app&gt;
+</pre>
 
         <p>A role can be mapped to specific principals, specific groups, or both. The principal or group names must be valid principals or groups in the current default realm or in the realm specified in the <code>login-config</code> element. In this example, the role of <code>Mascot</code> used in the application is mapped to a principal, named <code>Duke</code>, that exists on the application server. Mapping a role to a specific principal is useful when the person occupying that role may change. For this application, you would need to modify only the runtime deployment descriptor rather than search and replace throughout the application for references to this principal.</p>
 
@@ -830,7 +806,7 @@ public class GreetingServlet extends HttpServlet {</pre>
     <a id="BNBXW"></a><a id="JEETT00514"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">47.6</span> <a id="sthref2589"></a><a id="sthref2590"></a><a id="sthref2591"></a><a id="sthref2592"></a><a id="sthref2593"></a><a id="sthref2594"></a>Establishing a Secure Connection Using SSL</h1>
+      <h1 class="sect1" id="sigil_toc_id_838"><span class="secnum">47.6</span> <a id="sthref2589"></a><a id="sthref2590"></a><a id="sthref2591"></a><a id="sthref2592"></a><a id="sthref2593"></a><a id="sthref2594"></a>Establishing a Secure Connection Using SSL</h1>
 
       <p><span class="glossaryterm">Secure Sockets Layer (SSL) technology</span> is security that is implemented at the transport layer (see <a href="../Text/security-intro.xhtml#BNBXC">Transport-Layer Security</a> for more information about transport-layer security). SSL allows web browsers and web servers to communicate over a secure connection. In this secure connection, the data is encrypted before being sent and then is decrypted upon receipt and before processing. Both the browser and the server encrypt all traffic before sending any data.</p>
 
@@ -855,7 +831,7 @@ public class GreetingServlet extends HttpServlet {</pre>
       <p><a id="sthref2598"></a>Using name-based virtual hosts on a secured connection can be problematic. This is a design limitation of the SSL protocol itself. The <span class="glossaryterm">SSL handshake</span>, whereby the client browser accepts the server certificate, must occur before the HTTP request is accessed. As a result, the request information containing the virtual host name cannot be determined before authentication, and it is therefore not possible to assign multiple certificates to a single IP address. If all virtual hosts on a single IP address need to authenticate against the same certificate, the addition of multiple virtual hosts should not interfere with normal SSL operations on the server. Be aware, however, that most client browsers will compare the server's domain name against the domain name listed in the certificate, if any; this is applicable primarily to official certificates signed by a certificate authority (CA). If the domain names do not match, these browsers will display a warning to the client. In general, only address-based virtual hosts are commonly used with SSL in a production environment.</p><a id="BNBXX"></a><a id="JEETT01224"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">47.6.1</span> Verifying and Configuring SSL Support</h2>
+        <h2 class="sect2" id="sigil_toc_id_839"><span class="secnum">47.6.1</span> Verifying and Configuring SSL Support</h2>
 
         <p>As a general rule, you must address the following issues to enable SSL for a server.</p>
 
@@ -876,7 +852,9 @@ public class GreetingServlet extends HttpServlet {</pre>
         <p><a id="sthref2599"></a><a id="sthref2600"></a>An SSL HTTPS connector is already enabled in GlassFish Server.</p>
 
         <p><a id="sthref2601"></a><a id="sthref2602"></a>For testing purposes and to verify that SSL support has been correctly installed, load the default introduction page with a URL that connects to the port defined in the server deployment descriptor:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">https://localhost:8181/</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+https://localhost:8181/
+</pre>
 
         <p>The <code>https</code> in this URL indicates that the browser should be using the SSL protocol. The <code>localhost</code> in this example assumes that you are running the example on your local machine as part of the development process. The <code>8181</code> in this example is the secure port that was specified where the SSL connector was created. If you are using a different server or port, modify this value accordingly.</p>
 
@@ -889,7 +867,7 @@ public class GreetingServlet extends HttpServlet {</pre>
     <a id="BNBYJ"></a><a id="JEETT00515"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">47.7</span> Further Information about Security</h1>
+      <h1 class="sect1" id="sigil_toc_id_840"><span class="secnum">47.7</span> Further Information about Security</h1>
 
       <p>For more information about security in Java EE applications, see</p>
 
@@ -897,37 +875,37 @@ public class GreetingServlet extends HttpServlet {</pre>
         <li>
           <p>Java EE 7 specification:</p>
 
-          <p><code><a href="../Text/security-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D342">http://jcp.org/en/jsr/detail?id=342</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=342">http://jcp.org/en/jsr/detail?id=342</a></code></p>
         </li>
 
         <li>
           <p>Enterprise JavaBeans 3.2 specification:</p>
 
-          <p><code><a href="../Text/security-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D345">http://jcp.org/en/jsr/detail?id=345</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=345">http://jcp.org/en/jsr/detail?id=345</a></code></p>
         </li>
 
         <li>
           <p>Implementing Enterprise Web Services 1.3 specification:</p>
 
-          <p><code><a href="../Text/security-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D109">http://jcp.org/en/jsr/detail?id=109</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=109">http://jcp.org/en/jsr/detail?id=109</a></code></p>
         </li>
 
         <li>
           <p>Java SE security information:</p>
 
-          <p><code><a href="../Text/security-intro.xhtml#http%3A//docs.oracle.com/javase/7/docs/technotes/guides/security/">http://docs.oracle.com/javase/7/docs/technotes/guides/security/</a></code></p>
+          <p><code><a href="../Text/http://docs.oracle.com/javase/7/docs/technotes/guides/security/.xhtml#http://docs.oracle.com/javase/7/docs/technotes/guides/security/">http://docs.oracle.com/javase/7/docs/technotes/guides/security/</a></code></p>
         </li>
 
         <li>
           <p>Java Servlet 3.1 specification:</p>
 
-          <p><code><a href="../Text/security-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D340">http://jcp.org/en/jsr/detail?id=340</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=340">http://jcp.org/en/jsr/detail?id=340</a></code></p>
         </li>
 
         <li>
           <p>Java Authorization Contract for Containers 1.5 specification:</p>
 
-          <p><code><a href="../Text/security-intro.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D115">http://jcp.org/en/jsr/detail?id=115</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=115">http://jcp.org/en/jsr/detail?id=115</a></code></p>
         </li>
       </ul>
     </div>

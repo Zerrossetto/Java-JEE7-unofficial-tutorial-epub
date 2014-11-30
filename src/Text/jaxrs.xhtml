@@ -43,7 +43,7 @@
     <a id="GIJQY"></a><a id="JEETT00427"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">29.1</span> <a id="sthref1489"></a>What Are RESTful Web Services?</h1>
+      <h1 class="sect1" id="sigil_toc_id_318"><span class="secnum">29.1</span> <a id="sthref1489"></a>What Are RESTful Web Services?</h1>
 
       <p><a id="sthref1490"></a><span class="glossaryterm">RESTful web services</span> are loosely coupled, lightweight web services that are particularly well suited for creating APIs for clients spread out across the internet. Representational State Transfer (REST) is an architectural style of client-server application centered around the <span class="bold">transfer</span> of <span class="bold">representations</span> of <span class="bold">resources</span> through requests and responses. In the REST architectural style, data and functionality are considered resources and are accessed using <span class="glossaryterm">Uniform Resource Identifiers (URIs)</span>, typically links on the Web. The resources are represented by documents and are acted upon by using a set of simple, well-defined operations.</p>
 
@@ -77,18 +77,18 @@
     <a id="GILIK"></a><a id="JEETT00428"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">29.2</span> <a id="sthref1491"></a><a id="sthref1492"></a><a id="sthref1493"></a><a id="sthref1494"></a><a id="sthref1495"></a><a id="sthref1496"></a><a id="sthref1497"></a>Creating a RESTful Root Resource Class</h1>
+      <h1 class="sect1" id="sigil_toc_id_319"><span class="secnum">29.2</span> <a id="sthref1491"></a><a id="sthref1492"></a><a id="sthref1493"></a><a id="sthref1494"></a><a id="sthref1495"></a><a id="sthref1496"></a><a id="sthref1497"></a>Creating a RESTful Root Resource Class</h1>
 
       <p><a id="sthref1498"></a><span class="glossaryterm">Root resource classes</span> are "plain old Java objects" (POJOs) that are either annotated with <code>@Path</code> or have at least one method annotated with <code>@Path</code> or a <span class="glossaryterm">request method designator</span>, such as <code>@GET</code>, <code>@PUT</code>, <code>@POST</code>, or <code>@DELETE</code>. <span class="glossaryterm">Resource methods</span> are methods of a resource class annotated with a request method designator. This section explains how to use JAX-RS to annotate Java classes to create RESTful web services.</p><a id="GILRU"></a><a id="JEETT01052"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.2.1</span> Developing RESTful Web Services with JAX-RS</h2>
+        <h2 class="sect2" id="sigil_toc_id_320"><span class="secnum">29.2.1</span> Developing RESTful Web Services with JAX-RS</h2>
 
         <p>JAX-RS is a Java programming language API designed to make it easy to develop applications that use the REST architecture.</p>
 
         <p>The JAX-RS API uses Java programming language annotations to simplify the development of RESTful web services. Developers decorate Java programming language class files with JAX-RS annotations to define resources and the actions that can be performed on those resources. JAX-RS annotations are runtime annotations; therefore, runtime reflection will generate the helper classes and artifacts for the resource. A Java EE application archive containing JAX-RS resource classes will have the resources configured, the helper classes and artifacts generated, and the resource exposed to clients by deploying the archive to a Java EE server.</p>
 
-        <p><a href="../Text/jaxrs.xhtml#GINNA">Table 29-1</a> lists some of the Java programming annotations that are defined by JAX-RS, with a brief description of how each is used. Further information on the JAX-RS APIs can be viewed at <code><a href="../Text/jaxrs.xhtml#http%3A//docs.oracle.com/javaee/7/api/">http://docs.oracle.com/javaee/7/api/</a></code>.</p>
+        <p><a href="../Text/jaxrs.xhtml#GINNA">Table 29-1</a> lists some of the Java programming annotations that are defined by JAX-RS, with a brief description of how each is used. Further information on the JAX-RS APIs can be viewed at <code><a href="../Text/http://docs.oracle.com/javaee/7/api/.xhtml#http://docs.oracle.com/javaee/7/api/">http://docs.oracle.com/javaee/7/api/</a></code>.</p>
 
         <div class="tblhruleformal">
           <a id="sthref1499"></a><a id="GINNA"></a>
@@ -233,10 +233,11 @@
       </div><a id="GILQB"></a><a id="JEETT01053"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.2.2</span> <a id="sthref1511"></a>Overview of a JAX-RS Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_321"><span class="secnum">29.2.2</span> <a id="sthref1511"></a>Overview of a JAX-RS Application</h2>
 
         <p>The following code sample is a very simple example of a root resource class that uses JAX-RS annotations:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.hello;
+        <pre class="oac_no_warn" xml:space="preserve">
+package javaeetutorial.hello;
  
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -267,7 +268,8 @@ public class HelloWorld {
     public String getHtml() {
         return "&lt;html lang=\"en\"&gt;&lt;body&gt;&lt;h1&gt;Hello, World!!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;";
     }
-}</pre>
+}
+</pre>
 
         <p>The following sections describe the annotations used in this example.</p>
 
@@ -286,28 +288,35 @@ public class HelloWorld {
 
           <li>
             <p>The <code>@Consumes</code> annotation is used to specify the MIME media types a resource can consume that were sent by the client. The example could be modified to set the message returned by the <code>getHtml</code> method, as shown in this code example:</p>
-            <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@POST
+            <pre class="oac_no_warn" xml:space="preserve">
+@POST
 @Consumes("text/plain")
 public void postHtml(String message) {
     // Store the message
-}</pre>
+}
+</pre>
           </li>
         </ul>
       </div><a id="GINPW"></a><a id="JEETT01054"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.2.3</span> <a id="sthref1513"></a><a id="sthref1514"></a><a id="sthref1515"></a><a id="sthref1516"></a>The @Path Annotation and URI Path Templates</h2>
+        <h2 class="sect2" id="sigil_toc_id_322"><span class="secnum">29.2.3</span> <a id="sthref1513"></a><a id="sthref1514"></a><a id="sthref1515"></a><a id="sthref1516"></a>The @Path Annotation and URI Path Templates</h2>
 
         <p>The <code>@Path</code> annotation identifies the URI path template to which the resource responds and is specified at the class or method level of a resource. The <code>@Path</code> annotation's value is a partial URI path template relative to the base URI of the server on which the resource is deployed, the context root of the application, and the URL pattern to which the JAX-RS runtime responds.</p>
 
         <p>URI path templates are URIs with variables embedded within the URI syntax. These variables are substituted at runtime in order for a resource to respond to a request based on the substituted URI. Variables are denoted by braces (<code>{</code> and <code>}</code>). For example, look at the following <code>@Path</code> annotation:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/users/{username}")</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@Path("/users/{username}")
+</pre>
 
         <p>In this kind of example, a user is prompted to type his or her name, and then a JAX-RS web service configured to respond to requests to this URI path template responds. For example, if the user types the user name "Galileo," the web service responds to the following URL:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://example.com/users/Galileo</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+http://example.com/users/Galileo
+</pre>
 
         <p>To obtain the value of the user name, the <code>@PathParam</code> annotation may be used on the method parameter of a request method, as shown in the following code example:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/users/{username}")
+        <pre class="oac_no_warn" xml:space="preserve">
+@Path("/users/{username}")
 public class UserResource {
 
     @GET
@@ -315,10 +324,13 @@ public class UserResource {
     public String getUser(@PathParam("username") String userName) {
         ...
     }
-}</pre>
+}
+</pre>
 
         <p>By default, the URI variable must match the regular expression <code>"[^/]+?"</code>. This variable may be customized by specifying a different regular expression after the variable name. For example, if a user name must consist only of lowercase and uppercase alphanumeric characters, override the default regular expression in the variable definition:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("users/{username: [a-zA-Z][a-zA-Z_0-9]*}")</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@Path("users/{username: [a-zA-Z][a-zA-Z_0-9]*}")
+</pre>
 
         <p>In this example, the <code>username</code> variable will match only user names that begin with one uppercase or lowercase letter and zero or more alphanumeric characters and the underscore character. If a user name does not match that template, a 404 (Not Found) response will be sent to the client.</p>
 
@@ -327,16 +339,20 @@ public class UserResource {
         <p>A URI path template has one or more variables, with each variable name surrounded by braces: <code>{</code> to begin the variable name and <code>}</code> to end it. In the preceding example, <code>username</code> is the variable name. At runtime, a resource configured to respond to the preceding URI path template will attempt to process the URI data that corresponds to the location of <code>{username}</code> in the URI as the variable data for <code>username</code>.</p>
 
         <p>For example, if you want to deploy a resource that responds to the URI path template <code>http://example.com/myContextRoot/resources/{name1}/{name2}/</code>, you must first deploy the application to a Java EE server that responds to requests to the <code>http://example.com/myContextRoot</code> URI and then decorate your resource with the following <code>@Path</code> annotation:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/{name1}/{name2}/")
+        <pre class="oac_no_warn" xml:space="preserve">
+@Path("/{name1}/{name2}/")
 public class SomeResource {
     ...
-}</pre>
+}
+</pre>
 
         <p>In this example, the URL pattern for the JAX-RS helper servlet, specified in <code>web.xml</code>, is the default:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;servlet-mapping&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;servlet-mapping&gt;
       &lt;servlet-name&gt;javax.ws.rs.core.Application&lt;/servlet-name&gt;
       &lt;url-pattern&gt;/resources/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</pre>
+&lt;/servlet-mapping&gt;
+</pre>
 
         <p>A variable name can be used more than once in the URI path template.</p>
 
@@ -449,17 +465,18 @@ public class SomeResource {
       </div><a id="GIPYS"></a><a id="JEETT01055"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.2.4</span> <a id="sthref1518"></a><a id="sthref1519"></a>Responding to HTTP Methods and Requests</h2>
+        <h2 class="sect2" id="sigil_toc_id_323"><span class="secnum">29.2.4</span> <a id="sthref1518"></a><a id="sthref1519"></a>Responding to HTTP Methods and Requests</h2>
 
         <p>The behavior of a resource is determined by the HTTP methods (typically, GET, POST, PUT, or DELETE) to which the resource is responding.</p><a id="GIPXS"></a><a id="JEETT00638"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">29.2.4.1</span> <a id="sthref1520"></a><a id="sthref1521"></a><a id="sthref1522"></a><a id="sthref1523"></a><a id="sthref1524"></a><a id="sthref1525"></a>The Request Method Designator Annotations</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.2.4.1</span> <a id="sthref1520"></a><a id="sthref1521"></a><a id="sthref1522"></a><a id="sthref1523"></a><a id="sthref1524"></a><a id="sthref1525"></a>The Request Method Designator Annotations</h3>
 
           <p>Request method designator annotations are runtime annotations, defined by JAX-RS, that correspond to the similarly named HTTP methods. Within a resource class file, HTTP methods are mapped to Java programming language methods by using the request method designator annotations. The behavior of a resource is determined by which HTTP method the resource is responding to. JAX-RS defines a set of request method designators for the common HTTP methods GET, POST, PUT, DELETE, and HEAD; you can also create your own custom request method designators. Creating custom request method designators is outside the scope of this document.</p>
 
           <p>The following example shows the use of the PUT method to create or update a storage container:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PUT
+          <pre class="oac_no_warn" xml:space="preserve">
+@PUT
 public Response putContainer() {
     System.out.println("PUT CONTAINER " + container);
 
@@ -475,9 +492,10 @@ public Response putContainer() {
 
     MemoryStore.MS.createContainer(c);
     return r;
-}</pre>
+}
+</pre>
 
-          <p>By default, the JAX-RS runtime will automatically support the methods HEAD and OPTIONS if not explicitly implemented. For HEAD, the runtime will invoke the implemented GET method, if present, and ignore the response entity, if set. For OPTIONS, the <code>Allow</code> response header will be set to the set of HTTP methods supported by the resource. In addition, the JAX-RS runtime will return a Web Application Definition Language (WADL) document describing the resource; see <code><a href="../Text/jaxrs.xhtml#http%3A//www.w3.org/Submission/wadl/">http://www.w3.org/Submission/wadl/</a></code> for more information.</p>
+          <p>By default, the JAX-RS runtime will automatically support the methods HEAD and OPTIONS if not explicitly implemented. For HEAD, the runtime will invoke the implemented GET method, if present, and ignore the response entity, if set. For OPTIONS, the <code>Allow</code> response header will be set to the set of HTTP methods supported by the resource. In addition, the JAX-RS runtime will return a Web Application Definition Language (WADL) document describing the resource; see <code><a href="../Text/http://www.w3.org/Submission/wadl/.xhtml#http://www.w3.org/Submission/wadl/">http://www.w3.org/Submission/wadl/</a></code> for more information.</p>
 
           <p>Methods decorated with request method designators must return <code>void</code>, a Java programming language type, or a <code>javax.ws.rs.core.Response</code> object. Multiple parameters may be extracted from the URI by using the <code>@PathParam</code> or <code>@QueryParam</code> annotations, as described in <a href="../Text/jaxrs.xhtml#GIPYW">Extracting Request Parameters</a>. Conversion between Java types and an entity body is the responsibility of an entity provider, such as <code>MessageBodyReader</code> or <code>MessageBodyWriter</code>. Methods that need to provide additional metadata with a response should return an instance of the <code>Response</code> class. The <code>ResponseBuilder</code> class provides a convenient way to create a <code>Response</code> instance using a builder pattern. The HTTP PUT and POST methods expect an HTTP request body, so you should use a <code>MessageBodyReader</code> for methods that respond to PUT and POST requests.</p>
 
@@ -487,7 +505,7 @@ public Response putContainer() {
         </div><a id="GIPZE"></a><a id="JEETT00639"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">29.2.4.2</span> <a id="sthref1526"></a><a id="sthref1527"></a><a id="sthref1528"></a><a id="sthref1529"></a><a id="sthref1530"></a><a id="sthref1531"></a>Using Entity Providers to Map HTTP Response and Request Entity Bodies</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.2.4.2</span> <a id="sthref1526"></a><a id="sthref1527"></a><a id="sthref1528"></a><a id="sthref1529"></a><a id="sthref1530"></a><a id="sthref1531"></a>Using Entity Providers to Map HTTP Response and Request Entity Bodies</h3>
 
           <p><span class="glossaryterm">Entity providers</span> supply mapping services between representations and their associated Java types. The two types of entity providers are <code>MessageBodyReader</code> and <code>MessageBodyWriter</code>. For HTTP requests, the <code>MessageBodyReader</code> is used to map an HTTP request entity body to method parameters. On the response side, a return value is mapped to an HTTP response entity body by using a <code>MessageBodyWriter</code>. If the application needs to supply additional metadata, such as HTTP headers or a different status code, a method can return a <code>Response</code> that wraps the entity and that can be built by using <code>Response.ResponseBuilder</code>.</p>
 
@@ -593,7 +611,7 @@ public Response putContainer() {
 
                 <tr align="left" valign="top">
                   <td align="left" headers="r1c1-t5" id="r10c1-t5">
-                    <p><code>MultivaluedMapString, String</code></p>
+                    <p><code>MultivaluedMap&lt;String, String&gt;</code></p>
                   </td>
 
                   <td align="left" headers="r10c1-t5 r1c2-t5">
@@ -615,18 +633,23 @@ public Response putContainer() {
           </div>
 
           <p>The following example shows how to use <code>MessageBodyReader</code> with the <code>@Consumes</code> and <code>@Provider</code> annotations:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Consumes("application/x-www-form-urlencoded")
+          <pre class="oac_no_warn" xml:space="preserve">
+@Consumes("application/x-www-form-urlencoded")
 @Provider
-public class FormReader implements MessageBodyReader&lt;NameValuePair&gt; {</pre>
+public class FormReader implements MessageBodyReader&lt;NameValuePair&gt; {
+</pre>
 
           <p>The following example shows how to use <code>MessageBodyWriter</code> with the <code>@Produces</code> and <code>@Provider</code> annotations:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Produces("text/html")
+          <pre class="oac_no_warn" xml:space="preserve">
+@Produces("text/html")
 @Provider
 public class FormWriter implements 
-        MessageBodyWriter&lt;Hashtable&lt;String, String&gt;&gt; {</pre>
+        MessageBodyWriter&lt;Hashtable&lt;String, String&gt;&gt; {
+</pre>
 
           <p>The following example shows how to use <code>ResponseBuilder</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GET
+          <pre class="oac_no_warn" xml:space="preserve">
+@GET
 public Response getItem() {
     System.out.println("GET ITEM " + container + " " + item);
     
@@ -642,12 +665,13 @@ public Response getItem() {
     byte[] b = MemoryStore.MS.getItemData(container, item);
     return Response.ok(b, i.getMimeType()).
             lastModified(lastModified).tag(et).build();
-}</pre>
+}
+</pre>
         </div>
       </div><a id="GIPZH"></a><a id="JEETT01056"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.2.5</span> Using @Consumes and @Produces to Customize Requests and Responses</h2>
+        <h2 class="sect2" id="sigil_toc_id_324"><span class="secnum">29.2.5</span> Using @Consumes and @Produces to Customize Requests and Responses</h2>
 
         <p>The information sent to a resource and then passed back to the client is specified as a MIME media type in the headers of an HTTP request or response. You can specify which MIME media types of representations a resource can respond to or produce by using the following annotations:</p>
 
@@ -664,17 +688,20 @@ public Response getItem() {
         <p>By default, a resource class can respond to and produce all MIME media types of representations specified in the HTTP request and response headers.</p><a id="GIPXF"></a><a id="JEETT00640"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">29.2.5.1</span> <a id="sthref1534"></a>The @Produces Annotation</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.2.5.1</span> <a id="sthref1534"></a>The @Produces Annotation</h3>
 
           <p>The <code>@Produces</code> annotation is used to specify the MIME media types or representations a resource can produce and send back to the client. If <code>@Produces</code> is applied at the class level, all the methods in a resource can produce the specified MIME types by default. If applied at the method level, the annotation overrides any <code>@Produces</code> annotations applied at the class level.</p>
 
           <p>If no methods in a resource are able to produce the MIME type in a client request, the JAX-RS runtime sends back an HTTP "406 Not Acceptable" error.</p>
 
           <p>The value of <code>@Produces</code> is an array of <code>String</code> of MIME types or a comma-separated list of <code>MediaType</code> constants. For example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Produces({"image/jpeg,image/png"})</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Produces({"image/jpeg,image/png"})
+</pre>
 
           <p>The following example shows how to apply <code>@Produces</code> at both the class and method levels:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/myResource")
+          <pre class="oac_no_warn" xml:space="preserve">
+@Path("/myResource")
 @Produces("text/plain")
 public class SomeResource {
     @GET
@@ -687,41 +714,51 @@ public class SomeResource {
     public String doGetAsHtml() {
         ...
     }
-}</pre>
+}
+</pre>
 
           <p>The <code>doGetAsPlainText</code> method defaults to the MIME media type of the <code>@Produces</code> annotation at the class level. The <code>doGetAsHtml</code> method's <code>@Produces</code> annotation overrides the class-level <code>@Produces</code> setting and specifies that the method can produce HTML rather than plain text.</p>
 
           <p><code>@Produces</code> can also use the constants defined in the <code>javax.ws.rs.core.MediaType</code> class to specify the media type. For example, specifying <code>MediaType.APPLICATION_XML</code> is equivalent to specifying <code>"application/xml"</code>.</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Produces(MediaType.APPLICATION_XML)
+          <pre class="oac_no_warn" xml:space="preserve">
+@Produces(MediaType.APPLICATION_XML)
 @GET
-public Customer getCustomer() { ... }</pre>
+public Customer getCustomer() { ... }
+</pre>
 
           <p>If a resource class is capable of producing more than one MIME media type, the resource method chosen will correspond to the most acceptable media type as declared by the client. More specifically, the <code>Accept</code> header of the HTTP request declares what is most acceptable. For example, if the <code>Accept</code> header is <code>Accept: text/plain</code>, the <code>doGetAsPlainText</code> method will be invoked. Alternatively, if the <code>Accept</code> header is <code>Accept: text/plain;q=0.9, text/html</code>, which declares that the client can accept media types of <code>text/plain</code> and <code>text/html</code> but prefers the latter, the <code>doGetAsHtml</code> method will be invoked.</p>
 
           <p>More than one media type may be declared in the same <code>@Produces</code> declaration. The following code example shows how this is done:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Produces({"application/xml", "application/json"})
+          <pre class="oac_no_warn" xml:space="preserve">
+@Produces({"application/xml", "application/json"})
 public String doGetAsXmlOrJson() {
     ...
-}</pre>
+}
+</pre>
 
           <p>The <code>doGetAsXmlOrJson</code> method will get invoked if either of the media types <code>application/xml</code> or <code>application/json</code> is acceptable. If both are equally acceptable, the former will be chosen because it occurs first. The preceding examples refer explicitly to MIME media types for clarity. It is possible to refer to constant values, which may reduce typographical errors. For more information, see the API documentation for the constant field values of <code>javax.ws.rs.core.MediaType</code>.</p>
         </div><a id="GIPYT"></a><a id="JEETT00641"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">29.2.5.2</span> <a id="sthref1535"></a>The @Consumes Annotation</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.2.5.2</span> <a id="sthref1535"></a>The @Consumes Annotation</h3>
 
           <p>The <code>@Consumes</code> annotation is used to specify which MIME media types of representations a resource can accept, or consume, from the client. If <code>@Consumes</code> is applied at the class level, all the response methods accept the specified MIME types by default. If applied at the method level, <code>@Consumes</code> overrides any <code>@Consumes</code> annotations applied at the class level.</p>
 
           <p>If a resource is unable to consume the MIME type of a client request, the JAX-RS runtime sends back an HTTP 415 ("Unsupported Media Type") error.</p>
 
           <p>The value of <code>@Consumes</code> is an array of <code>String</code> of acceptable MIME types, or a comma-separated list of <code>MediaType</code> constants. For example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Consumes({"text/plain,text/html"})</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Consumes({"text/plain,text/html"})
+</pre>
 
           <p>This is the equivalent of:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Consumes({MediaType.TEXT_PLAIN,MediaType.TEXT_HTML})</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Consumes({MediaType.TEXT_PLAIN,MediaType.TEXT_HTML})
+</pre>
 
           <p>The following example shows how to apply <code>@Consumes</code> at both the class and method levels:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/myResource")
+          <pre class="oac_no_warn" xml:space="preserve">
+@Path("/myResource")
 @Consumes("multipart/related")
 public class SomeResource {
     @POST
@@ -734,25 +771,28 @@ public class SomeResource {
     public String doPost2(FormURLEncodedProperties formData) {
         ...
     }
-}</pre>
+}
+</pre>
 
           <p>The <code>doPost</code> method defaults to the MIME media type of the <code>@Consumes</code> annotation at the class level. The <code>doPost2</code> method overrides the class level <code>@Consumes</code> annotation to specify that it can accept URL-encoded form data.</p>
 
           <p>If no resource methods can respond to the requested MIME type, an HTTP 415 ("Unsupported Media Type") error is returned to the client.</p>
 
           <p>The <code>HelloWorld</code> example discussed previously in this section can be modified to set the message by using <code>@Consumes</code>, as shown in the following code example:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@POST
+          <pre class="oac_no_warn" xml:space="preserve">
+@POST
 @Consumes("text/html")
 public void postHtml(String message) {
     // Store the message
-}</pre>
+}
+</pre>
 
           <p>In this example, the Java method will consume representations identified by the MIME media type <code>text/plain</code>. Note that the resource method returns <code>void</code>. This means that no representation is returned and that a response with a status code of HTTP 204 ("No Content") will be returned.</p>
         </div>
       </div><a id="GIPYW"></a><a id="JEETT01057"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.2.6</span> <a id="sthref1536"></a><a id="sthref1537"></a><a id="sthref1538"></a>Extracting Request Parameters</h2>
+        <h2 class="sect2" id="sigil_toc_id_325"><span class="secnum">29.2.6</span> <a id="sthref1536"></a><a id="sthref1537"></a><a id="sthref1538"></a>Extracting Request Parameters</h2>
 
         <p>Parameters of a resource method may be annotated with parameter-based annotations to extract information from a request. A previous example presented the use of the <code>@PathParam</code> parameter to extract a path parameter from the path component of the request URL that matched the path declared in <code>@Path</code>.</p>
 
@@ -785,7 +825,8 @@ public void postHtml(String message) {
         </ul>
 
         <p><a id="sthref1539"></a><span class="glossaryterm">Query parameters</span> are extracted from the request URI query parameters and are specified by using the <code>javax.ws.rs.QueryParam</code> annotation in the method parameter arguments. The following example demonstrates using <code>@QueryParam</code> to extract query parameters from the <code>Query</code> component of the request URL:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("smooth")
+        <pre class="oac_no_warn" xml:space="preserve">
+@Path("smooth")
 @GET
 public Response smooth(
         @DefaultValue("2") @QueryParam("step") int step,
@@ -795,12 +836,14 @@ public Response smooth(
         @DefaultValue("blue") @QueryParam("min-color") ColorParam minColor,
         @DefaultValue("green") @QueryParam("max-color") ColorParam maxColor,
         @DefaultValue("red") @QueryParam("last-color") ColorParam lastColor
-        ) { ... }</pre>
+        ) { ... }
+</pre>
 
         <p>If the query parameter <code>step</code> exists in the query component of the request URI, the value of <code>step</code> will be extracted and parsed as a 32-bit signed integer and assigned to the <code>step</code> method parameter. If <code>step</code> does not exist, a default value of 2, as declared in the <code>@DefaultValue</code> annotation, will be assigned to the <code>step</code> method parameter. If the <code>step</code> value cannot be parsed as a 32-bit signed integer, an HTTP 400 ("Client Error") response is returned.</p>
 
         <p>User-defined Java programming language types may be used as query parameters. The following code example shows the <code>ColorParam</code> class used in the preceding query parameter example:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class ColorParam extends Color {
+        <pre class="oac_no_warn" xml:space="preserve">
+public class ColorParam extends Color {
     public ColorParam(String s) {
         super(getRGB(s));
     }
@@ -822,7 +865,8 @@ public Response smooth(
             }
         }
     }
-}</pre>
+}
+</pre>
 
         <p>The constructor for <code>ColorParam</code> takes a single <code>String</code> parameter.</p>
 
@@ -846,21 +890,23 @@ public Response smooth(
           </li>
 
           <li>
-            <p><code>ListT</code>, <code>SetT</code>, or <code>SortedSetT</code>, where T matches the already listed criteria. Sometimes, parameters may contain more than one value for the same name. If this is the case, these types may be used to obtain all values.</p>
+            <p><code>List&lt;T&gt;</code>, <code>Set&lt;T&gt;</code>, or <code>SortedSet&lt;T&gt;</code>, where T matches the already listed criteria. Sometimes, parameters may contain more than one value for the same name. If this is the case, these types may be used to obtain all values.</p>
           </li>
         </ul>
 
         <p>If <code>@DefaultValue</code> is not used in conjunction with <code>@QueryParam</code>, and the query parameter is not present in the request, the value will be an empty collection for <code>List</code>, <code>Set</code>, or <code>SortedSet</code>; null for other object types; and the default for primitive types.</p>
 
         <p><a id="sthref1540"></a><a id="sthref1541"></a><span class="glossaryterm">URI path parameters</span> are extracted from the request URI, and the parameter names correspond to the URI path template variable names specified in the <code>@Path</code> class-level annotation. URI parameters are specified using the <code>javax.ws.rs.PathParam</code> annotation in the method parameter arguments. The following example shows how to use <code>@Path</code> variables and the <code>@PathParam</code> annotation in a method:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/{username}")
+        <pre class="oac_no_warn" xml:space="preserve">
+@Path("/{username}")
 public class MyResourceBean {
     ...
     @GET
     public String printUsername(@PathParam("username") String userId) {
         ...
     }
-}</pre>
+}
+</pre>
 
         <p>In the preceding snippet, the URI path template variable name <code>username</code> is specified as a parameter to the <code>printUsername</code> method. The <code>@PathParam</code> annotation is set to the variable name <code>username</code>. At runtime, before <code>printUsername</code> is called, the value of <code>username</code> is extracted from the URI and cast to a <code>String</code>. The resulting <code>String</code> is then available to the method as the <code>userId</code> variable.</p>
 
@@ -870,43 +916,51 @@ public class MyResourceBean {
 
         <p><a id="sthref1542"></a><a id="sthref1543"></a><a id="sthref1544"></a><span class="glossaryterm">Cookie parameters</span>, indicated by decorating the parameter with <code>javax.ws.rs.CookieParam</code>, extract information from the cookies declared in cookie-related HTTP headers. <span class="glossaryterm">Header parameters</span>, indicated by decorating the parameter with <code>javax.ws.rs.HeaderParam</code>, extract information from the HTTP headers. <span class="glossaryterm">Matrix parameters</span>, indicated by decorating the parameter with <code>javax.ws.rs.MatrixParam</code>, extract information from URL path segments.</p>
 
-        <p><a id="sthref1545"></a><span class="glossaryterm">Form parameters</span>, indicated by decorating the parameter with <code>javax.ws.rs.FormParam</code>, extract information from a request representation that is of the MIME media type <code>application/x-www-form-urlencoded</code> and conforms to the encoding specified by HTML forms, as described in <code><a href="../Text/jaxrs.xhtml#h-17.13.4.1">http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1</a></code>. This parameter is very useful for extracting information sent by POST in HTML forms.</p>
+        <p><a id="sthref1545"></a><span class="glossaryterm">Form parameters</span>, indicated by decorating the parameter with <code>javax.ws.rs.FormParam</code>, extract information from a request representation that is of the MIME media type <code>application/x-www-form-urlencoded</code> and conforms to the encoding specified by HTML forms, as described in <code><a href="../Text/http://www.w3.org/TR/html401/interact/forms.xhtml#h-17.13.4.1">http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1</a></code>. This parameter is very useful for extracting information sent by POST in HTML forms.</p>
 
         <p>The following example extracts the <code>name</code> form parameter from the POST form data:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@POST
+        <pre class="oac_no_warn" xml:space="preserve">
+@POST
 @Consumes("application/x-www-form-urlencoded")
 public void post(@FormParam("name") String name) {
     // Store the message
-}</pre>
+}
+</pre>
 
         <p>To obtain a general map of parameter names and values for query and path parameters, use the following code:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GET
+        <pre class="oac_no_warn" xml:space="preserve">
+@GET
 public String get(@Context UriInfo ui) {
     MultivaluedMap&lt;String, String&gt; queryParams = ui.getQueryParameters();
     MultivaluedMap&lt;String, String&gt; pathParams = ui.getPathParameters();
-}</pre>
+}
+</pre>
 
         <p>The following method extracts header and cookie parameter names and values into a map:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GET
+        <pre class="oac_no_warn" xml:space="preserve">
+@GET
 public String get(@Context HttpHeaders hh) {
     MultivaluedMap&lt;String, String&gt; headerParams = hh.getRequestHeaders();
     Map&lt;String, Cookie&gt; pathParams = hh.getCookies();
-}</pre>
+}
+</pre>
 
         <p>In general, <code>@Context</code> can be used to obtain contextual Java types related to the request or response.</p>
 
         <p>For form parameters, it is possible to do the following:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@POST
+        <pre class="oac_no_warn" xml:space="preserve">
+@POST
 @Consumes("application/x-www-form-urlencoded")
 public void post(MultivaluedMap&lt;String, String&gt; formParams) {
     // Store the message
-}</pre>
+}
+</pre>
       </div>
 
       <div class="sect2">
         <a id="sthref1546"></a>
 
-        <h2 class="sect2"><span class="secnum">29.2.7</span> <a id="sthref1547"></a><a id="sthref1548"></a><a id="sthref1549"></a>Configuring JAX-RS Applications</h2>
+        <h2 class="sect2" id="sigil_toc_id_326"><span class="secnum">29.2.7</span> <a id="sthref1547"></a><a id="sthref1548"></a><a id="sthref1549"></a>Configuring JAX-RS Applications</h2>
 
         <p>A JAX-RS application consists of at least one resource class packaged within a WAR file. The base URI from which an application's resources respond to requests can be set one of two ways:</p>
 
@@ -923,40 +977,48 @@ public void post(MultivaluedMap&lt;String, String&gt; formParams) {
         <div class="sect3">
           <a id="sthref1550"></a>
 
-          <h3 class="sect3"><span class="secnum">29.2.7.1</span> Configuring a JAX-RS Application Using a Subclass of Application</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.2.7.1</span> Configuring a JAX-RS Application Using a Subclass of Application</h3>
 
           <p>Create a subclass of <code>javax.ws.rs.core.Application</code> to manually configure the environment in which the REST resources defined in your resource classes are run, including the base URI. Add a class-level <code>@ApplicationPath</code> annotation to set the base URI.</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ApplicationPath("/webapi")
-public class MyApplication extends Application { ... }</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@ApplicationPath("/webapi")
+public class MyApplication extends Application { ... }
+</pre>
 
           <p>In the preceding example, the base URI is set to <code>/webapi</code>, which means that all resources defined within the application are relative to <code>/webapi</code>.</p>
 
           <p>By default, all the resources in an archive will be processed for resources. Override the <code>getClasses</code> method to manually register the resource classes in the application with the JAX-RS runtime.</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+          <pre class="oac_no_warn" xml:space="preserve">
+@Override
 public Set&lt;Class&lt;?&gt;&gt; getClasses() {
     final Set&lt;Class&lt;?&gt;&gt; classes = new HashSet&lt;&gt;();
     // register root resource
     classes.add(MyResource.class);
     return classes;
-}</pre>
+}
+</pre>
         </div>
 
         <div class="sect3">
           <a id="sthref1551"></a>
 
-          <h3 class="sect3"><span class="secnum">29.2.7.2</span> Configuring the Base URI in web.xml</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.2.7.2</span> Configuring the Base URI in web.xml</h3>
 
           <p>The base URI for a JAX-RS application can be set using a <code>servlet-mapping</code> tag in the <code>web.xml</code> deployment descriptor, using the <code>Application</code> class name as the servlet.</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;servlet-mapping&gt;
+          <pre class="oac_no_warn" xml:space="preserve">
+&lt;servlet-mapping&gt;
     &lt;servlet-name&gt;javax.ws.rs.core.Application&lt;/servlet-name&gt;
     &lt;url-pattern&gt;/webapi/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</pre>
+&lt;/servlet-mapping&gt;
+</pre>
 
           <p>This setting will also override the path set by <code>@ApplicationPath</code> when using an <code>Application</code> subclass.</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;servlet-mapping&gt;
+          <pre class="oac_no_warn" xml:space="preserve">
+&lt;servlet-mapping&gt;
    &lt;servlet-name&gt;com.example.rest.MyApplication&lt;/servlet-name&gt;
    &lt;url-pattern&gt;/services/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</pre>
+&lt;/servlet-mapping&gt;
+</pre>
         </div>
       </div>
     </div>
@@ -966,19 +1028,19 @@ public Set&lt;Class&lt;?&gt;&gt; getClasses() {
     <a id="GIPZZ"></a><a id="JEETT00429"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">29.3</span> <a id="sthref1552"></a><a id="sthref1553"></a>Example Applications for JAX-RS</h1>
+      <h1 class="sect1" id="sigil_toc_id_327"><span class="secnum">29.3</span> <a id="sthref1552"></a><a id="sthref1553"></a>Example Applications for JAX-RS</h1>
 
       <p>This section provides an introduction to creating, deploying, and running your own JAX-RS applications. This section demonstrates the steps that are needed to create, build, deploy, and test a very simple web application that uses JAX-RS annotations.</p><a id="GIPYZ"></a><a id="JEETT01058"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.3.1</span> Creating a Simple RESTful Web Service</h2>
+        <h2 class="sect2" id="sigil_toc_id_328"><span class="secnum">29.3.1</span> Creating a Simple RESTful Web Service</h2>
 
         <p>This section explains how to use NetBeans IDE to create a RESTful web service using a Maven archetype. The archetype generates a skeleton for the application, and you simply need to implement the appropriate method.</p>
 
         <p>You can find a version of this application at <span class="variable">tut-install</span><code>/examples/jaxrs/hello/</code>.</p><a id="GIQAA"></a><a id="JEETT00186"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">29.3.1.1</span> To Create a RESTful Web Service Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.3.1.1</span> To Create a RESTful Web Service Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -1011,11 +1073,13 @@ public Set&lt;Class&lt;?&gt;&gt; getClasses() {
 
             <li>
               <p>In <code>HelloWorld.java</code>, find the <code>getHtml()</code> method. Replace the <code>//TODO</code> comment with the following text, so that the finished product resembles the following method:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@GET
+              <pre class="oac_no_warn" xml:space="preserve">
+@GET
 @Produces("text/html")
 public String getHtml() {
     return "&lt;html lang=\"en\"&gt;&lt;body&gt;&lt;h1&gt;Hello, World!!&lt;/body&gt;&lt;/h1&gt;&lt;/html&gt;";
-}</pre>
+}
+</pre>
 
               <div align="center">
                 <div class="inftblnote">
@@ -1044,30 +1108,33 @@ public String getHtml() {
 
             <li>
               <p>In a browser, open the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/HelloWorldApplication/HelloWorldApplication</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/HelloWorldApplication/HelloWorldApplication
+</pre>
 
               <p>A browser window opens and displays the return value of <code>Hello, World!!</code></p>
             </li>
           </ol>
 
-          <p>For other sample applications that demonstrate deploying and running JAX-RS applications using NetBeans IDE, see <a href="../Text/jaxrs.xhtml#GJVBC">The rsvp Example Application</a> and <span class="italic">Your First Cup: An Introduction to the Java EE Platform</span> at <code><a href="../Text/jaxrs.xhtml#http%3A//docs.oracle.com/javaee/7/firstcup/doc/">http://docs.oracle.com/javaee/7/firstcup/doc/</a></code>. You may also look at the tutorials on the NetBeans IDE tutorial site, such as the one titled "Getting Started with RESTful Web Services" at <code><a href="../Text/jaxrs.xhtml#https%3A//netbeans.org/kb/docs/websvc/rest.html">https://netbeans.org/kb/docs/websvc/rest.html</a></code>. This tutorial includes a section on creating a CRUD application from a database. Create, read, update, and delete (CRUD) are the four basic functions of persistent storage and relational databases.</p>
+          <p>For other sample applications that demonstrate deploying and running JAX-RS applications using NetBeans IDE, see <a href="../Text/jaxrs.xhtml#GJVBC">The rsvp Example Application</a> and <span class="italic">Your First Cup: An Introduction to the Java EE Platform</span> at <code><a href="../Text/http://docs.oracle.com/javaee/7/firstcup/doc/.xhtml#http://docs.oracle.com/javaee/7/firstcup/doc/">http://docs.oracle.com/javaee/7/firstcup/doc/</a></code>. You may also look at the tutorials on the NetBeans IDE tutorial site, such as the one titled "Getting Started with RESTful Web Services" at <code><a href="../Text/https://netbeans.org/kb/docs/websvc/rest.xhtml#https://netbeans.org/kb/docs/websvc/rest.html">https://netbeans.org/kb/docs/websvc/rest.html</a></code>. This tutorial includes a section on creating a CRUD application from a database. Create, read, update, and delete (CRUD) are the four basic functions of persistent storage and relational databases.</p>
         </div>
       </div><a id="GJVBC"></a><a id="JEETT01059"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.3.2</span> <a id="sthref1554"></a>The rsvp Example Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_329"><span class="secnum">29.3.2</span> <a id="sthref1554"></a>The rsvp Example Application</h2>
 
         <p>The <code>rsvp</code> example application, located in the <span class="variable">tut-install</span><code>/examples/jaxrs/rsvp/</code> directory, allows invitees to an event to indicate whether they will attend. The events, people invited to the event, and the responses to the invite are stored in a Java DB database using the Java Persistence API. The JAX-RS resources in <code>rsvp</code> are exposed in a stateless session enterprise bean.</p><a id="GJVAW"></a><a id="JEETT00642"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">29.3.2.1</span> <a id="sthref1555"></a>Components of the rsvp Example Application</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.3.2.1</span> <a id="sthref1555"></a>Components of the rsvp Example Application</h3>
 
           <p>The three enterprise beans in the <code>rsvp</code> example application are <code>rsvp.ejb.ConfigBean</code>, <code>rsvp.ejb.StatusBean</code>, and <code>rsvp.ejb.ResponseBean</code>.</p>
 
           <p><code>ConfigBean</code> is a singleton session bean that initializes the data in the database.</p>
 
           <p><code>StatusBean</code> exposes a JAX-RS resource for displaying the current status of all invitees to an event. The URI path template is declared first on the class and then on the <code>getEvent</code> method:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Stateless
+          <pre class="oac_no_warn" xml:space="preserve">
+@Stateless
 @Named
 @Path("/status")
 public class StatusBean {
@@ -1076,22 +1143,29 @@ public class StatusBean {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{eventId}/")
     public Event getEvent(@PathParam("eventId") Long eventId) {
-         ...</pre>
+         ...
+</pre>
 
           <p>The combination of the two <code>@Path</code> annotations results in the following URI path template:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/status/{eventId}/")</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Path("/status/{eventId}/")
+</pre>
 
           <p>The URI path variable <code>eventId</code> is a <code>@PathParam</code> variable in the <code>getEvent</code> method, which responds to HTTP GET requests and has been annotated with <code>@GET</code>. The <code>eventId</code> variable is used to look up all the current responses in the database for that particular event.</p>
 
           <p><code>ResponseBean</code> exposes a JAX-RS resource for setting an invitee's response to a particular event. The URI path template for <code>ResponseBean</code> is declared as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Path("/{eventId}/{inviteId}")</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Path("/{eventId}/{inviteId}")
+</pre>
 
           <p>Two URI path variables are declared in the path template: <code>eventId</code> and <code>inviteId</code>. As in <code>StatusBean</code>, <code>eventId</code> is the unique ID for a particular event. Each invitee to that event has a unique ID for the invitation, and that is the <code>inviteId</code>. Both of these path variables are used in two JAX-RS methods in <code>ResponseBean</code>: <code>getResponse</code> and <code>putResponse</code>. The <code>getResponse</code> method responds to HTTP GET requests and displays the invitee's current response and a form to change the response.</p>
 
           <p>The <code>javaeetutorial.rsvp.rest.RsvpApplication</code> class defines the root application path for the resources by applying the <code>javax.ws.rs.ApplicationPath</code> annotation at the class level.</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@ApplicationPath("/webapi")
+          <pre class="oac_no_warn" xml:space="preserve">
+@ApplicationPath("/webapi")
 public class RsvpApplication extends Application {
-}</pre>
+}
+</pre>
 
           <p>An invitee who wants to change his or her response selects the new response and submits the form data, which is processed as an HTTP POST request by the <code>putResponse</code> method. The new response is extracted from the HTTP POST request and stored as the <code>userResponse</code> string. The <code>putResponse</code> method uses <code>userResponse</code>, <code>eventId</code>, and <code>inviteId</code> to update the invitee's response in the database.</p>
 
@@ -1099,15 +1173,15 @@ public class RsvpApplication extends Application {
 
           <p>The <code>rsvp.util.ResponseEnum</code> class declares an enumerated type that represents all the possible response statuses an invitee may have.</p>
 
-          <p>The web application also includes two CDI managed beans, <code>StatusManager</code> and <code>EventManager</code>, which use the <a id="sthref1556"></a><a id="sthref1557"></a>JAX-RS Client API to call the resources exposed in <code>StatusBean</code> and <code>ResponseBean</code>. For information on how the Client API is used in <code>rsvp</code>, see <a href="../Text/jaxrs.xhtml#BABEDFIG">"The Client API in the rsvp Example Application"</a>.</p>
+          <p>The web application also includes two CDI managed beans, <code>StatusManager</code> and <code>EventManager</code>, which use the <a id="sthref1556"></a><a id="sthref1557"></a>JAX-RS Client API to call the resources exposed in <code>StatusBean</code> and <code>ResponseBean</code>. For information on how the Client API is used in <code>rsvp</code>, see <a href="../Text/jaxrs-client.xhtml#BABEDFIG">"The Client API in the rsvp Example Application"</a>.</p>
         </div><a id="GKCCA"></a><a id="JEETT00643"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">29.3.2.2</span> Running the rsvp Example Application</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">29.3.2.2</span> Running the rsvp Example Application</h3>
 
           <p>Both NetBeans IDE and Maven can be used to deploy and run the <code>rsvp</code> example application.</p>
 
-          <p class="orderedlisttitle">To Run the rsvp Example Application Using NetBeans IDE</p>
+          <p class="orderedlisttitle">To Run the rsvp Example Application Using NetBeans IDE&nbsp;</p>
 
           <ol>
             <li>
@@ -1124,7 +1198,9 @@ public class RsvpApplication extends Application {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jaxrs</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jaxrs
+</pre>
             </li>
 
             <li>
@@ -1139,7 +1215,9 @@ public class RsvpApplication extends Application {
               <p>In the <span class="gui-object-action">Projects</span> tab, right-click the <code>rsvp</code> project and select <span class="gui-object-action">Run</span>.</p>
 
               <p>The project will be compiled, assembled, and deployed to GlassFish Server. A web browser window will open to the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/rsvp/index.xhtml</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/rsvp/index.xhtml
+</pre>
             </li>
 
             <li>
@@ -1155,7 +1233,7 @@ public class RsvpApplication extends Application {
             </li>
           </ol>
 
-          <p class="orderedlisttitle">To Run the rsvp Example Application Using Maven</p>
+          <p class="orderedlisttitle">To Run the rsvp Example Application Using Maven&nbsp;</p>
 
           <ol>
             <li>
@@ -1168,19 +1246,25 @@ public class RsvpApplication extends Application {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/jaxrs/rsvp/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/jaxrs/rsvp/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command builds, assembles, and deploys <code>rsvp</code> to GlassFish Server.</p>
             </li>
 
             <li>
               <p>Open a web browser window to the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/rsvp/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/rsvp/
+</pre>
             </li>
 
             <li>
@@ -1199,7 +1283,7 @@ public class RsvpApplication extends Application {
       </div><a id="GIRCI"></a><a id="JEETT01060"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">29.3.3</span> Real-World Examples</h2>
+        <h2 class="sect2" id="sigil_toc_id_330"><span class="secnum">29.3.3</span> Real-World Examples</h2>
 
         <p>Most blog sites use RESTful web services. These sites involve downloading XML files, in RSS or Atom format, that contain lists of links to other resources. Other websites and web applications that use REST-like developer interfaces to data include Twitter and Amazon S3 (Simple Storage Service). With Amazon S3, buckets and objects can be created, listed, and retrieved using either a REST-style HTTP interface or a SOAP interface. The examples that ship with Jersey include a storage service example with a RESTful interface.</p>
       </div>
@@ -1210,7 +1294,7 @@ public class RsvpApplication extends Application {
     <a id="GILIZ"></a><a id="JEETT00430"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">29.4</span> Further Information about JAX-RS</h1>
+      <h1 class="sect1" id="sigil_toc_id_331"><span class="secnum">29.4</span> Further Information about JAX-RS</h1>
 
       <p>For more information about RESTful web services and JAX-RS, see</p>
 
@@ -1218,23 +1302,23 @@ public class RsvpApplication extends Application {
         <li>
           <p>"Fielding Dissertation: Chapter 5: Representational State Transfer (REST)":</p>
 
-          <p><code><a href="../Text/jaxrs.xhtml#http%3A//www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm</a></code></p>
+          <p><code><a href="../Text/http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.xhtml#http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm</a></code></p>
         </li>
 
         <li>
-          <p><span class="italic">RESTful Web Services</span>, by Leonard Richardson and Sam Ruby, available from O'Reilly Media at <code><a href="../Text/jaxrs.xhtml#http%3A//shop.oreilly.com/product/9780596529260.do">http://shop.oreilly.com/product/9780596529260.do</a></code></p>
+          <p><span class="italic">RESTful Web Services</span>, by Leonard Richardson and Sam Ruby, available from O'Reilly Media at <code><a href="../Text/http://shop.oreilly.com/product/9780596529.xhtml#http://shop.oreilly.com/product/9780596529260.do">http://shop.oreilly.com/product/9780596529260.do</a></code></p>
         </li>
 
         <li>
           <p>JSR 339: JAX-RS 2.0: The Java API for RESTful Web Services:</p>
 
-          <p><code><a href="../Text/jaxrs.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D339">http://jcp.org/en/jsr/detail?id=339</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=339">http://jcp.org/en/jsr/detail?id=339</a></code></p>
         </li>
 
         <li>
           <p>Jersey project:</p>
 
-          <p><code><a href="../Text/jaxrs.xhtml#https%3A//jersey.java.net/">https://jersey.java.net/</a></code></p>
+          <p><code><a href="../Text/https://jersey.java.net/.xhtml#https://jersey.java.net/">https://jersey.java.net/</a></code></p>
         </li>
       </ul>
     </div>

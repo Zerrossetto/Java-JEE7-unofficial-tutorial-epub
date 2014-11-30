@@ -37,7 +37,7 @@
     <a id="GKJIV"></a><a id="JEETT00504"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">41.1</span> Overview of String-Based Criteria API Queries</h1>
+      <h1 class="sect1" id="sigil_toc_id_779"><span class="secnum">41.1</span> Overview of String-Based Criteria API Queries</h1>
 
       <p>String-based Criteria API queries ("string-based queries") are Java programming language queries that use strings rather than strongly typed metamodel objects to specify entity attributes when traversing a data hierarchy. String-based queries are constructed similarly to metamodel queries, can be static or dynamic, and can express the same kind of queries and operations as strongly typed metamodel queries.</p>
 
@@ -55,19 +55,23 @@
     <a id="GKJBQ"></a><a id="JEETT01204"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">41.2</span> Creating String-Based Queries</h1>
+      <h1 class="sect1" id="sigil_toc_id_780"><span class="secnum">41.2</span> Creating String-Based Queries</h1>
 
       <p>To create a string-based query, specify the attribute names of entity classes directly as strings, instead of specifying the attributes of the metamodel class. For example, this query finds all <code>Pet</code> entities where the value of the <code>name</code> attribute is <code>Fido</code>:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
+      <pre class="oac_no_warn" xml:space="preserve">
+CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
 Root&lt;Pet&gt; pet = cq.from(Pet.class);
-cq.where(cb.equal(<b>pet.get("name"</b>), "Fido"));<br /></pre>
+cq.where(cb.equal(<span class="bold">pet.get("name")</span>, "Fido"));
+</pre>
 
       <p>The name of the attribute is specified as a string. This query is the equivalent of the following metamodel query:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
+      <pre class="oac_no_warn" xml:space="preserve">
+CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
 Metamodel m = em.getMetamodel();
 EntityType&lt;Pet&gt; Pet_ = m.entity(Pet.class);
 Root&lt;Pet&gt; pet = cq.from(Pet.class);
-cq.where(cb.equal(pet.get(Pet_.name), "Fido"));</pre>
+cq.where(cb.equal(pet.get(Pet_.name), "Fido"));
+</pre>
 
       <div align="center">
         <div class="inftblnote">
@@ -88,20 +92,26 @@ cq.where(cb.equal(pet.get(Pet_.name), "Fido"));</pre>
       </div>
 
       <p>Joins are specified in the same way:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
+      <pre class="oac_no_warn" xml:space="preserve">
+CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
 Root&lt;Pet&gt; pet = cq.from(Pet.class);
-Join&lt;Owner, Address&gt; address = pet.join("owners").join("addresses");</pre>
+Join&lt;Owner, Address&gt; address = pet.join("owners").join("addresses");
+</pre>
 
       <p>All the conditional expressions, method expressions, path navigation methods, and result restriction methods used in metamodel queries can also be used in string-based queries. In each case, the attributes are specified using strings. For example, here is a string-based query that uses the <code>in</code> expression:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
+      <pre class="oac_no_warn" xml:space="preserve">
+CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
 Root&lt;Pet&gt; pet = cq.from(Pet.class);
-cq.where(pet.get("color").in("brown", "black"));</pre>
+cq.where(pet.get("color").in("brown", "black"));
+</pre>
 
       <p>Here is a string-based query that orders the results in descending order by date:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
+      <pre class="oac_no_warn" xml:space="preserve">
+CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
 Root&lt;Pet&gt; pet = cq.from(Pet.class);
 cq.select(pet);
-cq.orderBy(cb.desc(pet.get("birthday")));</pre>
+cq.orderBy(cb.desc(pet.get("birthday")));
+</pre>
     </div>
   </div>
 
@@ -109,14 +119,16 @@ cq.orderBy(cb.desc(pet.get("birthday")));</pre>
     <a id="GKJDB"></a><a id="JEETT01205"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">41.3</span> Executing String-Based Queries</h1>
+      <h1 class="sect1" id="sigil_toc_id_781"><span class="secnum">41.3</span> Executing String-Based Queries</h1>
 
       <p>String-based queries are executed similarly to strongly typed Criteria queries. First create a <code>javax.persistence.TypedQuery</code> object by passing the criteria query object to the <code>EntityManager.createQuery</code> method, then call either <code>getSingleResult</code> or <code>getResultList</code> on the query object to execute the query:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
+      <pre class="oac_no_warn" xml:space="preserve">
+CriteriaQuery&lt;Pet&gt; cq = cb.createQuery(Pet.class);
 Root&lt;Pet&gt; pet = cq.from(Pet.class);
 cq.where(cb.equal(pet.get("name"), "Fido"));
 TypedQuery&lt;Pet&gt; q = em.createQuery(cq);
-List&lt;Pet&gt; results = q.getResultList();</pre>
+List&lt;Pet&gt; results = q.getResultList();
+</pre>
     </div>
   </div>
 </body>

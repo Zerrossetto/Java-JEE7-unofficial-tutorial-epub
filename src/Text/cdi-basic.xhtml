@@ -97,12 +97,13 @@
     <a id="BABJDJGA"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.1</span> Getting Started</h1>
+      <h1 class="sect1" id="sigil_toc_id_90"><span class="secnum">23.1</span> Getting Started</h1>
 
       <p>Contexts and Dependency Injection (CDI) enables your objects to have their dependencies provided to them automatically, instead of creating them or receiving them as parameters. CDI also manages the lifecycle of those dependencies for you.</p>
 
       <p>For example, consider the following servlet:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@WebServlet("/cdiservlet")
+      <pre class="oac_no_warn" xml:space="preserve">
+@WebServlet("/cdiservlet")
 public class NewServlet extends HttpServlet {
     private Message message;
 
@@ -116,25 +117,31 @@ public class NewServlet extends HttpServlet {
                   throws IOException {
         response.getWriter().write(message.get());
     }
-}</pre>
+}
+</pre>
 
       <p>This servlet needs an instance of an object that implements the <code>Message</code> interface:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public interface Message {
+      <pre class="oac_no_warn" xml:space="preserve">
+public interface Message {
     public String get();
-}</pre>
+}
+</pre>
 
       <p>The servlet creates itself an instance of the following object:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public class MessageB implements Message {
+      <pre class="oac_no_warn" xml:space="preserve">
+public class MessageB implements Message {
     public MessageB() { }
 
     @Override
     public String get() {
         return "message B";
     }
-}</pre>
+}
+</pre>
 
       <p>Using CDI, this servlet can declare its dependency on a <code>Message</code> instance and have it injected automatically by the CDI runtime. The new servlet code is the following:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@WebServlet("/cdiservlet")
+      <pre class="oac_no_warn" xml:space="preserve">
+@WebServlet("/cdiservlet")
 public class NewServlet extends HttpServlet {
     @Inject private Message message;
 
@@ -143,15 +150,18 @@ public class NewServlet extends HttpServlet {
                   throws IOException {
         response.getWriter().write(message.get());
     }
-}</pre>
+}
+</pre>
 
       <p>The CDI runtime looks for classes that implement the <code>Message</code> interface, finds the <code>MessageB</code> class, creates a new instance of it, and injects it into the servlet at runtime. To manage the lifecycle of the new instance, the CDI runtime needs to know what the scope of the instance should be. In this example, the servlet only needs the instance to process an HTTP request; the instance can then be garbage collected. This is specified using the <code>javax.enterprise.context.RequestScoped</code> annotation:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@RequestScoped
-public class MessageB implements Message { ... }</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+@RequestScoped
+public class MessageB implements Message { ... }
+</pre>
 
       <p>For more information on scopes, see <a href="../Text/cdi-basic.xhtml#GJBBK">Using Scopes</a>.</p>
 
-      <p>The <code>MessageB</code> class is a <span class="bold">CDI bean</span>. CDI beans are classes that CDI can instantiate, manage, and inject automatically to satisfy the dependencies of other objects. Almost any Java class can be managed and injected by CDI. For more information on beans, see <a href="../Text/cdi-basic.xhtml#GJEBJ">About Beans</a>. A JAR or WAR file that contains a CDI bean is a <span class="bold">bean archive</span>. For more information on packaging bean archives, see <a href="../Text/cdi-basic.xhtml#GJBNZ">Configuring a CDI Application</a> in this chapter and <a href="../Text/cdi-basic.xhtml#CACDCFDE">Packaging CDI Applications</a> in <a href="../Text/cdi-adv.xhtml#GJEHI">Chapter 25, "Contexts and Dependency Injection for Java EE: Advanced Topics"</a>.</p>
+      <p>The <code>MessageB</code> class is a <span class="bold">CDI bean</span>. CDI beans are classes that CDI can instantiate, manage, and inject automatically to satisfy the dependencies of other objects. Almost any Java class can be managed and injected by CDI. For more information on beans, see <a href="../Text/cdi-basic.xhtml#GJEBJ">About Beans</a>. A JAR or WAR file that contains a CDI bean is a <span class="bold">bean archive</span>. For more information on packaging bean archives, see <a href="../Text/cdi-basic.xhtml#GJBNZ">Configuring a CDI Application</a> in this chapter and <a href="../Text/cdi-adv.xhtml#CACDCFDE">Packaging CDI Applications</a> in <a href="../Text/cdi-adv.xhtml#GJEHI">Chapter 25, "Contexts and Dependency Injection for Java EE: Advanced Topics"</a>.</p>
 
       <p>In this example, <code>MessageB</code> is the only class that implements the <code>Message</code> interface. If an application has more than one implementation of an interface, CDI provides mechanisms that you can use to select which implementation to inject. For more information, see <a href="../Text/cdi-basic.xhtml#GJBCK">Using Qualifiers</a> in this chapter and <a href="../Text/cdi-adv.xhtml#GJSDF">Using Alternatives in CDI Applications</a> in <a href="../Text/cdi-adv.xhtml#GJEHI">Chapter 25, "Contexts and Dependency Injection for Java EE: Advanced Topics"</a>.</p>
     </div>
@@ -161,7 +171,7 @@ public class MessageB implements Message { ... }</pre>
     <a id="GIWHL"></a><a id="JEETT00462"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.2</span> <a id="sthref1374"></a>Overview of CDI</h1>
+      <h1 class="sect1" id="sigil_toc_id_91"><span class="secnum">23.2</span> <a id="sthref1374"></a>Overview of CDI</h1>
 
       <p>The most fundamental services provided by CDI are as follows.</p>
 
@@ -251,7 +261,7 @@ public class MessageB implements Message { ... }</pre>
     <a id="GJEBJ"></a><a id="JEETT00463"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.3</span> <a id="sthref1375"></a><a id="sthref1376"></a>About Beans</h1>
+      <h1 class="sect1" id="sigil_toc_id_92"><span class="secnum">23.3</span> <a id="sthref1375"></a><a id="sthref1376"></a>About Beans</h1>
 
       <p>CDI redefines the concept of a <span class="glossaryterm">bean</span> beyond its use in other Java technologies, such as the JavaBeans and Enterprise JavaBeans (EJB) technologies. In CDI, a bean is a source of contextual objects that define application state and/or logic. A Java EE component is a bean if the lifecycle of its instances may be managed by the container according to the lifecycle context model defined in the CDI specification.</p>
 
@@ -313,7 +323,7 @@ public class MessageB implements Message { ... }</pre>
     <a id="GJFZI"></a><a id="JEETT00464"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.4</span> <a id="sthref1377"></a><a id="sthref1378"></a>About CDI Managed Beans</h1>
+      <h1 class="sect1" id="sigil_toc_id_93"><span class="secnum">23.4</span> <a id="sthref1377"></a><a id="sthref1378"></a>About CDI Managed Beans</h1>
 
       <p>A managed bean is implemented by a Java class, which is called its bean class. A top-level Java class is a managed bean if it is defined to be a managed bean by any other Java EE technology specification, such as the JavaServer Faces technology specification, or if it meets all the following conditions.</p>
 
@@ -353,7 +363,7 @@ public class MessageB implements Message { ... }</pre>
     <a id="GIZKS"></a><a id="JEETT00465"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.5</span> <a id="sthref1379"></a><a id="sthref1380"></a>Beans as Injectable Objects</h1>
+      <h1 class="sect1" id="sigil_toc_id_94"><span class="secnum">23.5</span> <a id="sthref1379"></a><a id="sthref1380"></a>Beans as Injectable Objects</h1>
 
       <p>The concept of injection has been part of Java technology for some time. Since the Java EE 5 platform was introduced, annotations have made it possible to inject resources and some other kinds of objects into container-managed objects. CDI makes it possible to inject more kinds of objects and to inject them into objects that are not container-managed.</p>
 
@@ -394,13 +404,15 @@ public class MessageB implements Message { ... }</pre>
       </ul>
 
       <p>For example, suppose that you create a simple Java class with a method that returns a string:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package greetings;
+      <pre class="oac_no_warn" xml:space="preserve">
+package greetings;
 
 public class Greeting {
     public String greet(String name) {
         return "Hello, " + name + ".";
     }
-}</pre>
+}
+</pre>
 
       <p>This class becomes a bean that you can then inject into another class. This bean is not exposed to the EL in this form. <a href="../Text/cdi-basic.xhtml#GJBAK">Giving Beans EL Names</a> explains how you can make a bean accessible to the EL.</p>
     </div>
@@ -410,12 +422,13 @@ public class Greeting {
     <a id="GJBCK"></a><a id="JEETT00466"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.6</span> <a id="sthref1381"></a><a id="sthref1382"></a><a id="sthref1383"></a>Using Qualifiers</h1>
+      <h1 class="sect1" id="sigil_toc_id_95"><span class="secnum">23.6</span> <a id="sthref1381"></a><a id="sthref1382"></a><a id="sthref1383"></a>Using Qualifiers</h1>
 
       <p>You can use qualifiers to provide various implementations of a particular bean type. A qualifier is an annotation that you apply to a bean. A qualifier type is a Java annotation defined as <code>@Target({METHOD, FIELD, PARAMETER, TYPE})</code> and <code>@Retention(RUNTIME)</code>.</p>
 
       <p>For example, you could declare an <code>@Informal</code> qualifier type and apply it to another class that extends the <code>Greeting</code> class. To declare this qualifier type, you would use the following code:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package greetings;
+      <pre class="oac_no_warn" xml:space="preserve">
+package greetings;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -432,22 +445,26 @@ import javax.inject.Qualifier;
 @Qualifier
 @Retention(RUNTIME)
 @Target({TYPE, METHOD, FIELD, PARAMETER})
-public @interface Informal {}</pre>
+public @interface Informal {}
+</pre>
 
       <p>You can then define a bean class that extends the <code>Greeting</code> class and uses this qualifier:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ppackage greetings;
+      <pre class="oac_no_warn" xml:space="preserve">
+package greetings;
 
 @Informal
 public class InformalGreeting extends Greeting {
     public String greet(String name) {
         return "Hi, " + name + "!";
     }
-}</pre>
+}
+</pre>
 
       <p>Both implementations of the bean can now be used in the application.</p>
 
       <p>If you define a bean with no qualifier, the bean automatically has the qualifier <code>@Default</code>. The unannotated <code>Greeting</code> class could be declared as follows:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package greetings;
+      <pre class="oac_no_warn" xml:space="preserve">
+package greetings;
 
 import javax.enterprise.inject.Default;
 
@@ -456,7 +473,8 @@ public class Greeting {
     public String greet(String name) {
         return "Hello, " + name + ".";
     }
-}</pre>
+}
+</pre>
     </div>
   </div>
 
@@ -464,25 +482,29 @@ public class Greeting {
     <a id="GJBAN"></a><a id="JEETT00467"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.7</span> <a id="sthref1384"></a><a id="sthref1385"></a>Injecting Beans</h1>
+      <h1 class="sect1" id="sigil_toc_id_96"><span class="secnum">23.7</span> <a id="sthref1384"></a><a id="sthref1385"></a>Injecting Beans</h1>
 
       <p>In order to use the beans you create, you inject them into yet another bean that can then be used by an application, such as a JavaServer Faces application. For example, you might create a bean called <code>Printer</code> into which you would inject one of the <code>Greeting</code> beans:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.inject.Inject;
+      <pre class="oac_no_warn" xml:space="preserve">
+import javax.inject.Inject;
 
 public class Printer {
 
     @Inject Greeting greeting;
     ...
-}</pre>
+}
+</pre>
 
       <p>This code injects the <code>@Default</code> <code>Greeting</code> implementation into the bean. The following code injects the <code>@Informal</code> implementation:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.inject.Inject;
+      <pre class="oac_no_warn" xml:space="preserve">
+import javax.inject.Inject;
 
 public class Printer {
 
     @Inject @Informal Greeting greeting;
     ...
-}</pre>
+}
+</pre>
 
       <p>More is needed for the complete picture of this bean. Its use of scope needs to be understood. In addition, for a JavaServer Faces application, the bean needs to be accessible through the EL.</p>
     </div>
@@ -492,7 +514,7 @@ public class Printer {
     <a id="GJBBK"></a><a id="JEETT00468"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.8</span> <a id="sthref1386"></a><a id="sthref1387"></a><a id="sthref1388"></a><a id="sthref1389"></a><a id="sthref1390"></a><a id="sthref1391"></a><a id="sthref1392"></a>Using Scopes</h1>
+      <h1 class="sect1" id="sigil_toc_id_97"><span class="secnum">23.8</span> <a id="sthref1386"></a><a id="sthref1387"></a><a id="sthref1388"></a><a id="sthref1389"></a><a id="sthref1390"></a><a id="sthref1391"></a><a id="sthref1392"></a>Using Scopes</h1>
 
       <p>For a web application to use a bean that injects another bean class, the bean needs to be able to hold state over the duration of the user's interaction with the application. The way to define this state is to give the bean a scope. You can give an object any of the scopes described in <a href="../Text/cdi-basic.xhtml#GJDBG">Table 23-1</a>, depending on how you are using it.</p>
 
@@ -617,7 +639,8 @@ public class Printer {
       <p>If, however, you create a Java EE component that is a managed bean, it becomes a scoped object, which exists in a well-defined lifecycle context.</p>
 
       <p>The web application for the <code>Printer</code> bean will use a simple request and response mechanism, so the managed bean can be annotated as follows:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.enterprise.context.RequestScoped;
+      <pre class="oac_no_warn" xml:space="preserve">
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 @RequestScoped
@@ -625,7 +648,8 @@ public class Printer {
 
     @Inject @Informal Greeting greeting;
     ...
-}</pre>
+}
+</pre>
 
       <p>Beans that use session, application, or conversation scope must be serializable, but beans that use request scope do not have to be serializable.</p>
     </div>
@@ -635,10 +659,11 @@ public class Printer {
     <a id="GJBAK"></a><a id="JEETT00469"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.9</span> <a id="sthref1394"></a><a id="sthref1395"></a><a id="sthref1396"></a>Giving Beans EL Names</h1>
+      <h1 class="sect1" id="sigil_toc_id_98"><span class="secnum">23.9</span> <a id="sthref1394"></a><a id="sthref1395"></a><a id="sthref1396"></a>Giving Beans EL Names</h1>
 
       <p>To make a bean accessible through the EL, use the <code>@Named</code> built-in qualifier:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import javax.enterprise.context.RequestScoped;
+      <pre class="oac_no_warn" xml:space="preserve">
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -648,12 +673,15 @@ public class Printer {
 
     @Inject @Informal Greeting greeting;
     ...
-}</pre>
+}
+</pre>
 
       <p>The <code>@Named</code> qualifier allows you to access the bean by using the bean name, with the first letter in lowercase. For example, a Facelets page would refer to the bean as <code>printer</code>.</p>
 
       <p>You can specify an argument to the <code>@Named</code> qualifier to use a nondefault name:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named("MyPrinter")</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+@Named("MyPrinter")
+</pre>
 
       <p>With this annotation, the Facelets page would refer to the bean as <code>MyPrinter</code>.</p>
     </div>
@@ -663,12 +691,13 @@ public class Printer {
     <a id="GJBBP"></a><a id="JEETT00470"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.10</span> <a id="sthref1397"></a>Adding Setter and Getter Methods</h1>
+      <h1 class="sect1" id="sigil_toc_id_99"><span class="secnum">23.10</span> <a id="sthref1397"></a>Adding Setter and Getter Methods</h1>
 
       <p>To make the state of the managed bean accessible, you need to add setter and getter methods for that state. The <code>createSalutation</code> method calls the bean's <code>greet</code> method, and the <code>getSalutation</code> method retrieves the result.</p>
 
       <p>Once the setter and getter methods have been added, the bean is complete. The final code looks like this:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package greetings;
+      <pre class="oac_no_warn" xml:space="preserve">
+package greetings;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -698,7 +727,8 @@ public class Printer {
     public String getName() {
         return name;
     }
-}</pre>
+}
+</pre>
     </div>
   </div>
 
@@ -706,16 +736,18 @@ public class Printer {
     <a id="GJBBU"></a><a id="JEETT00471"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.11</span> <a id="sthref1398"></a>Using a Managed Bean in a Facelets Page</h1>
+      <h1 class="sect1" id="sigil_toc_id_100"><span class="secnum">23.11</span> <a id="sthref1398"></a>Using a Managed Bean in a Facelets Page</h1>
 
       <p>To use the managed bean in a Facelets page, you typically create a form that uses user interface elements to call its methods and display their results. This example provides a button that asks the user to type a name, retrieves the salutation, and then displays the text in a paragraph below the button:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;h:form id="greetme"&gt;
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;h:form id="greetme"&gt;
    &lt;p&gt;&lt;h:outputLabel value="Enter your name: " for="name"/&gt;
       &lt;h:inputText id="name" value="#{printer.name}"/&gt;&lt;/p&gt;
    &lt;p&gt;&lt;h:commandButton value="Say Hello" 
                        action="#{printer.createSalutation}"/&gt;&lt;/p&gt;
    &lt;p&gt;&lt;h:outputText value="#{printer.salutation}"/&gt;&lt;/p&gt;
-&lt;/h:form&gt;</pre>
+&lt;/h:form&gt;
+</pre>
     </div>
   </div>
 
@@ -723,20 +755,25 @@ public class Printer {
     <a id="GJDID"></a><a id="JEETT00472"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.12</span> <a id="sthref1399"></a><a id="sthref1400"></a><a id="sthref1401"></a>Injecting Objects by Using Producer Methods</h1>
+      <h1 class="sect1" id="sigil_toc_id_101"><span class="secnum">23.12</span> <a id="sthref1399"></a><a id="sthref1400"></a><a id="sthref1401"></a>Injecting Objects by Using Producer Methods</h1>
 
       <p>Producer methods provide a way to inject objects that are not beans, objects whose values may vary at runtime, and objects that require custom initialization. For example, if you want to initialize a numeric value defined by a qualifier named <code>@MaxNumber</code>, you can define the value in a managed bean and then define a producer method, <code>getMaxNumber</code>, for it:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private int maxNumber = 100;
+      <pre class="oac_no_warn" xml:space="preserve">
+private int maxNumber = 100;
 ...
 @Produces @MaxNumber int getMaxNumber() {
     return maxNumber;
-}</pre>
+}
+</pre>
 
       <p>When you inject the object in another managed bean, the container automatically invokes the producer method, initializing the value to 100:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject @MaxNumber private int maxNumber;</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+@Inject @MaxNumber private int maxNumber;
+</pre>
 
       <p>If the value can vary at runtime, the process is slightly different. For example, the following code defines a producer method that generates a random number defined by a qualifier called <code>@Random</code>:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">private java.util.Random random = 
+      <pre class="oac_no_warn" xml:space="preserve">
+private java.util.Random random = 
     new java.util.Random( System.currentTimeMillis() );
 
 java.util.Random getRandom() {
@@ -745,13 +782,18 @@ java.util.Random getRandom() {
 
 @Produces @Random int next() {
     return getRandom().nextInt(maxNumber);
-}</pre>
+}
+</pre>
 
       <p>When you inject this object in another managed bean, you declare a contextual instance of the object:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject @Random InstanceInteger randomInt;</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+@Inject @Random Instance&lt;Integer&gt; randomInt;
+</pre>
 
       <p>You then call the <code>get</code> method of the <code>Instance</code>:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">this.number = randomInt.get();</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+this.number = randomInt.get();
+</pre>
     </div>
   </div>
 
@@ -759,7 +801,7 @@ java.util.Random getRandom() {
     <a id="GJBNZ"></a><a id="JEETT00473"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.13</span> <a id="sthref1402"></a><a id="sthref1403"></a>Configuring a CDI Application</h1>
+      <h1 class="sect1" id="sigil_toc_id_102"><span class="secnum">23.13</span> <a id="sthref1402"></a><a id="sthref1403"></a>Configuring a CDI Application</h1>
 
       <p>When your beans are annotated with a scope type, the server recognizes the application as a bean archive and no additional configuration is required. The possible scope types for CDI beans are listed in <a href="../Text/cdi-basic.xhtml#GJBBK">Using Scopes</a>.</p>
 
@@ -773,14 +815,14 @@ java.util.Random getRandom() {
     <a id="BABJFEAI"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.14</span> Using the @PostConstruct and @PreDestroy Annotations with CDI Managed Bean Classes</h1>
+      <h1 class="sect1" id="sigil_toc_id_103"><span class="secnum">23.14</span> Using the @PostConstruct and @PreDestroy Annotations with CDI Managed Bean Classes</h1>
 
-      <p>CDI managed bean classes and their superclasses support the annotations for initializing and for preparing for the destruction of a bean. These annotations are defined in JSR 250: Common Annotations for the Java platform (<code><a href="../Text/cdi-basic.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D250">http://jcp.org/en/jsr/detail?id=250</a></code>).</p>
+      <p>CDI managed bean classes and their superclasses support the annotations for initializing and for preparing for the destruction of a bean. These annotations are defined in JSR 250: Common Annotations for the Java platform (<code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=250">http://jcp.org/en/jsr/detail?id=250</a></code>).</p>
 
       <div class="sect2">
         <a id="sthref1404"></a>
 
-        <h2 class="sect2"><span class="secnum">23.14.1</span> To Initialize a Managed Bean Using the @PostConstruct Annotation</h2>
+        <h2 class="sect2" id="sigil_toc_id_104"><span class="secnum">23.14.1</span> To Initialize a Managed Bean Using the @PostConstruct Annotation</h2>
 
         <p>Initializing a managed bean specifies the lifecycle callback method that the CDI framework should call after dependency injection but before the class is put into service.</p>
 
@@ -814,21 +856,23 @@ java.util.Random getRandom() {
           </div>
         </div>
 
-        <p>The <code>UserNumberBean</code> managed bean in <a href="../Text/cdi-basic-examples.xhtml#GJCXV">The guessnumber-cdi CDI Example</a> uses <code>@PostConstruct</code> to annotate a method that resets all bean fields:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@PostConstruct
+        <p>The <code>UserNumberBean</code> managed bean in <a href="../Text/cdi-basicexamples.xhtml#GJCXV">The guessnumber-cdi CDI Example</a> uses <code>@PostConstruct</code> to annotate a method that resets all bean fields:</p>
+        <pre class="oac_no_warn" xml:space="preserve">
+@PostConstruct
 public void reset () {
     this.minimum = 0;
     this.userNumber = 0;
     this.remainingGuesses = 0;
     this.maximum = maxNumber;
     this.number = randomInt.get();
-}</pre>
+}
+</pre>
       </div>
 
       <div class="sect2">
         <a id="sthref1405"></a>
 
-        <h2 class="sect2"><span class="secnum">23.14.2</span> To Prepare for the Destruction of a Managed Bean Using the @PreDestroy Annotation</h2>
+        <h2 class="sect2" id="sigil_toc_id_105"><span class="secnum">23.14.2</span> To Prepare for the Destruction of a Managed Bean Using the @PreDestroy Annotation</h2>
 
         <p>Preparing for the destruction of a managed bean specifies the lifecycle call back method that signals that an application component is about to be destroyed by the container.</p>
 
@@ -853,7 +897,7 @@ public void reset () {
     <a id="GIWEL"></a><a id="JEETT00474"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">23.15</span> Further Information about CDI</h1>
+      <h1 class="sect1" id="sigil_toc_id_106"><span class="secnum">23.15</span> Further Information about CDI</h1>
 
       <p>For more information about CDI, see</p>
 
@@ -861,25 +905,25 @@ public void reset () {
         <li>
           <p>Contexts and Dependency Injection for Java EE specification:</p>
 
-          <p><code><a href="../Text/cdi-basic.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D346">http://jcp.org/en/jsr/detail?id=346</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=346">http://jcp.org/en/jsr/detail?id=346</a></code></p>
         </li>
 
         <li>
           <p>An introduction to Contexts and Dependency Injection for Java EE:</p>
 
-          <p><code><a href="../Text/cdi-basic.xhtml#http%3A//docs.jboss.org/weld/reference/latest/en-US/html/">http://docs.jboss.org/weld/reference/latest/en-US/html/</a></code></p>
+          <p><code><a href="../Text/http://docs.jboss.org/weld/reference/latest/en-US/html/.xhtml#http://docs.jboss.org/weld/reference/latest/en-US/html/">http://docs.jboss.org/weld/reference/latest/en-US/html/</a></code></p>
         </li>
 
         <li>
           <p>Dependency Injection for Java specification:</p>
 
-          <p><code><a href="../Text/cdi-basic.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D330">http://jcp.org/en/jsr/detail?id=330</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=330">http://jcp.org/en/jsr/detail?id=330</a></code></p>
         </li>
 
         <li>
           <p>Managed Beans specification, which is part of the Java Platform, Enterprise Edition 7 (Java EE 7) Specification:</p>
 
-          <p><code><a href="../Text/cdi-basic.xhtml#http%3A//jcp.org/en/jsr/detail%3Fid%3D342">http://jcp.org/en/jsr/detail?id=342</a></code></p>
+          <p><code><a href="../Text/http://jcp.org/en/jsr/detail?id=.xhtml#http://jcp.org/en/jsr/detail?id=342">http://jcp.org/en/jsr/detail?id=342</a></code></p>
         </li>
       </ul>
     </div>

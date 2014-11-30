@@ -47,7 +47,7 @@
     <a id="BNCAT"></a><a id="JEETT00516"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">48.1</span> Overview of Web Application Security</h1>
+      <h1 class="sect1" id="sigil_toc_id_850"><span class="secnum">48.1</span> Overview of Web Application Security</h1>
 
       <p>In the Java EE platform, web components provide the dynamic extension capabilities for a web server. Web components can be Java servlets or JavaServer Faces pages.</p>
 
@@ -101,14 +101,14 @@
     <a id="GKBAA"></a><a id="JEETT00517"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">48.2</span> Securing Web Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_851"><span class="secnum">48.2</span> Securing Web Applications</h1>
 
       <p>Web applications are created by application developers who give, sell, or otherwise transfer the application to an application deployer for installation into a runtime environment. Application developers communicate how to set up security for the deployed application by using annotations or deployment descriptors. This information is passed on to the deployer, who uses it to define method permissions for security roles, set up user authentication, and set up the appropriate transport mechanism. If the application developer doesn't define security requirements, the deployer will have to determine the security requirements independently.</p>
 
       <p>Some elements necessary for security in a web application cannot be specified as annotations for all types of web applications. This chapter explains how to secure web applications using annotations wherever possible. It explains how to use deployment descriptors where annotations cannot be used.</p><a id="BNCBK"></a><a id="JEETT01225"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.2.1</span> <a id="sthref2613"></a><a id="sthref2614"></a>Specifying Security Constraints</h2>
+        <h2 class="sect2" id="sigil_toc_id_852"><span class="secnum">48.2.1</span> <a id="sthref2613"></a><a id="sthref2614"></a>Specifying Security Constraints</h2>
 
         <p>A <span class="glossaryterm">security constraint</span> is used to define the access privileges to a collection of resources using their URL mapping.</p>
 
@@ -133,7 +133,7 @@
         </ul><a id="GJJCD"></a><a id="JEETT00773"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.2.1.1</span> <a id="sthref2621"></a><a id="sthref2622"></a>Specifying a Web Resource Collection</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.2.1.1</span> <a id="sthref2621"></a><a id="sthref2622"></a>Specifying a Web Resource Collection</h3>
 
           <p>A web resource collection consists of the following subelements.</p>
 
@@ -181,7 +181,7 @@
         </div><a id="GJJCG"></a><a id="JEETT00774"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.2.1.2</span> <a id="sthref2624"></a><a id="sthref2625"></a>Specifying an Authorization Constraint</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.2.1.2</span> <a id="sthref2624"></a><a id="sthref2625"></a>Specifying an Authorization Constraint</h3>
 
           <p>An authorization constraint (<code>auth-constraint</code>) contains the <code>role-name</code> element. You can use as many <code>role-name</code> elements as needed here.</p>
 
@@ -193,7 +193,7 @@
         </div><a id="BNCBM"></a><a id="JEETT00775"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.2.1.3</span> <a id="sthref2626"></a><a id="sthref2627"></a><a id="sthref2628"></a><a id="sthref2629"></a><a id="sthref2630"></a><a id="sthref2631"></a>Specifying a Secure Connection</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.2.1.3</span> <a id="sthref2626"></a><a id="sthref2627"></a><a id="sthref2628"></a><a id="sthref2629"></a><a id="sthref2630"></a><a id="sthref2631"></a>Specifying a Secure Connection</h3>
 
           <p>A user data constraint (<code>user-data-constraint</code> in the deployment descriptor) contains the <code>transport-guarantee</code> subelement. A user data constraint can be used to require that a protected transport-layer connection, such as HTTPS, be used for all constrained URL patterns and HTTP methods specified in the security constraint. The choices for transport guarantee are <code>CONFIDENTIAL</code>, <code>INTEGRAL</code>, or <code>NONE</code>. If you specify <code>CONFIDENTIAL</code> or <code>INTEGRAL</code> as a security constraint, it generally means that the use of SSL is required and applies to all requests that match the URL patterns in the web resource collection, not just to the login dialog box.</p>
 
@@ -255,10 +255,11 @@
         </div><a id="BNCBL"></a><a id="JEETT00776"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.2.1.4</span> <a id="sthref2632"></a>Specifying Security Constraints for Resources</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.2.1.4</span> <a id="sthref2632"></a>Specifying Security Constraints for Resources</h3>
 
           <p>You can create security constraints for resources within your application. For example, you could allow users with the role of <code>PARTNER</code> full access to all resources at the URL pattern <code>/acme/wholesale/*</code> and allow users with the role of <code>CLIENT</code> full access to all resources at the URL pattern <code>/acme/retail/*</code>. This is the recommended way to protect resources if you do not want to protect some HTTP methods while leaving other HTTP methods unprotected. An example of a deployment descriptor that would demonstrate this functionality is the following:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><b>&lt;!-- SECURITY CONSTRAINT #1 --&gt;</b>
+          <pre class="oac_no_warn" xml:space="preserve">
+<span class="bold">&lt;!-- SECURITY CONSTRAINT #1 --&gt;</span>
 &lt;security-constraint&gt;
     &lt;web-resource-collection&gt;
         &lt;web-resource-name&gt;wholesale&lt;/web-resource-name&gt;
@@ -272,9 +273,9 @@
     &lt;/user-data-constraint&gt;
 &lt;/security-constraint&gt;
 
-<b>&lt;!-- SECURITY CONSTRAINT #2 --&gt;</b>
+<span class="bold">&lt;!-- SECURITY CONSTRAINT #2 --&gt;</span>
 &lt;security-constraint&gt;
-&lt;web-resource-collection&gt;
+    &lt;web-resource-collection&gt;
         &lt;web-resource-name&gt;retail&lt;/web-resource-name&gt;
         &lt;url-pattern&gt;/acme/retail/*&lt;/url-pattern&gt;
     &lt;/web-resource-collection&gt;
@@ -284,12 +285,13 @@
     &lt;user-data-constraint&gt;
         &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;
     &lt;/user-data-constraint&gt;
-&lt;/security-constraint&gt;<br /></pre>
+&lt;/security-constraint&gt;
+</pre>
         </div>
       </div><a id="GKBSA"></a><a id="JEETT01226"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.2.2</span> <a id="sthref2633"></a><a id="sthref2634"></a>Specifying Authentication Mechanisms</h2>
+        <h2 class="sect2" id="sigil_toc_id_853"><span class="secnum">48.2.2</span> <a id="sthref2633"></a><a id="sthref2634"></a>Specifying Authentication Mechanisms</h2>
 
         <p>A user authentication mechanism specifies</p>
 
@@ -309,7 +311,7 @@
 
         <p>When an authentication mechanism is specified, the user must be authenticated before access is granted to any resource that is constrained by a security constraint. There can be multiple security constraints applying to multiple resources, but the same authentication method will apply to all constrained resources in an application.</p>
 
-        <p>Before you can authenticate a user, you must have a database of user names, passwords, and roles configured on your web or application server. For information on setting up the user database, see <a href="../Text/security-webtier.xhtml#BNBXR">Managing Users and Groups in GlassFish Server</a>.</p>
+        <p>Before you can authenticate a user, you must have a database of user names, passwords, and roles configured on your web or application server. For information on setting up the user database, see <a href="../Text/security-intro.xhtml#BNBXR">Managing Users and Groups in GlassFish Server</a>.</p>
 
         <p>The Java EE platform supports the following authentication mechanisms:</p>
 
@@ -342,7 +344,7 @@
         <p>However, when a secure transport mechanism, such as SSL, or security at the network level, such as the Internet Protocol Security (IPsec) protocol or virtual private network (VPN) strategies, is used in conjunction with basic or form-based authentication, some of these concerns can be alleviated. To specify a secure transport mechanism, use the elements described in <a href="../Text/security-webtier.xhtml#BNCBM">Specifying a Secure Connection</a>.</p><a id="BNCBO"></a><a id="JEETT00777"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.2.2.1</span> <a id="sthref2635"></a><a id="sthref2636"></a><a id="sthref2637"></a>HTTP Basic Authentication</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.2.2.1</span> <a id="sthref2635"></a><a id="sthref2636"></a><a id="sthref2637"></a>HTTP Basic Authentication</h3>
 
           <p>Specifying <span class="glossaryterm">HTTP basic authentication</span> requires that the server request a user name and password from the web client and verify that the user name and password are valid by comparing them against a database of authorized users in the specified or default realm.</p>
 
@@ -373,19 +375,14 @@
           <div class="figure">
             <a id="BNCBP"></a><a id="JEETT00036"></a>
 
-            <p class="titleinfigure">Figure 48-1 HTTP Basic Authentication</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 48-1 follows" longdesc="img_text/jeett_dt_045.htm" src="../Images/jeett_dt_045.png" style="line-height: 1.6em;" title="Description of Figure 48-1 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 48-1 HTTP Basic Authentication"<br />
+            <p class="titleinfigure">Figure 48-1 HTTP Basic Authentication</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_045.htm" id="sthref2638">Description of "Figure 48-1 HTTP Basic Authentication"</a><br />
             <br />
           </div>
         </div><a id="BNCBQ"></a><a id="JEETT00778"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.2.2.2</span> <a id="sthref2639"></a><a id="sthref2640"></a>Form-Based Authentication</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.2.2.2</span> <a id="sthref2639"></a><a id="sthref2640"></a>Form-Based Authentication</h3>
 
           <p><span class="glossaryterm">Form-based authentication</span> allows the developer to control the look and feel of the login authentication screens by customizing the login screen and error pages that an HTTP browser presents to the end user. When form-based authentication is declared, the following actions occur.</p>
 
@@ -422,13 +419,8 @@
           <div class="figure">
             <a id="GEXFA"></a><a id="JEETT00037"></a>
 
-            <p class="titleinfigure">Figure 48-2 Form-Based Authentication</p>
-
-            <div style="text-align: center;"><img alt="Description of Figure 48-2 follows" longdesc="img_text/jeett_dt_046.htm" src="../Images/jeett_dt_046.png" style="line-height: 1.6em;" title="Description of Figure 48-2 follows" /></div>
-          </div>
-
-          <div class="figure">
-            Description of "Figure 48-2 Form-Based Authentication"<br />
+            <p class="titleinfigure">Figure 48-2 Form-Based Authentication</p><br />
+            <a href="../Text/img_text/jeett_dt_.xhtml#img_text/jeett_dt_046.htm" id="sthref2641">Description of "Figure 48-2 Form-Based Authentication"</a><br />
             <br />
           </div>
 
@@ -437,21 +429,23 @@
           <p>When you create a form-based login, be sure to maintain sessions using cookies or SSL session information.</p>
 
           <p>For authentication to proceed appropriately, the action of the login form must always be <code>j_security_check</code>. This restriction is made so that the login form will work no matter which resource it is for and to avoid requiring the server to specify the action field of the outbound form. The following code snippet shows how the form should be coded into the HTML page:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;form method="POST" action="j_security_check"&gt;
-    &lt;input type="text" name="j_username"&gt;
-    &lt;input type="password" name="j_password"&gt;
-&lt;/form&gt;</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+&lt;form method="POST" action="j_security_check"&gt;
+&lt;input type="text" name="j_username"&gt;
+&lt;input type="password" name="j_password"&gt;
+&lt;/form&gt;
+</pre>
         </div><a id="BNCBW"></a><a id="JEETT00779"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.2.2.3</span> <a id="sthref2642"></a><a id="sthref2643"></a>Digest Authentication</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.2.2.3</span> <a id="sthref2642"></a><a id="sthref2643"></a>Digest Authentication</h3>
 
           <p>Like basic authentication, <span class="glossaryterm">digest authentication</span> authenticates a user based on a user name and a password. However, unlike basic authentication, digest authentication does not send user passwords over the network. Instead, the client sends a one-way cryptographic hash of the password and additional data. Although passwords are not sent on the wire, digest authentication requires that clear-text password equivalents be available to the authenticating container so that it can validate received authenticators by calculating the expected digest.</p>
         </div>
       </div><a id="BNCBN"></a><a id="JEETT01227"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.2.3</span> <a id="sthref2644"></a><a id="sthref2645"></a>Specifying an Authentication Mechanism in the Deployment Descriptor</h2>
+        <h2 class="sect2" id="sigil_toc_id_854"><span class="secnum">48.2.3</span> <a id="sthref2644"></a><a id="sthref2645"></a>Specifying an Authentication Mechanism in the Deployment Descriptor</h2>
 
         <p>To specify an authentication mechanism, use the <code>login-config</code> element. It can contain the following subelements.</p>
 
@@ -490,30 +484,35 @@
         <p>When you try to access a web resource that is constrained by a <code>security-constraint</code> element, the web container activates the authentication mechanism that has been configured for that resource. The authentication mechanism specifies how the user will be prompted to log in. If the <code>login-config</code> element is present and the <code>auth-method</code> element contains a value other than <code>NONE</code>, the user must be authenticated to access the resource. If you do not specify an authentication mechanism, authentication of the user is not required.</p>
 
         <p>The following example shows how to declare form-based authentication in your deployment descriptor:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;login-config&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;login-config&gt;
     &lt;auth-method&gt;FORM&lt;/auth-method&gt;
     &lt;realm-name&gt;file&lt;/realm-name&gt;
     &lt;form-login-config&gt;
         &lt;form-login-page&gt;/login.xhtml&lt;/form-login-page&gt;
         &lt;form-error-page&gt;/error.xhtml&lt;/form-error-page&gt;
     &lt;/form-login-config&gt;
-&lt;/login-config&gt;</pre>
+&lt;/login-config&gt;
+</pre>
 
         <p>The login and error page locations are specified relative to the location of the deployment descriptor. Examples of login and error pages are shown in <a href="../Text/security-webtier.xhtml#BNCCA">Creating the Login Form and the Error Page</a>.</p>
 
         <p>The following example shows how to declare digest authentication in your deployment descriptor:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;login-config&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;login-config&gt;
     &lt;auth-method&gt;DIGEST&lt;/auth-method&gt;
-&lt;/login-config&gt;</pre>
+&lt;/login-config&gt;
+</pre>
       </div><a id="BNCAV"></a><a id="JEETT01228"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.2.4</span> <a id="sthref2646"></a><a id="sthref2647"></a><a id="sthref2648"></a><a id="sthref2649"></a>Declaring Security Roles</h2>
+        <h2 class="sect2" id="sigil_toc_id_855"><span class="secnum">48.2.4</span> <a id="sthref2646"></a><a id="sthref2647"></a><a id="sthref2648"></a><a id="sthref2649"></a>Declaring Security Roles</h2>
 
         <p>You can declare security role names used in web applications by using the <code>security-role</code> element of the deployment descriptor. Use this element to list all the security roles that you have referenced in your application.</p>
 
         <p>The following snippet of a deployment descriptor declares the roles that will be used in an application using the <code>security-role</code> element and specifies which of these roles is authorized to access protected resources using the <code>auth-constraint</code> element:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;security-constraint&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;security-constraint&gt;
     &lt;web-resource-collection&gt;
         &lt;web-resource-name&gt;Protected Area&lt;/web-resource-name&gt;
         &lt;url-pattern&gt;/security/protected/*&lt;/url-pattern&gt;
@@ -533,7 +532,8 @@
 &lt;/security-role&gt;
 &lt;security-role&gt;
     &lt;role-name&gt;employee&lt;/role-name&gt;
-&lt;/security-role&gt;</pre>
+&lt;/security-role&gt;
+</pre>
 
         <p>In this example, the <code>security-role</code> element lists all the security roles used in the application: <code>manager</code> and <code>employee</code>. This enables the deployer to map all the roles defined in the application to users and groups defined in GlassFish Server.</p>
 
@@ -548,12 +548,12 @@
     <a id="GJIIE"></a><a id="JEETT00518"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">48.3</span> <a id="sthref2650"></a>Using Programmatic Security with Web Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_856"><span class="secnum">48.3</span> <a id="sthref2650"></a>Using Programmatic Security with Web Applications</h1>
 
       <p>Programmatic security is used by security-aware applications when declarative security alone is not sufficient to express the security model of the application.</p><a id="GIRCJ"></a><a id="JEETT01229"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.3.1</span> <a id="sthref2651"></a><a id="sthref2652"></a><a id="sthref2653"></a>Authenticating Users Programmatically</h2>
+        <h2 class="sect2" id="sigil_toc_id_857"><span class="secnum">48.3.1</span> <a id="sthref2651"></a><a id="sthref2652"></a><a id="sthref2653"></a>Authenticating Users Programmatically</h2>
 
         <p>The following methods of the <code>HttpServletRequest</code> interface enable you to authenticate users for a web application programmatically.</p>
 
@@ -572,7 +572,20 @@
         </ul>
 
         <p>The following example code shows how to use the <code>login</code> and <code>logout</code> methods:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@WebServlet(name="TutorialServlet", urlPatterns={"/TutorialServlet"})
+        <pre class="oac_no_warn" xml:space="preserve">
+package test;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(name="TutorialServlet", urlPatterns={"/TutorialServlet"})
 public class TutorialServlet extends HttpServlet {
     @EJB
     private ConverterBean converterBean;
@@ -597,7 +610,7 @@ public class TutorialServlet extends HttpServlet {
             out.println("&lt;title&gt;Servlet TutorialServlet&lt;/title&gt;");
             out.println("&lt;/head&gt;");
             out.println("&lt;body&gt;");
-            request.<b>login</b>("TutorialUser", "TutorialUser");
+            request.<span class="bold">login</span>("TutorialUser", "TutorialUser");
             BigDecimal result = 
                 converterBean.dollarToYen(new BigDecimal("1.0"));
             out.println("&lt;h1&gt;Servlet TutorialServlet result of dollarToYen= "
@@ -607,14 +620,16 @@ public class TutorialServlet extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException(e);
         } finally {
-            request.<b>logout</b>();
+            request.<span class="bold">logout</span>();
             out.close();
         }
     }
-}<br /></pre>
+}
+</pre>
 
         <p>The following example code shows how to use the <code>authenticate</code> method:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package com.example.test;
+        <pre class="oac_no_warn" xml:space="preserve">
+package com.example.test;
 
 import java.io.*;
 import javax.servlet.*;
@@ -628,16 +643,17 @@ public class TestServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            request.<b>authenticate</b>(response);
+            request.<span class="bold">authenticate</span>(response);
             out.println("Authenticate Successful");
         } finally {
             out.close();
         }
-    }<br /></pre>
+    }
+</pre>
       </div><a id="BNCBA"></a><a id="JEETT01230"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.3.2</span> <a id="sthref2654"></a><a id="sthref2655"></a><a id="sthref2656"></a><a id="sthref2657"></a>Checking Caller Identity Programmatically</h2>
+        <h2 class="sect2" id="sigil_toc_id_858"><span class="secnum">48.3.2</span> <a id="sthref2654"></a><a id="sthref2655"></a><a id="sthref2656"></a><a id="sthref2657"></a>Checking Caller Identity Programmatically</h2>
 
         <p>In general, security management should be enforced by the container in a manner that is transparent to the web component. The security API described in this section should be used only in the less frequent situations in which the web component methods need to access the security context information.</p>
 
@@ -663,7 +679,7 @@ public class TestServlet extends HttpServlet {
       </div><a id="GJJLQ"></a><a id="JEETT01231"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.3.3</span> Example Code for Programmatic Security</h2>
+        <h2 class="sect2" id="sigil_toc_id_859"><span class="secnum">48.3.3</span> Example Code for Programmatic Security</h2>
 
         <p>The following code demonstrates the use of programmatic security for the purposes of programmatic login. This servlet does the following.</p>
 
@@ -688,7 +704,8 @@ public class TestServlet extends HttpServlet {
             <p>It prints out the information again to demonstrate the effect of the <code>logout</code> method.</p>
           </li>
         </ol>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package enterprise.programmatic_login;
+        <pre class="oac_no_warn" xml:space="preserve">
+package enterprise.programmatic_login;
 
 import java.io.*;
 import java.net.*;
@@ -749,32 +766,37 @@ public class LoginServlet extends HttpServlet {
         }
     }
     ...
-}</pre>
+}
+</pre>
       </div><a id="BNCBB"></a><a id="JEETT01232"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.3.4</span> <a id="sthref2658"></a><a id="sthref2659"></a><a id="sthref2660"></a>Declaring and Linking Role References</h2>
+        <h2 class="sect2" id="sigil_toc_id_860"><span class="secnum">48.3.4</span> <a id="sthref2658"></a><a id="sthref2659"></a><a id="sthref2660"></a>Declaring and Linking Role References</h2>
 
         <p>A <span class="glossaryterm">security role reference</span> is a mapping between the name of a role that is called from a web component using <code>isUserInRole(String role)</code> and the name of a security role that has been defined for the application. If no <code>security-role-ref</code> element is declared in a deployment descriptor and the <code>isUserInRole</code> method is called, the container defaults to checking the provided role name against the list of all security roles defined for the web application. Using the default method instead of using the <code>security-role-ref</code> element limits your flexibility to change role names in an application without also recompiling the servlet making the call.</p>
 
         <p>The <code>security-role-ref</code> element is used when an application uses the <code>HttpServletRequest.isUserInRole(String role)</code>. The value passed to the <code>isUserInRole</code> method is a <code>String</code> representing the role name of the user. The value of the <code>role-name</code> element must be the <code>String</code> used as the parameter to the <code>HttpServletRequest.isUserInRole(String role)</code>. The <code>role-link</code> must contain the name of one of the security roles defined in the <code>security-role</code> elements. The container uses the mapping of <code>security-role-ref</code> to <code>security-role</code> when determining the return value of the call.</p>
 
         <p>For example, to map the security role reference <code>cust</code> to the security role with role name <code>bankCustomer</code>, the elements would look like this:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;servlet&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;servlet&gt;
 ...
     &lt;security-role-ref&gt;
         &lt;role-name&gt;cust&lt;/role-name&gt;
         &lt;role-link&gt;bankCustomer&lt;/role-link&gt;
     &lt;/security-role-ref&gt;
 ...
-&lt;/servlet&gt;</pre>
+&lt;/servlet&gt;
+</pre>
 
         <p>If the servlet method is called by a user in the <code>bankCustomer</code> security role, <code>isUserInRole("cust")</code> returns <code>true</code>.</p>
 
         <p>The <code>role-link</code> element in the <code>security-role-ref</code> element must match a <code>role-name</code> defined in the <code>security-role</code> element of the same <code>web.xml</code> deployment descriptor, as shown here:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;security-role&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;security-role&gt;
     &lt;role-name&gt;bankCustomer&lt;/role-name&gt;
-&lt;/security-role&gt;</pre>
+&lt;/security-role&gt;
+</pre>
 
         <p>A security role reference, including the name defined by the reference, is scoped to the component whose deployment descriptor contains the <code>security-role-ref</code> deployment descriptor element.</p>
       </div>
@@ -785,7 +807,7 @@ public class LoginServlet extends HttpServlet {
     <a id="BNCBX"></a><a id="JEETT00519"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">48.4</span> Examples: Securing Web Applications</h1>
+      <h1 class="sect1" id="sigil_toc_id_861"><span class="secnum">48.4</span> Examples: Securing Web Applications</h1>
 
       <p>Some basic setup is required before any of the example applications will run correctly. The examples use annotations, programmatic security, and/or declarative security to demonstrate adding security to existing web applications.</p>
 
@@ -801,18 +823,18 @@ public class LoginServlet extends HttpServlet {
         </li>
 
         <li>
-          <p>GlassFish samples: <code><a href="../Text/security-webtier.xhtml#https%3A//glassfish-samples.java.net/">https://glassfish-samples.java.net/</a></code></p>
+          <p>GlassFish samples: <code><a href="../Text/https://glassfish-samples.java.net/.xhtml#https://glassfish-samples.java.net/">https://glassfish-samples.java.net/</a></code></p>
         </li>
       </ul><a id="GJJLK"></a><a id="JEETT00242"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.4.1</span> To Set Up Your System for Running the Security Examples</h2>
+        <h2 class="sect2" id="sigil_toc_id_862"><span class="secnum">48.4.1</span> To Set Up Your System for Running the Security Examples</h2>
 
         <p>To set up your system for running the security examples, you need to configure a user database that the application can use for authenticating users. Before continuing, follow these steps.</p>
 
         <ol>
           <li>
-            <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starti ng and Stopping GlassFish Server</a>).</p>
+            <p>Make sure that GlassFish Server has been started (see <a href="../Text/usingexamples.xhtml#BNADI">Starting and Stopping GlassFish Server</a>).</p>
           </li>
 
           <li>
@@ -888,7 +910,7 @@ public class LoginServlet extends HttpServlet {
       </div><a id="BNCCK"></a><a id="JEETT01233"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.4.2</span> <a id="sthref2661"></a><a id="sthref2662"></a>The hello2-basicauth Example: Basic Authentication with a Servlet</h2>
+        <h2 class="sect2" id="sigil_toc_id_863"><span class="secnum">48.4.2</span> <a id="sthref2661"></a><a id="sthref2662"></a>The hello2-basicauth Example: Basic Authentication with a Servlet</h2>
 
         <p>This example explains how to use basic authentication with a servlet. With basic authentication of a servlet, the web browser presents a standard login dialog box that is not customizable. When a user submits his or her name and password, the server determines whether the user name and password are those of an authorized user and sends the requested web resource if the user is authorized to view it.</p>
 
@@ -917,7 +939,7 @@ public class LoginServlet extends HttpServlet {
         </ol><a id="GJRMH"></a><a id="JEETT00780"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.2.1</span> <a id="sthref2663"></a><a id="sthref2664"></a>Specifying Security for Basic Authentication Using Annotations</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.2.1</span> <a id="sthref2663"></a><a id="sthref2664"></a>Specifying Security for Basic Authentication Using Annotations</h3>
 
           <p>The default authentication mechanism used by GlassFish Server is basic authentication. With basic authentication, GlassFish Server spawns a standard login dialog box to collect user name and password data for a protected resource. Once the user is authenticated, access to the protected resource is permitted.</p>
 
@@ -946,10 +968,12 @@ public class LoginServlet extends HttpServlet {
           </ul>
 
           <p>For the <code>hello2-basicauth</code> application, the <code>GreetingServlet</code> has the following annotations:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@WebServlet(name = "GreetingServlet", urlPatterns = {"/greeting"})
+          <pre class="oac_no_warn" xml:space="preserve">
+@WebServlet(name = "GreetingServlet", urlPatterns = {"/greeting"})
 @ServletSecurity(
 @HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL,
-    rolesAllowed = {"TutorialUser"}))</pre>
+    rolesAllowed = {"TutorialUser"}))
+</pre>
 
           <p>These annotations specify that the request URI <code>/greeting</code> can be accessed only by users who have been authorized to access this URL because they have been verified to be in the role <code>TutorialUser</code>. The data will be sent over a protected transport in order to keep the user name and password data from being read in transit.</p>
 
@@ -957,7 +981,7 @@ public class LoginServlet extends HttpServlet {
         </div><a id="GJQYS"></a><a id="JEETT00243"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.2.2</span> To Build, Package, and Deploy the hello2-basicauth Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.2.2</span> To Build, Package, and Deploy the hello2-basicauth Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -970,7 +994,9 @@ public class LoginServlet extends HttpServlet {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/security</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/security
+</pre>
             </li>
 
             <li>
@@ -990,7 +1016,7 @@ public class LoginServlet extends HttpServlet {
         </div><a id="GJQZH"></a><a id="JEETT00244"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.2.3</span> To Build, Package, and Deploy the hello2-basicauth Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.2.3</span> To Build, Package, and Deploy the hello2-basicauth Example Using Maven</h3>
 
           <ol>
             <li>
@@ -999,12 +1025,16 @@ public class LoginServlet extends HttpServlet {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/security/hello2-basicauth/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/security/hello2-basicauth/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command builds and packages the application into a WAR file, <code>hello2-basicauth.war</code>, that is located in the <code>target</code> directory, then deploys the WAR file.</p>
             </li>
@@ -1012,12 +1042,14 @@ public class LoginServlet extends HttpServlet {
         </div><a id="GJQZF"></a><a id="JEETT00245"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.2.4</span> To Run the hello2-basicauth Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.2.4</span> To Run the hello2-basicauth Example</h3>
 
           <ol>
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">https://localhost:8181/hello2-basicauth/greeting</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+https://localhost:8181/hello2-basicauth/greeting
+</pre>
 
               <p>You may be prompted to accept the security certificate for the server. If so, accept the security certificate. If the browser warns that the certificate is invalid because it is self-signed, add a security exception for the application.</p>
 
@@ -1062,7 +1094,7 @@ public class LoginServlet extends HttpServlet {
       </div><a id="BNCBY"></a><a id="JEETT01234"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">48.4.3</span> <a id="sthref2668"></a><a id="sthref2669"></a><a id="sthref2670"></a>The hello1-formauth Example: Form-Based Authentication with a JavaServer Faces Application</h2>
+        <h2 class="sect2" id="sigil_toc_id_864"><span class="secnum">48.4.3</span> <a id="sthref2668"></a><a id="sthref2669"></a><a id="sthref2670"></a>The hello1-formauth Example: Form-Based Authentication with a JavaServer Faces Application</h2>
 
         <p>This example explains how to use form-based authentication with a JavaServer Faces application. With form-based authentication, you can customize the login screen and error pages that are presented to the web client for authentication of the user name and password. When a user submits his or her name and password, the server determines whether the user name and password are those of an authorized user and, if authorized, sends the requested web resource.</p>
 
@@ -1073,18 +1105,21 @@ public class LoginServlet extends HttpServlet {
         <p>This application can be found in the <span class="variable">tut-install</span><code>/examples/security/hello1-formauth/</code> directory.</p><a id="BNCCA"></a><a id="JEETT00781"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.3.1</span> Creating the Login Form and the Error Page</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.3.1</span> Creating the Login Form and the Error Page</h3>
 
           <p>When using form-based login mechanisms, you must specify a page that contains the form you want to use to obtain the user name and password, as well as a page to display if login authentication fails. This section discusses the login form and the error page used in this example. <a href="../Text/security-webtier.xhtml#BNCCB">Specifying Security for the Form-Based Authentication Example</a> shows how you specify these pages in the deployment descriptor.</p>
 
-          <p>The login page can be an HTML page or a servlet, and it must return an HTML page containing a form that conforms to specific naming conventions (see the Java Servlet 3.1 specification for more information on these requirements). To do this, include the elements that accept user name and password information between <code>form/form</code> tags in your login page. The content of an HTML page or servlet for a login page should be coded as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;form method="post" action="j_security_check"&gt;
+          <p>The login page can be an HTML page or a servlet, and it must return an HTML page containing a form that conforms to specific naming conventions (see the Java Servlet 3.1 specification for more information on these requirements). To do this, include the elements that accept user name and password information between <code>&lt;form&gt;&lt;/form&gt;</code> tags in your login page. The content of an HTML page or servlet for a login page should be coded as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve">
+&lt;form method="post" action="j_security_check"&gt;
     &lt;input type="text" name="j_username"&gt;
     &lt;input type="password" name= "j_password"&gt;
-&lt;/form&gt;</pre>
+&lt;/form&gt;
+</pre>
 
           <p>The full code for the login page used in this example can be found at <span class="variable">tut-install</span><code>/examples/security/hello1-formauth/src/main/webapp/login.html</code>. Here is the code for this page:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html lang="en"&gt;
+          <pre class="oac_no_warn" xml:space="preserve">
+&lt;html lang="en"&gt;
     &lt;head&gt;
         &lt;title&gt;Login Form&lt;/title&gt;
     &lt;/head&gt;
@@ -1109,10 +1144,12 @@ public class LoginServlet extends HttpServlet {
             &lt;input type="reset" value="Reset"/&gt;
         &lt;/form&gt;
     &lt;/body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
 
           <p>The login error page is displayed if the user enters a user name and password combination that is not authorized to access the protected URI. For this example, the login error page can be found at <span class="variable">tut-install</span><code>/examples/security/hello1-formauth/</code><code>src/main/webapp/error.html</code>. For this example, the login error page explains the reason for receiving the error page and provides a link that will allow the user to try again. Here is the code for this page:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html lang="en"&gt;
+          <pre class="oac_no_warn" xml:space="preserve">
+&lt;html lang="en"&gt;
     &lt;head&gt;
         &lt;title&gt;Login Error&lt;/title&gt;
     &lt;/head&gt;
@@ -1125,16 +1162,18 @@ public class LoginServlet extends HttpServlet {
            assigned to the &lt;em&gt;group&lt;/em&gt; of &lt;code&gt;TutorialUser&lt;/code&gt;.&lt;/p&gt;
         &lt;p&gt;&lt;a href="login.html"&gt;Return to login page&lt;/a&gt;&lt;/p&gt;
     &lt;/body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
         </div><a id="BNCCB"></a><a id="JEETT00782"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.3.2</span> Specifying Security for the Form-Based Authentication Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.3.2</span> Specifying Security for the Form-Based Authentication Example</h3>
 
           <p>This example takes a very simple servlet-based web application and adds form-based security. To specify form-based instead of basic authentication for a JavaServer Faces example, you must use the deployment descriptor.</p>
 
           <p>The following sample code shows the security elements added to the deployment descriptor for this example, which can be found in <span class="variable">tut-install</span><code>/examples/security/hello1-formauth/src/main/webapp/WEB-INF/web.xml</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">    &lt;security-constraint&gt;
+          <pre class="oac_no_warn" xml:space="preserve">
+    &lt;security-constraint&gt;
         &lt;display-name&gt;Constraint1&lt;/display-name&gt;
         &lt;web-resource-collection&gt;
             &lt;web-resource-name&gt;wrcoll&lt;/web-resource-name&gt;
@@ -1159,11 +1198,12 @@ public class LoginServlet extends HttpServlet {
     &lt;security-role&gt;
         &lt;description/&gt;
         &lt;role-name&gt;TutorialUser&lt;/role-name&gt;
-    &lt;/security-role&gt;</pre>
+    &lt;/security-role&gt;
+</pre>
         </div><a id="GJRBA"></a><a id="JEETT00246"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.3.3</span> To Build, Package, and Deploy the hello1-formauth Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.3.3</span> To Build, Package, and Deploy the hello1-formauth Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -1176,7 +1216,9 @@ public class LoginServlet extends HttpServlet {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/security</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/security
+</pre>
             </li>
 
             <li>
@@ -1196,7 +1238,7 @@ public class LoginServlet extends HttpServlet {
         </div><a id="GJRAZ"></a><a id="JEETT00247"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.3.4</span> To Build, Package, and Deploy the hello1-formauth Example Using Maven and the asadmin Command</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.3.4</span> To Build, Package, and Deploy the hello1-formauth Example Using Maven and the asadmin Command</h3>
 
           <ol>
             <li>
@@ -1205,12 +1247,16 @@ public class LoginServlet extends HttpServlet {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/security/hello1-formauth/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/security/hello1-formauth/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command at the terminal window or command prompt:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command builds and packages the application into a WAR file, <code>hello1-formauth.war</code>, that is located in the <code>target</code> directory, then deploys the WAR file to GlassFish Server.</p>
             </li>
@@ -1218,14 +1264,16 @@ public class LoginServlet extends HttpServlet {
         </div><a id="GJRAL"></a><a id="JEETT00248"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">48.4.3.5</span> To Run the hello1-formauth Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">48.4.3.5</span> To Run the hello1-formauth Example</h3>
 
           <p>To run the web client for <code>hello1-formauth</code>, follow these steps.</p>
 
           <ol>
             <li>
               <p>Open a web browser to the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/hello1-formauth/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/hello1-formauth/
+</pre>
             </li>
 
             <li>

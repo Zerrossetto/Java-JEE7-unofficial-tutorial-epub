@@ -38,11 +38,11 @@
 
     <ul>
       <li>
-        <p><a href="../Text/cdi-basic-examples.xhtml#GJBJU">The simplegreeting CDI Example</a></p>
+        <p><a href="../Text/cdi-basicexamples.xhtml#GJBJU">The simplegreeting CDI Example</a></p>
       </li>
 
       <li>
-        <p><a href="../Text/cdi-basic-examples.xhtml#GJCXV">The guessnumber-cdi CDI Example</a></p>
+        <p><a href="../Text/cdi-basicexamples.xhtml#GJCXV">The guessnumber-cdi CDI Example</a></p>
       </li>
     </ul>
   </div>
@@ -51,12 +51,12 @@
     <a id="GJBJU"></a><a id="JEETT00475"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">24.1</span> The simplegreeting CDI Example</h1>
+      <h1 class="sect1" id="sigil_toc_id_107"><span class="secnum">24.1</span> The simplegreeting CDI Example</h1>
 
       <p>The <code>simplegreeting</code> example illustrates some of the most basic features of CDI: scopes, qualifiers, bean injection, and accessing a managed bean in a JavaServer Faces application. When you run the example, you click a button that presents either a formal or an informal greeting, depending on how you edited one of the classes. The example includes four source files, a Facelets page and template, and configuration files.</p><a id="GJCQS"></a><a id="JEETT01123"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">24.1.1</span> The simplegreeting Source Files</h2>
+        <h2 class="sect2" id="sigil_toc_id_108"><span class="secnum">24.1.1</span> The simplegreeting Source Files</h2>
 
         <p>The four source files for the <code>simplegreeting</code> example are</p>
 
@@ -78,10 +78,11 @@
       </div><a id="GJDOJ"></a><a id="JEETT01124"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">24.1.2</span> The Facelets Template and Page</h2>
+        <h2 class="sect2" id="sigil_toc_id_109"><span class="secnum">24.1.2</span> The Facelets Template and Page</h2>
 
         <p>To use the managed bean in a simple Facelets application, you can use a very simple template file and <code>index.xhtml</code> page. The template page, <code>template.xhtml</code>, looks like this:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
 &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
 &lt;html lang="en"
@@ -109,10 +110,12 @@
             &lt;/div&gt;
         &lt;/div&gt;
     &lt;/body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
 
         <p>To create the Facelets page, you can redefine the title and head, then add a small form to the content:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
 &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
 &lt;html lang="en"
@@ -134,27 +137,33 @@
         &lt;/ui:define&gt;
 
     &lt;/ui:composition&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
 
         <p>The form asks the user to enter a name. The button is labeled <span class="gui-object-action">Say Hello</span>, and the action defined for it is to call the <code>createSalutation</code> method of the <code>Printer</code> managed bean. This method in turn calls the <code>greet</code> method of the defined <code>Greeting</code> class.</p>
 
         <p>The output text for the form is the value of the greeting returned by the setter method. Depending on whether the default or the <code>@Informal</code> version of the greeting is injected, this is one of the following, where <span class="variable">name</span> is the name entered by the user:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hello, <span class="variable">name</span>.</pre>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hi, <span class="variable">name</span>!</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+Hello, <span class="variable">name</span>.
+
+Hi, <span class="variable">name</span>!
+</pre>
 
         <p>The Facelets page and template are located in the <span class="variable">tut-install</span><code>/examples/cdi/simplegreeting/src/main/webapp/</code> directory.</p>
 
         <p>The simple CSS file that is used by the Facelets page is in the following location:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/simplegreeting/src/main/webapp/resources/css/default.css</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/cdi/simplegreeting/src/main/webapp/resources/css/default.css
+</pre>
       </div><a id="GJCYM"></a><a id="JEETT01126"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">24.1.3</span> Running the simplegreeting Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_110"><span class="secnum">24.1.3</span> Running the simplegreeting Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>simplegreeting</code> application.</p><a id="GJCXP"></a><a id="JEETT00213"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.1.3.1</span> To Build, Package, and Run the simplegreeting Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.1.3.1</span> To Build, Package, and Run the simplegreeting Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -167,7 +176,9 @@
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/cdi
+</pre>
             </li>
 
             <li>
@@ -196,7 +207,11 @@
 
                 <li>
                   <p>In the editor, comment out the <code>@Informal</code> annotation:</p>
-                  <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Inject//@InformalGreeting greeting;</pre>
+                  <pre class="oac_no_warn" xml:space="preserve">
+@Inject
+//@Informal
+Greeting greeting;
+</pre>
                 </li>
 
                 <li>
@@ -214,7 +229,7 @@
         </div><a id="GJCZT"></a><a id="JEETT00214"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.1.3.2</span> To Build, Package, and Deploy the simplegreeting Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.1.3.2</span> To Build, Package, and Deploy the simplegreeting Example Using Maven</h3>
 
           <ol>
             <li>
@@ -223,12 +238,16 @@
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/simplegreeting/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/cdi/simplegreeting/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command to deploy the application:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command builds and packages the application into a WAR file, <code>simplegreeting.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
             </li>
@@ -236,12 +255,14 @@
         </div><a id="GJCZE"></a><a id="JEETT00215"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.1.3.3</span> To Run the simplegreeting Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.1.3.3</span> To Run the simplegreeting Example</h3>
 
           <ol>
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/simplegreeting</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/simplegreeting
+</pre>
 
               <p>The <span class="gui-object-title">Simple Greeting</span> page opens.</p>
             </li>
@@ -256,10 +277,14 @@
               <p>Click <span class="gui-object-action">Say Hello</span>.</p>
 
               <p>If you did not modify the <code>Printer.java</code> file, the following text string appears below the button:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hi, Duke!</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Hi, Duke!
+</pre>
 
               <p>If you commented out the <code>@Informal</code> annotation in the <code>Printer.java</code> file, the following text string appears below the button:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Hello, Duke.</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+Hello, Duke.
+</pre>
             </li>
           </ol>
         </div>
@@ -271,14 +296,14 @@
     <a id="GJCXV"></a><a id="JEETT00476"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">24.2</span> The guessnumber-cdi CDI Example</h1>
+      <h1 class="sect1" id="sigil_toc_id_111"><span class="secnum">24.2</span> The guessnumber-cdi CDI Example</h1>
 
       <p>The <code>guessnumber-cdi</code> example, somewhat more complex than the <code>simplegreeting</code> example, illustrates the use of producer methods and of session and application scope. The example is a game in which you try to guess a number in fewer than ten attempts. It is similar to the <code>guessnumber-jsf</code> example described in <a href="../Text/jsf-facelets.xhtml#GIEPX">Chapter 8, "Introduction to Facelets"</a>, except that you can keep guessing until you get the right answer or until you use up your ten attempts.</p>
 
       <p>The example includes four source files, a Facelets page and template, and configuration files. The configuration files and the template are the same as those used for the <code>simplegreeting</code> example.</p><a id="GJDJU"></a><a id="JEETT01127"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">24.2.1</span> The guessnumber-cdi Source Files</h2>
+        <h2 class="sect2" id="sigil_toc_id_112"><span class="secnum">24.2.1</span> The guessnumber-cdi Source Files</h2>
 
         <p>The four source files for the <code>guessnumber-cdi</code> example are</p>
 
@@ -303,10 +328,11 @@
         <p>The source files are located in the <span class="variable">tut-install</span><code>/examples/cdi/guessnumber-cdi/src/main/java/javaeetutorial/guessnumber</code> directory.</p><a id="GJDJP"></a><a id="JEETT00666"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.2.1.1</span> The @MaxNumber and @Random Qualifier Interfaces</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.2.1.1</span> The @MaxNumber and @Random Qualifier Interfaces</h3>
 
           <p>The <code>@MaxNumber</code> qualifier interface is defined as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package guessnumber;
+          <pre class="oac_no_warn" xml:space="preserve">
+package guessnumber;
 
 import java.lang.annotation.Documented;
 import static java.lang.annotation.ElementType.FIELD;
@@ -323,10 +349,14 @@ import javax.inject.Qualifier;
 @Documented
 @Qualifier
 public @interface MaxNumber {
-}</pre>
+}
+</pre>
 
           <p>The <code>@Random</code> qualifier interface is defined as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">import java.lang.annotation.Documented;
+          <pre class="oac_no_warn" xml:space="preserve">
+package guessnumber;
+
+import java.lang.annotation.Documented;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
@@ -341,14 +371,16 @@ import javax.inject.Qualifier;
 @Documented
 @Qualifier
 public @interface Random {
-}</pre>
+}
+</pre>
         </div><a id="GJDJN"></a><a id="JEETT00667"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.2.1.2</span> The Generator Managed Bean</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.2.1.2</span> The Generator Managed Bean</h3>
 
           <p>The <code>Generator</code> managed bean contains the two producer methods for the application. The bean has the <code>@ApplicationScoped</code> annotation to specify that its context extends for the duration of the user's interaction with the application:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package guessnumber;
+          <pre class="oac_no_warn" xml:space="preserve">
+package guessnumber;
 
 import java.io.Serializable;
 import javax.enterprise.context.ApplicationScoped;
@@ -375,11 +407,13 @@ public class Generator implements Serializable {
     @Produces @MaxNumber int getMaxNumber() {
         return maxNumber;
     }
-}</pre>
+
+}
+</pre>
         </div><a id="GJDHY"></a><a id="JEETT00668"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.2.1.3</span> The UserNumberBean Managed Bean</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.2.1.3</span> The UserNumberBean Managed Bean</h3>
 
           <p>The <code>UserNumberBean</code> managed bean, the managed bean for the JavaServer Faces application, provides the basic logic for the game. This bean does the following:</p>
 
@@ -406,7 +440,8 @@ public class Generator implements Serializable {
           </ul>
 
           <p>The bean is defined as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package guessnumber;
+          <pre class="oac_no_warn" xml:space="preserve">
+package guessnumber;
 
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -511,15 +546,17 @@ public class UserNumberBean implements Serializable {
             context.addMessage(toValidate.getClientId(context), message);
         }
     }
-}</pre>
+}
+</pre>
         </div>
       </div><a id="GJDON"></a><a id="JEETT01128"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">24.2.2</span> The Facelets Page</h2>
+        <h2 class="sect2" id="sigil_toc_id_113"><span class="secnum">24.2.2</span> The Facelets Page</h2>
 
         <p>This example uses the same template that the <code>simplegreeting</code> example uses. The <code>index.xhtml</code> file, however, is more complex.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
 &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
 &lt;html lang="en"
@@ -571,18 +608,19 @@ rendered="#{userNumberBean.number lt userNumberBean.userNumber and userNumberBea
         &lt;/ui:define&gt;
         
     &lt;/ui:composition&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
 
         <p>The Facelets page presents the user with the minimum and maximum values and the number of guesses remaining. The user's interaction with the game takes place within the <code>panelGrid</code> table, which contains an input field, <span class="gui-object-action">Guess</span> and <span class="gui-object-action">Reset</span> buttons, and a field that appears if the guess is higher or lower than the correct number. Every time the user clicks the <span class="gui-object-action">Guess</span> button, the <code>userNumberBean.check</code> method is called to reset the maximum or minimum value or, if the guess is correct, to generate a <code>FacesMessage</code> to that effect. The method that determines whether each guess is valid is <code>userNumberBean.validateNumberRange</code>.</p>
       </div><a id="GJDPW"></a><a id="JEETT01129"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">24.2.3</span> Running the guessnumber-cdi Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_114"><span class="secnum">24.2.3</span> Running the guessnumber-cdi Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>guessnumber-cdi</code> application.</p><a id="GJDPS"></a><a id="JEETT00216"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.2.3.1</span> To Build, Package, and Deploy the guessnumber-cdi Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.2.3.1</span> To Build, Package, and Deploy the guessnumber-cdi Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -595,7 +633,9 @@ rendered="#{userNumberBean.number lt userNumberBean.userNumber and userNumberBea
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/cdi
+</pre>
             </li>
 
             <li>
@@ -615,7 +655,7 @@ rendered="#{userNumberBean.number lt userNumberBean.userNumber and userNumberBea
         </div><a id="GJDPR"></a><a id="JEETT00217"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.2.3.2</span> To Build, Package, and Deploy the guessnumber-cdi Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.2.3.2</span> To Build, Package, and Deploy the guessnumber-cdi Example Using Maven</h3>
 
           <ol>
             <li>
@@ -624,12 +664,16 @@ rendered="#{userNumberBean.number lt userNumberBean.userNumber and userNumberBea
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/cdi/guessnumber-cdi/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/cdi/guessnumber-cdi/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command to deploy the application:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command builds and packages the application into a WAR file, <code>guessnumber-cdi.war</code>, located in the <code>target</code> directory, and then deploys it to GlassFish Server.</p>
             </li>
@@ -637,12 +681,14 @@ rendered="#{userNumberBean.number lt userNumberBean.userNumber and userNumberBea
         </div><a id="GJDQB"></a><a id="JEETT00218"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">24.2.3.3</span> To Run the guessnumber Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">24.2.3.3</span> To Run the guessnumber Example</h3>
 
           <ol>
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/guessnumber-cdi</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/guessnumber-cdi
+</pre>
 
               <p>The <span class="gui-object-title">Guess My Number</span> page opens.</p>
             </li>

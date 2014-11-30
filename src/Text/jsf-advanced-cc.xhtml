@@ -43,7 +43,7 @@
     <a id="GKHWV"></a><a id="JEETT00374"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">14.1</span> <a id="sthref846"></a>Attributes of a Composite Component</h1>
+      <h1 class="sect1" id="sigil_toc_id_412"><span class="secnum">14.1</span> <a id="sthref846"></a>Attributes of a Composite Component</h1>
 
       <p>You define an attribute of a composite component by using the <code>composite:attribute</code> tag. <a href="../Text/jsf-advanced-cc.xhtml#GKHVF">Table 14-1</a> lists the commonly used attributes of this tag.</p>
 
@@ -121,14 +121,20 @@
       </div>
 
       <p>The following code snippet defines a composite component attribute and assigns it a default value:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;composite:attribute name="username" default="admin"/&gt;</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;composite:attribute name="username" default="admin"/&gt;
+</pre>
 
       <p>The following code snippet uses the <code>method-signature</code> element:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;composite:attribute name="myaction"
-                     method-signature="java.lang.String action()"/&gt;</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;composite:attribute name="myaction"
+                     method-signature="java.lang.String action()"/&gt;
+</pre>
 
       <p>The following code snippet uses the <code>type</code> element:</p>
-      <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;composite:attribute name="dateofjoining" type="java.util.Date"/&gt;</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;composite:attribute name="dateofjoining" type="java.util.Date"/&gt;
+</pre>
     </div>
   </div>
 
@@ -136,7 +142,7 @@
     <a id="GKHUO"></a><a id="JEETT00375"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">14.2</span> <a id="sthref853"></a><a id="sthref854"></a>Invoking a Managed Bean</h1>
+      <h1 class="sect1" id="sigil_toc_id_413"><span class="secnum">14.2</span> <a id="sthref853"></a><a id="sthref854"></a>Invoking a Managed Bean</h1>
 
       <p>To enable a composite component to handle server-side data, you can invoke a managed bean in one of the following ways.</p>
 
@@ -158,7 +164,7 @@
     <a id="GKHWO"></a><a id="JEETT00376"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">14.3</span> <a id="sthref855"></a><a id="sthref856"></a>Validating Composite Component Values</h1>
+      <h1 class="sect1" id="sigil_toc_id_414"><span class="secnum">14.3</span> <a id="sthref855"></a><a id="sthref856"></a>Validating Composite Component Values</h1>
 
       <p>JavaServer Faces provides the following tags for validating values of input components. These tags can be used with the <code>composite:valueHolder</code> or the <code>composite:editableValueHolder</code> tag.</p>
 
@@ -221,7 +227,7 @@
     <a id="GKHVN"></a><a id="JEETT00377"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">14.4</span> <a id="sthref861"></a><a id="sthref862"></a>The compositecomponentexample Example Application</h1>
+      <h1 class="sect1" id="sigil_toc_id_415"><span class="secnum">14.4</span> <a id="sthref861"></a><a id="sthref862"></a>The compositecomponentexample Example Application</h1>
 
       <p>The <code>compositecomponentexample</code> application creates a composite component that accepts a name (or any other string). The component interacts with a managed bean that calculates whether the letters in the name, if converted to numeric values, add up to a prime number. The component displays the sum of the letter values and reports whether it is or is not prime.</p>
 
@@ -230,10 +236,11 @@
       <p>The source code for this application is in the <span class="variable">tut-install</span><code>/examples/web/jsf/compositecomponentexample/</code> directory.</p><a id="GKHUU"></a><a id="JEETT00974"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">14.4.1</span> The Composite Component File</h2>
+        <h2 class="sect2" id="sigil_toc_id_416"><span class="secnum">14.4.1</span> The Composite Component File</h2>
 
         <p>The composite component file is an XHTML file, <code>/web/resources/ezcomp/PrimePanel.xhtml</code>. It has a <code>composite:interface</code> section that declares the labels for the name and a command button. It also declares a managed bean, which defines properties for the name.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;composite:interface&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;composite:interface&gt;
     &lt;composite:attribute name="namePrompt" 
                          default="Name, word, or phrase: "/&gt;
     &lt;composite:attribute name="calcButtonText" default="Calculate"/&gt;
@@ -241,10 +248,12 @@
                          method-signature="java.lang.String action()"/&gt;
     &lt;composite:attribute name="primeBean"/&gt;
     &lt;composite:editableValueHolder name="nameVal" targets="form:name"/&gt;
-&lt;/composite:interface&gt;</pre>
+&lt;/composite:interface&gt;
+</pre>
 
         <p>The composite component implementation accepts the input value for the <code>name</code> property of the managed bean. The <code>h:outputStylesheet</code> tag specifies the stylesheet as a relocatable resource. The implementation then specifies the format of the output, using properties of the managed bean, as well as the format of error messages. The sum value is rendered only after it has been calculated, and the report of whether the sum is prime or not is rendered only if the input value is validated.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;composite:implementation&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;composite:implementation&gt;
     &lt;h:form id="form"&gt;
         &lt;h:outputStylesheet library="css" name="default.css" 
                             target="head"/&gt;
@@ -285,27 +294,31 @@
             &lt;/p&gt;
         &lt;/h:panelGroup&gt;
     &lt;/h:form&gt;
-&lt;/composite:implementation&gt;</pre>
+&lt;/composite:implementation&gt;
+</pre>
       </div><a id="GKHVX"></a><a id="JEETT00975"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">14.4.2</span> The Using Page</h2>
+        <h2 class="sect2" id="sigil_toc_id_417"><span class="secnum">14.4.2</span> The Using Page</h2>
 
         <p>The using page in this example application, <code>web/index.xhtml</code>, is an XHTML file that invokes the <code>PrimePanel.xhtml</code> composite component file along with the managed bean. It validates the user's input.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;div id="compositecomponent"&gt;
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;div id="compositecomponent"&gt;
     &lt;ez:PrimePanel primeBean="#{primeBean}"  
                    calcAction="#{primeBean.calculate}"&gt;
     &lt;/ez:PrimePanel&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
       </div><a id="GKHVQ"></a><a id="JEETT00976"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">14.4.3</span> The Managed Bean</h2>
+        <h2 class="sect2" id="sigil_toc_id_418"><span class="secnum">14.4.3</span> The Managed Bean</h2>
 
         <p>The managed bean, <code>PrimeBean.java</code>, defines a method called <code>calculate</code>, which performs the calculations on the input string and sets properties accordingly. The bean first creates an array of prime numbers. It calculates the sum of the letters in the string, with <code>'a'</code> equal to 1 and <code>'z'</code> equal to 26, and determines whether the value can be found in the array of primes. An uppercase letter in the input string has the same value as its lowercase equivalent.</p>
 
         <p>The bean specifies the minimum and maximum size of the <code>name</code> string, which is enforced by the Bean Validation <code>@Size</code> constraint. The bean uses the <code>@Model</code> annotation, a shortcut for <code>@Named</code> and <code>@RequestScoped</code>, as described in Step <a href="../Text/webapp.xhtml#CHDCABHC">7</a> of <a href="../Text/webapp.xhtml#GJWTV">To View the hello1 Web Module Using NetBeans IDE</a>.</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Model
+        <pre class="oac_no_warn" xml:space="preserve">
+@Model
 public class PrimeBean implements Serializable {
     ...
     @Size(min=1, max=45)
@@ -315,16 +328,17 @@ public class PrimeBean implements Serializable {
     public String calculate() {
         ...
     }
-}</pre>
+}
+</pre>
       </div><a id="GLECV"></a><a id="JEETT00977"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">14.4.4</span> Running the compositecomponentexample Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_419"><span class="secnum">14.4.4</span> Running the compositecomponentexample Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>compositecomponentexample</code> example.</p><a id="GKHVC"></a><a id="JEETT00173"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">14.4.4.1</span> To Build, Package, and Deploy the compositecomponentexample Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">14.4.4.1</span> To Build, Package, and Deploy the compositecomponentexample Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -337,7 +351,9 @@ public class PrimeBean implements Serializable {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/jsf
+</pre>
             </li>
 
             <li>
@@ -357,7 +373,7 @@ public class PrimeBean implements Serializable {
         </div><a id="GLEAE"></a><a id="JEETT00174"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">14.4.4.2</span> To Build, Package, and Deploy the compositecomponentexample Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">14.4.4.2</span> To Build, Package, and Deploy the compositecomponentexample Example Using Maven</h3>
 
           <ol>
             <li>
@@ -366,23 +382,29 @@ public class PrimeBean implements Serializable {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/web/jsf/compositecomponentexample/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/web/jsf/compositecomponentexample/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command to build and deploy the application:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
             </li>
           </ol>
         </div><a id="GLEEU"></a><a id="JEETT00175"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">14.4.4.3</span> To Run the compositecomponentexample Example</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">14.4.4.3</span> To Run the compositecomponentexample Example</h3>
 
           <ol>
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/compositecomponentexample</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/compositecomponentexample
+</pre>
             </li>
 
             <li>

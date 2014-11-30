@@ -40,23 +40,23 @@
 
     <ul>
       <li>
-        <p><a href="../Text/ejb-basic-examples.xhtml#BNBOD">The cart Example</a></p>
+        <p><a href="../Text/ejb-basicexamples.xhtml#BNBOD">The cart Example</a></p>
       </li>
 
       <li>
-        <p><a href="../Text/ejb-basic-examples.xhtml#GIPVI">A Singleton Session Bean Example: counter</a></p>
+        <p><a href="../Text/ejb-basicexamples.xhtml#GIPVI">A Singleton Session Bean Example: counter</a></p>
       </li>
 
       <li>
-        <p><a href="../Text/ejb-basic-examples.xhtml#BNBOR">A Web Service Example: helloservice</a></p>
+        <p><a href="../Text/ejb-basicexamples.xhtml#BNBOR">A Web Service Example: helloservice</a></p>
       </li>
 
       <li>
-        <p><a href="../Text/ejb-basic-examples.xhtml#BNBOY">Using the Timer Service</a></p>
+        <p><a href="../Text/ejb-basicexamples.xhtml#BNBOY">Using the Timer Service</a></p>
       </li>
 
       <li>
-        <p><a href="../Text/ejb-basic-examples.xhtml#BNBPJ">Handling Exceptions</a></p>
+        <p><a href="../Text/ejb-basicexamples.xhtml#BNBPJ">Handling Exceptions</a></p>
       </li>
     </ul>
   </div>
@@ -65,7 +65,7 @@
     <a id="BNBOD"></a><a id="JEETT00448"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">34.1</span> <a id="sthref1723"></a><a id="sthref1724"></a>The cart Example</h1>
+      <h1 class="sect1" id="sigil_toc_id_182"><span class="secnum">34.1</span> <a id="sthref1723"></a><a id="sthref1724"></a>The cart Example</h1>
 
       <p>The <code>cart</code> example represents a shopping cart in an online bookstore and uses a stateful session bean to manage the operations of the shopping cart. The bean's client can add a book to the cart, remove a book, or retrieve the cart's contents. To assemble <code>cart</code>, you need the following code:</p>
 
@@ -79,12 +79,12 @@
         </li>
       </ul>
 
-      <p>All session beans require a session bean class. All enterprise beans that permit remote access must have a remote business interface. To meet the needs of a specific application, an enterprise bean may also need some helper classes. The <code>CartBean</code> session bean uses two helper classes, <code>BookException</code> and <code>IdVerifier</code>, which are discussed in the section <a href="../Text/ejb-basic-examples.xhtml#BNBOJ">Helper Classes</a>.</p>
+      <p>All session beans require a session bean class. All enterprise beans that permit remote access must have a remote business interface. To meet the needs of a specific application, an enterprise bean may also need some helper classes. The <code>CartBean</code> session bean uses two helper classes, <code>BookException</code> and <code>IdVerifier</code>, which are discussed in the section <a href="../Text/ejb-basicexamples.xhtml#BNBOJ">Helper Classes</a>.</p>
 
       <p>The source code for this example is in the <span class="variable">tut-install</span><code>/examples/ejb/cart/</code> directory.</p><a id="BNBOE"></a><a id="JEETT01094"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.1.1</span> The Business Interface</h2>
+        <h2 class="sect2" id="sigil_toc_id_183"><span class="secnum">34.1.1</span> The Business Interface</h2>
 
         <p><a id="sthref1725"></a><a id="sthref1726"></a>The <code>Cart</code> business interface is a plain Java interface that defines all the business methods implemented in the bean class. If the bean class implements a single interface, that interface is assumed to the business interface. The business interface is a local interface unless it is annotated with the <code>javax.ejb.Remote</code> annotation; the <code>javax.ejb.Local</code> annotation is optional in this case.</p>
 
@@ -105,7 +105,8 @@
         </ul>
 
         <p>The source code for the <code>Cart</code> business interface is as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.cart.ejb;
+        <pre class="oac_no_warn" xml:space="preserve">
+package javaeetutorial.cart.ejb;
 
 import cart.util.BookException;
 import java.util.List;
@@ -119,11 +120,12 @@ public interface Cart {
     public void removeBook(String title) throws BookException;
     public List&lt;String&gt; getContents();
     public void remove();
-}</pre>
+}
+</pre>
       </div><a id="BNBOF"></a><a id="JEETT01095"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.1.2</span> Session Bean Class</h2>
+        <h2 class="sect2" id="sigil_toc_id_184"><span class="secnum">34.1.2</span> Session Bean Class</h2>
 
         <p><a id="sthref1727"></a>The session bean class for this example is called <code>CartBean</code>. Like any stateful session bean, the <code>CartBean</code> class must meet the following requirements.</p>
 
@@ -154,7 +156,8 @@ public interface Cart {
         </ul>
 
         <p>The source code for the <code>CartBean</code> class is as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.cart.ejb;
+        <pre class="oac_no_warn" xml:space="preserve">
+package javaeetutorial.cart.ejb;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -223,10 +226,11 @@ public class CartBean implements Cart {
     public void remove() {
         contents = null;
     }
-}</pre><a id="BNBOG"></a><a id="JEETT00653"></a>
+}
+</pre><a id="BNBOG"></a><a id="JEETT00653"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.1.2.1</span> <a id="sthref1734"></a><a id="sthref1735"></a><a id="sthref1736"></a><a id="sthref1737"></a>Lifecycle Callback Methods</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.1.2.1</span> <a id="sthref1734"></a><a id="sthref1735"></a><a id="sthref1736"></a><a id="sthref1737"></a>Lifecycle Callback Methods</h3>
 
           <p>A method in the bean class may be declared as a lifecycle callback method by annotating the method with the following annotations.</p>
 
@@ -252,19 +256,22 @@ public class CartBean implements Cart {
         </div><a id="BNBOH"></a><a id="JEETT00654"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.1.2.2</span> Business Methods</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.1.2.2</span> Business Methods</h3>
 
           <p><a id="sthref1738"></a>The primary purpose of a session bean is to run business tasks for the client. The client invokes business methods on the object reference it gets from dependency injection or JNDI lookup. From the client's perspective, the business methods appear to run locally, although they run remotely in the session bean. The following code snippet shows how the <code>CartClient</code> program invokes the business methods:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">cart.initialize("Duke DeEarl", "123");
+          <pre class="oac_no_warn" xml:space="preserve">
+cart.initialize("Duke DeEarl", "123");
 ...
 cart.addBook("Bel Canto");
  ...
 List&lt;String&gt; bookList = cart.getContents();
 ...
-cart.removeBook("Gravity's Rainbow");</pre>
+cart.removeBook("Gravity's Rainbow");
+</pre>
 
           <p>The <code>CartBean</code> class implements the business methods in the following code:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Override
+          <pre class="oac_no_warn" xml:space="preserve">
+@Override
 public void addBook(String title) {
    contents.add(title);
 }
@@ -280,7 +287,8 @@ public void removeBook(String title) throws BookException {
 @Override
 public List&lt;String&gt; getContents() {
    return contents;
-}</pre>
+}
+</pre>
 
           <p><a id="sthref1739"></a>The signature of a business method must conform to these rules.</p>
 
@@ -317,33 +325,35 @@ public List&lt;String&gt; getContents() {
       </div><a id="BNBOI"></a><a id="JEETT01096"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.1.3</span> <a id="sthref1744"></a>The @Remove Method</h2>
+        <h2 class="sect2" id="sigil_toc_id_185"><span class="secnum">34.1.3</span> <a id="sthref1744"></a>The @Remove Method</h2>
 
         <p>Business methods annotated with <code>javax.ejb.Remove</code> in the stateful session bean class can be invoked by enterprise bean clients to remove the bean instance. The container will remove the enterprise bean after a <code>@Remove</code> method completes, either normally or abnormally.</p>
 
         <p>In <code>CartBean</code>, the <code>remove</code> method is a <code>@Remove</code> method:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Remove
+        <pre class="oac_no_warn" xml:space="preserve">
+@Remove
 @Override
 public void remove() {
     contents = null;
-}</pre>
+}
+</pre>
       </div><a id="BNBOJ"></a><a id="JEETT01097"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.1.4</span> Helper Classes</h2>
+        <h2 class="sect2" id="sigil_toc_id_186"><span class="secnum">34.1.4</span> Helper Classes</h2>
 
         <p><a id="sthref1745"></a>The <code>CartBean</code> session bean has two helper classes: <code>BookException</code> and <code>IdVerifier</code>. The <code>BookException</code> is thrown by the <code>removeBook</code> method, and the <code>IdVerifier</code> validates the <code>customerId</code> in one of the <code>create</code> methods. Helper classes may reside in an EJB JAR file that contains the enterprise bean class; a WAR file if the enterprise bean is packaged within a WAR; or an EAR file that contains an EJB JAR, a WAR file, or a separate library JAR file. In <code>cart</code>, the helper classes are included in a library JAR used by the application client and the EJB JAR.</p>
       </div><a id="BNBOK"></a><a id="JEETT01098"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.1.5</span> Running the cart Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_187"><span class="secnum">34.1.5</span> Running the cart Example</h2>
 
         <p>Now you are ready to compile the remote interface (<code>Cart.java</code>), the enterprise bean class (<code>CartBean.java</code>), the client class (<code>CartClient.java</code>), and the helper classes (<code>BookException.java</code> and <code>IdVerifier.java</code>).</p>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>cart</code> application.</p><a id="BNBOL"></a><a id="JEETT00197"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.1.5.1</span> To Run the cart Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.1.5.1</span> To Run the cart Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -356,7 +366,9 @@ public void remove() {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/ejb
+</pre>
             </li>
 
             <li>
@@ -377,18 +389,20 @@ public void remove() {
               <p>This builds and packages the application into <code>cart.ear</code>, located in <span class="variable">tut-install</span><code>/examples/ejb/cart/cart-ear/target/</code>, and deploys this EAR file to your GlassFish Server instance.</p>
 
               <p>You will see the output of the <code>cart-app-client</code> application client in the <span class="gui-object-action">Output</span> tab:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">...
+              <pre class="oac_no_warn" xml:space="preserve">
+...
 Retrieving book title from cart: Infinite Jest
 Retrieving book title from cart: Bel Canto
 Retrieving book title from cart: Kafka on the Shore
 Removing "Gravity's Rainbow" from cart.
-Caught a BookException: "Gravity's Rainbow" not in cart.</pre>
+Caught a BookException: "Gravity's Rainbow" not in cart.
+</pre>
             </li>
           </ol>
         </div><a id="BNBON"></a><a id="JEETT00198"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.1.5.2</span> To Run the cart Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.1.5.2</span> To Run the cart Example Using Maven</h3>
 
           <ol>
             <li>
@@ -397,29 +411,37 @@ Caught a BookException: "Gravity's Rainbow" not in cart.</pre>
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb/cart/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/ejb/cart/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This command compiles and packages the application into an EAR file, <code>cart.ear</code>, located in the <code>target</code> directory, and deploys the EAR to your GlassFish Server instance.</p>
 
               <p>Then, the client stubs are retrieved and run. This is equivalent to running the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">appclient -client cart-ear/target/cart-earClient.jar</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+appclient -client cart-ear/target/cart-earClient.jar
+</pre>
 
               <p>The client JAR, <code>cart-earClient.jar</code>, contains the application client class, the helper class <code>BookException</code>, and the <code>Cart</code> business interface.</p>
 
               <p>When you run the client, the application client container injects any component references declared in the application client class, in this case the reference to the <code>Cart</code> enterprise bean.</p>
 
               <p>You will see the output of the <code>cart-app-client</code> application client in the terminal window:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">...
+              <pre class="oac_no_warn" xml:space="preserve">
+...
 Retrieving book title from cart: Infinite Jest
 Retrieving book title from cart: Bel Canto
 Retrieving book title from cart: Kafka on the Shore
 Removing "Gravity's Rainbow" from cart.
-Caught a BookException: "Gravity's Rainbow" not in cart.</pre>
+Caught a BookException: "Gravity's Rainbow" not in cart.
+</pre>
             </li>
           </ol>
         </div>
@@ -431,24 +453,27 @@ Caught a BookException: "Gravity's Rainbow" not in cart.</pre>
     <a id="GIPVI"></a><a id="JEETT00449"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">34.2</span> <a id="sthref1746"></a><a id="sthref1747"></a><a id="sthref1748"></a>A Singleton Session Bean Example: counter</h1>
+      <h1 class="sect1" id="sigil_toc_id_188"><span class="secnum">34.2</span> <a id="sthref1746"></a><a id="sthref1747"></a><a id="sthref1748"></a>A Singleton Session Bean Example: counter</h1>
 
       <p>The <code>counter</code> example demonstrates how to create a singleton session bean.</p><a id="GIPVC"></a><a id="JEETT01099"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.2.1</span> Creating a Singleton Session Bean</h2>
+        <h2 class="sect2" id="sigil_toc_id_189"><span class="secnum">34.2.1</span> Creating a Singleton Session Bean</h2>
 
         <p><a id="sthref1749"></a>The <code>javax.ejb.Singleton</code> annotation is used to specify that the enterprise bean implementation class is a singleton session bean:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
-public class SingletonBean { ... }</pre><a id="GIPPQ"></a><a id="JEETT00656"></a>
+        <pre class="oac_no_warn" xml:space="preserve">
+@Singleton
+public class SingletonBean { ... }
+</pre><a id="GIPPQ"></a><a id="JEETT00656"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.2.1.1</span> Initializing Singleton Session Beans</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.2.1.1</span> Initializing Singleton Session Beans</h3>
 
           <p><a id="sthref1750"></a><a id="sthref1751"></a>The EJB container is responsible for determining when to initialize a singleton session bean instance unless the singleton session bean implementation class is annotated with the <code>javax.ejb.Startup</code> annotation. In this case, sometimes called <span class="glossaryterm">eager initialization</span>, the EJB container must initialize the singleton session bean upon application startup. The singleton session bean is initialized before the EJB container delivers client requests to any enterprise beans in the application. This allows the singleton session bean to perform, for example, application startup tasks.</p>
 
           <p>The following singleton session bean stores the status of an application and is eagerly initialized:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Startup
+          <pre class="oac_no_warn" xml:space="preserve">
+@Startup
 @Singleton
 public class StatusBean {
   private String status;
@@ -458,25 +483,32 @@ public class StatusBean {
     status = "Ready";
   }
   ...
-}</pre>
+}
+</pre>
 
           <p><a id="sthref1752"></a>Sometimes multiple singleton session beans are used to initialize data for an application and therefore must be initialized in a specific order. In these cases, use the <code>javax.ejb.DependsOn</code> annotation to declare the startup dependencies of the singleton session bean. The <code>@DependsOn</code> annotation's <code>value</code> attribute is one or more strings that specify the name of the target singleton session bean. If more than one dependent singleton bean is specified in <code>@DependsOn</code>, the order in which they are listed is not necessarily the order in which the EJB container will initialize the target singleton session beans.</p>
 
           <p>The following singleton session bean, <code>PrimaryBean</code>, should be started up first:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
-public class PrimaryBean { ... }</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Singleton
+public class PrimaryBean { ... }
+</pre>
 
           <p><code>SecondaryBean</code> depends on <code>PrimaryBean</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
+          <pre class="oac_no_warn" xml:space="preserve">
+@Singleton
 @DependsOn("PrimaryBean")
-public class SecondaryBean { ... }</pre>
+public class SecondaryBean { ... }
+</pre>
 
           <p>This guarantees that the EJB container will initialize <code>PrimaryBean</code> before <code>SecondaryBean</code>.</p>
 
           <p>The following singleton session bean, <code>TertiaryBean</code>, depends on <code>PrimaryBean</code> and <code>SecondaryBean</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
+          <pre class="oac_no_warn" xml:space="preserve">
+@Singleton
 @DependsOn({"PrimaryBean", "SecondaryBean"})
-public class TertiaryBean { ... }</pre>
+public class TertiaryBean { ... }
+</pre>
 
           <p><code>SecondaryBean</code> explicitly requires <code>PrimaryBean</code> to be initialized before it is initialized, through its own <code>@DependsOn</code> annotation. In this case, the EJB container will first initialize <code>PrimaryBean</code>, then <code>SecondaryBean</code>, and finally <code>TertiaryBean</code>.</p>
 
@@ -484,7 +516,7 @@ public class TertiaryBean { ... }</pre>
         </div><a id="GIPSZ"></a><a id="JEETT00657"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.2.1.2</span> <a id="sthref1753"></a>Managing Concurrent Access in a Singleton Session Bean</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.2.1.2</span> <a id="sthref1753"></a>Managing Concurrent Access in a Singleton Session Bean</h3>
 
           <p>Singleton session beans are designed for <span class="glossaryterm">concurrent access</span>, situations in which many clients need to access a single instance of a session bean at the same time. A singleton's client needs only a reference to a singleton in order to invoke any business methods exposed by the singleton and doesn't need to worry about any other clients that may be simultaneously invoking business methods on the same singleton.</p>
 
@@ -503,27 +535,30 @@ public class TertiaryBean { ... }</pre>
           <p>The following example shows how to use the <code>@ConcurrencyManagement</code>, <code>@Lock(LockType.READ)</code>, and <code>@Lock(LockType.WRITE)</code> annotations for a singleton that uses container-managed concurrency.</p>
 
           <p>Although by default singletons use container-managed concurrency, the <code>@ConcurrencyManagement(CONTAINER)</code> annotation may be added at the class level of the singleton to explicitly set the concurrency management type:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><b>@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)</b> 
+          <pre class="oac_no_warn" xml:space="preserve">
+<span class="bold">@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER) </span>
 @Singleton
 public class ExampleSingletonBean {
   private String state;
 
-  <b>@Lock(LockType.READ)</b>
+  <span class="bold">@Lock(LockType.READ)</span>
   public String getState() {
     return state;
   }
 
-  <b>@Lock(LockType.WRITE)</b>
+  <span class="bold">@Lock(LockType.WRITE)</span>
   public void setState(String newState) {
     state = newState;
   }
-}<br /></pre>
+}
+</pre>
 
           <p>The <code>getState</code> method can be accessed by many clients at the same time because it is annotated with <code>@Lock(LockType.READ)</code>. When the <code>setState</code> method is called, however, all the methods in <code>ExampleSingletonBean</code> will be locked to other clients because <code>setState</code> is annotated with <code>@Lock(LockType.WRITE)</code>. This prevents two clients from attempting to simultaneously change the <code>state</code> variable of <code>ExampleSingletonBean</code>.</p>
 
           <p>The <code>getData</code> and <code>getStatus</code> methods in the following singleton are of type <code>READ</code>, and the <code>setStatus</code> method is of type <code>WRITE</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
-<b>@Lock(LockType.READ)</b>
+          <pre class="oac_no_warn" xml:space="preserve">
+@Singleton
+<span class="bold">@Lock(LockType.READ)</span>
 public class SharedSingletonBean {
   private String data;
   private String status;
@@ -536,18 +571,20 @@ public class SharedSingletonBean {
     return status;
   }
 
-  <b>@Lock(LockType.WRITE)</b>
+  <span class="bold">@Lock(LockType.WRITE)</span>
   public void setStatus(String newStatus) {
     status = newStatus;
   }
-}<br /></pre>
+}
+</pre>
 
           <p><a id="sthref1759"></a>If a method is of locking type <code>WRITE</code>, client access to all the singleton's methods is blocked until the current client finishes its method call or an access timeout occurs. When an access timeout occurs, the EJB container throws a <code>javax.ejb.ConcurrentAccessTimeoutException</code>. The <code>javax.ejb.AccessTimeout</code> annotation is used to specify the number of milliseconds before an access timeout occurs. If added at the class level of a singleton, <code>@AccessTimeout</code> specifies the access timeout value for all methods in the singleton unless a method explicitly overrides the default with its own <code>@AccessTimeout</code> annotation.</p>
 
           <p>The <code>@AccessTimeout</code> annotation can be applied to both <code>@Lock(LockType.READ)</code> and <code>@Lock(LockType.WRITE)</code> methods. The <code>@AccessTimeout</code> annotation has one required element, <code>value</code>, and one optional element, <code>unit</code>. By default, the <code>value</code> is specified in milliseconds. To change the <code>value</code> unit, set <code>unit</code> to one of the <code>java.util.concurrent.TimeUnit</code> constants: <code>NANOSECONDS</code>, <code>MICROSECONDS</code>, <code>MILLISECONDS</code>, or <code>SECONDS</code>.</p>
 
           <p>The following singleton has a default access timeout value of 120,000 milliseconds, or 2 minutes. The <code>doTediousOperation</code> method overrides the default access timeout and sets the value to 360,000 milliseconds, or 6 minutes:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
+          <pre class="oac_no_warn" xml:space="preserve">
+@Singleton
 @AccessTimeout(value=120000)
 public class StatusSingletonBean {
   private String status;
@@ -562,25 +599,30 @@ public class StatusSingletonBean {
   public void doTediousOperation {
     ...
   }
-}</pre>
+}
+</pre>
 
           <p>The following singleton has a default access timeout value of 60 seconds, specified using the <code>TimeUnit.SECONDS</code> constant:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Singleton
+          <pre class="oac_no_warn" xml:space="preserve">
+@Singleton
 @AccessTimeout(value=60, unit=TimeUnit.SECONDS)
-public class StatusSingletonBean { ... }</pre>
+public class StatusSingletonBean { ... }
+</pre>
 
           <p><a id="sthref1760"></a><span class="bold">Bean-Managed Concurrency</span></p>
 
           <p>Singletons that use <span class="glossaryterm">bean-managed concurrency</span> allow full concurrent access to all the business and timeout methods in the singleton. The developer of the singleton is responsible for ensuring that the state of the singleton is synchronized across all clients. Developers who create singletons with bean-managed concurrency are allowed to use the Java programming language synchronization primitives, such as <code>synchronization</code> and <code>volatile</code>, to prevent errors during concurrent access.</p>
 
           <p>Add a <code>@ConcurrencyManagement</code> annotation with the type set to <code>ConcurrencyManagementType.BEAN</code> at the class level of the singleton to specify bean-managed concurrency:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><b>@ConcurrencyManagement(ConcurrencyManagementType.BEAN)</b> 
+          <pre class="oac_no_warn" xml:space="preserve">
+<span class="bold">@ConcurrencyManagement(ConcurrencyManagementType.BEAN) </span>
 @Singleton
-public class AnotherSingletonBean { ... }<br /></pre>
+public class AnotherSingletonBean { ... }
+</pre>
         </div><a id="GIPVD"></a><a id="JEETT00658"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.2.1.3</span> <a id="sthref1761"></a>Handling Errors in a Singleton Session Bean</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.2.1.3</span> <a id="sthref1761"></a>Handling Errors in a Singleton Session Bean</h3>
 
           <p>If a singleton session bean encounters an error when initialized by the EJB container, that singleton instance will be destroyed.</p>
 
@@ -589,12 +631,13 @@ public class AnotherSingletonBean { ... }<br /></pre>
       </div><a id="GIPXL"></a><a id="JEETT01100"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.2.2</span> The Architecture of the counter Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_190"><span class="secnum">34.2.2</span> The Architecture of the counter Example</h2>
 
         <p>The <code>counter</code> example consists of a singleton session bean, <code>CounterBean</code>, and a JavaServer Faces Facelets web front end.</p>
 
         <p><code>CounterBean</code> is a simple singleton with one method, <code>getHits</code>, that returns an integer representing the number of times a web page has been accessed. Here is the code of <code>CounterBean</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.counter.ejb;
+        <pre class="oac_no_warn" xml:space="preserve">
+package javaeetutorial.counter.ejb;
 
 import javax.ejb.Singleton;
 
@@ -610,14 +653,16 @@ public class CounterBean {
     public int getHits() {
         return hits++;
     }
-}</pre>
+}
+</pre>
 
         <p>The <code>@Singleton</code> annotation marks <code>CounterBean</code> as a singleton session bean. <code>CounterBean</code> uses a local, no-interface view.</p>
 
         <p><code>CounterBean</code> uses the EJB container's default metadata values for singletons to simplify the coding of the singleton implementation class. There is no <code>@ConcurrencyManagement</code> annotation on the class, so the default of container-managed concurrency access is applied. There is no <code>@Lock</code> annotation on the class or business method, so the default of <code>@Lock(WRITE)</code> is applied to the only business method, <code>getHits</code>.</p>
 
         <p>The following version of <code>CounterBean</code> is functionally equivalent to the preceding version:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.counter.ejb;
+        <pre class="oac_no_warn" xml:space="preserve">
+package javaeetutorial.counter.ejb;
 
 import javax.ejb.Singleton;
 import javax.ejb.ConcurrencyManagement;
@@ -639,12 +684,14 @@ public class CounterBean {
     public int getHits() {
         return hits++;
     }
-}</pre>
+}
+</pre>
 
         <p>The web front end of <code>counter</code> consists of a JavaServer Faces managed bean, <code>Count.java</code>, that is used by the Facelets XHTML files <code>template.xhtml</code> and <code>index.xhtml</code>. The <code>Count</code> JavaServer Faces managed bean obtains a reference to <code>CounterBean</code> through dependency injection. <code>Count</code> defines a <code>hitCount</code> JavaBeans property. When the <code>getHitCount</code> getter method is called from the XHTML files, <code>CounterBean</code>'s <code>getHits</code> method is called to return the current number of page hits.</p>
 
         <p>Here's the <code>Count</code> managed bean class:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Named
+        <pre class="oac_no_warn" xml:space="preserve">
+@Named
 @ConversationScoped
 public class Count implements Serializable {
     @EJB
@@ -664,31 +711,34 @@ public class Count implements Serializable {
     public void setHitCount(int newHits) {
         this.hitCount = newHits;
     }
-}</pre>
+}
+</pre>
 
         <p>The <code>template.xhtml</code> and <code>index.xhtml</code> files are used to render a Facelets view that displays the number of hits to that view. The <code>index.xhtml</code> file uses an expression language statement, <code>#{count.hitCount}</code>, to access the <code>hitCount</code> property of the <code>Count</code> managed bean. Here is the content of <code>index.xhtml</code>:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">&lt;html lang="en"
+        <pre class="oac_no_warn" xml:space="preserve">
+&lt;html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
     &lt;ui:composition template="/template.xhtml"&gt;
         &lt;ui:define name="title"&gt;
-            This page has been accessed <b>#{count.hitCount}</b> time(s).
+            This page has been accessed <span class="bold">#{count.hitCount} </span>time(s).
         &lt;/ui:define&gt;
         &lt;ui:define name="body"&gt;
             Hooray!
         &lt;/ui:define&gt;
     &lt;/ui:composition&gt;
-&lt;/html&gt;<br /></pre>
+&lt;/html&gt;
+</pre>
       </div><a id="GIPVL"></a><a id="JEETT01101"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.2.3</span> Running the counter Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_191"><span class="secnum">34.2.3</span> Running the counter Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>counter</code> example.</p><a id="GIPXT"></a><a id="JEETT00199"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.2.3.1</span> To Run the counter Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.2.3.1</span> To Run the counter Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -701,7 +751,9 @@ public class Count implements Serializable {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/ejb
+</pre>
             </li>
 
             <li>
@@ -725,7 +777,7 @@ public class Count implements Serializable {
         </div><a id="GIPZW"></a><a id="JEETT00200"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.2.3.2</span> To Run the counter Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.2.3.2</span> To Run the counter Example Using Maven</h3>
 
           <ol>
             <li>
@@ -734,19 +786,25 @@ public class Count implements Serializable {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb/counter/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/ejb/counter/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This will build and deploy <code>counter</code> to your GlassFish Server instance.</p>
             </li>
 
             <li>
               <p>In a web browser, enter the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/counter</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/counter
+</pre>
             </li>
 
             <li>
@@ -762,12 +820,12 @@ public class Count implements Serializable {
     <a id="BNBOR"></a><a id="JEETT00450"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">34.3</span> <a id="sthref1762"></a><a id="sthref1763"></a><a id="sthref1764"></a><a id="sthref1765"></a>A Web Service Example: helloservice</h1>
+      <h1 class="sect1" id="sigil_toc_id_192"><span class="secnum">34.3</span> <a id="sthref1762"></a><a id="sthref1763"></a><a id="sthref1764"></a><a id="sthref1765"></a>A Web Service Example: helloservice</h1>
 
       <p>This example demonstrates a simple web service that generates a response based on information received from the client. <code>HelloServiceBean</code> is a stateless session bean that implements a single method: <code>sayHello</code>. This method matches the <code>sayHello</code> method invoked by the client described in <a href="../Text/jaxws.xhtml#BNAYX">A Simple JAX-WS Application Client</a>.</p><a id="BNBOS"></a><a id="JEETT01102"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.3.1</span> The Web Service Endpoint Implementation Class</h2>
+        <h2 class="sect2" id="sigil_toc_id_193"><span class="secnum">34.3.1</span> The Web Service Endpoint Implementation Class</h2>
 
         <p><a id="sthref1766"></a><code>HelloServiceBean</code> is the endpoint implementation class, typically the primary programming artifact for enterprise bean web service endpoints. The web service endpoint implementation class has the following requirements.</p>
 
@@ -789,7 +847,7 @@ public class Count implements Serializable {
           </li>
 
           <li>
-            <p>Business methods that are exposed to web service clients must have JAXB-compatible parameters and return types. See the list of JAXB default data type bindings at <a href="../Text/ejb-basic-examples.xhtml#BNAZC">Types Supported by JAX-WS</a>.</p>
+            <p>Business methods that are exposed to web service clients must have JAXB-compatible parameters and return types. See the list of JAXB default data type bindings at <a href="../Text/jaxws.xhtml#BNAZC">Types Supported by JAX-WS</a>.</p>
           </li>
 
           <li>
@@ -819,10 +877,11 @@ public class Count implements Serializable {
       </div><a id="BNBOT"></a><a id="JEETT01103"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.3.2</span> <a id="sthref1767"></a>Stateless Session Bean Implementation Class</h2>
+        <h2 class="sect2" id="sigil_toc_id_194"><span class="secnum">34.3.2</span> <a id="sthref1767"></a>Stateless Session Bean Implementation Class</h2>
 
         <p>The <code>HelloServiceBean</code> class implements the <code>sayHello</code> method, which is annotated <code>@WebMethod</code>. The source code for the <code>HelloServiceBean</code> class is as follows:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.helloservice.ejb;
+        <pre class="oac_no_warn" xml:space="preserve">
+package javaeetutorial.helloservice.ejb;
 
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
@@ -839,16 +898,17 @@ public class HelloServiceBean {
     public String sayHello(String name) {
         return message + name + ".";
     }
-}</pre>
+}
+</pre>
       </div><a id="BNBOU"></a><a id="JEETT01104"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.3.3</span> Running the helloservice Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_195"><span class="secnum">34.3.3</span> Running the helloservice Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, and deploy the <code>helloservice</code> example. You can then use the Administration Console to test the web service endpoint methods.</p><a id="BNBOV"></a><a id="JEETT00201"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.3.3.1</span> To Build, Package, and Deploy the helloservice Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.3.3.1</span> To Build, Package, and Deploy the helloservice Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -861,7 +921,9 @@ public class HelloServiceBean {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/ejb
+</pre>
             </li>
 
             <li>
@@ -881,7 +943,7 @@ public class HelloServiceBean {
         </div><a id="BNBOW"></a><a id="JEETT00202"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.3.3.2</span> To Build, Package, and Deploy the helloservice Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.3.3.2</span> To Build, Package, and Deploy the helloservice Example Using Maven</h3>
 
           <ol>
             <li>
@@ -890,12 +952,16 @@ public class HelloServiceBean {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb/helloservice/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/ejb/helloservice/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This compiles the source files and packages the application into an EJB JAR file located at <span class="variable">tut-install</span><code>/examples/ejb/helloservice/target/helloservice.jar</code>. Then the EJB JAR file is deployed to GlassFish Server.</p>
 
@@ -905,14 +971,16 @@ public class HelloServiceBean {
         </div><a id="BNBOX"></a><a id="JEETT00203"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.3.3.3</span> To Test the Service without a Client</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.3.3.3</span> To Test the Service without a Client</h3>
 
           <p>The GlassFish Server Administration Console allows you to test the methods of a web service endpoint. To test the <code>sayHello</code> method of <code>HelloServiceBean</code>, follow these steps.</p>
 
           <ol>
             <li>
               <p>Open the Administration Console by opening the following URL in a web browser:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:4848/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:4848/
+</pre>
             </li>
 
             <li>
@@ -929,7 +997,9 @@ public class HelloServiceBean {
 
             <li>
               <p>On the <span class="gui-object-title">Web Service Endpoint Information</span> page, click the <span class="gui-object-action">Tester</span> link:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">/HelloServiceBeanService/HelloServiceBean?Tester</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+/HelloServiceBeanService/HelloServiceBean?Tester
+</pre>
             </li>
 
             <li>
@@ -955,16 +1025,16 @@ public class HelloServiceBean {
     <a id="BNBOY"></a><a id="JEETT00451"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">34.4</span> <a id="sthref1768"></a><a id="sthref1769"></a>Using the Timer Service</h1>
+      <h1 class="sect1" id="sigil_toc_id_196"><span class="secnum">34.4</span> <a id="sthref1768"></a><a id="sthref1769"></a>Using the Timer Service</h1>
 
       <p>Applications that model business work flows often rely on timed notifications. The timer service of the enterprise bean container enables you to schedule timed notifications for all types of enterprise beans except for stateful session beans. You can schedule a timed notification to occur according to a calendar schedule, at a specific time, after a duration of time, or at timed intervals. For example, you could set timers to go off at 10:30 a.m. on May 23, in 30 days, or every 12 hours.</p>
 
       <p><a id="sthref1770"></a><a id="sthref1771"></a>Enterprise bean timers are either programmatic timers or automatic timers. <span class="glossaryterm">Programmatic timers</span> are set by explicitly calling one of the timer creation methods of the <code>TimerService</code> interface. <span class="glossaryterm">Automatic timers</span> are created upon the successful deployment of an enterprise bean that contains a method annotated with the <code>javax.ejb.Schedule</code> or <code>javax.ejb.Schedules</code> annotations.</p><a id="GIQLK"></a><a id="JEETT01105"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.4.1</span> <a id="sthref1772"></a>Creating Calendar-Based Timer Expressions</h2>
+        <h2 class="sect2" id="sigil_toc_id_197"><span class="secnum">34.4.1</span> <a id="sthref1772"></a>Creating Calendar-Based Timer Expressions</h2>
 
-        <p>Timers can be set according to a calendar-based schedule, expressed using a syntax similar to the UNIX <code>cron</code> utility. Both programmatic and automatic timers can use calendar-based timer expressions. <a href="../Text/ejb-basic-examples.xhtml#GIQLY">Table 34-1</a> shows the calendar-based timer attributes.</p>
+        <p>Timers can be set according to a calendar-based schedule, expressed using a syntax similar to the UNIX <code>cron</code> utility. Both programmatic and automatic timers can use calendar-based timer expressions. <a href="../Text/ejb-basicexamples.xhtml#GIQLY">Table 34-1</a> shows the calendar-based timer attributes.</p>
 
         <div class="tblhruleformal">
           <a id="sthref1773"></a><a id="GIQLY"></a>
@@ -1080,7 +1150,7 @@ public class HelloServiceBean {
                 <td align="left" headers="r6c1-t2 r1c4-t2">
                   <p><code>1</code> to <code>31</code>. For example: <code>dayOfMonth="15"</code>.</p>
 
-                  <p><code>7</code> to <code>1</code> (a negative number means the <span class="variable">n</span>th day or days before the end of the month). For example: <code>dayOfMonth="3"</code>.</p>
+                  <p><code>&ndash;7</code> to <code>&ndash;1</code> (a negative number means the <span class="variable">n</span>th day or days before the end of the month). For example: <code>dayOfMonth="&ndash;3"</code>.</p>
 
                   <p><code>Last</code>. For example: <code>dayOfMonth="Last"</code>.</p>
 
@@ -1130,7 +1200,7 @@ public class HelloServiceBean {
         </div><a id="GIQMX"></a><a id="JEETT00659"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.4.1.1</span> Specifying Multiple Values in Calendar Expressions</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.4.1.1</span> Specifying Multiple Values in Calendar Expressions</h3>
 
           <p>You can specify multiple values in calendar expressions, as described in the following sections.</p>
 
@@ -1139,10 +1209,14 @@ public class HelloServiceBean {
           <p>Setting an attribute to an asterisk symbol (<code>*</code>) represents all allowable values for the attribute.</p>
 
           <p>The following expression represents every minute:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">minute="*"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+minute="*"
+</pre>
 
           <p>The following expression represents every day of the week:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">dayOfWeek="*"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+dayOfWeek="*"
+</pre>
 
           <p><span class="bold">Specifying a List of Values</span></p>
 
@@ -1151,26 +1225,38 @@ public class HelloServiceBean {
           <p>Duplicates within a list are ignored.</p>
 
           <p>The following expression sets the day of the week to Tuesday and Thursday:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">dayOfWeek="Tue, Thu"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+dayOfWeek="Tue, Thu"
+</pre>
 
           <p>The following expression represents 4:00 a.m., every hour from 9:00 a.m. to 5:00 p.m. using a range, and 10:00 p.m.:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">hour="4,9-17,22"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+hour="4,9-17,22"
+</pre>
 
           <p><span class="bold">Specifying a Range of Values</span></p>
 
           <p>Use a dash character (<code>-</code>) to specify an inclusive range of values for an attribute. Members of a range cannot be wildcards, lists, or intervals. A range of the form <code>x-x</code>, is equivalent to the single-valued expression <code>x</code>. A range of the form <code>x-y</code> where <code>x</code> is greater than <code>y</code> is equivalent to the expression <code>x-</code><span class="variable">maximumvalue</span><code>,</code> <span class="variable">minimumvalue</span><code>-y</code>. That is, the expression begins at <code>x</code>, rolls over to the beginning of the allowable values, and continues up to <code>y</code>.</p>
 
           <p>The following expression represents 9:00 a.m. to 5:00 p.m.:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">hour="9-17"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+hour="9-17"
+</pre>
 
           <p>The following expression represents Friday through Monday:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">dayOfWeek="5-1"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+dayOfWeek="5-1"
+</pre>
 
           <p>The following expression represents the twenty-fifth day of the month to the end of the month, and the beginning of the month to the fifth day of the month:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">dayOfMonth="25-5"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+dayOfMonth="25-5"
+</pre>
 
           <p>It is equivalent to the following expression:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">dayOfMonth="25-Last,1-5"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+dayOfMonth="25-Last,1-5"
+</pre>
 
           <p><span class="bold">Specifying Intervals</span></p>
 
@@ -1179,62 +1265,78 @@ public class HelloServiceBean {
           <p>Intervals may be set only for <code>second</code>, <code>minute</code>, and <code>hour</code> attributes.</p>
 
           <p>The following expression represents every 10 minutes within the hour:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">minute="*/10"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+minute="*/10"
+</pre>
 
           <p>It is equivalent to:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">minute="0,10,20,30,40,50"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+minute="0,10,20,30,40,50"
+</pre>
 
           <p>The following expression represents every 2 hours starting at noon:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">hour="12/2"</pre>
+          <pre class="oac_no_warn" xml:space="preserve">
+hour="12/2"
+</pre>
         </div>
       </div><a id="GIQLT"></a><a id="JEETT01106"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.4.2</span> <a id="sthref1774"></a>Programmatic Timers</h2>
+        <h2 class="sect2" id="sigil_toc_id_198"><span class="secnum">34.4.2</span> <a id="sthref1774"></a>Programmatic Timers</h2>
 
         <p><a id="sthref1775"></a>When a programmatic timer expires (goes off), the container calls the method annotated <code>@Timeout</code> in the bean's implementation class. The <code>@Timeout</code> method contains the business logic that handles the timed event.</p><a id="BNBOZ"></a><a id="JEETT00660"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.4.2.1</span> <a id="sthref1776"></a>The @Timeout Method</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.4.2.1</span> <a id="sthref1776"></a>The @Timeout Method</h3>
 
           <p>Methods annotated <code>@Timeout</code> in the enterprise bean class must return <code>void</code> and optionally take a <code>javax.ejb.Timer</code> object as the only parameter. They may not throw application exceptions:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Timeout
+          <pre class="oac_no_warn" xml:space="preserve">
+@Timeout
 public void timeout(Timer timer) {
     System.out.println("TimerBean: timeout occurred");
-}</pre>
+}
+</pre>
         </div><a id="BNBPA"></a><a id="JEETT00661"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.4.2.2</span> <a id="sthref1777"></a>Creating Programmatic Timers</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.4.2.2</span> <a id="sthref1777"></a>Creating Programmatic Timers</h3>
 
           <p><a id="sthref1778"></a>To create a timer, the bean invokes one of the <code>create</code> methods of the <code>TimerService</code> interface. These methods allow single-action, interval, or calendar-based timers to be created.</p>
 
           <p>For single-action or interval timers, the expiration of the timer can be expressed as either a duration or an absolute time. The duration is expressed as a the number of milliseconds before a timeout event is triggered. To specify an absolute time, create a <code>java.util.Date</code> object and pass it to the <code>TimerService.createSingleActionTimer</code> or the <code>TimerService.createTimer</code> method.</p>
 
           <p>The following code sets a programmatic timer that will expire in 1 minute (60,000 milliseconds):</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">long duration = 60000;
+          <pre class="oac_no_warn" xml:space="preserve">
+long duration = 60000;
 Timer timer =
-    timerService.createSingleActionTimer(duration, new TimerConfig());</pre>
+    timerService.createSingleActionTimer(duration, new TimerConfig());
+</pre>
 
           <p>The following code sets a programmatic timer that will expire at 12:05 p.m. on May 1, 2015, specified as a <code>java.util.Date</code>:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">SimpleDateFormatter formatter = 
+          <pre class="oac_no_warn" xml:space="preserve">
+SimpleDateFormatter formatter = 
     new SimpleDateFormatter("MM/dd/yyyy 'at' HH:mm");
 Date date = formatter.parse("05/01/2015 at 12:05");
-Timer timer = timerService.createSingleActionTimer(date, new TimerConfig());</pre>
+Timer timer = timerService.createSingleActionTimer(date, new TimerConfig());
+</pre>
 
-          <p>For calendar-based timers, the expiration of the timer is expressed as a <code>javax.ejb.ScheduleExpression</code> object, passed as a parameter to the <code>TimerService.createCalendarTimer</code> method. The <code>ScheduleExpression</code> class represents calendar-based timer expressions and has methods that correspond to the attributes described in <a href="../Text/ejb-basic-examples.xhtml#GIQLK">Creating Calendar-Based Timer Expressions</a>.</p>
+          <p>For calendar-based timers, the expiration of the timer is expressed as a <code>javax.ejb.ScheduleExpression</code> object, passed as a parameter to the <code>TimerService.createCalendarTimer</code> method. The <code>ScheduleExpression</code> class represents calendar-based timer expressions and has methods that correspond to the attributes described in <a href="../Text/ejb-basicexamples.xhtml#GIQLK">Creating Calendar-Based Timer Expressions</a>.</p>
 
           <p>The following code creates a programmatic timer using the <code>ScheduleExpression</code> helper class:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">ScheduleExpression schedule = new ScheduleExpression();
+          <pre class="oac_no_warn" xml:space="preserve">
+ScheduleExpression schedule = new ScheduleExpression();
 schedule.dayOfWeek("Mon");
 schedule.hour("12-17, 23");
-Timer timer = timerService.createCalendarTimer(schedule);</pre>
+Timer timer = timerService.createCalendarTimer(schedule);
+</pre>
 
-          <p>For details on the method signatures, see the <code>TimerService</code> API documentation at <code><a href="../Text/ejb-basic-examples.xhtml#http%3A//docs.oracle.com/javaee/7/api/javax/ejb/TimerService.html">http://docs.oracle.com/javaee/7/api/javax/ejb/TimerService.html</a></code>.</p>
+          <p>For details on the method signatures, see the <code>TimerService</code> API documentation at <code><a href="../Text/http://docs.oracle.com/javaee/7/api/javax/ejb/TimerService.xhtml#http://docs.oracle.com/javaee/7/api/javax/ejb/TimerService.html">http://docs.oracle.com/javaee/7/api/javax/ejb/TimerService.html</a></code>.</p>
 
-          <p>The bean described in <a href="../Text/ejb-basic-examples.xhtml#BNBPE">The timersession Example</a> creates a timer as follows:</p>
-          <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">Timer timer = timerService.createTimer(intervalDuration,
-        "Created new programmatic timer");</pre>
+          <p>The bean described in <a href="../Text/ejb-basicexamples.xhtml#BNBPE">The timersession Example</a> creates a timer as follows:</p>
+          <pre class="oac_no_warn" xml:space="preserve">
+Timer timer = timerService.createTimer(intervalDuration,
+        "Created new programmatic timer");
+</pre>
 
           <p>In the <code>timersession</code> example, the method that calls <code>createTimer</code> is invoked in a business method, which is called by a client.</p>
 
@@ -1247,7 +1349,7 @@ Timer timer = timerService.createCalendarTimer(schedule);</pre>
       </div><a id="GIQMB"></a><a id="JEETT01107"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.4.3</span> <a id="sthref1779"></a><a id="sthref1780"></a>Automatic Timers</h2>
+        <h2 class="sect2" id="sigil_toc_id_199"><span class="secnum">34.4.3</span> <a id="sthref1779"></a><a id="sthref1780"></a>Automatic Timers</h2>
 
         <p>Automatic timers are created by the EJB container when an enterprise bean that contains methods annotated with the <code>@Schedule</code> or <code>@Schedules</code> annotations is deployed. An enterprise bean can have multiple automatic timeout methods, unlike a programmatic timer, which allows only one method annotated with the <code>@Timeout</code> annotation in the enterprise bean class.</p>
 
@@ -1255,7 +1357,7 @@ Timer timer = timerService.createCalendarTimer(schedule);</pre>
 
         <p>Adding a <code>@Schedule</code> annotation on an enterprise bean marks that method as a timeout method according to the calendar schedule specified in the attributes of <code>@Schedule</code>.</p>
 
-        <p>The <code>@Schedule</code> annotation has elements that correspond to the calendar expressions detailed in <a href="../Text/ejb-basic-examples.xhtml#GIQLK">Creating Calendar-Based Timer Expressions</a> and the <code>persistent</code>, <code>info</code>, and <code>timezone</code> elements.</p>
+        <p>The <code>@Schedule</code> annotation has elements that correspond to the calendar expressions detailed in <a href="../Text/ejb-basicexamples.xhtml#GIQLK">Creating Calendar-Based Timer Expressions</a> and the <code>persistent</code>, <code>info</code>, and <code>timezone</code> elements.</p>
 
         <p>The optional <code>persistent</code> element takes a Boolean value and is used to specify whether the automatic timer should survive a server restart or crash. By default, all automatic timers are persistent.</p>
 
@@ -1264,21 +1366,25 @@ Timer timer = timerService.createCalendarTimer(schedule);</pre>
         <p>The optional <code>info</code> element is used to set an informational description of the timer. A timer's information can be retrieved later by using <code>Timer.getInfo</code>.</p>
 
         <p>The following timeout method uses <code>@Schedule</code> to set a timer that will expire every Sunday at midnight:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Schedule(dayOfWeek="Sun", hour="0")
-public void cleanupWeekData() { ... }</pre>
+        <pre class="oac_no_warn" xml:space="preserve">
+@Schedule(dayOfWeek="Sun", hour="0")
+public void cleanupWeekData() { ... }
+</pre>
 
         <p>The <code>@Schedules</code> annotation is used to specify multiple calendar-based timer expressions for a given timeout method.</p>
 
         <p>The following timeout method uses the <code>@Schedules</code> annotation to set multiple calendar-based timer expressions. The first expression sets a timer to expire on the last day of every month. The second expression sets a timer to expire every Friday at 11:00 p.m.:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">@Schedules ({
+        <pre class="oac_no_warn" xml:space="preserve">
+@Schedules ({
     @Schedule(dayOfMonth="Last"),
     @Schedule(dayOfWeek="Fri", hour="23")
 })
-public void doPeriodicCleanup() { ... }</pre>
+public void doPeriodicCleanup() { ... }
+</pre>
       </div><a id="BNBPB"></a><a id="JEETT01108"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.4.4</span> <a id="sthref1781"></a><a id="sthref1782"></a>Canceling and Saving Timers</h2>
+        <h2 class="sect2" id="sigil_toc_id_200"><span class="secnum">34.4.4</span> <a id="sthref1781"></a><a id="sthref1782"></a>Canceling and Saving Timers</h2>
 
         <p>Timers can be cancelled by the following events.</p>
 
@@ -1298,12 +1404,14 @@ public void doPeriodicCleanup() { ... }</pre>
       </div><a id="BNBPC"></a><a id="JEETT01109"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.4.5</span> <a id="sthref1785"></a>Getting Timer Information</h2>
+        <h2 class="sect2" id="sigil_toc_id_201"><span class="secnum">34.4.5</span> <a id="sthref1785"></a>Getting Timer Information</h2>
 
         <p><a id="sthref1786"></a><a id="sthref1787"></a><a id="sthref1788"></a>In addition to defining the <code>cancel</code> and <code>getHandle</code> methods, the <code>Timer</code> interface defines methods for obtaining information about timers:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">public long getTimeRemaining();
+        <pre class="oac_no_warn" xml:space="preserve">
+public long getTimeRemaining();
 public java.util.Date getNextTimeout();
-public java.io.Serializable getInfo();</pre>
+public java.io.Serializable getInfo();
+</pre>
 
         <p>The <code>getInfo</code> method returns the object that was the last parameter of the <code>createTimer</code> invocation. For example, in the <code>createTimer</code> code snippet of the preceding section, this information parameter is a <code>String</code> object with the value <code>created timer</code>.</p>
 
@@ -1311,7 +1419,7 @@ public java.io.Serializable getInfo();</pre>
       </div><a id="BNBPD"></a><a id="JEETT01110"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.4.6</span> <a id="sthref1789"></a><a id="sthref1790"></a>Transactions and Timers</h2>
+        <h2 class="sect2" id="sigil_toc_id_202"><span class="secnum">34.4.6</span> <a id="sthref1789"></a><a id="sthref1790"></a>Transactions and Timers</h2>
 
         <p>An enterprise bean usually creates a timer within a transaction. If this transaction is rolled back, the timer creation also is rolled back. Similarly, if a bean cancels a timer within a transaction that gets rolled back, the timer cancellation is rolled back. In this case, the timer's duration is reset as if the cancellation had never occurred.</p>
 
@@ -1319,12 +1427,13 @@ public java.io.Serializable getInfo();</pre>
       </div><a id="BNBPE"></a><a id="JEETT01111"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.4.7</span> <a id="sthref1791"></a><a id="sthref1792"></a>The timersession Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_203"><span class="secnum">34.4.7</span> <a id="sthref1791"></a><a id="sthref1792"></a>The timersession Example</h2>
 
         <p>The source code for this example is in the <span class="variable">tut-install</span><code>/examples/ejb/timersession/src/main/java/</code> directory.</p>
 
         <p><code>TimerSessionBean</code> is a singleton session bean that shows how to set both an automatic timer and a programmatic timer. In the source code listing of <code>TimerSessionBean</code> that follows, the <code>setTimer</code> and <code>@Timeout</code> methods are used to set a programmatic timer. A <code>TimerService</code> instance is injected by the container when the bean is created. Because it's a business method, <code>setTimer</code> is exposed to the local, no-interface view of <code>TimerSessionBean</code> and can be invoked by the client. In this example, the client invokes <code>setTimer</code> with an interval duration of 8,000 milliseconds, or 8 seconds. The <code>setTimer</code> method creates a new timer by invoking the <code>createTimer</code> method of <code>TimerService</code>. Now that the timer is set, the EJB container will invoke the <code>programmaticTimeout</code> method of <code>TimerSessionBean</code> when the timer expires, in about 8 seconds:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">...
+        <pre class="oac_no_warn" xml:space="preserve">
+...
     public void setTimer(long intervalDuration) {
         logger.log(Level.INFO, 
                 "Setting a programmatic timeout for {0} milliseconds from now.",
@@ -1338,21 +1447,25 @@ public java.io.Serializable getInfo();</pre>
         this.setLastProgrammaticTimeout(new Date());
         logger.info("Programmatic timeout occurred.");
     }
-...</pre>
+...
+</pre>
 
         <p><code>TimerSessionBean</code> also has an automatic timer and timeout method, <code>automaticTimeout</code>. The automatic timer is set to expire every 1 minute and is set by using a calendar-based timer expression in the <code>@Schedule</code> annotation:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">...
+        <pre class="oac_no_warn" xml:space="preserve">
+...
     @Schedule(minute = "*/1", hour = "*", persistent = false)
     public void automaticTimeout() {
         this.setLastAutomaticTimeout(new Date());
         logger.info("Automatic timeout occured");
     }
-...</pre>
+...
+</pre>
 
         <p><code>TimerSessionBean</code> also has two business methods: <code>getLastProgrammaticTimeout</code> and <code>getLastAutomaticTimeout</code>. Clients call these methods to get the date and time of the last timeout for the programmatic timer and automatic timer, respectively.</p>
 
         <p>Here's the source code for the <code>TimerSessionBean</code> class:</p>
-        <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">package javaeetutorial.timersession.ejb;
+        <pre class="oac_no_warn" xml:space="preserve">
+package javaeetutorial.timersession.ejb;
 
 import java.util.Date;
 import java.util.logging.Level;
@@ -1420,7 +1533,8 @@ public class TimerSessionBean {
     public void setLastAutomaticTimeout(Date lastAutomaticTimeout) {
         this.lastAutomaticTimeout = lastAutomaticTimeout;
     }
-}</pre>
+}
+</pre>
 
         <div align="center">
           <div class="inftblnote">
@@ -1442,12 +1556,12 @@ public class TimerSessionBean {
       </div><a id="BNBPF"></a><a id="JEETT01112"></a>
 
       <div class="sect2">
-        <h2 class="sect2"><span class="secnum">34.4.8</span> Running the timersession Example</h2>
+        <h2 class="sect2" id="sigil_toc_id_204"><span class="secnum">34.4.8</span> Running the timersession Example</h2>
 
         <p>You can use either NetBeans IDE or Maven to build, package, deploy, and run the <code>timersession</code> example.</p><a id="GIQNI"></a><a id="JEETT00204"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.4.8.1</span> To Run the timersession Example Using NetBeans IDE</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.4.8.1</span> To Run the timersession Example Using NetBeans IDE</h3>
 
           <ol>
             <li>
@@ -1460,7 +1574,9 @@ public class TimerSessionBean {
 
             <li>
               <p>In the <span class="gui-object-title">Open Project</span> dialog box, navigate to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/ejb
+</pre>
             </li>
 
             <li>
@@ -1480,7 +1596,7 @@ public class TimerSessionBean {
         </div><a id="GIQNQ"></a><a id="JEETT00205"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.4.8.2</span> To Build, Package, and Deploy the timersession Example Using Maven</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.4.8.2</span> To Build, Package, and Deploy the timersession Example Using Maven</h3>
 
           <ol>
             <li>
@@ -1489,12 +1605,16 @@ public class TimerSessionBean {
 
             <li>
               <p>In a terminal window, go to:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><span class="variable">tut-install</span>/examples/ejb/timersession/</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+<span class="variable">tut-install</span>/examples/ejb/timersession/
+</pre>
             </li>
 
             <li>
               <p>Enter the following command:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">mvn install</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+mvn install
+</pre>
 
               <p>This builds and packages the application into a WAR file located at <span class="variable">tut-install</span><code>/examples/ejb/timersession/target/timersession.war</code> and deploys this WAR file to your GlassFish Server instance.</p>
             </li>
@@ -1502,12 +1622,14 @@ public class TimerSessionBean {
         </div><a id="GIQOP"></a><a id="JEETT00206"></a>
 
         <div class="sect3">
-          <h3 class="sect3"><span class="secnum">34.4.8.3</span> To Run the Web Client</h3>
+          <h3 class="sect3 sigil_not_in_toc"><span class="secnum">34.4.8.3</span> To Run the Web Client</h3>
 
           <ol>
             <li>
               <p>Open a web browser to the following URL:</p>
-              <pre class="oac_no_warn" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace">http://localhost:8080/timersession</pre>
+              <pre class="oac_no_warn" xml:space="preserve">
+http://localhost:8080/timersession
+</pre>
             </li>
 
             <li>
@@ -1531,7 +1653,7 @@ public class TimerSessionBean {
     <a id="BNBPJ"></a><a id="JEETT00452"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">34.5</span> <a id="sthref1793"></a><a id="sthref1794"></a>Handling Exceptions</h1>
+      <h1 class="sect1" id="sigil_toc_id_205"><span class="secnum">34.5</span> <a id="sthref1793"></a><a id="sthref1794"></a>Handling Exceptions</h1>
 
       <p>The exceptions thrown by enterprise beans fall into two categories: system and application.</p>
 

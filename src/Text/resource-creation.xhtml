@@ -37,7 +37,7 @@
     <a id="BNCJI"></a><a id="JEETT00537"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">3.1</span> Resources and JNDI Naming</h1>
+      <h1 class="sect1" id="sigil_toc_id_788"><span class="secnum">3.1</span> Resources and JNDI Naming</h1>
 
       <p><a id="sthref148"></a>In a distributed application, components need to access other components and resources, such as databases. For example, a servlet might invoke remote methods on an enterprise bean that retrieves information from a database. In the Java EE platform, the Java Naming and Directory Interface (JNDI) naming service enables components to locate other components and resources.</p>
 
@@ -55,9 +55,9 @@
     <a id="BNCJJ"></a><a id="JEETT00538"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">3.2</span> DataSource Objects and Connection Pools</h1>
+      <h1 class="sect1" id="sigil_toc_id_789"><span class="secnum">3.2</span> DataSource Objects and Connection Pools</h1>
 
-      <p><a id="sthref150"></a>To store, organize, and retrieve data, most applications use a relational database. Java EE 7 components may access relational databases through the JDBC API. For information on this API, see <code><a href="../Text/resource-creation.xhtml#http%3A//docs.oracle.com/javase/7/docs/technotes/guides/jdbc/">http://docs.oracle.com/javase/7/docs/technotes/guides/jdbc/</a></code>.</p>
+      <p><a id="sthref150"></a>To store, organize, and retrieve data, most applications use a relational database. Java EE 7 components may access relational databases through the JDBC API. For information on this API, see <code><a href="../Text/http://docs.oracle.com/javase/7/docs/technotes/guides/jdbc/.xhtml#http://docs.oracle.com/javase/7/docs/technotes/guides/jdbc/">http://docs.oracle.com/javase/7/docs/technotes/guides/jdbc/</a></code>.</p>
 
       <p><a id="sthref151"></a><a id="sthref152"></a>In the JDBC API, databases are accessed by using <code>DataSource</code> objects. A <code>DataSource</code> has a set of properties that identify and describe the real-world data source that it represents. These properties include such information as the location of the database server, the name of the database, the network protocol to use to communicate with the server, and so on. In GlassFish Server, a data source is called a JDBC resource.</p>
 
@@ -70,7 +70,9 @@
       <p>A JDBC connection pool is a group of reusable connections for a particular database. Because creating each new physical connection is time consuming, the server maintains a pool of available connections to increase performance. When it requests a connection, an application obtains one from the pool. When an application closes a connection, the connection is returned to the pool.</p>
 
       <p>Applications that use the Persistence API specify the <code>DataSource</code> object they are using in the <code>jta-data-source</code> element of the <code>persistence.xml</code> file:</p>
-      <pre class="oac_no_warn" xml:space="preserve">jta-data-sourcejdbc/MyOrderDB/jta-data-source</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+&lt;jta-data-source&gt;jdbc/MyOrderDB&lt;/jta-data-source&gt;
+</pre>
 
       <p>This is typically the only reference to a JDBC object for a persistence unit. The application code does not refer to any JDBC objects.</p>
     </div>
@@ -80,10 +82,12 @@
     <a id="CACFBGBE"></a>
 
     <div class="sect1">
-      <h1 class="sect1"><span class="secnum">3.3</span> Creating Resources Administratively</h1>
+      <h1 class="sect1" id="sigil_toc_id_790"><span class="secnum">3.3</span> Creating Resources Administratively</h1>
 
       <p>Before you deploy or run many applications, you may need to create resources for them. An application can include a <code>glassfish-resources.xml</code> file that can be used to define resources for that application and others. You can then use the <code>asadmin</code> command, specifying as the argument a file named <code>glassfish-resources.xml</code>, to create the resources administratively, as shown.</p>
-      <pre class="oac_no_warn" xml:space="preserve">asadmin add-resources glassfish-resources.xml</pre>
+      <pre class="oac_no_warn" xml:space="preserve">
+asadmin add-resources glassfish-resources.xml
+</pre>
 
       <p>The <code>glassfish-resources.xml</code> file can be created in any project using NetBeans IDE or by hand. Some of the JMS examples use this approach to resource creation. A file for creating the resources needed for the JMS simple producer example can be found in the <code>jms/simple/producer/src/main/setup</code> directory.</p>
 
